@@ -1,0 +1,548 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Rituel &mdash; Semaine 1 S&eacute;ance 1 &mdash; Intercaler un nombre d&eacute;cimal</title>
+<style>
+*{box-sizing:border-box}
+html,body{margin:0;padding:0}
+body{
+  background:#fffdf7;
+  font-family:Arial,Helvetica,sans-serif;
+  color:#243238;
+  line-height:1.6;
+  padding:14px;
+  overflow-x:hidden;
+}
+.bulle{position:fixed;border-radius:50%;background:#3ba5b8;opacity:.12;pointer-events:none;z-index:0}
+.b1{width:190px;height:190px;top:-70px;left:-70px}
+.b2{width:130px;height:130px;top:-45px;right:-45px}
+.b3{width:160px;height:160px;bottom:-60px;left:-55px}
+.b4{width:110px;height:110px;bottom:-40px;right:-35px}
+
+.wrap{position:relative;z-index:1;max-width:880px;margin:0 auto}
+
+.tete{display:flex;flex-wrap:wrap;align-items:center;gap:10px;margin-bottom:14px}
+.etq{display:inline-block;padding:7px 16px;border-radius:8px;color:#fff;font-weight:700;font-size:.95rem;letter-spacing:.02em}
+.etq-sem{background:#8fd3e8;color:#123f4a}
+.etq-sea{background:#3ba5b8}
+.etq-rit{background:#1f7a8c;font-family:Georgia,"Times New Roman",serif;font-style:normal;margin-left:auto}
+
+h1{
+  font-size:clamp(1.3rem,4.5vw,2rem);
+  font-weight:900;
+  color:#1f7a8c;
+  margin:6px 0 18px;
+  line-height:1.3;
+}
+
+.bloc{
+  position:relative;
+  border:2px solid #3ba5b8;
+  border-radius:12px;
+  background:#fff;
+  padding:26px 18px 20px;
+  margin-bottom:18px;
+}
+.onglet{
+  position:absolute;top:-17px;left:18px;
+  background:#8fd3e8;color:#123f4a;
+  font-weight:700;font-size:.95rem;
+  padding:5px 18px;border-radius:8px;
+}
+.tete-ex{display:flex;align-items:flex-start;gap:12px;margin-bottom:16px;min-width:0}
+.pastille{
+  flex:0 0 auto;
+  width:34px;height:34px;border-radius:50%;
+  background:#1f7a8c;color:#fff;
+  font-weight:700;font-size:1rem;
+  display:flex;align-items:center;justify-content:center;
+}
+.consigne{
+  margin:4px 0 0;
+  font-weight:700;text-decoration:underline;
+  color:#1f7a8c;
+  font-size:clamp(.95rem,2.6vw,1.05rem);
+  min-width:0;overflow-wrap:break-word;
+}
+
+.item{padding:10px 0;border-bottom:1px dashed #dceff3}
+.item:last-of-type{border-bottom:0}
+.ligne{display:flex;flex-wrap:wrap;align-items:center;gap:10px;min-width:0}
+.lettre{flex:0 0 auto;font-weight:700;color:#1f7a8c;width:22px}
+.expr{
+  display:flex;flex-wrap:wrap;align-items:center;gap:8px;
+  min-width:0;
+  font-size:clamp(1rem,3vw,1.15rem);font-weight:700;
+}
+.borne{color:#7a3e3e;font-weight:700}
+.signe{color:#243238;font-weight:700}
+input[type="text"]{
+  width:clamp(96px,28vw,150px);
+  min-width:0;
+  padding:9px 8px;
+  font-family:Arial,Helvetica,sans-serif;
+  font-size:1rem;font-weight:700;
+  text-align:center;
+  color:#1f7a8c;
+  background:#f7fcfd;
+  border:1px solid #b9dfe8;
+  border-bottom:2px dotted #3ba5b8;
+  border-radius:6px;
+}
+input[type="text"]:focus{outline:2px solid #3ba5b8;outline-offset:1px}
+input.correct{border-color:#2e8b57;background:#effaf3;color:#2e8b57}
+input.partiel{border-color:#c9820a;background:#fff8ea;color:#a86c06}
+input.incorrect{border-color:#c0392b;background:#fdefee;color:#c0392b}
+
+.actions{display:flex;flex-wrap:wrap;gap:8px;margin-left:auto}
+button{
+  font-family:inherit;font-size:.92rem;font-weight:700;
+  min-height:44px;padding:10px 16px;
+  border:0;border-radius:8px;cursor:pointer;
+  background:#3ba5b8;color:#fff;
+  line-height:1.2;
+}
+button:hover{background:#1f7a8c}
+button.sec{background:#fff;color:#1f7a8c;border:2px solid #3ba5b8}
+button.sec:hover{background:#eaf7fa;color:#1f7a8c}
+
+.feedback{
+  margin:10px 0 0;
+  padding:12px 14px;
+  border-left:5px solid #3ba5b8;
+  border-radius:6px;
+  background:#f4fafb;
+  font-size:clamp(.9rem,2.5vw,1rem);
+  line-height:1.75;
+  font-style:normal;
+  overflow-wrap:break-word;
+}
+.feedback.ok{border-left-color:#2e8b57;background:#effaf3;color:#1e6b40}
+.feedback.ko{border-left-color:#c0392b;background:#fdefee;color:#96291d}
+.feedback.warn{border-left-color:#c9820a;background:#fff8ea;color:#8a5b04}
+.aide{
+  margin:10px 0 0;padding:12px 14px;
+  border-left:5px solid #8fd3e8;background:#f2fafd;border-radius:6px;
+  font-size:clamp(.9rem,2.5vw,1rem);line-height:1.75;
+}
+
+.barre{display:flex;flex-wrap:wrap;gap:10px;margin:18px 0}
+.barre button{flex:1 1 190px}
+
+.correction{
+  border:2px dashed #3ba5b8;border-radius:12px;background:#fff;
+  padding:16px 18px;margin-bottom:18px;
+  font-size:clamp(.9rem,2.5vw,1rem);line-height:1.8;
+}
+.correction h2{margin:0 0 8px;font-size:1.05rem;color:#1f7a8c}
+.correction ul{margin:6px 0 0;padding-left:20px}
+.correction li{margin-bottom:4px}
+
+.bilan{
+  border:2px solid #1f7a8c;border-radius:12px;background:#fff;
+  padding:16px 18px;margin-bottom:18px;
+  font-size:.92rem;line-height:1.8;
+}
+.bilan .score{font-size:clamp(1.05rem,3.2vw,1.25rem);font-weight:900;color:#1f7a8c}
+.bilan .palier{font-weight:700;margin-top:4px}
+.recap{display:flex;flex-wrap:wrap;gap:10px;margin-top:10px}
+.recap span{
+  display:inline-flex;align-items:center;gap:6px;
+  padding:6px 12px;border-radius:8px;background:#f4fafb;
+  font-weight:700;font-size:.9rem;border:1px solid #dceff3;
+}
+.recap .r-ok{color:#2e8b57}
+.recap .r-mid{color:#c9820a}
+.recap .r-ko{color:#c0392b}
+.legende{margin-top:10px;font-size:.85rem;color:#4d6169}
+
+@media (max-width:768px){
+  .actions{margin-left:0;width:100%}
+  .actions button{flex:1 1 auto}
+}
+@media (max-width:480px){
+  body{padding:10px}
+  .bloc{padding:24px 12px 16px}
+  .etq{font-size:.85rem;padding:6px 12px}
+  .etq-rit{margin-left:0}
+  .expr{width:100%}
+  input[type="text"]{width:100%;max-width:180px}
+  .recap span{font-size:.85rem}
+}
+</style>
+</head>
+<body>
+<div class="bulle b1"></div>
+<div class="bulle b2"></div>
+<div class="bulle b3"></div>
+<div class="bulle b4"></div>
+
+<main class="wrap">
+
+  <div class="tete">
+    <span class="etq etq-sem">Semaine 1</span>
+    <span class="etq etq-sea">S&eacute;ance 1</span>
+    <span class="etq etq-rit">Rituel</span>
+  </div>
+
+  <h1>Intercaler un nombre d&eacute;cimal</h1>
+
+  <section class="bloc">
+    <span class="onglet">Calcul</span>
+
+    <div class="tete-ex">
+      <span class="pastille">1</span>
+      <p class="consigne">Compl&egrave;te par le nombre d&eacute;cimal qui convient&nbsp;:</p>
+    </div>
+
+    <div class="item">
+      <div class="ligne">
+        <span class="lettre">a.</span>
+        <span class="expr">
+          <span class="borne">6</span><span class="signe">&lt;</span>
+          <input type="text" id="in-a" inputmode="decimal" autocomplete="off" aria-label="Nombre compris entre 6 et 7">
+          <span class="signe">&lt;</span><span class="borne">7</span>
+        </span>
+        <span class="actions">
+          <button type="button" data-ok="a">OK</button>
+          <button type="button" class="sec" data-aide="a">Indice</button>
+        </span>
+      </div>
+      <div class="feedback" id="fb-a" hidden></div>
+      <div class="aide" id="ai-a" hidden></div>
+    </div>
+
+    <div class="item">
+      <div class="ligne">
+        <span class="lettre">b.</span>
+        <span class="expr">
+          <span class="borne">0</span><span class="signe">&lt;</span>
+          <input type="text" id="in-b" inputmode="decimal" autocomplete="off" aria-label="Nombre compris entre 0 et 1">
+          <span class="signe">&lt;</span><span class="borne">1</span>
+        </span>
+        <span class="actions">
+          <button type="button" data-ok="b">OK</button>
+          <button type="button" class="sec" data-aide="b">Indice</button>
+        </span>
+      </div>
+      <div class="feedback" id="fb-b" hidden></div>
+      <div class="aide" id="ai-b" hidden></div>
+    </div>
+
+    <div class="item">
+      <div class="ligne">
+        <span class="lettre">c.</span>
+        <span class="expr">
+          <span class="borne">12,6</span><span class="signe">&lt;</span>
+          <input type="text" id="in-c" inputmode="decimal" autocomplete="off" aria-label="Nombre compris entre 12,6 et 12,7">
+          <span class="signe">&lt;</span><span class="borne">12,7</span>
+        </span>
+        <span class="actions">
+          <button type="button" data-ok="c">OK</button>
+          <button type="button" class="sec" data-aide="c">Indice</button>
+        </span>
+      </div>
+      <div class="feedback" id="fb-c" hidden></div>
+      <div class="aide" id="ai-c" hidden></div>
+    </div>
+
+    <div class="item">
+      <div class="ligne">
+        <span class="lettre">d.</span>
+        <span class="expr">
+          <span class="borne">5,34</span><span class="signe">&lt;</span>
+          <input type="text" id="in-d" inputmode="decimal" autocomplete="off" aria-label="Nombre compris entre 5,34 et 5,35">
+          <span class="signe">&lt;</span><span class="borne">5,35</span>
+        </span>
+        <span class="actions">
+          <button type="button" data-ok="d">OK</button>
+          <button type="button" class="sec" data-aide="d">Indice</button>
+        </span>
+      </div>
+      <div class="feedback" id="fb-d" hidden></div>
+      <div class="aide" id="ai-d" hidden></div>
+    </div>
+  </section>
+
+  <div class="barre">
+    <button type="button" id="btn-tout">V&eacute;rifier tout</button>
+    <button type="button" class="sec" id="btn-corr">Voir la correction</button>
+    <button type="button" class="sec" id="btn-reset">R&eacute;initialiser</button>
+  </div>
+
+  <div class="correction" id="correction" hidden></div>
+
+  <div class="bilan" id="bilan" hidden></div>
+
+</main>
+
+<script>
+(function(){
+  "use strict";
+
+  var ITEMS = [
+    { id:"a", min:"6",    max:"7",    modele:"6,5",
+      aide:"Entre deux nombres entiers qui se suivent, ajoute une partie d\u00e9cimale : cherche du c\u00f4t\u00e9 des dixi\u00e8mes." },
+    { id:"b", min:"0",    max:"1",    modele:"0,5",
+      aide:"Le nombre cherch\u00e9 est plus petit que 1 : sa partie enti\u00e8re vaut donc 0." },
+    { id:"c", min:"12,6", max:"12,7", modele:"12,65",
+      aide:"12,6 et 12,7 se suivent au rang des dixi\u00e8mes : descends au rang des centi\u00e8mes." },
+    { id:"d", min:"5,34", max:"5,35", modele:"5,345",
+      aide:"5,34 et 5,35 se suivent au rang des centi\u00e8mes : descends au rang des milli\u00e8mes." }
+  ];
+
+  var etats = {};
+  var occupe = false;
+
+  function trouver(id){
+    for (var i = 0; i < ITEMS.length; i++){ if (ITEMS[i].id === id) return ITEMS[i]; }
+    return null;
+  }
+
+  function esc(txt){
+    var d = document.createElement("div");
+    d.textContent = String(txt);
+    return d.innerHTML;
+  }
+
+  function normalise(brut){
+    var s = String(brut);
+    s = s.replace(/[\s\u00a0\u202f\u2009]/g, "");
+    s = s.replace(/[\u2212\u2013\u2014]/g, "-");
+    s = s.replace(/,/g, ".");
+    if (s === "") return null;
+    if (!/^-?(\d+(\.\d*)?|\.\d+)$/.test(s)) return null;
+    return s;
+  }
+
+  function decompose(s){
+    var neg = false;
+    if (s.charAt(0) === "-"){ neg = true; s = s.slice(1); }
+    var parts = s.split(".");
+    var ent = parts[0] === "" ? "0" : parts[0];
+    var dec = parts.length > 1 ? parts[1] : "";
+    ent = ent.replace(/^0+(?=\d)/, "");
+    dec = dec.replace(/0+$/, "");
+    if (ent === "0" && dec === "") neg = false;
+    return { neg:neg, ent:ent, dec:dec };
+  }
+
+  function cmpAbs(a, b){
+    if (a.ent.length !== b.ent.length) return a.ent.length > b.ent.length ? 1 : -1;
+    if (a.ent !== b.ent) return a.ent > b.ent ? 1 : -1;
+    var n = Math.max(a.dec.length, b.dec.length);
+    var da = a.dec + new Array(n - a.dec.length + 1).join("0");
+    var db = b.dec + new Array(n - b.dec.length + 1).join("0");
+    if (da === db) return 0;
+    return da > db ? 1 : -1;
+  }
+
+  function comparer(x, y){
+    var A = decompose(x), B = decompose(y);
+    if (A.neg !== B.neg) return A.neg ? -1 : 1;
+    var r = cmpAbs(A, B);
+    return A.neg ? -r : r;
+  }
+
+  function afficher(id, type, html){
+    var fb = document.getElementById("fb-" + id);
+    fb.className = "feedback " + type;
+    fb.innerHTML = html;
+    fb.hidden = false;
+  }
+
+  function verifier(id){
+    var it = trouver(id);
+    if (!it) return;
+    var input = document.getElementById("in-" + id);
+    var brut = input.value;
+    input.classList.remove("correct", "partiel", "incorrect");
+
+    if (brut.replace(/[\s\u00a0]/g, "") === ""){
+      etats[id] = "vide";
+      afficher(id, "warn", "\u26a0\ufe0f Aucune r\u00e9ponse saisie sur cette ligne. \u00c9cris un nombre d\u00e9cimal entre <strong>" + esc(it.min) + "</strong> et <strong>" + esc(it.max) + "</strong>, puis clique sur <strong>OK</strong>.");
+      return;
+    }
+
+    var val = normalise(brut);
+    if (val === null){
+      etats[id] = "incorrect";
+      input.classList.add("incorrect");
+      afficher(id, "warn", "\u26a0\ufe0f Saisie non reconnue&nbsp;: &laquo;&nbsp;" + esc(brut) + "&nbsp;&raquo;. Attendu&nbsp;: un <strong>nombre d\u00e9cimal</strong> seul, avec une virgule (ou un point), sans autre symbole.");
+      return;
+    }
+
+    var cMin = comparer(val, normalise(it.min));
+    var cMax = comparer(val, normalise(it.max));
+    var affiche = esc(brut.replace(/[\s\u00a0]/g, ""));
+
+    if (cMin === 0 || cMax === 0){
+      etats[id] = "partiel";
+      input.classList.add("partiel");
+      afficher(id, "warn", "\u26a0\ufe0f Presque. Ta r\u00e9ponse <strong><u>" + affiche + "</u></strong> est <strong>\u00e9gale \u00e0 une borne</strong>. Le signe <strong>&lt;</strong> est une in\u00e9galit\u00e9 <strong><u>stricte</u></strong>&nbsp;: le nombre doit \u00eatre diff\u00e9rent de " + esc(it.min) + " et de " + esc(it.max) + ".");
+      return;
+    }
+
+    if (cMin > 0 && cMax < 0){
+      etats[id] = "correct";
+      input.classList.add("correct");
+      afficher(id, "ok", "\u2705 Bravo&nbsp;! <strong><u>" + affiche + "</u></strong> est bien <strong>strictement compris</strong> entre " + esc(it.min) + " et " + esc(it.max) + ".");
+      return;
+    }
+
+    etats[id] = "incorrect";
+    input.classList.add("incorrect");
+    var sens = (cMin <= 0)
+      ? "Ton nombre est <strong>trop petit</strong>&nbsp;: il doit \u00eatre <strong><u>strictement plus grand que " + esc(it.min) + "</u></strong>."
+      : "Ton nombre est <strong>trop grand</strong>&nbsp;: il doit \u00eatre <strong><u>strictement plus petit que " + esc(it.max) + "</u></strong>.";
+    afficher(id, "ko", "\u274c " + sens + " Compare les deux bornes chiffre par chiffre apr\u00e8s la virgule pour trouver le rang o\u00f9 elles diff\u00e8rent.");
+  }
+
+  function basculerAide(id){
+    var it = trouver(id);
+    var box = document.getElementById("ai-" + id);
+    if (!it || !box) return;
+    if (box.hidden){
+      box.innerHTML = "\ud83d\udca1 <strong>Indice&nbsp;:</strong> " + esc(it.aide);
+      box.hidden = false;
+    } else {
+      box.hidden = true;
+    }
+  }
+
+  function palier(pct){
+    if (pct >= 90) return "\ud83d\udfe2 Excellent";
+    if (pct >= 75) return "\ud83d\udfe2 Tr\u00e8s bien";
+    if (pct >= 60) return "\ud83d\udfe1 Ma\u00eetrise satisfaisante";
+    if (pct >= 40) return "\ud83d\udfe0 Ma\u00eetrise fragile";
+    return "\ud83d\udd34 Ma\u00eetrise insuffisante";
+  }
+
+  function verifierTout(){
+    if (occupe) return;
+    occupe = true;
+    window.setTimeout(function(){ occupe = false; }, 350);
+
+    var total = ITEMS.length;
+    var score = 0;
+    var recap = "";
+
+    for (var i = 0; i < ITEMS.length; i++){
+      var id = ITEMS[i].id;
+      verifier(id);
+      var e = etats[id];
+      if (e === "correct"){
+        score++;
+        recap += '<span class="r-ok">\u2714 ' + id + '</span>';
+      } else if (e === "partiel"){
+        recap += '<span class="r-mid">\u25d0 ' + id + '</span>';
+      } else {
+        recap += '<span class="r-ko">\u2718 ' + id + '</span>';
+      }
+    }
+
+    if (score < 0) score = 0;
+    if (score > total) score = total;
+    var pct = Math.round((score / total) * 100);
+
+    var bilan = document.getElementById("bilan");
+    bilan.innerHTML =
+      '<div class="score">Score&nbsp;: ' + score + '\u2009/\u2009' + total + ' (' + pct + '&nbsp;%)</div>' +
+      '<div class="palier">' + palier(pct) + '</div>' +
+      '<div class="recap">' + recap + '</div>' +
+      '<div class="legende">\u2714 correct &nbsp;&bull;&nbsp; \u25d0 partiel (r\u00e9ponse \u00e9gale \u00e0 une borne) &nbsp;&bull;&nbsp; \u2718 incorrect ou non r\u00e9pondu.</div>';
+    bilan.hidden = false;
+  }
+
+  function basculerCorrection(){
+    var box = document.getElementById("correction");
+    var btn = document.getElementById("btn-corr");
+    if (box.hidden){
+      var lignes = "";
+      for (var i = 0; i < ITEMS.length; i++){
+        var it = ITEMS[i];
+        lignes += "<li><strong>" + it.id + ".</strong> " + esc(it.min) + " &lt; <strong><u>" + esc(it.modele) + "</u></strong> &lt; " + esc(it.max) + "</li>";
+      }
+      box.innerHTML =
+        "<h2>Correction</h2>" +
+        "<p>Il existe une <strong>infinit\u00e9</strong> de r\u00e9ponses possibles&nbsp;: toute r\u00e9ponse strictement comprise entre les deux bornes est accept\u00e9e. Voici un exemple par ligne&nbsp;:</p>" +
+        "<ul>" + lignes + "</ul>" +
+        "<p><strong>M\u00e9thode&nbsp;:</strong> on rep\u00e8re le <strong><u>rang</u></strong> o\u00f9 les deux bornes diff\u00e8rent, puis on \u00e9crit un nombre au <strong><u>rang suivant</u></strong> (dixi\u00e8mes, centi\u00e8mes, milli\u00e8mes\u2026).</p>";
+      box.hidden = false;
+      btn.textContent = "Masquer la correction";
+    } else {
+      box.hidden = true;
+      btn.textContent = "Voir la correction";
+    }
+  }
+
+  function reinitialiser(){
+    for (var i = 0; i < ITEMS.length; i++){
+      var id = ITEMS[i].id;
+      var input = document.getElementById("in-" + id);
+      input.value = "";
+      input.disabled = false;
+      input.readOnly = false;
+      input.classList.remove("correct", "partiel", "incorrect");
+      var fb = document.getElementById("fb-" + id);
+      fb.hidden = true;
+      fb.innerHTML = "";
+      fb.className = "feedback";
+      var ai = document.getElementById("ai-" + id);
+      ai.hidden = true;
+      ai.innerHTML = "";
+      etats[id] = "vide";
+    }
+    var bilan = document.getElementById("bilan");
+    bilan.hidden = true;
+    bilan.innerHTML = "";
+    var corr = document.getElementById("correction");
+    corr.hidden = true;
+    corr.innerHTML = "";
+    document.getElementById("btn-corr").textContent = "Voir la correction";
+    occupe = false;
+  }
+
+  function init(){
+    for (var i = 0; i < ITEMS.length; i++){ etats[ITEMS[i].id] = "vide"; }
+
+    var boutonsOk = document.querySelectorAll("[data-ok]");
+    for (var j = 0; j < boutonsOk.length; j++){
+      boutonsOk[j].addEventListener("click", function(){
+        verifier(this.getAttribute("data-ok"));
+      });
+    }
+
+    var boutonsAide = document.querySelectorAll("[data-aide]");
+    for (var k = 0; k < boutonsAide.length; k++){
+      boutonsAide[k].addEventListener("click", function(){
+        basculerAide(this.getAttribute("data-aide"));
+      });
+    }
+
+    var champs = document.querySelectorAll('input[type="text"]');
+    for (var m = 0; m < champs.length; m++){
+      champs[m].addEventListener("keydown", function(ev){
+        if (ev.key === "Enter"){
+          ev.preventDefault();
+          verifier(this.id.replace("in-", ""));
+        }
+      });
+    }
+
+    document.getElementById("btn-tout").addEventListener("click", verifierTout);
+    document.getElementById("btn-corr").addEventListener("click", basculerCorrection);
+    document.getElementById("btn-reset").addEventListener("click", reinitialiser);
+  }
+
+  if (document.readyState === "loading"){
+    document.addEventListener("DOMContentLoaded", init);
+  } else {
+    init();
+  }
+})();
+</script>
+</body>
+</html>
