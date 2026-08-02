@@ -1,0 +1,460 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Rituel &mdash; Semaine 4 S&eacute;ance 1 &mdash; Calcul</title>
+<style>
+*{box-sizing:border-box}
+html,body{margin:0;padding:0}
+body{background:#fffdf7;font-family:Arial,Helvetica,sans-serif;color:#243238;line-height:1.6;padding:14px;overflow-x:hidden}
+.bulle{position:fixed;border-radius:50%;background:#3ba5b8;opacity:.12;pointer-events:none;z-index:0}
+.b1{width:190px;height:190px;top:-70px;left:-70px}
+.b2{width:130px;height:130px;top:-45px;right:-45px}
+.b3{width:160px;height:160px;bottom:-60px;left:-55px}
+.b4{width:110px;height:110px;bottom:-40px;right:-35px}
+.wrap{position:relative;z-index:1;max-width:880px;margin:0 auto}
+.tete{display:flex;flex-wrap:wrap;align-items:center;gap:10px;margin-bottom:14px}
+.etq{display:inline-block;padding:7px 16px;border-radius:8px;color:#fff;font-weight:700;font-size:.95rem}
+.etq-sem{background:#8fd3e8;color:#123f4a}
+.etq-sea{background:#3ba5b8}
+.etq-rit{background:#1f7a8c;font-family:Georgia,"Times New Roman",serif;margin-left:auto}
+h1{font-size:clamp(1.3rem,4.5vw,2rem);font-weight:900;color:#1f7a8c;margin:6px 0 18px;line-height:1.3}
+.bloc{position:relative;border:2px solid #3ba5b8;border-radius:12px;background:#fff;padding:26px 18px 20px;margin-bottom:18px}
+.onglet{position:absolute;top:-17px;left:18px;background:#8fd3e8;color:#123f4a;font-weight:700;font-size:.95rem;padding:5px 18px;border-radius:8px}
+.tete-ex{display:flex;align-items:flex-start;gap:12px;margin-bottom:16px;min-width:0}
+.pastille{flex:0 0 auto;width:34px;height:34px;border-radius:50%;background:#1f7a8c;color:#fff;font-weight:700;font-size:1rem;display:flex;align-items:center;justify-content:center}
+.consigne{margin:4px 0 0;font-weight:700;text-decoration:underline;color:#1f7a8c;font-size:clamp(.95rem,2.6vw,1.05rem);min-width:0;overflow-wrap:break-word}
+.item{padding:10px 0;border-bottom:1px dashed #dceff3}
+.item:last-of-type{border-bottom:0}
+.ligne{display:flex;flex-wrap:wrap;align-items:center;gap:10px;min-width:0}
+.lettre{flex:0 0 auto;font-weight:700;color:#1f7a8c;width:22px}
+.expr{display:flex;flex-wrap:wrap;align-items:center;gap:10px;min-width:0;font-size:clamp(1rem,3vw,1.15rem);font-weight:700}
+.signe{color:#243238;font-weight:700}
+.champ-lbl{display:flex;flex-direction:column;align-items:center;gap:3px}
+.champ-lbl span{font-size:.72rem;font-weight:700;color:#4d6169;text-transform:uppercase;letter-spacing:.03em}
+input[type="text"]{width:clamp(90px,24vw,130px);min-width:0;padding:9px 8px;font-family:Arial,Helvetica,sans-serif;font-size:1rem;font-weight:700;text-align:center;color:#1f7a8c;background:#f7fcfd;border:1px solid #b9dfe8;border-bottom:2px dotted #3ba5b8;border-radius:6px}
+input[type="text"]:focus{outline:2px solid #3ba5b8;outline-offset:1px}
+input.correct{border-color:#2e8b57;background:#effaf3;color:#2e8b57}
+input.partiel{border-color:#c9820a;background:#fff8ea;color:#a86c06}
+input.incorrect{border-color:#c0392b;background:#fdefee;color:#c0392b}
+.actions{display:flex;flex-wrap:wrap;gap:8px;margin-left:auto}
+button{font-family:inherit;font-size:.92rem;font-weight:700;min-height:44px;padding:10px 16px;border:0;border-radius:8px;cursor:pointer;background:#3ba5b8;color:#fff;line-height:1.2}
+button:hover{background:#1f7a8c}
+button.sec{background:#fff;color:#1f7a8c;border:2px solid #3ba5b8}
+button.sec:hover{background:#eaf7fa}
+.feedback{margin:10px 0 0;padding:12px 14px;border-left:5px solid #3ba5b8;border-radius:6px;background:#f4fafb;font-size:clamp(.9rem,2.5vw,1rem);line-height:1.75;overflow-wrap:break-word}
+.feedback.ok{border-left-color:#2e8b57;background:#effaf3;color:#1e6b40}
+.feedback.ko{border-left-color:#c0392b;background:#fdefee;color:#96291d}
+.feedback.warn{border-left-color:#c9820a;background:#fff8ea;color:#8a5b04}
+.aide{margin:10px 0 0;padding:12px 14px;border-left:5px solid #8fd3e8;background:#f2fafd;border-radius:6px;font-size:clamp(.9rem,2.5vw,1rem);line-height:1.75}
+.barre{display:flex;flex-wrap:wrap;gap:10px;margin:18px 0}
+.barre button{flex:1 1 190px}
+.correction{border:2px dashed #3ba5b8;border-radius:12px;background:#fff;padding:16px 18px;margin-bottom:18px;font-size:clamp(.9rem,2.5vw,1rem);line-height:1.8}
+.correction h2{margin:0 0 8px;font-size:1.05rem;color:#1f7a8c}
+.correction ul{margin:6px 0 0;padding-left:20px}
+.correction li{margin-bottom:6px}
+.bilan{border:2px solid #1f7a8c;border-radius:12px;background:#fff;padding:16px 18px;margin-bottom:18px;font-size:.92rem;line-height:1.8}
+.bilan .score{font-size:clamp(1.05rem,3.2vw,1.25rem);font-weight:900;color:#1f7a8c}
+.bilan .palier{font-weight:700;margin-top:4px}
+.recap{display:flex;flex-wrap:wrap;gap:10px;margin-top:10px}
+.recap span{display:inline-flex;align-items:center;gap:6px;padding:6px 12px;border-radius:8px;background:#f4fafb;font-weight:700;font-size:.9rem;border:1px solid #dceff3}
+.recap .r-ok{color:#2e8b57}
+.recap .r-mid{color:#c9820a}
+.recap .r-ko{color:#c0392b}
+.legende{margin-top:10px;font-size:.85rem;color:#4d6169}
+@media (max-width:768px){.actions{margin-left:0;width:100%}.actions button{flex:1 1 auto}}
+@media (max-width:480px){body{padding:10px}.bloc{padding:24px 12px 16px}.etq{font-size:.85rem;padding:6px 12px}.etq-rit{margin-left:0}.expr{width:100%}.recap span{font-size:.85rem}}
+</style>
+</head>
+<body>
+<div class="bulle b1"></div><div class="bulle b2"></div><div class="bulle b3"></div><div class="bulle b4"></div>
+
+<main class="wrap">
+  <div class="tete">
+    <span class="etq etq-sem">Semaine 4</span>
+    <span class="etq etq-sea">S&eacute;ance 1</span>
+    <span class="etq etq-rit">Rituel</span>
+  </div>
+
+  <h1>Poser une multiplication, une division et une soustraction</h1>
+
+  <section class="bloc">
+    <span class="onglet">Calcul</span>
+
+    <div class="tete-ex">
+      <span class="pastille">1</span>
+      <p class="consigne">Pose les op&eacute;rations sur ton cahier, puis compl&egrave;te le r&eacute;sultat&nbsp;:</p>
+    </div>
+
+    <div class="item">
+      <div class="ligne">
+        <span class="lettre">a.</span>
+        <span class="expr">
+          <span>250 &times; 18 =</span>
+          <input type="text" id="in-a" inputmode="decimal" autocomplete="off" aria-label="Résultat de 250 &times; 18">
+        </span>
+        <span class="actions">
+          <button type="button" data-ok="a">OK</button>
+          <button type="button" class="sec" data-aide="a">Indice</button>
+        </span>
+      </div>
+      <div class="feedback" id="fb-a" hidden></div>
+      <div class="aide" id="ai-a" hidden></div>
+    </div>
+    <div class="item">
+      <div class="ligne">
+        <span class="lettre">b.</span>
+        <span class="expr">
+          <span>289 : 25 =</span>
+          <span class="champ-lbl"><span>Quotient</span><input type="text" id="in-b-q" inputmode="numeric" autocomplete="off" aria-label="Quotient de 289 par 25"></span>
+          <span class="champ-lbl"><span>Reste</span><input type="text" id="in-b-r" inputmode="numeric" autocomplete="off" aria-label="Reste de 289 par 25"></span>
+        </span>
+        <span class="actions">
+          <button type="button" data-ok="b">OK</button>
+          <button type="button" class="sec" data-aide="b">Indice</button>
+        </span>
+      </div>
+      <div class="feedback" id="fb-b" hidden></div>
+      <div class="aide" id="ai-b" hidden></div>
+    </div>
+    <div class="item">
+      <div class="ligne">
+        <span class="lettre">c.</span>
+        <span class="expr">
+          <span>85 &times; 12 =</span>
+          <input type="text" id="in-c" inputmode="decimal" autocomplete="off" aria-label="Résultat de 85 &times; 12">
+        </span>
+        <span class="actions">
+          <button type="button" data-ok="c">OK</button>
+          <button type="button" class="sec" data-aide="c">Indice</button>
+        </span>
+      </div>
+      <div class="feedback" id="fb-c" hidden></div>
+      <div class="aide" id="ai-c" hidden></div>
+    </div>
+    <div class="item">
+      <div class="ligne">
+        <span class="lettre">d.</span>
+        <span class="expr">
+          <span>156,3 &minus; 18 =</span>
+          <input type="text" id="in-d" inputmode="decimal" autocomplete="off" aria-label="Résultat de 156,3 &minus; 18">
+        </span>
+        <span class="actions">
+          <button type="button" data-ok="d">OK</button>
+          <button type="button" class="sec" data-aide="d">Indice</button>
+        </span>
+      </div>
+      <div class="feedback" id="fb-d" hidden></div>
+      <div class="aide" id="ai-d" hidden></div>
+    </div>
+
+  </section>
+
+  <div class="barre">
+    <button type="button" id="btn-tout">V&eacute;rifier tout</button>
+    <button type="button" class="sec" id="btn-corr">Voir la correction</button>
+    <button type="button" class="sec" id="btn-reset">R&eacute;initialiser</button>
+  </div>
+
+  <div class="correction" id="correction" hidden></div>
+  <div class="bilan" id="bilan" hidden></div>
+</main>
+
+<script>
+(function(){
+  "use strict";
+
+  var SIMPLES = [
+    { id:"a", type:"mult", a:"250", b:"18", res:"4500",
+      aide:"D\u00e9compose 18 en 10 + 8 : 250\u00d710 = 2500, 250\u00d78 = 2000, puis additionne." },
+    { id:"c", type:"mult", a:"85", b:"12", res:"1020",
+      aide:"D\u00e9compose 12 en 10 + 2 : 85\u00d710 = 850, 85\u00d72 = 170, puis additionne." },
+    { id:"d", type:"deci", a:"156,3", b:"18", res:"138,3",
+      aide:"Aligne bien les unit\u00e9s et les dixi\u00e8mes avant de soustraire." }
+  ];
+
+  var DIVISION = { id:"b", dividende:"289", diviseur:"25", quotient:"11", reste:"14",
+    aide:"Cherche combien de fois 25 tient dans 289 sans d\u00e9passer, puis calcule ce qu\u2019il reste." };
+
+  var etats = {};
+  var occupe = false;
+
+  function trouverSimple(id){
+    for (var i = 0; i < SIMPLES.length; i++){ if (SIMPLES[i].id === id) return SIMPLES[i]; }
+    return null;
+  }
+
+  function esc(txt){
+    var d = document.createElement("div");
+    d.textContent = String(txt);
+    return d.innerHTML;
+  }
+
+  function normalise(brut){
+    var s = String(brut).replace(/[\s\u00a0\u202f\u2009]/g, "");
+    s = s.replace(/[\u2212\u2013\u2014]/g, "-").replace(/,/g, ".");
+    if (s === "") return null;
+    if (!/^-?(\d+(\.\d*)?|\.\d+)$/.test(s)) return null;
+    return s;
+  }
+
+  function normEntier(brut){
+    var s = String(brut).replace(/[\s\u00a0\u202f\u2009]/g, "");
+    if (s === "") return null;
+    if (!/^-?\d+$/.test(s)) return null;
+    return s.replace(/^(-?)0+(?=\d)/, "$1");
+  }
+
+  function decompose(s){
+    var neg = false;
+    if (s.charAt(0) === "-"){ neg = true; s = s.slice(1); }
+    var p = s.split(".");
+    var ent = p[0] === "" ? "0" : p[0];
+    var dec = p.length > 1 ? p[1] : "";
+    ent = ent.replace(/^0+(?=\d)/,"");
+    dec = dec.replace(/0+$/,"");
+    if (ent === "0" && dec === "") neg = false;
+    return { neg:neg, ent:ent, dec:dec };
+  }
+
+  function cmpAbs(a,b){
+    if (a.ent.length !== b.ent.length) return a.ent.length > b.ent.length ? 1 : -1;
+    if (a.ent !== b.ent) return a.ent > b.ent ? 1 : -1;
+    var n = Math.max(a.dec.length, b.dec.length);
+    var da = a.dec + new Array(n - a.dec.length + 1).join("0");
+    var db = b.dec + new Array(n - b.dec.length + 1).join("0");
+    if (da === db) return 0;
+    return da > db ? 1 : -1;
+  }
+
+  function comparer(x,y){
+    var A = decompose(x), B = decompose(y);
+    if (A.neg !== B.neg) return A.neg ? -1 : 1;
+    var r = cmpAbs(A,B);
+    return A.neg ? -r : r;
+  }
+
+  function afficher(id, type, html){
+    var fb = document.getElementById("fb-" + id);
+    fb.className = "feedback " + type;
+    fb.innerHTML = html;
+    fb.hidden = false;
+  }
+
+  function marquer(input, etat){
+    if (!input) return;
+    input.classList.remove("correct","partiel","incorrect");
+    if (etat) input.classList.add(etat);
+  }
+
+  function verifierSimple(id){
+    var it = trouverSimple(id);
+    if (!it) return;
+    var input = document.getElementById("in-" + id);
+    var brut = input.value;
+
+    if (String(brut).replace(/\s/g,"") === ""){
+      etats[id] = "vide";
+      marquer(input,"");
+      afficher(id, "warn", "\u26a0\ufe0f Aucune r\u00e9ponse saisie. Pose l\u2019op\u00e9ration sur ton cahier, puis \u00e9cris le r\u00e9sultat.");
+      return;
+    }
+    var val = normalise(brut);
+    if (val === null){
+      etats[id] = "incorrect";
+      marquer(input, "incorrect");
+      afficher(id, "warn", "\u26a0\ufe0f Saisie non reconnue&nbsp;: &laquo;&nbsp;" + esc(brut) + "&nbsp;&raquo;.");
+      return;
+    }
+    if (comparer(val, normalise(it.res)) === 0){
+      etats[id] = "correct";
+      marquer(input, "correct");
+      var signe = it.type === "mult" ? "\u00d7" : "\u2212";
+      afficher(id, "ok", "\u2705 Bravo&nbsp;! " + it.a + " " + signe + " " + it.b + " = " + it.res + ".");
+      return;
+    }
+    etats[id] = "incorrect";
+    marquer(input, "incorrect");
+    afficher(id, "ko", "\u274c Ce n\u2019est pas le r\u00e9sultat attendu.<br>R\u00e9ponse attendue&nbsp;: <strong><u>" + it.res + "</u></strong>.");
+  }
+
+  function verifierDivision(){
+    var it = DIVISION;
+    var inQ = document.getElementById("in-b-q");
+    var inR = document.getElementById("in-b-r");
+    var bq = inQ.value, br = inR.value;
+
+    if (String(bq).replace(/\s/g,"") === "" && String(br).replace(/\s/g,"") === ""){
+      etats.b = "vide";
+      marquer(inQ,""); marquer(inR,"");
+      afficher("b", "warn", "\u26a0\ufe0f Aucune r\u00e9ponse saisie. Compl\u00e8te le <strong>quotient</strong> et le <strong>reste</strong>.");
+      return;
+    }
+    var vq = normEntier(bq), vr = normEntier(br);
+    if (vq === null || vr === null){
+      etats.b = "incorrect";
+      marquer(inQ, vq === null ? "incorrect" : "correct");
+      marquer(inR, vr === null ? "incorrect" : "correct");
+      afficher("b", "warn", "\u26a0\ufe0f Saisie non reconnue. \u00c9cris un <strong>nombre entier</strong> dans chaque case.");
+      return;
+    }
+    var qOk = (vq === it.quotient);
+    var rOk = (vr === it.reste);
+    marquer(inQ, qOk ? "correct" : "incorrect");
+    marquer(inR, rOk ? "correct" : "incorrect");
+
+    if (qOk && rOk){
+      etats.b = "correct";
+      afficher("b", "ok", "\u2705 Bravo&nbsp;! " + it.dividende + " = " + it.diviseur + " \u00d7 " + it.quotient + " + " + it.reste + ".");
+      return;
+    }
+    if (qOk || rOk){
+      etats.b = "partiel";
+      var manque = qOk ? "le <strong>reste</strong>" : "le <strong>quotient</strong>";
+      afficher("b", "warn", "\u26a0\ufe0f Presque&nbsp;! " + (qOk ? "Le quotient est correct" : "Le reste est correct") + ", mais " + manque + " ne l\u2019est pas.<br>R\u00e9ponse attendue&nbsp;: quotient <strong><u>" + it.quotient + "</u></strong>, reste <strong><u>" + it.reste + "</u></strong>.");
+      return;
+    }
+    etats.b = "incorrect";
+    afficher("b", "ko", "\u274c Ni le quotient ni le reste ne sont corrects.<br>R\u00e9ponse attendue&nbsp;: quotient <strong><u>" + it.quotient + "</u></strong>, reste <strong><u>" + it.reste + "</u></strong>.");
+  }
+
+  function basculerAide(id){
+    var box = document.getElementById("ai-" + id);
+    var aideTxt = null;
+    if (id === "b") aideTxt = DIVISION.aide;
+    else { var it = trouverSimple(id); if (it) aideTxt = it.aide; }
+    if (!box || !aideTxt) return;
+    if (box.hidden){
+      box.innerHTML = "\ud83d\udca1 <strong>Indice&nbsp;:</strong> " + aideTxt;
+      box.hidden = false;
+    } else {
+      box.hidden = true;
+    }
+  }
+
+  function palier(pct){
+    if (pct >= 90) return "\ud83d\udfe2 Excellent";
+    if (pct >= 75) return "\ud83d\udfe2 Tr\u00e8s bien";
+    if (pct >= 60) return "\ud83d\udfe1 Ma\u00eetrise satisfaisante";
+    if (pct >= 40) return "\ud83d\udfe0 Ma\u00eetrise fragile";
+    return "\ud83d\udd34 Ma\u00eetrise insuffisante";
+  }
+
+  function verifierTout(){
+    if (occupe) return;
+    occupe = true;
+    window.setTimeout(function(){ occupe = false; }, 350);
+
+    var total = 4, score = 0, recap = "";
+    var ordre = ["a","b","c","d"];
+    for (var i = 0; i < ordre.length; i++){
+      var id = ordre[i];
+      if (id === "b") verifierDivision(); else verifierSimple(id);
+      var e = etats[id];
+      if (e === "correct"){ score++; recap += '<span class="r-ok">\u2714 ' + id + '</span>'; }
+      else if (e === "partiel"){ recap += '<span class="r-mid">\u25d0 ' + id + '</span>'; }
+      else { recap += '<span class="r-ko">\u2718 ' + id + '</span>'; }
+    }
+    if (score < 0) score = 0;
+    if (score > total) score = total;
+    var pct = Math.round((score/total)*100);
+    var bilan = document.getElementById("bilan");
+    bilan.innerHTML =
+      '<div class="score">Score&nbsp;: ' + score + '\u2009/\u2009' + total + ' (' + pct + '&nbsp;%)</div>' +
+      '<div class="palier">' + palier(pct) + '</div>' +
+      '<div class="recap">' + recap + '</div>' +
+      '<div class="legende">\u2714 correct &nbsp;\u2022&nbsp; \u25d0 partiel (quotient ou reste correct, pas les deux) &nbsp;\u2022&nbsp; \u2718 incorrect ou non r\u00e9pondu.</div>';
+    bilan.hidden = false;
+  }
+
+  function basculerCorrection(){
+    var box = document.getElementById("correction");
+    var btn = document.getElementById("btn-corr");
+    if (box.hidden){
+      box.innerHTML =
+        "<h2>Correction</h2>" +
+        "<ul>" +
+          "<li><strong>a.</strong> 250 \u00d7 18 = <strong><u>4 500</u></strong></li>" +
+          "<li><strong>b.</strong> 289 = 25 \u00d7 <strong><u>11</u></strong> + <strong><u>14</u></strong></li>" +
+          "<li><strong>c.</strong> 85 \u00d7 12 = <strong><u>1 020</u></strong></li>" +
+          "<li><strong>d.</strong> 156,3 \u2212 18 = <strong><u>138,3</u></strong></li>" +
+        "</ul>";
+      box.hidden = false;
+      btn.textContent = "Masquer la correction";
+    } else {
+      box.hidden = true;
+      btn.textContent = "Voir la correction";
+    }
+  }
+
+  function reinitialiser(){
+    ["a","c","d"].forEach(function(id){
+      var input = document.getElementById("in-" + id);
+      input.value = ""; input.disabled = false; input.readOnly = false;
+      input.classList.remove("correct","partiel","incorrect");
+      var fb = document.getElementById("fb-" + id);
+      fb.hidden = true; fb.innerHTML = ""; fb.className = "feedback";
+      var ai = document.getElementById("ai-" + id);
+      ai.hidden = true; ai.innerHTML = "";
+      etats[id] = "vide";
+    });
+    var inQ = document.getElementById("in-b-q");
+    var inR = document.getElementById("in-b-r");
+    inQ.value = ""; inR.value = "";
+    inQ.disabled = false; inR.disabled = false;
+    inQ.readOnly = false; inR.readOnly = false;
+    inQ.classList.remove("correct","partiel","incorrect");
+    inR.classList.remove("correct","partiel","incorrect");
+    var fbB = document.getElementById("fb-b");
+    fbB.hidden = true; fbB.innerHTML = ""; fbB.className = "feedback";
+    var aiB = document.getElementById("ai-b");
+    aiB.hidden = true; aiB.innerHTML = "";
+    etats.b = "vide";
+
+    var bilan = document.getElementById("bilan");
+    bilan.hidden = true; bilan.innerHTML = "";
+    var corr = document.getElementById("correction");
+    corr.hidden = true; corr.innerHTML = "";
+    document.getElementById("btn-corr").textContent = "Voir la correction";
+    occupe = false;
+  }
+
+  function init(){
+    etats.a = "vide"; etats.b = "vide"; etats.c = "vide"; etats.d = "vide";
+
+    var boutonsOk = document.querySelectorAll("[data-ok]");
+    for (var j = 0; j < boutonsOk.length; j++){
+      boutonsOk[j].addEventListener("click", function(){
+        var id = this.getAttribute("data-ok");
+        if (id === "b") verifierDivision(); else verifierSimple(id);
+      });
+    }
+    var boutonsAide = document.querySelectorAll("[data-aide]");
+    for (var k = 0; k < boutonsAide.length; k++){
+      boutonsAide[k].addEventListener("click", function(){ basculerAide(this.getAttribute("data-aide")); });
+    }
+    var champs = document.querySelectorAll('input[type="text"]');
+    for (var m = 0; m < champs.length; m++){
+      champs[m].addEventListener("keydown", function(ev){
+        if (ev.key === "Enter"){
+          ev.preventDefault();
+          var id = this.id.replace(/^in-/,"").replace(/-(q|r)$/,"");
+          if (id === "b") verifierDivision(); else verifierSimple(id);
+        }
+      });
+    }
+    document.getElementById("btn-tout").addEventListener("click", verifierTout);
+    document.getElementById("btn-corr").addEventListener("click", basculerCorrection);
+    document.getElementById("btn-reset").addEventListener("click", reinitialiser);
+  }
+
+  if (document.readyState === "loading"){
+    document.addEventListener("DOMContentLoaded", init);
+  } else {
+    init();
+  }
+})();
+</script>
+</body>
+</html>
