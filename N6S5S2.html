@@ -1,0 +1,543 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Rituel &mdash; Semaine 5 S&eacute;ance 2 &mdash; Le centre de loisirs</title>
+<style>
+*{box-sizing:border-box}
+html,body{margin:0;padding:0}
+body{background:#fffdf7;font-family:Arial,Helvetica,sans-serif;color:#243238;line-height:1.6;padding:14px;overflow-x:hidden}
+.bulle{position:fixed;border-radius:50%;background:#3ba5b8;opacity:.12;pointer-events:none;z-index:0}
+.b1{width:190px;height:190px;top:-70px;left:-70px}
+.b2{width:130px;height:130px;top:-45px;right:-45px}
+.b3{width:160px;height:160px;bottom:-60px;left:-55px}
+.b4{width:110px;height:110px;bottom:-40px;right:-35px}
+.wrap{position:relative;z-index:1;max-width:880px;margin:0 auto}
+.tete{display:flex;flex-wrap:wrap;align-items:center;gap:10px;margin-bottom:14px}
+.etq{display:inline-block;padding:7px 16px;border-radius:8px;color:#fff;font-weight:700;font-size:.95rem}
+.etq-sem{background:#8fd3e8;color:#123f4a}
+.etq-sea{background:#3ba5b8}
+.etq-rit{background:#1f7a8c;font-family:Georgia,"Times New Roman",serif;margin-left:auto}
+h1{font-size:clamp(1.3rem,4.5vw,2rem);font-weight:900;color:#1f7a8c;margin:6px 0 18px;line-height:1.3}
+.bloc{position:relative;border:2px solid #3ba5b8;border-radius:12px;background:#fff;padding:28px 18px 20px;margin-bottom:18px}
+.onglet{position:absolute;top:-17px;left:18px;background:#8fd3e8;color:#123f4a;font-weight:700;font-size:.95rem;padding:5px 18px;border-radius:8px}
+.enonce{background:#fdf6f6;border-left:5px solid #7a3e3e;border-radius:6px;padding:14px 16px;margin-bottom:20px;color:#7a3e3e;font-weight:700;font-size:clamp(.92rem,2.5vw,1rem);line-height:1.85;overflow-wrap:break-word}
+.enonce .titre{display:block;margin-bottom:6px;text-decoration:underline}
+.tete-ex{display:flex;align-items:flex-start;gap:12px;margin:22px 0 14px;min-width:0}
+.pastille{flex:0 0 auto;width:34px;height:34px;border-radius:50%;background:#1f7a8c;color:#fff;font-weight:700;font-size:1rem;display:flex;align-items:center;justify-content:center}
+.consigne{margin:4px 0 0;font-weight:700;text-decoration:underline;color:#1f7a8c;font-size:clamp(.95rem,2.6vw,1.05rem);min-width:0;overflow-wrap:break-word}
+.item{padding:12px 0;border-bottom:1px dashed #dceff3}
+.item:last-of-type{border-bottom:0}
+.q{font-size:clamp(1rem,3vw,1.15rem);font-weight:700;margin:0 0 8px;color:#243238;overflow-wrap:break-word}
+.q .nb{color:#7a3e3e;font-weight:700}
+.ligne{display:flex;flex-wrap:wrap;align-items:flex-start;gap:10px;min-width:0}
+.champ{flex:1 1 260px;min-width:0}
+textarea,input[type="text"]{width:100%;min-width:0;padding:10px;font-family:Arial,Helvetica,sans-serif;font-size:1rem;font-weight:700;color:#1f7a8c;background:#f7fcfd;border:1px solid #b9dfe8;border-bottom:2px dotted #3ba5b8;border-radius:6px;line-height:1.6;resize:vertical}
+input[type="text"]{min-height:44px;text-align:center;max-width:220px}
+textarea{min-height:56px}
+.correct{border-color:#2e8b57;background:#effaf3;color:#2e8b57}
+.partiel{border-color:#c9820a;background:#fff8ea;color:#a86c06}
+.incorrect{border-color:#c0392b;background:#fdefee;color:#c0392b}
+.actions{display:flex;flex-wrap:wrap;gap:8px}
+button{font-family:inherit;font-size:.92rem;font-weight:700;min-height:44px;padding:10px 16px;border:0;border-radius:8px;cursor:pointer;background:#3ba5b8;color:#fff;line-height:1.2}
+button:hover{background:#1f7a8c}
+button.sec{background:#fff;color:#1f7a8c;border:2px solid #3ba5b8}
+button.sec:hover{background:#eaf7fa}
+.feedback{margin:10px 0 0;padding:12px 14px;border-left:5px solid #3ba5b8;border-radius:6px;background:#f4fafb;font-size:clamp(.9rem,2.5vw,1rem);line-height:1.75;overflow-wrap:break-word}
+.feedback.ok{border-left-color:#2e8b57;background:#effaf3;color:#1e6b40}
+.feedback.ko{border-left-color:#c0392b;background:#fdefee;color:#96291d}
+.feedback.warn{border-left-color:#c9820a;background:#fff8ea;color:#8a5b04}
+.aide{margin:10px 0 0;padding:12px 14px;border-left:5px solid #8fd3e8;background:#f2fafd;border-radius:6px;font-size:clamp(.9rem,2.5vw,1rem);line-height:1.75}
+.barre{display:flex;flex-wrap:wrap;gap:10px;margin:18px 0}
+.barre button{flex:1 1 190px}
+.correction{border:2px dashed #3ba5b8;border-radius:12px;background:#fff;padding:16px 18px;margin-bottom:18px;font-size:clamp(.9rem,2.5vw,1rem);line-height:1.8}
+.correction h2{margin:0 0 10px;font-size:1.05rem;color:#1f7a8c}
+.correction h3{margin:14px 0 4px;font-size:.98rem;color:#1f7a8c}
+.correction ul{margin:6px 0 0;padding-left:20px}
+.correction li{margin-bottom:6px}
+.bilan{border:2px solid #1f7a8c;border-radius:12px;background:#fff;padding:16px 18px;margin-bottom:18px;font-size:.92rem;line-height:1.8}
+.bilan .score{font-size:clamp(1.05rem,3.2vw,1.25rem);font-weight:900;color:#1f7a8c}
+.bilan .palier{font-weight:700;margin-top:4px}
+.recap{display:flex;flex-wrap:wrap;gap:8px;margin-top:10px}
+.recap span{display:inline-flex;align-items:center;gap:6px;padding:6px 11px;border-radius:8px;background:#f4fafb;font-weight:700;font-size:.9rem;border:1px solid #dceff3}
+.recap .r-ok{color:#2e8b57}
+.recap .r-mid{color:#c9820a}
+.recap .r-ko{color:#c0392b}
+.legende{margin-top:10px;font-size:.85rem;color:#4d6169}
+@media (max-width:768px){.champ{flex:1 1 100%}.actions{width:100%}.actions button{flex:1 1 auto}}
+@media (max-width:480px){body{padding:10px}.bloc{padding:26px 12px 16px}.etq{font-size:.85rem;padding:6px 12px}.etq-rit{margin-left:0}input[type="text"]{max-width:100%}.recap span{font-size:.85rem}}
+</style>
+</head>
+<body>
+<div class="bulle b1"></div><div class="bulle b2"></div><div class="bulle b3"></div><div class="bulle b4"></div>
+
+<main class="wrap">
+  <div class="tete">
+    <span class="etq etq-sem">Semaine 5</span>
+    <span class="etq etq-sea">S&eacute;ance 2</span>
+    <span class="etq etq-rit">Rituel</span>
+  </div>
+
+  <h1>R&eacute;soudre un probl&egrave;me&nbsp;: le centre de loisirs</h1>
+
+  <section class="bloc">
+    <span class="onglet">Alg&egrave;bre</span>
+
+    <p class="enonce">
+      <span class="titre">Le centre de loisirs</span>
+      Un centre de loisirs vient de recevoir une subvention de 5 000 euros pour s&rsquo;&eacute;quiper en mat&eacute;riel informatique. Le responsable commande 4 ordinateurs valant chacun 749 euros, diff&eacute;rents logiciels pour 1 350 euros, une imprimante &agrave; 240 euros, et un appareil photo num&eacute;rique. Le total de la facture s&rsquo;&eacute;l&egrave;ve &agrave; 4 880 euros. Le vendeur accorde une remise de 5&nbsp;% sur le montant total de la facture. Avec l&rsquo;argent restant, le responsable d&eacute;cide d&rsquo;acheter des jeux vid&eacute;os co&ucirc;tant 27 euros l&rsquo;unit&eacute;.
+    </p>
+
+    <div class="tete-ex">
+      <span class="pastille">a</span>
+      <p class="consigne">Que repr&eacute;sentent les nombres suivants&nbsp;? &Eacute;cris ta r&eacute;ponse, puis clique sur OK&nbsp;:</p>
+    </div>
+
+    <div class="item">
+      <p class="q"><span class="nb">4</span>&nbsp;:</p>
+      <div class="ligne">
+        <span class="champ"><textarea id="in-a1" aria-label="Signification du nombre 4"></textarea></span>
+        <span class="actions"><button type="button" data-ok="a1">OK</button></span>
+      </div>
+      <div class="feedback" id="fb-a1" hidden></div>
+    </div>
+    <div class="item">
+      <p class="q"><span class="nb">5</span>&nbsp;:</p>
+      <div class="ligne">
+        <span class="champ"><textarea id="in-a2" aria-label="Signification du nombre 5"></textarea></span>
+        <span class="actions"><button type="button" data-ok="a2">OK</button></span>
+      </div>
+      <div class="feedback" id="fb-a2" hidden></div>
+    </div>
+    <div class="item">
+      <p class="q"><span class="nb">27</span>&nbsp;:</p>
+      <div class="ligne">
+        <span class="champ"><textarea id="in-a3" aria-label="Signification du nombre 27"></textarea></span>
+        <span class="actions"><button type="button" data-ok="a3">OK</button></span>
+      </div>
+      <div class="feedback" id="fb-a3" hidden></div>
+    </div>
+    <div class="item">
+      <p class="q"><span class="nb">240</span>&nbsp;:</p>
+      <div class="ligne">
+        <span class="champ"><textarea id="in-a4" aria-label="Signification du nombre 240"></textarea></span>
+        <span class="actions"><button type="button" data-ok="a4">OK</button></span>
+      </div>
+      <div class="feedback" id="fb-a4" hidden></div>
+    </div>
+    <div class="item">
+      <p class="q"><span class="nb">749</span>&nbsp;:</p>
+      <div class="ligne">
+        <span class="champ"><textarea id="in-a5" aria-label="Signification du nombre 749"></textarea></span>
+        <span class="actions"><button type="button" data-ok="a5">OK</button></span>
+      </div>
+      <div class="feedback" id="fb-a5" hidden></div>
+    </div>
+    <div class="item">
+      <p class="q"><span class="nb">4 880</span>&nbsp;:</p>
+      <div class="ligne">
+        <span class="champ"><textarea id="in-a6" aria-label="Signification du nombre 4 880"></textarea></span>
+        <span class="actions"><button type="button" data-ok="a6">OK</button></span>
+      </div>
+      <div class="feedback" id="fb-a6" hidden></div>
+    </div>
+
+    <div class="tete-ex">
+      <span class="pastille">b</span>
+      <p class="consigne">Combien co&ucirc;tent les 4 ordinateurs&nbsp;?</p>
+    </div>
+
+    <div class="item">
+      <p class="q">Prix des 4 ordinateurs&nbsp;:</p>
+      <div class="ligne">
+        <span class="champ"><input type="text" id="in-b" inputmode="decimal" autocomplete="off" aria-label="Prix des 4 ordinateurs&nbsp;:"></span>
+        <span class="actions"><button type="button" data-ok="b">OK</button><button type="button" class="sec" data-aide="b">Indice</button></span>
+      </div>
+      <div class="feedback" id="fb-b" hidden></div>
+      <div class="aide" id="ai-b" hidden></div>
+    </div>
+
+    <div class="tete-ex">
+      <span class="pastille">c</span>
+      <p class="consigne">Combien co&ucirc;te l&rsquo;appareil photo num&eacute;rique&nbsp;?</p>
+    </div>
+
+    <div class="item">
+      <p class="q">Prix de l&rsquo;appareil photo num&eacute;rique&nbsp;:</p>
+      <div class="ligne">
+        <span class="champ"><input type="text" id="in-c" inputmode="decimal" autocomplete="off" aria-label="Prix de l&rsquo;appareil photo num&eacute;rique&nbsp;:"></span>
+        <span class="actions"><button type="button" data-ok="c">OK</button><button type="button" class="sec" data-aide="c">Indice</button></span>
+      </div>
+      <div class="feedback" id="fb-c" hidden></div>
+      <div class="aide" id="ai-c" hidden></div>
+    </div>
+
+  </section>
+
+  <div class="barre">
+    <button type="button" id="btn-tout">V&eacute;rifier tout</button>
+    <button type="button" class="sec" id="btn-corr">Voir la correction</button>
+    <button type="button" class="sec" id="btn-reset">R&eacute;initialiser</button>
+  </div>
+
+  <div class="correction" id="correction" hidden></div>
+  <div class="bilan" id="bilan" hidden></div>
+</main>
+
+<script>
+(function(){
+  "use strict";
+
+  var ITEMS = [
+    { id:"a1", type:"mots", note:true,
+      cle:{ mots:["ordinateur"] },
+      precisions:[ { nom:"pr\u00e9ciser qu\u2019il s\u2019agit du <strong>nombre</strong> command\u00e9", mots:["nombre","combien"] } ],
+      aide:"Ce nombre compte des objets pr\u00e9cis command\u00e9s par le responsable. Lesquels ?",
+      ref:"C\u2019est le nombre d\u2019ordinateurs command\u00e9s." },
+
+    { id:"a2", type:"mots", note:true,
+      cle:{ mots:["pourcentage","remise","%"] },
+      precisions:[ { nom:"pr\u00e9ciser qu\u2019il s\u2019agit du <strong>total de la facture</strong>", mots:["total","facture"] } ],
+      aide:"Ce nombre est suivi du symbole % dans l\u2019\u00e9nonc\u00e9.",
+      ref:"C\u2019est le pourcentage de remise sur le montant total de la facture (5&nbsp;%)." },
+
+    { id:"a3", type:"mots", note:true,
+      cle:{ mots:["prix","cout","euro"] },
+      precisions:[ { nom:"pr\u00e9ciser qu\u2019il s\u2019agit d\u2019un <strong>jeu vid\u00e9o</strong>", mots:["jeu","video"] } ],
+      aide:"Ce nombre est en euros ; il appara\u00eet \u00e0 la fin de l\u2019\u00e9nonc\u00e9.",
+      ref:"C\u2019est le prix d\u2019un jeu vid\u00e9o, en euros." },
+
+    { id:"a4", type:"mots", note:true,
+      cle:{ mots:["prix","cout","euro"] },
+      precisions:[ { nom:"pr\u00e9ciser qu\u2019il s\u2019agit de l\u2019<strong>imprimante</strong>", mots:["imprimante"] } ],
+      aide:"Ce nombre est en euros ; c\u2019est le prix de quel article&nbsp;?",
+      ref:"C\u2019est le prix de l\u2019imprimante, en euros." },
+
+    { id:"a5", type:"mots", note:true,
+      cle:{ mots:["prix","cout","euro"] },
+      precisions:[ { nom:"pr\u00e9ciser qu\u2019il s\u2019agit d\u2019un <strong>ordinateur</strong>", mots:["ordinateur"] } ],
+      aide:"Ce nombre est en euros ; attention, ce n\u2019est pas le prix total des ordinateurs.",
+      ref:"C\u2019est le prix d\u2019un ordinateur, en euros." },
+
+    { id:"a6", type:"mots", note:true,
+      cle:{ mots:["total","facture"] },
+      precisions:[ { nom:"pr\u00e9ciser que c\u2019est <strong>avant remise</strong>", mots:["avant","remise"] } ],
+      aide:"Ce nombre est le plus grand de l\u2019\u00e9nonc\u00e9 : que repr\u00e9sente-t-il globalement ?",
+      ref:"C\u2019est le total de la facture avant remise, en euros." },
+
+    { id:"b", type:"nombre", note:true, attendu:"2996", unite:"euros",
+      pieges:[ { val:"749", txt:"749 est le prix d\u2019<strong>un seul</strong> ordinateur, il y en a 4." },
+               { val:"4", txt:"4 est le nombre d\u2019ordinateurs, pas un prix." } ],
+      aide:"4 ordinateurs \u00e0 749 \u20ac chacun&nbsp;: quelle op\u00e9ration donne le prix total ?",
+      ref:"4 \u00d7 749 = <strong><u>2 996 &euro;</u></strong>." },
+
+    { id:"c", type:"nombre", note:true, attendu:"294", unite:"euros",
+      pieges:[ { val:"4880", txt:"4 880 &euro; est le total de <strong>toute</strong> la facture, pas seulement l\u2019appareil photo." },
+               { val:"4586", txt:"4 586 &euro; est le total des <strong>autres</strong> achats (ordinateurs + logiciels + imprimante), il faut encore le soustraire du total." } ],
+      aide:"Total de la facture = ordinateurs + logiciels + imprimante + appareil photo. Retire ce que tu connais d\u00e9j\u00e0 du total pour trouver l\u2019appareil photo.",
+      ref:"4 880 \u2212 (2 996 + 1 350 + 240) = 4 880 \u2212 4 586 = <strong><u>294 &euro;</u></strong>." }
+  ];
+
+  var etats = {};
+  var occupe = false;
+
+  function trouver(id){
+    for (var i = 0; i < ITEMS.length; i++){ if (ITEMS[i].id === id) return ITEMS[i]; }
+    return null;
+  }
+
+  function esc(txt){
+    var d = document.createElement("div");
+    d.textContent = String(txt);
+    return d.innerHTML;
+  }
+
+  function sansAccents(s){
+    return s
+      .replace(/[\u00e0\u00e2\u00e4\u00e1\u00e3]/g,"a")
+      .replace(/[\u00e9\u00e8\u00ea\u00eb]/g,"e")
+      .replace(/[\u00ee\u00ef\u00ec\u00ed]/g,"i")
+      .replace(/[\u00f4\u00f6\u00f2\u00f3\u00f5]/g,"o")
+      .replace(/[\u00fb\u00fc\u00f9\u00fa]/g,"u")
+      .replace(/[\u00e7]/g,"c")
+      .replace(/[\u2019\u2018\u02bc\u0060]/g,"'");
+  }
+
+  function normTexte(s){
+    var t = String(s).toLowerCase();
+    t = sansAccents(t);
+    t = t.replace(/[\u00a0\u202f\u2009]/g," ");
+    t = t.replace(/\s+/g," ");
+    return t.trim();
+  }
+
+  function normalise(brut){
+    var s = String(brut);
+    s = s.replace(/[\s\u00a0\u202f\u2009]/g, "");
+    s = s.replace(/[\u2212\u2013\u2014]/g, "-");
+    s = s.replace(/,/g, ".");
+    if (s === "") return null;
+    if (!/^-?(\d+(\.\d*)?|\.\d+)$/.test(s)) return null;
+    return s;
+  }
+
+  function decompose(s){
+    var neg = false;
+    if (s.charAt(0) === "-"){ neg = true; s = s.slice(1); }
+    var p = s.split(".");
+    var ent = p[0] === "" ? "0" : p[0];
+    var dec = p.length > 1 ? p[1] : "";
+    ent = ent.replace(/^0+(?=\d)/,"");
+    dec = dec.replace(/0+$/,"");
+    if (ent === "0" && dec === "") neg = false;
+    return { neg:neg, ent:ent, dec:dec };
+  }
+
+  function cmpAbs(a,b){
+    if (a.ent.length !== b.ent.length) return a.ent.length > b.ent.length ? 1 : -1;
+    if (a.ent !== b.ent) return a.ent > b.ent ? 1 : -1;
+    var n = Math.max(a.dec.length, b.dec.length);
+    var da = a.dec + new Array(n - a.dec.length + 1).join("0");
+    var db = b.dec + new Array(n - b.dec.length + 1).join("0");
+    if (da === db) return 0;
+    return da > db ? 1 : -1;
+  }
+
+  function comparer(x,y){
+    var A = decompose(x), B = decompose(y);
+    if (A.neg !== B.neg) return A.neg ? -1 : 1;
+    var r = cmpAbs(A,B);
+    return A.neg ? -r : r;
+  }
+
+  function lireNombre(brut){
+    var s = normTexte(brut).replace(/(\d)\s+(\d{3})(?!\d)/g, "$1$2");
+    var re = /\d+(?:[.,]\d+)?/g;
+    var m, dernier = null;
+    while ((m = re.exec(s)) !== null){ dernier = m[0]; }
+    if (dernier === null) return null;
+    return dernier.replace(/,/g, ".");
+  }
+
+  function afficher(cle, type, html){
+    var fb = document.getElementById("fb-" + cle);
+    fb.className = "feedback " + type;
+    fb.innerHTML = html;
+    fb.hidden = false;
+  }
+
+  function marquer(input, etat){
+    if (!input) return;
+    input.classList.remove("correct","partiel","incorrect");
+    if (etat === "correct" || etat === "partiel" || etat === "incorrect") input.classList.add(etat);
+  }
+
+  function contient(texte, mots){
+    for (var i = 0; i < mots.length; i++){
+      if (texte.indexOf(mots[i]) !== -1) return true;
+    }
+    return false;
+  }
+
+  function verifierMots(it, input){
+    var texte = normTexte(input.value);
+    var essentiel = contient(texte, it.cle.mots);
+    var manquants = [];
+    for (var g = 0; g < it.precisions.length; g++){
+      if (!contient(texte, it.precisions[g].mots)) manquants.push(it.precisions[g].nom);
+    }
+
+    if (essentiel){
+      etats[it.id] = "correct";
+      marquer(input, "correct");
+      if (manquants.length === 0){
+        afficher(it.id, "ok", "\u2705 Bravo&nbsp;! R\u00e9ponse compl\u00e8te.<br>R\u00e9ponse de r\u00e9f\u00e9rence&nbsp;: <strong>" + it.ref + "</strong>");
+      } else {
+        var liste = "";
+        for (var j = 0; j < manquants.length; j++){ liste += "<li>" + manquants[j] + "</li>"; }
+        afficher(it.id, "ok", "\u2705 Bravo&nbsp;! Tu as bien identifi\u00e9 de quoi parle ce nombre.<br><strong><u>Plus pr\u00e9cis</u></strong>, il manque encore&nbsp;:<ul>" + liste + "</ul>R\u00e9ponse de r\u00e9f\u00e9rence&nbsp;: <strong>" + it.ref + "</strong>");
+      }
+      return;
+    }
+
+    if (manquants.length < it.precisions.length){
+      etats[it.id] = "partiel";
+      marquer(input, "partiel");
+      afficher(it.id, "warn", "\u26a0\ufe0f Tu es sur la bonne piste, mais l\u2019\u00e9l\u00e9ment principal manque&nbsp;: <strong>de quelle grandeur parle ce nombre&nbsp;?</strong><br>R\u00e9ponse attendue&nbsp;: <strong><u>" + it.ref + "</u></strong>");
+      return;
+    }
+
+    etats[it.id] = "incorrect";
+    marquer(input, "incorrect");
+    afficher(it.id, "ko", "\u274c Ce n\u2019est pas ce que d\u00e9signe ce nombre. Relis la phrase de l\u2019\u00e9nonc\u00e9 dans laquelle il appara\u00eet.<br>R\u00e9ponse attendue&nbsp;: <strong><u>" + it.ref + "</u></strong>");
+  }
+
+  function verifierNombre(it, input){
+    var brut = input.value;
+    var val = lireNombre(brut);
+    if (val === null){
+      etats[it.id] = "incorrect";
+      marquer(input, "incorrect");
+      afficher(it.id, "warn", "\u26a0\ufe0f Aucun nombre n\u2019a \u00e9t\u00e9 reconnu dans&nbsp;: &laquo;&nbsp;" + esc(brut) + "&nbsp;&raquo;. \u00c9cris le r\u00e9sultat en chiffres.<br>R\u00e9ponse attendue&nbsp;: <strong><u>" + it.ref + "</u></strong>");
+      return;
+    }
+    if (comparer(val, normalise(it.attendu)) === 0){
+      etats[it.id] = "correct";
+      marquer(input, "correct");
+      afficher(it.id, "ok", "\u2705 Bravo&nbsp;! " + it.ref);
+      return;
+    }
+    etats[it.id] = "incorrect";
+    marquer(input, "incorrect");
+    var piste = "";
+    for (var i = 0; i < it.pieges.length; i++){
+      if (comparer(val, normalise(it.pieges[i].val)) === 0){ piste = it.pieges[i].txt + " "; break; }
+    }
+    if (piste === "") piste = "Reprends l\u2019\u00e9nonc\u00e9. ";
+    afficher(it.id, "ko", "\u274c " + piste + "<br>R\u00e9ponse attendue&nbsp;: <strong><u>" + it.ref + "</u></strong>");
+  }
+
+  function verifier(id){
+    var it = trouver(id);
+    if (!it) return;
+    var input = document.getElementById("in-" + id);
+    if (!input) return;
+    if (String(input.value).replace(/[\s\u00a0]/g,"") === ""){
+      etats[id] = "vide";
+      marquer(input,"");
+      afficher(id, "warn", "\u26a0\ufe0f Aucune r\u00e9ponse saisie. \u00c9cris ta r\u00e9ponse, puis clique sur <strong>OK</strong>.");
+      return;
+    }
+    if (it.type === "mots") verifierMots(it, input);
+    else if (it.type === "nombre") verifierNombre(it, input);
+  }
+
+  function basculerAide(id){
+    var it = trouver(id);
+    var box = document.getElementById("ai-" + id);
+    if (!it || !box || !it.aide) return;
+    if (box.hidden){
+      box.innerHTML = "\ud83d\udca1 <strong>Indice&nbsp;:</strong> " + it.aide;
+      box.hidden = false;
+    } else {
+      box.hidden = true;
+    }
+  }
+
+  function palier(pct){
+    if (pct >= 90) return "\ud83d\udfe2 Excellent";
+    if (pct >= 75) return "\ud83d\udfe2 Tr\u00e8s bien";
+    if (pct >= 60) return "\ud83d\udfe1 Ma\u00eetrise satisfaisante";
+    if (pct >= 40) return "\ud83d\udfe0 Ma\u00eetrise fragile";
+    return "\ud83d\udd34 Ma\u00eetrise insuffisante";
+  }
+
+  function verifierTout(){
+    if (occupe) return;
+    occupe = true;
+    window.setTimeout(function(){ occupe = false; }, 350);
+
+    var total = 0, score = 0, recap = "";
+    for (var i = 0; i < ITEMS.length; i++){
+      var id = ITEMS[i].id;
+      verifier(id);
+      if (!ITEMS[i].note) continue;
+      total++;
+      var e = etats[id];
+      if (e === "correct"){ score++; recap += '<span class="r-ok">\u2714 ' + id + '</span>'; }
+      else if (e === "partiel"){ recap += '<span class="r-mid">\u25d0 ' + id + '</span>'; }
+      else { recap += '<span class="r-ko">\u2718 ' + id + '</span>'; }
+    }
+    if (score < 0) score = 0;
+    if (score > total) score = total;
+    var pct = total > 0 ? Math.round((score/total)*100) : 0;
+    var bilan = document.getElementById("bilan");
+    bilan.innerHTML =
+      '<div class="score">Score&nbsp;: ' + score + '\u2009/\u2009' + total + ' (' + pct + '&nbsp;%)</div>' +
+      '<div class="palier">' + palier(pct) + '</div>' +
+      '<div class="recap">' + recap + '</div>' +
+      '<div class="legende">\u2714 correct &nbsp;\u2022&nbsp; \u25d0 partiel (id\u00e9e principale trouv\u00e9e mais imprecision) &nbsp;\u2022&nbsp; \u2718 incorrect ou non r\u00e9pondu.</div>';
+    bilan.hidden = false;
+  }
+
+  function basculerCorrection(){
+    var box = document.getElementById("correction");
+    var btn = document.getElementById("btn-corr");
+    if (box.hidden){
+      box.innerHTML =
+        "<h2>Correction</h2>" +
+        "<h3>a. Signification des nombres</h3><ul>" +
+        "<li><strong>4</strong>&nbsp;: " + trouver("a1").ref + "</li>" +
+        "<li><strong>5</strong>&nbsp;: " + trouver("a2").ref + "</li>" +
+        "<li><strong>27</strong>&nbsp;: " + trouver("a3").ref + "</li>" +
+        "<li><strong>240</strong>&nbsp;: " + trouver("a4").ref + "</li>" +
+        "<li><strong>749</strong>&nbsp;: " + trouver("a5").ref + "</li>" +
+        "<li><strong>4 880</strong>&nbsp;: " + trouver("a6").ref + "</li>" +
+        "</ul>" +
+        "<h3>b. Prix des 4 ordinateurs</h3>" +
+        "<p>" + trouver("b").ref + "</p>" +
+        "<h3>c. Prix de l&rsquo;appareil photo</h3>" +
+        "<p>" + trouver("c").ref + "</p>";
+      box.hidden = false;
+      btn.textContent = "Masquer la correction";
+    } else {
+      box.hidden = true;
+      btn.textContent = "Voir la correction";
+    }
+  }
+
+  function reinitialiser(){
+    for (var i = 0; i < ITEMS.length; i++){
+      var id = ITEMS[i].id;
+      var input = document.getElementById("in-" + id);
+      if (input){
+        input.value = "";
+        input.disabled = false;
+        input.readOnly = false;
+        input.classList.remove("correct","partiel","incorrect");
+      }
+      var fb = document.getElementById("fb-" + id);
+      if (fb){ fb.hidden = true; fb.innerHTML = ""; fb.className = "feedback"; }
+      var ai = document.getElementById("ai-" + id);
+      if (ai){ ai.hidden = true; ai.innerHTML = ""; }
+      etats[id] = "vide";
+    }
+    var bilan = document.getElementById("bilan");
+    bilan.hidden = true; bilan.innerHTML = "";
+    var corr = document.getElementById("correction");
+    corr.hidden = true; corr.innerHTML = "";
+    document.getElementById("btn-corr").textContent = "Voir la correction";
+    occupe = false;
+  }
+
+  function init(){
+    for (var i = 0; i < ITEMS.length; i++){ etats[ITEMS[i].id] = "vide"; }
+    var bOk = document.querySelectorAll("[data-ok]");
+    for (var a = 0; a < bOk.length; a++){
+      bOk[a].addEventListener("click", function(){ verifier(this.getAttribute("data-ok")); });
+    }
+    var bAide = document.querySelectorAll("[data-aide]");
+    for (var b = 0; b < bAide.length; b++){
+      bAide[b].addEventListener("click", function(){ basculerAide(this.getAttribute("data-aide")); });
+    }
+    var champs = document.querySelectorAll('input[type="text"]');
+    for (var e = 0; e < champs.length; e++){
+      champs[e].addEventListener("keydown", function(ev){
+        if (ev.key === "Enter"){ ev.preventDefault(); verifier(this.id.replace("in-","")); }
+      });
+    }
+    document.getElementById("btn-tout").addEventListener("click", verifierTout);
+    document.getElementById("btn-corr").addEventListener("click", basculerCorrection);
+    document.getElementById("btn-reset").addEventListener("click", reinitialiser);
+  }
+
+  if (document.readyState === "loading"){
+    document.addEventListener("DOMContentLoaded", init);
+  } else {
+    init();
+  }
+})();
+</script>
+</body>
+</html>
