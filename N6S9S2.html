@@ -1,0 +1,432 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Rituel &mdash; Semaine 9 S&eacute;ance 2</title>
+<style>
+*{box-sizing:border-box}
+html,body{margin:0;padding:0}
+body{background:#fffdf7;font-family:Arial,Helvetica,sans-serif;color:#243238;line-height:1.6;padding:14px;overflow-x:hidden}
+.bulle{position:fixed;border-radius:50%;background:#3ba5b8;opacity:.12;pointer-events:none;z-index:0}
+.b1{width:190px;height:190px;top:-70px;left:-70px}
+.b2{width:130px;height:130px;top:-45px;right:-45px}
+.b3{width:160px;height:160px;bottom:-60px;left:-55px}
+.b4{width:110px;height:110px;bottom:-40px;right:-35px}
+.wrap{position:relative;z-index:1;max-width:880px;margin:0 auto}
+.tete{display:flex;flex-wrap:wrap;align-items:center;gap:10px;margin-bottom:14px}
+.etq{display:inline-block;padding:7px 16px;border-radius:8px;color:#fff;font-weight:700;font-size:.95rem}
+.etq-sem{background:#8fd3e8;color:#123f4a}
+.etq-sea{background:#3ba5b8}
+.etq-rit{background:#1f7a8c;font-family:Georgia,"Times New Roman",serif;margin-left:auto}
+h1{font-size:clamp(1.3rem,4.5vw,2rem);font-weight:900;color:#1f7a8c;margin:6px 0 18px;line-height:1.3}
+.bloc{position:relative;border:2px solid #3ba5b8;border-radius:12px;background:#fff;padding:28px 18px 20px;margin-bottom:18px}
+.onglet{position:absolute;top:-17px;left:18px;background:#8fd3e8;color:#123f4a;font-weight:700;font-size:.95rem;padding:5px 18px;border-radius:8px}
+.enonce{background:#fdf6f6;border-left:5px solid #7a3e3e;border-radius:6px;padding:14px 16px;margin-bottom:14px;color:#7a3e3e;font-weight:700;font-size:clamp(.92rem,2.5vw,1rem);line-height:1.85;overflow-wrap:break-word}
+.tete-ex{display:flex;align-items:flex-start;gap:12px;margin:14px 0 14px;min-width:0}
+.pastille{flex:0 0 auto;width:34px;height:34px;border-radius:50%;background:#1f7a8c;color:#fff;font-weight:700;font-size:1rem;display:flex;align-items:center;justify-content:center}
+.consigne{margin:4px 0 0;font-weight:700;text-decoration:underline;color:#1f7a8c;font-size:clamp(.95rem,2.6vw,1.05rem);min-width:0;overflow-wrap:break-word}
+.item{padding:12px 0 20px}
+.q{font-size:clamp(1rem,3vw,1.15rem);font-weight:700;margin:0 0 8px;color:#243238;overflow-wrap:break-word}
+.ligne{display:flex;flex-wrap:wrap;align-items:center;gap:10px;min-width:0}
+.champ{flex:1 1 220px;min-width:0}
+input[type="text"]{width:100%;min-width:0;padding:10px;font-family:Arial,Helvetica,sans-serif;font-size:1rem;font-weight:700;color:#1f7a8c;background:#f7fcfd;border:1px solid #b9dfe8;border-bottom:2px dotted #3ba5b8;border-radius:6px;min-height:44px;text-align:center;max-width:260px}
+.correct{border-color:#2e8b57;background:#effaf3;color:#2e8b57}
+.partiel{border-color:#c9820a;background:#fff8ea;color:#a86c06}
+.incorrect{border-color:#c0392b;background:#fdefee;color:#c0392b}
+.actions{display:flex;flex-wrap:wrap;gap:8px}
+button{font-family:inherit;font-size:.92rem;font-weight:700;min-height:44px;padding:10px 16px;border:0;border-radius:8px;cursor:pointer;background:#3ba5b8;color:#fff;line-height:1.2}
+button:hover{background:#1f7a8c}
+button.sec{background:#fff;color:#1f7a8c;border:2px solid #3ba5b8}
+button.sec:hover{background:#eaf7fa}
+.feedback{margin:10px 0 0;padding:12px 14px;border-left:5px solid #3ba5b8;border-radius:6px;background:#f4fafb;font-size:clamp(.9rem,2.5vw,1rem);line-height:1.75;overflow-wrap:break-word}
+.feedback.ok{border-left-color:#2e8b57;background:#effaf3;color:#1e6b40}
+.feedback.ko{border-left-color:#c0392b;background:#fdefee;color:#96291d}
+.feedback.warn{border-left-color:#c9820a;background:#fff8ea;color:#8a5b04}
+.aide{margin:10px 0 0;padding:12px 14px;border-left:5px solid #8fd3e8;background:#f2fafd;border-radius:6px;font-size:clamp(.9rem,2.5vw,1rem);line-height:1.75}
+.barre{display:flex;flex-wrap:wrap;gap:10px;margin:18px 0}
+.barre button{flex:1 1 190px}
+.correction{border:2px dashed #3ba5b8;border-radius:12px;background:#fff;padding:16px 18px;margin-bottom:18px;font-size:clamp(.9rem,2.5vw,1rem);line-height:1.8}
+.correction h2{margin:0 0 8px;font-size:1.05rem;color:#1f7a8c}
+.correction h3{margin:14px 0 4px;font-size:.98rem;color:#1f7a8c}
+.bilan{border:2px solid #1f7a8c;border-radius:12px;background:#fff;padding:16px 18px;margin-bottom:18px;font-size:.92rem;line-height:1.8}
+.bilan .score{font-size:clamp(1.05rem,3.2vw,1.25rem);font-weight:900;color:#1f7a8c}
+.bilan .palier{font-weight:700;margin-top:4px}
+.recap{display:flex;flex-wrap:wrap;gap:8px;margin-top:10px}
+.recap span{display:inline-flex;align-items:center;gap:6px;padding:6px 11px;border-radius:8px;background:#f4fafb;font-weight:700;font-size:.9rem;border:1px solid #dceff3}
+.recap .r-ok{color:#2e8b57}
+.recap .r-mid{color:#c9820a}
+.recap .r-ko{color:#c0392b}
+.legende{margin-top:10px;font-size:.85rem;color:#4d6169}
+@media (max-width:768px){.champ{flex:1 1 100%}.actions{width:100%}.actions button{flex:1 1 auto}}
+@media (max-width:480px){body{padding:10px}.bloc{padding:26px 12px 16px}.etq{font-size:.85rem;padding:6px 12px}.etq-rit{margin-left:0}input[type="text"]{max-width:100%}.recap span{font-size:.85rem}}
+</style>
+</head>
+<body>
+<div class="bulle b1"></div><div class="bulle b2"></div><div class="bulle b3"></div><div class="bulle b4"></div>
+
+<main class="wrap">
+  <div class="tete">
+    <span class="etq etq-sem">Semaine 9</span>
+    <span class="etq etq-sea">S&eacute;ance 2</span>
+    <span class="etq etq-rit">Rituel</span>
+  </div>
+
+  <h1>R&eacute;soudre deux probl&egrave;mes</h1>
+
+  <section class="bloc">
+    <span class="onglet">Alg&egrave;bre</span>
+
+    <p class="enonce">M. Ben Ait ach&egrave;te une nouvelle voiture pour 13 380&nbsp;&euro;. Il paie d&egrave;s l&rsquo;achat 5 400&nbsp;&euro; et paiera le reste en donnant 420&nbsp;&euro; par mois.</p>
+
+    <div class="item">
+      <p class="q">Combien lui reste-t-il &agrave; payer en mensualit&eacute;s&nbsp;?</p>
+      <div class="ligne">
+        <span class="champ"><input type="text" id="in-p1" inputmode="decimal" autocomplete="off" aria-label="Combien lui reste-t-il &agrave; payer en mensualit&eacute;s&nbsp;?"></span>
+        <span class="actions"><button type="button" data-ok="p1">OK</button><button type="button" class="sec" data-aide="p1">Indice</button></span>
+      </div>
+      <div class="feedback" id="fb-p1" hidden></div>
+      <div class="aide" id="ai-p1" hidden></div>
+    </div>
+
+    <div class="item">
+      <p class="q">Combien de temps lui faudra-t-il pour payer l&rsquo;int&eacute;gralit&eacute; du prix de sa voiture&nbsp;?</p>
+      <div class="ligne">
+        <span class="champ"><input type="text" id="in-p2" autocomplete="off" aria-label="Combien de temps lui faudra-t-il pour payer l&rsquo;int&eacute;gralit&eacute; du prix de sa voiture&nbsp;?"></span>
+        <span class="actions"><button type="button" data-ok="p2">OK</button><button type="button" class="sec" data-aide="p2">Indice</button></span>
+      </div>
+      <div class="feedback" id="fb-p2" hidden></div>
+      <div class="aide" id="ai-p2" hidden></div>
+    </div>
+
+    <p class="enonce">Pour se chauffer pendant l&rsquo;hiver, M. Kond&eacute; a command&eacute; 850 kilos de charbon. Le charbon est livr&eacute; en sacs de 50&nbsp;kg, co&ucirc;tant 18,50&nbsp;&euro; l&rsquo;unit&eacute;.</p>
+
+    <div class="item">
+      <p class="q">Combien de sacs de charbon doit-il commander&nbsp;?</p>
+      <div class="ligne">
+        <span class="champ"><input type="text" id="in-p3" inputmode="decimal" autocomplete="off" aria-label="Combien de sacs de charbon doit-il commander&nbsp;?"></span>
+        <span class="actions"><button type="button" data-ok="p3">OK</button><button type="button" class="sec" data-aide="p3">Indice</button></span>
+      </div>
+      <div class="feedback" id="fb-p3" hidden></div>
+      <div class="aide" id="ai-p3" hidden></div>
+    </div>
+
+    <div class="item">
+      <p class="q">Quel est le montant de sa commande&nbsp;?</p>
+      <div class="ligne">
+        <span class="champ"><input type="text" id="in-p4" inputmode="decimal" autocomplete="off" aria-label="Quel est le montant de sa commande&nbsp;?"></span>
+        <span class="actions"><button type="button" data-ok="p4">OK</button><button type="button" class="sec" data-aide="p4">Indice</button></span>
+      </div>
+      <div class="feedback" id="fb-p4" hidden></div>
+      <div class="aide" id="ai-p4" hidden></div>
+    </div>
+
+  </section>
+
+  <div class="barre">
+    <button type="button" id="btn-tout">V&eacute;rifier tout</button>
+    <button type="button" class="sec" id="btn-corr">Voir la correction</button>
+    <button type="button" class="sec" id="btn-reset">R&eacute;initialiser</button>
+  </div>
+
+  <div class="correction" id="correction" hidden></div>
+  <div class="bilan" id="bilan" hidden></div>
+</main>
+
+<script>
+(function(){
+  "use strict";
+
+  var NOMBRES = [
+    { id:"p1", attendu:"19", unite:"mensualit\u00e9s",
+      pieges:[ { val:"7980", txt:"7 980&nbsp;\u20ac est la somme restant \u00e0 payer, mais la question porte sur le <strong>nombre</strong> de mensualit\u00e9s, pas sur un montant." },
+               { val:"13380", txt:"13 380&nbsp;\u20ac est le prix total de la voiture, avant d\u00e9duction de l\u2019acompte." },
+               { val:"420", txt:"420&nbsp;\u20ac est le montant d\u2019<strong>une seule</strong> mensualit\u00e9." } ],
+      aide:"D\u2019abord retire l\u2019acompte (13 380 \u2212 5 400), puis divise ce reste par le montant d\u2019une mensualit\u00e9 (420).",
+      ref:"13 380 \u2212 5 400 = 7 980, puis 7 980 \u00f7 420 = <strong><u>19 mensualit\u00e9s</u></strong>." },
+
+    { id:"p3", attendu:"17", unite:"sacs",
+      pieges:[ { val:"850", txt:"850 est le nombre de kilos command\u00e9s, pas le nombre de sacs." },
+               { val:"50", txt:"50 est le poids d\u2019<strong>un seul</strong> sac, en kg." } ],
+      aide:"850 kg \u00e0 r\u00e9partir en sacs de 50 kg&nbsp;: quelle op\u00e9ration donne le nombre de sacs ?",
+      ref:"850 \u00f7 50 = <strong><u>17 sacs</u></strong>." },
+
+    { id:"p4", attendu:"314,50", unite:"euros",
+      pieges:[ { val:"18,50", txt:"18,50&nbsp;\u20ac est le prix d\u2019<strong>un seul</strong> sac." },
+               { val:"17", txt:"17 est le nombre de sacs, pas un montant en euros." } ],
+      aide:"17 sacs \u00e0 18,50&nbsp;\u20ac chacun&nbsp;: quelle op\u00e9ration donne le montant total de la commande ?",
+      ref:"17 \u00d7 18,50 = <strong><u>314,50&nbsp;\u20ac</u></strong>." }
+  ];
+
+  var P2 = { id:"p2",
+    aide:"19 mois, c\u2019est combien d\u2019ann\u00e9es enti\u00e8res et combien de mois en plus ? (1 ann\u00e9e = 12 mois)",
+    ref:"19 mois = 12 mois + 7 mois = <strong><u>1 an et 7 mois</u></strong>." };
+
+  var etats = {};
+  var occupe = false;
+
+  function trouverNombre(id){
+    for (var i = 0; i < NOMBRES.length; i++){ if (NOMBRES[i].id === id) return NOMBRES[i]; }
+    return null;
+  }
+
+  function esc(txt){
+    var d = document.createElement("div");
+    d.textContent = String(txt);
+    return d.innerHTML;
+  }
+
+  function normTexte(s){
+    return String(s).toLowerCase()
+      .replace(/[\u00e9\u00e8\u00ea\u00eb]/g,"e")
+      .replace(/[\u00a0\u202f\u2009]/g," ").replace(/\s+/g," ").trim();
+  }
+
+  function normalise(brut){
+    var s = String(brut).replace(/[\s\u00a0\u202f\u2009]/g, "");
+    s = s.replace(/[\u2212\u2013\u2014]/g, "-").replace(/,/g, ".");
+    if (s === "") return null;
+    if (!/^-?(\d+(\.\d*)?|\.\d+)$/.test(s)) return null;
+    return s;
+  }
+
+  function decompose(s){
+    var neg = false;
+    if (s.charAt(0) === "-"){ neg = true; s = s.slice(1); }
+    var p = s.split(".");
+    var ent = p[0] === "" ? "0" : p[0];
+    var dec = p.length > 1 ? p[1] : "";
+    ent = ent.replace(/^0+(?=\d)/,"");
+    dec = dec.replace(/0+$/,"");
+    if (ent === "0" && dec === "") neg = false;
+    return { neg:neg, ent:ent, dec:dec };
+  }
+
+  function cmpAbs(a,b){
+    if (a.ent.length !== b.ent.length) return a.ent.length > b.ent.length ? 1 : -1;
+    if (a.ent !== b.ent) return a.ent > b.ent ? 1 : -1;
+    var n = Math.max(a.dec.length, b.dec.length);
+    var da = a.dec + new Array(n - a.dec.length + 1).join("0");
+    var db = b.dec + new Array(n - b.dec.length + 1).join("0");
+    if (da === db) return 0;
+    return da > db ? 1 : -1;
+  }
+
+  function comparer(x,y){
+    var A = decompose(x), B = decompose(y);
+    if (A.neg !== B.neg) return A.neg ? -1 : 1;
+    var r = cmpAbs(A,B);
+    return A.neg ? -r : r;
+  }
+
+  function lireNombre(brut){
+    var s = normTexte(brut).replace(/(\d)\s+(\d{3})(?!\d)/g, "$1$2");
+    var re = /\d+(?:[.,]\d+)?/g;
+    var m, dernier = null;
+    while ((m = re.exec(s)) !== null){ dernier = m[0]; }
+    if (dernier === null) return null;
+    return dernier.replace(/,/g, ".");
+  }
+
+  function afficher(id, type, html){
+    var fb = document.getElementById("fb-" + id);
+    fb.className = "feedback " + type;
+    fb.innerHTML = html;
+    fb.hidden = false;
+  }
+
+  function marquer(input, etat){
+    if (!input) return;
+    input.classList.remove("correct","partiel","incorrect");
+    if (etat) input.classList.add(etat);
+  }
+
+  function verifierNombre(id){
+    var it = trouverNombre(id);
+    if (!it) return;
+    var input = document.getElementById("in-" + id);
+    var brut = input.value;
+    if (String(brut).replace(/\s/g,"") === ""){
+      etats[id] = "vide"; marquer(input,"");
+      afficher(id, "warn", "\u26a0\ufe0f Aucune r\u00e9ponse saisie. \u00c9cris le r\u00e9sultat en chiffres.");
+      return;
+    }
+    var val = lireNombre(brut);
+    if (val === null){
+      etats[id] = "incorrect"; marquer(input, "incorrect");
+      afficher(id, "warn", "\u26a0\ufe0f Aucun nombre n\u2019a \u00e9t\u00e9 reconnu dans&nbsp;: &laquo;&nbsp;" + esc(brut) + "&nbsp;&raquo;.");
+      return;
+    }
+    if (comparer(val, normalise(it.attendu)) === 0){
+      etats[id] = "correct"; marquer(input, "correct");
+      afficher(id, "ok", "\u2705 Bravo&nbsp;! " + it.ref);
+      return;
+    }
+    etats[id] = "incorrect"; marquer(input, "incorrect");
+    var piste = "";
+    for (var i = 0; i < it.pieges.length; i++){
+      if (comparer(val, normalise(it.pieges[i].val)) === 0){ piste = it.pieges[i].txt + " "; break; }
+    }
+    if (piste === "") piste = "Reprends l\u2019\u00e9nonc\u00e9. ";
+    afficher(id, "ko", "\u274c " + piste + "<br>R\u00e9ponse attendue&nbsp;: <strong><u>" + it.ref + "</u></strong>");
+  }
+
+  function verifierP2(){
+    var input = document.getElementById("in-p2");
+    var brut = input.value;
+    if (String(brut).replace(/\s/g,"") === ""){
+      etats.p2 = "vide"; marquer(input,"");
+      afficher("p2", "warn", "\u26a0\ufe0f Aucune r\u00e9ponse saisie.");
+      return;
+    }
+    var texte = normTexte(brut).replace(/\s+/g,"");
+    var aAn = texte.indexOf("1an") !== -1;
+    var aMois = texte.indexOf("7mois") !== -1;
+    marquer(input, (aAn && aMois) ? "correct" : ((aAn || aMois) ? "partiel" : "incorrect"));
+    if (aAn && aMois){
+      etats.p2 = "correct";
+      afficher("p2", "ok", "\u2705 Bravo&nbsp;! " + P2.ref);
+      return;
+    }
+    if (aAn || aMois){
+      etats.p2 = "partiel";
+      afficher("p2", "warn", "\u26a0\ufe0f Ta r\u00e9ponse est incompl\u00e8te&nbsp;: il manque " + (aAn ? "les 7 mois" : "l\u2019ann\u00e9e") + ".<br>R\u00e9ponse attendue&nbsp;: <strong><u>" + P2.ref.replace(/<strong>|<\/strong>|<u>|<\/u>/g,"") + "</u></strong>");
+      return;
+    }
+    etats.p2 = "incorrect"; marquer(input, "incorrect");
+    afficher("p2", "ko", "\u274c Ce n\u2019est pas la bonne r\u00e9ponse.<br>" + P2.ref);
+  }
+
+  function basculerAide(id){
+    var box = document.getElementById("ai-" + id);
+    var aideTxt = null;
+    if (id === "p2") aideTxt = P2.aide;
+    else { var it = trouverNombre(id); if (it) aideTxt = it.aide; }
+    if (!box || !aideTxt) return;
+    if (box.hidden){ box.innerHTML = "\ud83d\udca1 <strong>Indice&nbsp;:</strong> " + aideTxt; box.hidden = false; }
+    else { box.hidden = true; }
+  }
+
+  function palier(pct){
+    if (pct >= 90) return "\ud83d\udfe2 Excellent";
+    if (pct >= 75) return "\ud83d\udfe2 Tr\u00e8s bien";
+    if (pct >= 60) return "\ud83d\udfe1 Ma\u00eetrise satisfaisante";
+    if (pct >= 40) return "\ud83d\udfe0 Ma\u00eetrise fragile";
+    return "\ud83d\udd34 Ma\u00eetrise insuffisante";
+  }
+
+  function verifierTout(){
+    if (occupe) return;
+    occupe = true;
+    window.setTimeout(function(){ occupe = false; }, 350);
+
+    var total = 0, score = 0, recap = "";
+
+    verifierNombre("p1"); total++;
+    if (etats.p1 === "correct"){ score++; recap += '<span class="r-ok">\u2714 p1</span>'; } else { recap += '<span class="r-ko">\u2718 p1</span>'; }
+
+    verifierP2(); total++;
+    if (etats.p2 === "correct"){ score++; recap += '<span class="r-ok">\u2714 p2</span>'; }
+    else if (etats.p2 === "partiel"){ recap += '<span class="r-mid">\u25d0 p2</span>'; }
+    else { recap += '<span class="r-ko">\u2718 p2</span>'; }
+
+    ["p3","p4"].forEach(function(id){
+      verifierNombre(id); total++;
+      if (etats[id] === "correct"){ score++; recap += '<span class="r-ok">\u2714 ' + id + '</span>'; } else { recap += '<span class="r-ko">\u2718 ' + id + '</span>'; }
+    });
+
+    if (score < 0) score = 0;
+    if (score > total) score = total;
+    var pct = Math.round((score/total)*100);
+    var bilan = document.getElementById("bilan");
+    bilan.innerHTML =
+      '<div class="score">Score&nbsp;: ' + score + '\u2009/\u2009' + total + ' (' + pct + '&nbsp;%)</div>' +
+      '<div class="palier">' + palier(pct) + '</div>' +
+      '<div class="recap">' + recap + '</div>' +
+      '<div class="legende">\u2714 correct &nbsp;\u2022&nbsp; \u25d0 partiel &nbsp;\u2022&nbsp; \u2718 incorrect ou non r\u00e9pondu.</div>';
+    bilan.hidden = false;
+  }
+
+  function basculerCorrection(){
+    var box = document.getElementById("correction");
+    var btn = document.getElementById("btn-corr");
+    if (box.hidden){
+      box.innerHTML =
+        "<h2>Correction</h2>" +
+        "<h3>1. La voiture de M. Ben Ait</h3><p>" + trouverNombre("p1").ref + "<br>" + P2.ref + "</p>" +
+        "<h3>2. Le charbon de M. Kond\u00e9</h3><p>" + trouverNombre("p3").ref + "<br>" + trouverNombre("p4").ref + "</p>";
+      box.hidden = false;
+      btn.textContent = "Masquer la correction";
+    } else {
+      box.hidden = true;
+      btn.textContent = "Voir la correction";
+    }
+  }
+
+  function reinitialiser(){
+    ["p1","p3","p4"].forEach(function(id){
+      var input = document.getElementById("in-" + id);
+      input.value = ""; input.classList.remove("correct","partiel","incorrect");
+      var fb = document.getElementById("fb-" + id);
+      fb.hidden = true; fb.innerHTML = ""; fb.className = "feedback";
+      var ai = document.getElementById("ai-" + id);
+      if (ai){ ai.hidden = true; ai.innerHTML = ""; }
+      etats[id] = "vide";
+    });
+    var inP2 = document.getElementById("in-p2");
+    inP2.value = ""; inP2.classList.remove("correct","partiel","incorrect");
+    var fbP2 = document.getElementById("fb-p2");
+    fbP2.hidden = true; fbP2.innerHTML = ""; fbP2.className = "feedback";
+    var aiP2 = document.getElementById("ai-p2");
+    aiP2.hidden = true; aiP2.innerHTML = "";
+    etats.p2 = "vide";
+
+    var bilan = document.getElementById("bilan");
+    bilan.hidden = true; bilan.innerHTML = "";
+    var corr = document.getElementById("correction");
+    corr.hidden = true; corr.innerHTML = "";
+    document.getElementById("btn-corr").textContent = "Voir la correction";
+    occupe = false;
+  }
+
+  function init(){
+    NOMBRES.forEach(function(it){ etats[it.id] = "vide"; });
+    etats.p2 = "vide";
+
+    var bOk = document.querySelectorAll("[data-ok]");
+    for (var a = 0; a < bOk.length; a++){
+      bOk[a].addEventListener("click", function(){
+        var id = this.getAttribute("data-ok");
+        if (id === "p2") verifierP2();
+        else verifierNombre(id);
+      });
+    }
+    var bAide = document.querySelectorAll("[data-aide]");
+    for (var b = 0; b < bAide.length; b++){
+      bAide[b].addEventListener("click", function(){ basculerAide(this.getAttribute("data-aide")); });
+    }
+    var champs = document.querySelectorAll('input[type="text"]');
+    for (var e = 0; e < champs.length; e++){
+      champs[e].addEventListener("keydown", function(ev){
+        if (ev.key === "Enter"){
+          ev.preventDefault();
+          var id = this.id.replace(/^in-/,"");
+          if (id === "p2") verifierP2();
+          else verifierNombre(id);
+        }
+      });
+    }
+    document.getElementById("btn-tout").addEventListener("click", verifierTout);
+    document.getElementById("btn-corr").addEventListener("click", basculerCorrection);
+    document.getElementById("btn-reset").addEventListener("click", reinitialiser);
+  }
+
+  if (document.readyState === "loading"){
+    document.addEventListener("DOMContentLoaded", init);
+  } else {
+    init();
+  }
+})();
+</script>
+</body>
+</html>
