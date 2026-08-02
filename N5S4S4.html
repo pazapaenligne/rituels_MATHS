@@ -1,0 +1,636 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Rituel &mdash; Semaine 4 S&eacute;ance 4 &mdash; Bilan semaine 4</title>
+<style>
+*{box-sizing:border-box}
+html,body{margin:0;padding:0}
+body{background:#fffdf7;font-family:Arial,Helvetica,sans-serif;color:#243238;line-height:1.6;padding:14px;overflow-x:hidden}
+.bulle{position:fixed;border-radius:50%;background:#3ba5b8;opacity:.12;pointer-events:none;z-index:0}
+.b1{width:190px;height:190px;top:-70px;left:-70px}
+.b2{width:130px;height:130px;top:-45px;right:-45px}
+.b3{width:160px;height:160px;bottom:-60px;left:-55px}
+.b4{width:110px;height:110px;bottom:-40px;right:-35px}
+.wrap{position:relative;z-index:1;max-width:880px;margin:0 auto}
+.tete{display:flex;flex-wrap:wrap;align-items:center;gap:10px;margin-bottom:14px}
+.etq{display:inline-block;padding:7px 16px;border-radius:8px;color:#fff;font-weight:700;font-size:.95rem}
+.etq-sem{background:#8fd3e8;color:#123f4a}
+.etq-sea{background:#3ba5b8}
+.etq-rit{background:#1f7a8c;font-family:Georgia,"Times New Roman",serif;margin-left:auto}
+h1{font-size:clamp(1.3rem,4.5vw,2rem);font-weight:900;color:#1f7a8c;margin:6px 0 18px;line-height:1.3}
+.bloc{position:relative;border:2px solid #3ba5b8;border-radius:12px;background:#fff;padding:28px 18px 20px;margin-bottom:18px}
+.onglet{position:absolute;top:-17px;left:18px;background:#8fd3e8;color:#123f4a;font-weight:700;font-size:.95rem;padding:5px 18px;border-radius:8px}
+.tete-ex{display:flex;align-items:flex-start;gap:12px;margin:6px 0 16px;min-width:0}
+.pastille{flex:0 0 auto;width:34px;height:34px;border-radius:50%;background:#1f7a8c;color:#fff;font-weight:700;font-size:1rem;display:flex;align-items:center;justify-content:center}
+.consigne{margin:4px 0 0;font-weight:700;text-decoration:underline;color:#1f7a8c;font-size:clamp(.95rem,2.6vw,1.05rem);min-width:0;overflow-wrap:break-word}
+.exemple{background:#f2fafd;border-left:5px solid #8fd3e8;border-radius:6px;padding:10px 14px;margin:0 0 16px;font-size:clamp(.9rem,2.5vw,1rem);font-weight:700;color:#17505c}
+.item{padding:14px 0;border-bottom:1px dashed #dceff3}
+.item:last-of-type{border-bottom:0}
+.q{font-size:clamp(1rem,3vw,1.15rem);font-weight:700;margin:0 0 10px;color:#243238;overflow-wrap:break-word}
+.ligne{display:flex;flex-wrap:wrap;align-items:center;gap:10px;min-width:0}
+.champ{flex:1 1 220px;min-width:0}
+input[type="text"]{width:100%;min-width:0;padding:10px 8px;font-family:Arial,Helvetica,sans-serif;font-size:1rem;font-weight:700;text-align:center;color:#1f7a8c;background:#f7fcfd;border:1px solid #b9dfe8;border-bottom:2px dotted #3ba5b8;border-radius:6px}
+input[type="text"]:focus{outline:2px solid #3ba5b8;outline-offset:1px}
+.champ-egalite input[type="text"]{max-width:340px;text-align:left}
+input.champ-inline{display:inline-block;width:auto;min-width:120px;max-width:220px;vertical-align:middle;margin:0 2px;padding:6px 8px}
+input.correct{border-color:#2e8b57;background:#effaf3;color:#2e8b57}
+input.partiel{border-color:#c9820a;background:#fff8ea;color:#a86c06}
+input.incorrect{border-color:#c0392b;background:#fdefee;color:#c0392b}
+.actions{display:flex;flex-wrap:wrap;gap:8px}
+button{font-family:inherit;font-size:.92rem;font-weight:700;min-height:44px;padding:10px 16px;border:0;border-radius:8px;cursor:pointer;background:#3ba5b8;color:#fff;line-height:1.2}
+button:hover{background:#1f7a8c}
+button.sec{background:#fff;color:#1f7a8c;border:2px solid #3ba5b8}
+button.sec:hover{background:#eaf7fa}
+.feedback{margin:10px 0 0;padding:12px 14px;border-left:5px solid #3ba5b8;border-radius:6px;background:#f4fafb;font-size:clamp(.9rem,2.5vw,1rem);line-height:1.75;overflow-wrap:break-word}
+.feedback.ok{border-left-color:#2e8b57;background:#effaf3;color:#1e6b40}
+.feedback.ko{border-left-color:#c0392b;background:#fdefee;color:#96291d}
+.feedback.warn{border-left-color:#c9820a;background:#fff8ea;color:#8a5b04}
+.aide{margin:10px 0 0;padding:12px 14px;border-left:5px solid #8fd3e8;background:#f2fafd;border-radius:6px;font-size:clamp(.9rem,2.5vw,1rem);line-height:1.75}
+
+/* --- Division posee (capture d'ecran) --- */
+.figure-division{max-width:230px;margin:4px 0 16px}
+.figure-division img{width:100%;height:auto;border:1px solid #dceff3;border-radius:8px;background:#fff}
+
+/* --- Decomposition decimale --- */
+.figure-exemple{max-width:260px;margin:4px 0 16px}
+.figure-exemple img{width:100%;height:auto;border:1px solid #dceff3;border-radius:8px;background:#fff}
+.decomp{display:flex;flex-wrap:wrap;align-items:center;gap:8px;font-size:clamp(1rem,3vw,1.2rem);font-weight:700;color:#243238;margin:6px 0 4px}
+.decomp .signe{color:#243238}
+.decomp .unite input{width:56px;padding:6px 4px;font-size:1rem;vertical-align:middle}
+.decomp .fraction{display:inline-flex;flex-direction:column;align-items:center;vertical-align:middle}
+.decomp .fraction input{width:56px;padding:6px 4px;font-size:1rem}
+.decomp .fraction .denom{border-top:2px solid #1f7a8c;padding-top:2px;font-size:.95rem;color:#1f7a8c}
+
+/* --- Figure geometrique --- */
+.figure-cercle{max-width:260px;margin:6px auto 18px;text-align:center}
+.figure-cercle img{width:100%;height:auto;border:1px solid #dceff3;border-radius:8px;background:#fff}
+
+.barre{display:flex;flex-wrap:wrap;gap:10px;margin:18px 0}
+.barre button{flex:1 1 190px}
+.correction{border:2px dashed #3ba5b8;border-radius:12px;background:#fff;padding:16px 18px;margin-bottom:18px;font-size:clamp(.9rem,2.5vw,1rem);line-height:1.8}
+.correction h2{margin:0 0 10px;font-size:1.05rem;color:#1f7a8c}
+.correction h3{margin:14px 0 4px;font-size:.98rem;color:#1f7a8c}
+.correction ul{margin:6px 0 0;padding-left:20px}
+.correction li{margin-bottom:6px}
+.correction-image{max-width:260px;margin:6px 0}
+.correction-image img{width:100%;height:auto;border:1px solid #dceff3;border-radius:8px;background:#fff}
+.bilan{border:2px solid #1f7a8c;border-radius:12px;background:#fff;padding:16px 18px;margin-bottom:18px;font-size:.92rem;line-height:1.8}
+.bilan .score{font-size:clamp(1.05rem,3.2vw,1.25rem);font-weight:900;color:#1f7a8c}
+.bilan .palier{font-weight:700;margin-top:4px}
+.recap{display:flex;flex-wrap:wrap;gap:8px;margin-top:10px}
+.recap span{display:inline-flex;align-items:center;gap:6px;padding:6px 11px;border-radius:8px;background:#f4fafb;font-weight:700;font-size:.9rem;border:1px solid #dceff3}
+.recap .r-ok{color:#2e8b57}
+.recap .r-mid{color:#c9820a}
+.recap .r-ko{color:#c0392b}
+.legende{margin-top:10px;font-size:.85rem;color:#4d6169}
+@media (max-width:768px){.champ{flex:1 1 100%}.actions{width:100%}.actions button{flex:1 1 auto}}
+@media (max-width:480px){
+  body{padding:10px}
+  .bloc{padding:26px 12px 16px}
+  .etq{font-size:.85rem;padding:6px 12px}
+  .etq-rit{margin-left:0}
+  .figure-division{max-width:190px}
+  .decomp{font-size:.95rem;gap:6px}
+  .decomp .fraction input{width:44px}
+  .recap span{font-size:.85rem}
+}
+</style>
+</head>
+<body>
+<div class="bulle b1"></div><div class="bulle b2"></div><div class="bulle b3"></div><div class="bulle b4"></div>
+
+<main class="wrap">
+
+  <div class="tete">
+    <span class="etq etq-sem">Semaine 4</span>
+    <span class="etq etq-sea">S&eacute;ance 4</span>
+    <span class="etq etq-rit">Rituel</span>
+  </div>
+
+  <h1>Bilan semaine 4</h1>
+
+  <section class="bloc">
+    <span class="onglet">Calcul</span>
+
+    <div class="tete-ex">
+      <span class="pastille">1</span>
+      <p class="consigne">Pour chacune de ces divisions, &eacute;cris l&rsquo;&eacute;galit&eacute; qui correspond&nbsp;:</p>
+    </div>
+
+    <div class="item">
+      <p class="q">a.</p>
+      <div class="figure-division">
+        <img src="data:image/png;base64,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" alt="Division pos&eacute;e de 125 par 7&nbsp;: quotient 17, reste 6.">
+      </div>
+      <div class="ligne">
+        <span class="champ champ-egalite"><input type="text" id="in-a" autocomplete="off" placeholder="dividende = quotient &times; diviseur + reste" aria-label="&Eacute;galit&eacute; correspondant &agrave; la division a"></span>
+        <span class="actions"><button type="button" data-ok="a">OK</button><button type="button" class="sec" data-aide="a">Indice</button></span>
+      </div>
+      <div class="feedback" id="fb-a" hidden></div>
+      <div class="aide" id="ai-a" hidden></div>
+    </div>
+
+    <div class="item">
+      <p class="q">b.</p>
+      <div class="figure-division">
+        <img src="data:image/png;base64,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" alt="Division pos&eacute;e de 470 par 11&nbsp;: quotient 42, reste 8.">
+      </div>
+      <div class="ligne">
+        <span class="champ champ-egalite"><input type="text" id="in-b" autocomplete="off" placeholder="dividende = quotient &times; diviseur + reste" aria-label="&Eacute;galit&eacute; correspondant &agrave; la division b"></span>
+        <span class="actions"><button type="button" data-ok="b">OK</button><button type="button" class="sec" data-aide="b">Indice</button></span>
+      </div>
+      <div class="feedback" id="fb-b" hidden></div>
+      <div class="aide" id="ai-b" hidden></div>
+    </div>
+
+    <div class="item">
+      <p class="q">c.</p>
+      <div class="figure-division">
+        <img src="data:image/png;base64,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" alt="Division pos&eacute;e de 312 par 25&nbsp;: quotient 12, reste 12.">
+      </div>
+      <div class="ligne">
+        <span class="champ champ-egalite"><input type="text" id="in-c" autocomplete="off" placeholder="dividende = quotient &times; diviseur + reste" aria-label="&Eacute;galit&eacute; correspondant &agrave; la division c"></span>
+        <span class="actions"><button type="button" data-ok="c">OK</button><button type="button" class="sec" data-aide="c">Indice</button></span>
+      </div>
+      <div class="feedback" id="fb-c" hidden></div>
+      <div class="aide" id="ai-c" hidden></div>
+    </div>
+  </section>
+
+  <section class="bloc">
+    <span class="onglet">Calcul</span>
+
+    <div class="tete-ex">
+      <span class="pastille">2</span>
+      <p class="consigne">D&eacute;compose le nombre suivant comme dans l&rsquo;exemple&nbsp;:</p>
+    </div>
+
+    <div class="figure-exemple">
+      <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAaYAAACACAMAAAB3LT2uAAAAYFBMVEX///////7+///+/v76///5/f73/v/3/P73/P35/fz9/uv2/P7s/v/3+/z2+/z1+/33+vn3+Pb57NTy+Prw8Ovi6+vC4fHLxLbDpYCNtNBzhph7WUY5Tms9MjFDIS8ZHC/4ug/+AAASN0lEQVR42u1diXbiuBI1tmRjZEk2whASkvz/X75aJNnsi6HfdKM6c850mzRFdFX7QjZP9BdQlo4gwZQowZRgSpRgSpRgSjAlSjAlSjAlmBIlmBIlmBJMiRJMCaZECaZECaYE079F2nj6P7BVCaZbqZJM/xe2Caa7JAnIWvNn2So15T2yt5KkUkoB/yH9OYGqqnKyCL+V0jNt23UrIAdklfkzsmSVJrbOGZlgun6p591qudl8fHx8brfrvlH1nxCoqizrBbIFnk0hbILp4mmpqu16wOjr6xto9wmHVkv7clnSrcHLAWyBZT/LnEkwXTiuyrYrAgnOC2D6xUOri5erPSVQlD4+PxmmIk8wXaK2VN3y4wulaAMK6AtxWivhtHrt5TCAEkvSZrPunZQPXoz3gWlBMIGuy7LFx9fv727blJ1+qdqzsl54fYdss8I+eiveC6bPz3Ujsmy2/Pj5RcS62r5OnLSyYuFFeN2UIpvJh5m9i20qyw7cLXDwXNfZEg7v9TC1yraMEojSrGjNBF7v45C33arvIXZpnRAsTY0CmF53M0CCwXtAWWpy0HiinoDTG8VNoHayXAihi8Xm6+cXTk+09et8PW1E7c1hj+Sckim8vQWmPBd5VnQYxuDpiUejmBstU4H+A/uWQOu1s3Xy9G643s51K4w1P9j3Kgr7WpjYMn1+QNwEBByFSDBdI1OpjpJFXz/kmIv2lVFTDAEAJgyqvb+nH1OzbwRTi94eZYswaKLg9rXcQOdBGL0jaUKc8G7Ujzkt7wXTCoPNr5DTm0v7MqA0cQNPBW0T+BDAGLwWUrQ6wXQRJomxE9oJf7WVMH8EprXKsoWPqOvcJZiuuBAGPAhwjdHT42RRq416LUxsBfN8Bnbq5/E84ls55EAYaNKRURaifVkWIsIEwmRq52qO1R51XN4tbgKg8gzDzl9vKczrYbIAU5FguvHguNDdditnGaZtM5v9CZgcwCQQJlB6ZVJ6l04NnfEl1Xy6zjWLD84WvQ6m4JCjbXKtV3oAk3isMPg+MC2WG84EZFn+eqU3Cm/XmHllF2K7frDM/l71JvSOSzizzUd0IV7GEZNFGywTb3tgGbK9s5lTCabrd3u7XmOV/QfrC+ULM+Ra2Tyy5PB2x3nEBNMFpad8YnxH4e2O5Eq8tGXFijqyxKwelo7LVj49WaSNNWM6uAbnnvtXJgck5oAmwtT6PiwislLytQ1gupp3A8svFCorzVw9Gaa2dfu0J65mePnADGt+ZWrgeMh98htSvxzXFPDImrKW6rUybESLKXnmCPfiFfWmEqudeyTk+HpyRA+U7xUltVElvZJPOwR1zP5MBujW31xTmZ0rdH1vy7m5S7If+G0MNtoySwgFGlvpuXo2TMfnlMmRwNgyD4/rUWZMgxAo/odyyhCCUuUh91yeOvrbpayqKkDKcQu5uqvX37SPCXNVyrr1Xeu2nNDrfxYm0OWrfs1lfCD8k4u+JEha3S35ZsJzVVXh91FlPlvAK2tqHnwYJ1XjNRwRvp+d66OTB8HNb/7tUdCZpLZ3HDvnmR45ZBD2wBIus3l2y4ohB/YTDB/Rl28JVKxbDcDEpRtvjL04S9PZMqM+T3w6yx8MHrVSrW/pJe70f6x9HubDFAnuzedXyQiTvEuySYs/JgtVZDnFBGRn4wxKI48Iw2nvwirfvT50zSs0xxpuzsy/gmHJ4zCVlkKOQ/aHaUsvc43SN9/tMIVm7pHsdtWPdcm98uQ5qlfB9HsMk9WYrUIodtSMEYrHJTi3xomMm2nQr1m7hx1eH4wesi/3S2oQQHaUAGoaCFNvPYR7gwWQbOwwRt9QPehOP2HW9yxMJZ/T9/cviswvtQ/gqIkOr6EUoehQ13wPcqYrhemRL4RtjY2L87l+FCZMW6I0Ee/Avpjt5cNaRTL34u5VuAyzxYa0uBVm/mIX/l6YREkpsM/NZrulgROc+1AabRO/hrmqRlH37TdlNE0rRUyONJMCRw8TSuXHx3aLvUA/n0eJFobp5w/AtPzPwiQBChxwm4Er2uKZcfsSxhr8GvxdCFt2vjWxKQ2Xvkg3upPK35yiUzobazVL0jNYdnBBZg5qrQkmdHVXS/CCG4gqxYy8rpgD0/gaeNyNqCs/NYQw8aH9ws9RFuIYJ4hZTpI95R51yL5RVHCFWwKK9MiBSDBRLFhVNUSPnWULAPZH+slReKWEuM2AyyBC6avR3mJtGxGCUXUlq3E+uwBxWFViEA2Az1n9rovCmQTTqWQROPuqxYZ11nnDrCq8lhdwhGLmrVFfaSoj/+7W/vBn9TiArPDfZGdIngw3Soxu6srlHbwvsJ/NDgpq/wpMZhJM87YFw2Gd8MIE/kKszsA9NxhZLpbczA7Oty0WVFLZ+Mb23opaxuuvUT0uNydojXnjM/GGNa11BUDxg5Zpr9IKL8NrI5jsGZ/X3EjnfGngUnuYGoknctqbNxNoYiHDRw1LdiBKsA3joA8i8zBXunZ1tEzolf2St25n0TPT7MTvxashHkKMzZkrpVFicEaIhlzsOJNHFGHqTqXq6fjcrWROJgyROg9TsKXHkns7lxtZ3weTMdhDwMK011Zr5t0Ki6BcBRWzVjULqlx/fhJM3OwZlcSjMIH1q5n9WOVVpU/Oo85FmMrzyVmR3Ui5OJXJo1cyjpv68F7FEReZZ1NIToRJWdGFDF0x5BR0ZeVq45NJ8PmbmmEgMdrQ0AOFTza60JqnIe5QeizLrkZVut9DUA25e4apiVjIA79F3Q5TJqqDjH4V2TBMTfjJ2f7nlVUlJqGUCVnJiTD5USq0TEcwUYaCwlkalESY6LeZhZaaOqi9u12IsZPwi2qtGADHOizRlhvot3HQ66DwZqTpN7fS/jqASvFOFqKPuKrAz5MdcIHDmEDbTS/kFQt1ESYTtykcZqdZ6fEvgHqr9zBx50623HD3r8itVlcd8nMwmY4zi7QaIFySltXwtydSnPzHnZd5FT+jE26zCy9fIviZz81KiKhYdWnr1Shftc+mGaetjMvz/vP7YQINtMmude9dhknQqMk325kxTJXXCDTCw9NCfjq8DHmDH3o6AlcfVe3JfJ5PVqNlYie/kV14nxMwfY9gqo9huu20zsB0ks2TYfraFFNgqtgyfe+GfJoO6WUsd5Fx4OEQkLZlaHFqOSCmv0QZLHEN1pkshD5vmfz7jI5lrPQ2XunFIGCC0usvKL3NvtLrj5VeP0XrbVZyitKrvGXaDcqk4q1wlIXAbuwmrJhpytBJCjbMRJiCNPm9DOCvb8dEaUM4nwvlDGpC3O9OVUN9n12IbDDu6sCFuN2O54dNAYOSXizBhVg3Z7hIpSa6ELlSj7sQRqp2ZJnsKD/RUqDSdjYsqGCYaOSgaxkmTCGVfnBSh9LEEXFsfMohN9573HFoq065YEee3uMO+bGJLM97egeXQcmJnt7VrpFLMJV7x62G5yWoA3IbvJ0gTzDANMtK3gEDAOT5IUy7MUS7izA54ZuISXWqE3HnUXhrnxremhjefozDW/efCm8r7DLzwsT5BJAinLZzpU+GlgNM66YJY4tZVtZhu0gMSvX8fLLInU4WYS6NhQn8xROZpHacLGodppYuFU/Qf9nP0USP5mzKhtjYmIVo5u5ctXx4U3fExu2xuZH1PTDFYhL5T5qkiOpOYeePW2E3O/2IXYShIbdabQbHw4S4Sd0XN3nL9I1b6Ap7Iaq6MfVaHS1bDc0kl9tX7kq9KkV7XY9yyIdcIuvJGXJ2SbnMR/k0zVVbzK81lPgJXfMISG952xU6ffSQO5HG4/X3FDJQ4YixZZoGk8ZNyUoetH1aFZrBLt3nO2Aa2KiRmPmmMyz8qPhzATt9Y5PEJZg6f06SLJPuQnEdYGJ0qDtrx8P7uhTD068vX+2tHysLxmweLYAyp1t6b4cJLy94pmPbhStYWxofdLY6zDE9BpOi2gvoMzv4bfDWfh0vbSxS/llNbZ2e9VSY/ERQzxZmDNNe1zz1Y6PA19xwxA9p74I52Qt1Sx5fucLnfNW5w7kZJqOk4FYxMIPSDNFXzzlFuCiVnQwTSGcpamoCdUXkgnx96tKVc5InJdvQJN2fzLffDRM1PnkL42H6ptRN5xen8ioeiKLAV2sl6j2SJG691BOWzSgrPXst7SSYsEGYIlUO0TiBbGS98k34W2pf01M7i9SITZOzmtZl5TdR8HCBAE/KcHge1xjZmwYOLoW3LTcrWm4yNpxepcKFlr5tHnuWm5Lto5GiWKz8DW2UkJN2YxjpBeCsQtJDA9ilqb+qqrnowjk/AYDSUW24x3Dndwmd7SnkTV6faH/L84akUvDL955NP8Pkj65MnJwZMo626nzDsH+mb+lmzC6rdKquUMyiUQ1t6FQgihoPAhShOVq3Nj6dtoyRvSZ6s/OhH8CEjY7wm4KrYi5dtmVMETczhMmvxcGpo7Dz6fyya2ynpMWWoTX7HJslQUJ+L03YhtE3uAj0mLMpinKFXwNr9wSYcoKJPkZlfXN4Xxe2Gs3NDG6lGcAT9eQeAR7AuWRiuTnZNeosMxR7GjHy+6RQmiBsETKuUfalMSVsrc5x4cWWF64dQzmsrUKYtPHdwbys+Qd9ZitsOaxSpknCbW/19amnixlyivb9p+M45pNvntF6yHaP020xbrNP2DLD7C9L3JVWf4DJGwIvTQiTcnntJ5apmdqnw87B5OX60uAHyzWu+qICDq2F1y5up2yyjCs7varr0D6CCUkKYG5ZW3+5LKiHfmtucdywHt9z29QpZ+4pHThXZ8yqqrw80WIIpnB1CSb4bNgG88UZkyI06tr6vBvC0ai8FFvxOoONH5FHmMimcSJNDJAUMW1Dz6hCV+RuYsvK2PMruYnyD3xlwR10ZT6MYQLPdznA1Mb2mqZoXUyjXIDp2rQbWUlMc9aj7Q9hOyVYn472unDGM9QcXGtDeg0CnqfBhEcCERn4rlL9h2CaXxVcNCyuHWBytNHYb7erzSLK2aVVANeyBd5KLgaYRgvqLVyAhdd65NyjhFnJUyf80+qJMGETZa3tfwql2z51thjB1JUxJ9nqOiohctUn+KWg2eQeTLwMZ9weh6/EigKHE6gJ8+fCRDmX+d9GAJPch0mMYJJjmCYEeth1kFcjmNx4tdQRTGDhLVUAsJIqsqvrpu5a36EnB0P/F/NlnLwMEzcbimkrRY2z7jRMdgRT4dcfNmVlw16/Mm+fCtNfSsaJMzB1ugww9WLqSlE/FncZpjrCpLmd+/fErMl7wqTMLTCVU2HS1VmYbLRDdVR62hber0gwXYOpLds/ApMLu15HMLkE040wtSOYxMth2rdNY5hcgukcTL+UWY9Kj9JIL4AJI1lWemMXAhzyqPRoQj/BdB0mbst5CUw0cXLgkP/wuLkN7kSeJZhOwFTG1s+6rheb/b7eZ8HUjqUpwtTP4uh/Fd2KJ2ch/l6HfBQ3yTFM42RRPRWmkUNeFAfJoiYuEQ0wWYk//f2CZNFfStq4Nqg212lQR+FuY+p1Fdqv64l7XzE9G2Bqa+cYNGbqmlX4joxwLVzror3KJxYy/gXCRjk/cUXfViHqCNNaDKNYU/e+YhHTf8UCtjGLQtrar+SNhQy8DAeFDKo3iQSTr0GHLmus/1eDKxyTfWri3lfF8we+9Yrq18a3sCEkcae/rkPlJH6mZmr19l8AiQoZ/I3EcIC0/s+2AjeRY0wT2kEbKSapPGyw6Xse5MFJHtoYRi0+36GWj8owB/vXeesUWDth3h4mIzU39/Cc8Det/3OaW1Zo2oAbDe20YqeyvD3j65vY0P5dOH8eXEY23zse+JeKe5q+w8N1b+SkHvJ/C6Y4BEK9PPiNtL4NiFAyctpiDsXJ3YEN3QYpqZElbB3scbl1ZWT8QHxBTJVgQqVHQ38fTNxqihNJNbWF4VQcjtLLid+3Zak9M3D52PoB/Yp6x3APF0uXoU9EXZeR9U3v/wYOueE9vCvejBs6oQy1tPsHevq3otU8mjdio6g277qwktdqxS3L4SGxvq255x3CW5yZEXHJqwwPjx5NJFlGNnFIJ4zN7HUmVeOPM0/SNBYp3t1nRkHvk74w4IiNPdithF+NoMfMPWt9B+t3kaYRHT5/DZvhcXWCy72ss7cRpWPReWbn56F8jhbon5LYe8X4jb6p82+mBFOCKVGCKcGUKMGUKMGUYEqUYEqUYEowJUowJUowJZgSJZgSTIkSTIkSTAmmRAmmRDfS/wDbpfp2ZC9yrQAAAABJRU5ErkJggg==" alt="Exemple&nbsp;: 7,36 = 7 + 3 sur 10 + 6 sur 100.">
+    </div>
+
+    <div class="item">
+      <div class="decomp">
+        <span>0,0027&nbsp;=</span>
+        <span class="unite"><input type="text" id="in-d0" inputmode="numeric" maxlength="3" autocomplete="off" aria-label="Chiffre des unit&eacute;s"></span>
+        <span class="signe">+</span>
+        <span class="fraction"><input type="text" id="in-d1" inputmode="numeric" maxlength="3" autocomplete="off" aria-label="Num&eacute;rateur des dixi&egrave;mes"><span class="denom">10</span></span>
+        <span class="signe">+</span>
+        <span class="fraction"><input type="text" id="in-d2" inputmode="numeric" maxlength="3" autocomplete="off" aria-label="Num&eacute;rateur des centi&egrave;mes"><span class="denom">100</span></span>
+        <span class="signe">+</span>
+        <span class="fraction"><input type="text" id="in-d3" inputmode="numeric" maxlength="3" autocomplete="off" aria-label="Num&eacute;rateur des milli&egrave;mes"><span class="denom">1000</span></span>
+        <span class="signe">+</span>
+        <span class="fraction"><input type="text" id="in-d4" inputmode="numeric" maxlength="3" autocomplete="off" aria-label="Num&eacute;rateur des dix-milli&egrave;mes"><span class="denom">10000</span></span>
+      </div>
+      <div class="ligne" style="margin-top:12px">
+        <span class="actions"><button type="button" data-ok="d">OK</button><button type="button" class="sec" data-aide="d">Indice</button></span>
+      </div>
+      <div class="feedback" id="fb-d" hidden></div>
+      <div class="aide" id="ai-d" hidden></div>
+    </div>
+  </section>
+
+  <section class="bloc">
+
+    <span class="onglet">G&eacute;om&eacute;trie</span>
+
+    <div class="tete-ex">
+      <span class="pastille">3</span>
+      <p class="consigne">&Agrave; l&rsquo;aide de la figure ci-dessous, compl&egrave;te chaque phrase par le mot qui convient&nbsp;:</p>
+    </div>
+
+    <div class="figure-cercle">
+      <img src="data:image/png;base64,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" alt="Cercle de centre O passant par les points A, B, M, M&rsquo; et N&nbsp;; les segments [AB] et [NM&rsquo;] passent par O.">
+    </div>
+
+    <div class="item">
+      <p class="q">Le point O est le <input type="text" class="champ-inline" id="in-e1" autocomplete="off" aria-label="Nature du point O"> du cercle.</p>
+      <div class="ligne">
+        <span class="actions"><button type="button" data-ok="e1">OK</button><button type="button" class="sec" data-aide="e1">Indice</button></span>
+      </div>
+      <div class="feedback" id="fb-e1" hidden></div>
+      <div class="aide" id="ai-e1" hidden></div>
+    </div>
+
+    <div class="item">
+      <p class="q">Le segment [OA] est un <input type="text" class="champ-inline" id="in-e2" autocomplete="off" aria-label="Nature du segment OA"> du cercle.</p>
+      <div class="ligne">
+        <span class="actions"><button type="button" data-ok="e2">OK</button><button type="button" class="sec" data-aide="e2">Indice</button></span>
+      </div>
+      <div class="feedback" id="fb-e2" hidden></div>
+      <div class="aide" id="ai-e2" hidden></div>
+    </div>
+
+    <div class="item">
+      <p class="q">Le segment [AB] est un <input type="text" class="champ-inline" id="in-e3" autocomplete="off" aria-label="Nature du segment AB"> du cercle.</p>
+      <div class="ligne">
+        <span class="actions"><button type="button" data-ok="e3">OK</button><button type="button" class="sec" data-aide="e3">Indice</button></span>
+      </div>
+      <div class="feedback" id="fb-e3" hidden></div>
+      <div class="aide" id="ai-e3" hidden></div>
+    </div>
+  </section>
+
+  <div class="barre">
+    <button type="button" id="btn-tout">V&eacute;rifier tout</button>
+    <button type="button" class="sec" id="btn-corr">Voir la correction</button>
+    <button type="button" class="sec" id="btn-reset">R&eacute;initialiser</button>
+  </div>
+
+  <div class="correction" id="correction" hidden></div>
+  <div class="bilan" id="bilan" hidden></div>
+
+</main>
+
+<script>
+(function(){
+  "use strict";
+
+  // ---------- Utilitaires communs ----------
+  function esc(txt){
+    var d = document.createElement("div");
+    d.textContent = String(txt);
+    return d.innerHTML;
+  }
+
+  function sansAccents(s){
+    return s
+      .replace(/[\u00e0\u00e2\u00e4\u00e1\u00e3]/g,"a")
+      .replace(/[\u00e9\u00e8\u00ea\u00eb]/g,"e")
+      .replace(/[\u00ee\u00ef\u00ec\u00ed]/g,"i")
+      .replace(/[\u00f4\u00f6\u00f2\u00f3\u00f5]/g,"o")
+      .replace(/[\u00fb\u00fc\u00f9\u00fa]/g,"u")
+      .replace(/[\u00e7]/g,"c")
+      .replace(/[\u2019\u2018\u02bc\u0060]/g,"'");
+  }
+
+  function normTexte(s){
+    var t = sansAccents(String(s).toLowerCase());
+    t = t.replace(/[\u00a0\u202f\u2009]/g," ").replace(/\s+/g," ");
+    return t.trim();
+  }
+
+  function contient(texte, mots){
+    for (var i = 0; i < mots.length; i++){
+      if (texte.indexOf(mots[i]) !== -1) return true;
+    }
+    return false;
+  }
+
+  function afficher(cle, type, html){
+    var fb = document.getElementById("fb-" + cle);
+    if (!fb) return;
+    fb.className = "feedback " + type;
+    fb.innerHTML = html;
+    fb.hidden = false;
+  }
+
+  function marquer(input, etat){
+    if (!input) return;
+    input.classList.remove("correct","partiel","incorrect");
+    if (etat) input.classList.add(etat);
+  }
+
+  function basculerAide(id, texte){
+    var box = document.getElementById("ai-" + id);
+    if (!box) return;
+    if (box.hidden){
+      box.innerHTML = "\ud83d\udca1 <strong>Indice&nbsp;:</strong> " + texte;
+      box.hidden = false;
+    } else {
+      box.hidden = true;
+    }
+  }
+
+  function palier(pct){
+    if (pct >= 90) return "\ud83d\udfe2 Excellent";
+    if (pct >= 75) return "\ud83d\udfe2 Tr\u00e8s bien";
+    if (pct >= 60) return "\ud83d\udfe1 Ma\u00eetrise satisfaisante";
+    if (pct >= 40) return "\ud83d\udfe0 Ma\u00eetrise fragile";
+    return "\ud83d\udd34 Ma\u00eetrise insuffisante";
+  }
+
+  var etats = {};
+  var occupe = false;
+
+  // ---------- Exercice 1 : divisions euclidiennes ----------
+  var DIVISIONS = {
+    a: { dividende:"125", diviseur:"7",  quotient:"17", reste:"6",
+         aide:"Une division euclidienne s\u2019\u00e9crit toujours ainsi\u00a0: dividende = quotient \u00d7 diviseur + reste. Repère chaque nombre dans la potence ci-dessus.",
+         ref:"125 = 17 \u00d7 7 + 6" },
+    b: { dividende:"470", diviseur:"11", quotient:"42", reste:"8",
+         aide:"Une division euclidienne s\u2019\u00e9crit toujours ainsi\u00a0: dividende = quotient \u00d7 diviseur + reste. Repère chaque nombre dans la potence ci-dessus.",
+         ref:"470 = 42 \u00d7 11 + 8" },
+    c: { dividende:"312", diviseur:"25", quotient:"12", reste:"12",
+         aide:"Une division euclidienne s\u2019\u00e9crit toujours ainsi\u00a0: dividende = quotient \u00d7 diviseur + reste. Repère chaque nombre dans la potence ci-dessus.",
+         ref:"312 = 12 \u00d7 25 + 12" }
+  };
+
+  function normaliserEquation(brut){
+    var s = String(brut).toLowerCase();
+    s = s.replace(/[\s\u00a0\u202f\u2009]/g, "");
+    s = s.replace(/[\u00d7x\*]/g, "\u00d7");
+    return s;
+  }
+
+  function verifierDivision(id){
+    var it = DIVISIONS[id];
+    var input = document.getElementById("in-" + id);
+    var brut = input.value;
+
+    if (String(brut).replace(/[\s\u00a0]/g,"") === ""){
+      etats[id] = "vide";
+      marquer(input, "");
+      afficher(id, "warn", "\u26a0\ufe0f Aucune r\u00e9ponse saisie. \u00c9cris l\u2019\u00e9galit\u00e9 compl\u00e8te, puis clique sur <strong>OK</strong>.");
+      return;
+    }
+
+    var s = normaliserEquation(brut);
+    var m = s.match(/^(\d+)=(\d+)\u00d7(\d+)\+(\d+)$/);
+    var dividendePos = "gauche";
+    if (!m){
+      m = s.match(/^(\d+)\u00d7(\d+)\+(\d+)=(\d+)$/);
+      if (m){
+        m = [m[0], m[4], m[1], m[2], m[3]];
+        dividendePos = "droite";
+      }
+    }
+
+    if (!m){
+      etats[id] = "incorrect";
+      marquer(input, "incorrect");
+      afficher(id, "warn", "\u26a0\ufe0f Saisie non reconnue&nbsp;: &laquo;&nbsp;" + esc(brut) + "&nbsp;&raquo;. Attendu&nbsp;: une \u00e9galit\u00e9 de la forme <strong>dividende&nbsp;=&nbsp;quotient&nbsp;&times;&nbsp;diviseur&nbsp;+&nbsp;reste</strong>, par exemple <strong>" + esc(it.ref) + "</strong>.");
+      return;
+    }
+
+    var nbDividende = m[1], nbFacteur1 = m[2], nbFacteur2 = m[3], nbReste = m[4];
+    var okDividende = Number(nbDividende) === Number(it.dividende);
+    var okReste = Number(nbReste) === Number(it.reste);
+    var facteursAttendus = [Number(it.quotient), Number(it.diviseur)].sort();
+    var facteursSaisis = [Number(nbFacteur1), Number(nbFacteur2)].sort();
+    var okFacteurs = facteursAttendus[0] === facteursSaisis[0] && facteursAttendus[1] === facteursSaisis[1];
+
+    if (okDividende && okReste && okFacteurs){
+      etats[id] = "correct";
+      marquer(input, "correct");
+      afficher(id, "ok", "\u2705 Bravo&nbsp;! L\u2019\u00e9galit\u00e9 <strong><u>" + esc(it.ref) + "</u></strong> correspond bien \u00e0 cette division.");
+      return;
+    }
+
+    var nbCorrects = (okDividende?1:0) + (okReste?1:0) + (okFacteurs?1:0);
+    if (nbCorrects >= 2){
+      etats[id] = "partiel";
+      marquer(input, "partiel");
+      var manque = [];
+      if (!okDividende) manque.push("le <strong>dividende</strong>");
+      if (!okFacteurs) manque.push("le <strong>quotient</strong> ou le <strong>diviseur</strong>");
+      if (!okReste) manque.push("le <strong>reste</strong>");
+      afficher(id, "warn", "\u26a0\ufe0f La structure de l\u2019\u00e9galit\u00e9 est correcte, mais v\u00e9rifie&nbsp;: " + manque.join(" et ") + ".<br>R\u00e9ponse attendue&nbsp;: <strong><u>" + esc(it.ref) + "</u></strong>.");
+      return;
+    }
+
+    etats[id] = "incorrect";
+    marquer(input, "incorrect");
+    afficher(id, "ko", "\u274c Cette \u00e9galit\u00e9 ne correspond pas \u00e0 la division pos\u00e9e ci-dessus.<br>R\u00e9ponse attendue&nbsp;: <strong><u>" + esc(it.ref) + "</u></strong>.");
+  }
+
+  // ---------- Exercice 2 : d\u00e9composition d\u00e9cimale ----------
+  var ATTENDU_D = ["0","0","0","2","7"];
+
+  function lireChiffre(input){
+    var v = String(input.value).replace(/[\s\u00a0]/g,"");
+    if (v === "") return "";
+    if (!/^\d+$/.test(v)) return null;
+    return String(Number(v));
+  }
+
+  function verifierDecomposition(){
+    var ids = ["in-d0","in-d1","in-d2","in-d3","in-d4"];
+    var inputs = [];
+    var valeurs = [];
+    var invalide = false;
+    for (var i = 0; i < ids.length; i++){
+      var input = document.getElementById(ids[i]);
+      inputs.push(input);
+      var v = lireChiffre(input);
+      if (v === null) invalide = true;
+      valeurs.push(v);
+    }
+
+    var toutVide = valeurs.every(function(v){ return v === ""; });
+    if (toutVide){
+      etats.d = "vide";
+      for (var k = 0; k < inputs.length; k++) marquer(inputs[k], "");
+      afficher("d", "warn", "\u26a0\ufe0f Aucune r\u00e9ponse saisie. Compl\u00e8te les cinq nombres (l\u2019unit\u00e9 et les quatre num\u00e9rateurs), puis clique sur <strong>OK</strong>.");
+      return;
+    }
+
+    if (invalide){
+      etats.d = "incorrect";
+      for (var k2 = 0; k2 < inputs.length; k2++) marquer(inputs[k2], valeurs[k2] === null ? "incorrect" : "");
+      afficher("d", "warn", "\u26a0\ufe0f Chaque case doit contenir un <strong>nombre entier</strong> seul (par exemple 0 ou 2), sans virgule ni autre symbole.");
+      return;
+    }
+
+    var nbCorrects = 0;
+    for (var j = 0; j < 5; j++){
+      var ok = valeurs[j] === ATTENDU_D[j];
+      if (ok) nbCorrects++;
+      marquer(inputs[j], ok ? "correct" : (valeurs[j] === "" ? "" : "incorrect"));
+    }
+
+    var essentielOk = valeurs[3] === ATTENDU_D[3] && valeurs[4] === ATTENDU_D[4];
+
+    if (nbCorrects === 5){
+      etats.d = "correct";
+      afficher("d", "ok", "\u2705 Bravo&nbsp;! <strong><u>0,0027 = 0 + 0&frasl;10 + 0&frasl;100 + 2&frasl;1000 + 7&frasl;10000</u></strong>.");
+      return;
+    }
+
+    if (essentielOk){
+      etats.d = "partiel";
+      afficher("d", "warn", "\u26a0\ufe0f Les chiffres des <strong>milli\u00e8mes</strong> et des <strong>dix-milli\u00e8mes</strong> sont bien plac\u00e9s, mais un ou plusieurs autres nombres ne correspondent pas&nbsp;: n\u2019oublie pas les <strong>0</strong> aux rangs o\u00f9 il n\u2019y a pas de chiffre.<br>R\u00e9ponse attendue&nbsp;: <strong><u>0 + 0&frasl;10 + 0&frasl;100 + 2&frasl;1000 + 7&frasl;10000</u></strong>.");
+      return;
+    }
+
+    etats.d = "incorrect";
+    afficher("d", "ko", "\u274c Ce n\u2019est pas la bonne d\u00e9composition. Dans 0,0027, le chiffre <strong>2</strong> est au rang des <strong>milli\u00e8mes</strong> et le chiffre <strong>7</strong> au rang des <strong>dix-milli\u00e8mes</strong>.<br>R\u00e9ponse attendue&nbsp;: <strong><u>0 + 0&frasl;10 + 0&frasl;100 + 2&frasl;1000 + 7&frasl;10000</u></strong>.");
+  }
+
+  // ---------- Exercice 3 : vocabulaire du cercle ----------
+  var CERCLE = {
+    e1: { cle:["centr"], aide:"Ce point est situ\u00e9 \u00e0 \u00e9gale distance de tous les points du cercle.", ref:"centre" },
+    e2: { cle:["rayon"], aide:"Ce segment relie le centre du cercle \u00e0 un point du cercle.", ref:"rayon" },
+    e3: { cle:["diametr"], aide:"Ce segment relie deux points du cercle en passant par le centre.", ref:"diam\u00e8tre" }
+  };
+
+  function verifierCercle(id){
+    var it = CERCLE[id];
+    var input = document.getElementById("in-" + id);
+    var brut = input.value;
+
+    if (String(brut).replace(/[\s\u00a0]/g,"") === ""){
+      etats[id] = "vide";
+      marquer(input, "");
+      afficher(id, "warn", "\u26a0\ufe0f Aucune r\u00e9ponse saisie. \u00c9cris le mot qui convient, puis clique sur <strong>OK</strong>.");
+      return;
+    }
+
+    var texte = normTexte(brut);
+    if (contient(texte, it.cle)){
+      etats[id] = "correct";
+      marquer(input, "correct");
+      afficher(id, "ok", "\u2705 Bravo&nbsp;! Le mot attendu est bien <strong><u>" + esc(it.ref) + "</u></strong>.");
+      return;
+    }
+
+    etats[id] = "incorrect";
+    marquer(input, "incorrect");
+    afficher(id, "ko", "\u274c Ce n\u2019est pas le mot attendu.<br>R\u00e9ponse attendue&nbsp;: <strong><u>" + esc(it.ref) + "</u></strong>.");
+  }
+
+  // ---------- Vérification globale ----------
+  var ORDRE_ITEMS = ["a","b","c","d","e1","e2","e3"];
+
+  function verifierTout(){
+    if (occupe) return;
+    occupe = true;
+    window.setTimeout(function(){ occupe = false; }, 350);
+
+    verifierDivision("a");
+    verifierDivision("b");
+    verifierDivision("c");
+    verifierDecomposition();
+    verifierCercle("e1");
+    verifierCercle("e2");
+    verifierCercle("e3");
+
+    var total = ORDRE_ITEMS.length;
+    var score = 0;
+    var recap = "";
+    for (var i = 0; i < ORDRE_ITEMS.length; i++){
+      var id = ORDRE_ITEMS[i];
+      var e = etats[id];
+      if (e === "correct"){
+        score++;
+        recap += '<span class="r-ok">\u2714 ' + id + '</span>';
+      } else if (e === "partiel"){
+        recap += '<span class="r-mid">\u25d0 ' + id + '</span>';
+      } else {
+        recap += '<span class="r-ko">\u2718 ' + id + '</span>';
+      }
+    }
+    if (score < 0) score = 0;
+    if (score > total) score = total;
+    var pct = Math.round((score / total) * 100);
+
+    var bilan = document.getElementById("bilan");
+    bilan.innerHTML =
+      '<div class="score">Score&nbsp;: ' + score + '\u2009/\u2009' + total + ' (' + pct + '&nbsp;%)</div>' +
+      '<div class="palier">' + palier(pct) + '</div>' +
+      '<div class="recap">' + recap + '</div>' +
+      '<div class="legende">\u2714 correct &nbsp;\u2022&nbsp; \u25d0 partiel (structure correcte mais un nombre erron\u00e9, ou milli\u00e8mes bien plac\u00e9s mais z\u00e9ros manquants) &nbsp;\u2022&nbsp; \u2718 incorrect ou non r\u00e9pondu.</div>';
+    bilan.hidden = false;
+  }
+
+  function basculerCorrection(){
+    var box = document.getElementById("correction");
+    var btn = document.getElementById("btn-corr");
+    if (box.hidden){
+      box.innerHTML =
+        "<h2>Correction</h2>" +
+        "<h3>1. Divisions euclidiennes</h3><ul>" +
+        "<li><strong>a.</strong> " + esc(DIVISIONS.a.ref) + "</li>" +
+        "<li><strong>b.</strong> " + esc(DIVISIONS.b.ref) + "</li>" +
+        "<li><strong>c.</strong> " + esc(DIVISIONS.c.ref) + "</li>" +
+        "</ul>" +
+        "<h3>2. D\u00e9composition d\u00e9cimale</h3>" +
+        "<div class=\"correction-image\"><img src=\"data:image/png;base64,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\" alt=\"0,0027 = 0 + 0 sur 10 + 0 sur 100 + 2 sur 1000 + 7 sur 10000.\"></div>" +
+        "<h3>3. Vocabulaire du cercle</h3><ul>" +
+        "<li>Le point O est le <strong>centre</strong> du cercle.</li>" +
+        "<li>Le segment [OA] est un <strong>rayon</strong> du cercle.</li>" +
+        "<li>Le segment [AB] est un <strong>diam\u00e8tre</strong> du cercle.</li>" +
+        "</ul>";
+      box.hidden = false;
+      btn.textContent = "Masquer la correction";
+    } else {
+      box.hidden = true;
+      btn.textContent = "Voir la correction";
+    }
+  }
+
+  function reinitialiser(){
+    var champsSimples = ["in-a","in-b","in-c","in-d0","in-d1","in-d2","in-d3","in-d4","in-e1","in-e2","in-e3"];
+    for (var i = 0; i < champsSimples.length; i++){
+      var input = document.getElementById(champsSimples[i]);
+      if (input){
+        input.value = "";
+        input.disabled = false;
+        input.readOnly = false;
+        input.classList.remove("correct","partiel","incorrect");
+      }
+    }
+    var feedbacks = ["fb-a","fb-b","fb-c","fb-d","fb-e1","fb-e2","fb-e3"];
+    for (var j = 0; j < feedbacks.length; j++){
+      var fb = document.getElementById(feedbacks[j]);
+      if (fb){ fb.hidden = true; fb.innerHTML = ""; fb.className = "feedback"; }
+    }
+    var aides = ["ai-a","ai-b","ai-c","ai-d","ai-e1","ai-e2","ai-e3"];
+    for (var k = 0; k < aides.length; k++){
+      var ai = document.getElementById(aides[k]);
+      if (ai){ ai.hidden = true; ai.innerHTML = ""; }
+    }
+    etats = {};
+    var bilan = document.getElementById("bilan");
+    bilan.hidden = true; bilan.innerHTML = "";
+    var corr = document.getElementById("correction");
+    corr.hidden = true; corr.innerHTML = "";
+    document.getElementById("btn-corr").textContent = "Voir la correction";
+    occupe = false;
+  }
+
+  function init(){
+    document.querySelector('[data-ok="a"]').addEventListener("click", function(){ verifierDivision("a"); });
+    document.querySelector('[data-ok="b"]').addEventListener("click", function(){ verifierDivision("b"); });
+    document.querySelector('[data-ok="c"]').addEventListener("click", function(){ verifierDivision("c"); });
+    document.querySelector('[data-ok="d"]').addEventListener("click", verifierDecomposition);
+    document.querySelector('[data-ok="e1"]').addEventListener("click", function(){ verifierCercle("e1"); });
+    document.querySelector('[data-ok="e2"]').addEventListener("click", function(){ verifierCercle("e2"); });
+    document.querySelector('[data-ok="e3"]').addEventListener("click", function(){ verifierCercle("e3"); });
+
+    document.querySelector('[data-aide="a"]').addEventListener("click", function(){ basculerAide("a", DIVISIONS.a.aide); });
+    document.querySelector('[data-aide="b"]').addEventListener("click", function(){ basculerAide("b", DIVISIONS.b.aide); });
+    document.querySelector('[data-aide="c"]').addEventListener("click", function(){ basculerAide("c", DIVISIONS.c.aide); });
+    document.querySelector('[data-aide="d"]').addEventListener("click", function(){ basculerAide("d", "Une fraction d\u00e9cimale de d\u00e9nominateur 10, 100, 1000 ou 10000 correspond respectivement au chiffre des dixi\u00e8mes, centi\u00e8mes, milli\u00e8mes et dix-milli\u00e8mes. N\u2019oublie pas les z\u00e9ros lorsqu\u2019un rang est vide."); });
+    document.querySelector('[data-aide="e1"]').addEventListener("click", function(){ basculerAide("e1", CERCLE.e1.aide); });
+    document.querySelector('[data-aide="e2"]').addEventListener("click", function(){ basculerAide("e2", CERCLE.e2.aide); });
+    document.querySelector('[data-aide="e3"]').addEventListener("click", function(){ basculerAide("e3", CERCLE.e3.aide); });
+
+    var champsTexte = document.querySelectorAll('input[type="text"]');
+    for (var i = 0; i < champsTexte.length; i++){
+      champsTexte[i].addEventListener("keydown", function(ev){
+        if (ev.key !== "Enter") return;
+        ev.preventDefault();
+        var id = this.id.replace("in-", "");
+        if (id === "a" || id === "b" || id === "c") verifierDivision(id);
+        else if (id.indexOf("d") === 0) verifierDecomposition();
+        else if (id === "e1" || id === "e2" || id === "e3") verifierCercle(id);
+      });
+    }
+
+    document.getElementById("btn-tout").addEventListener("click", verifierTout);
+    document.getElementById("btn-corr").addEventListener("click", basculerCorrection);
+    document.getElementById("btn-reset").addEventListener("click", reinitialiser);
+  }
+
+  if (document.readyState === "loading"){
+    document.addEventListener("DOMContentLoaded", init);
+  } else {
+    init();
+  }
+})();
+</script>
+</body>
+</html>
