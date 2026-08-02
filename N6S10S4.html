@@ -1,0 +1,596 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Rituel &mdash; Bilan Semaine 10</title>
+<style>
+*{box-sizing:border-box}
+html,body{margin:0;padding:0}
+body{background:#fffdf7;font-family:Arial,Helvetica,sans-serif;color:#243238;line-height:1.6;padding:14px;overflow-x:hidden}
+.bulle{position:fixed;border-radius:50%;background:#3ba5b8;opacity:.12;pointer-events:none;z-index:0}
+.b1{width:190px;height:190px;top:-70px;left:-70px}
+.b2{width:130px;height:130px;top:-45px;right:-45px}
+.b3{width:160px;height:160px;bottom:-60px;left:-55px}
+.b4{width:110px;height:110px;bottom:-40px;right:-35px}
+.wrap{position:relative;z-index:1;max-width:880px;margin:0 auto}
+.tete{display:flex;flex-wrap:wrap;align-items:center;gap:10px;margin-bottom:14px}
+.etq{display:inline-block;padding:7px 16px;border-radius:8px;color:#fff;font-weight:700;font-size:.95rem}
+.etq-sem{background:#8fd3e8;color:#123f4a}
+.etq-sea{background:#3ba5b8}
+.etq-rit{background:#1f7a8c;font-family:Georgia,"Times New Roman",serif;margin-left:auto}
+h1{font-size:clamp(1.3rem,4.5vw,2rem);font-weight:900;color:#1f7a8c;margin:6px 0 18px;line-height:1.3}
+.bloc{position:relative;border:2px solid #3ba5b8;border-radius:12px;background:#fff;padding:28px 18px 20px;margin-bottom:18px}
+.onglet{position:absolute;top:-17px;left:18px;background:#8fd3e8;color:#123f4a;font-weight:700;font-size:.95rem;padding:5px 18px;border-radius:8px}
+.tete-ex{display:flex;align-items:flex-start;gap:12px;margin:22px 0 14px;min-width:0}
+.pastille{flex:0 0 auto;width:34px;height:34px;border-radius:50%;background:#1f7a8c;color:#fff;font-weight:700;font-size:1rem;display:flex;align-items:center;justify-content:center}
+.consigne{margin:4px 0 0;font-weight:700;text-decoration:underline;color:#1f7a8c;font-size:clamp(.95rem,2.6vw,1.05rem);min-width:0;overflow-wrap:break-word}
+.cadre{border:1px solid #dceff3;border-radius:8px;background:#fbfeff;padding:12px;margin-bottom:14px;text-align:center}
+.cadre img{width:100%;height:auto;max-width:220px;border-radius:6px}
+.morceaux{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:14px}
+.morceaux span{background:#f2fafd;border:1px dashed #8fd3e8;border-radius:6px;padding:8px 12px;font-size:.9rem;color:#1f7a8c;font-style:italic}
+.item{padding:12px 0;border-bottom:1px dashed #dceff3}
+.item:last-of-type{border-bottom:0}
+.q{font-size:clamp(1rem,3vw,1.15rem);font-weight:700;margin:0 0 8px;color:#243238;overflow-wrap:break-word}
+.expr{display:flex;flex-wrap:wrap;align-items:center;gap:8px;min-width:0;font-size:clamp(1rem,3vw,1.15rem);font-weight:700}
+.ligne{display:flex;flex-wrap:wrap;align-items:center;gap:10px;min-width:0}
+.champ{flex:1 1 260px;min-width:0}
+input[type="text"]{width:100%;min-width:0;padding:9px 8px;font-family:Arial,Helvetica,sans-serif;font-size:1rem;font-weight:700;color:#1f7a8c;background:#f7fcfd;border:1px solid #b9dfe8;border-bottom:2px dotted #3ba5b8;border-radius:6px;min-height:44px;text-align:center;max-width:220px}
+input[type="text"].petit{max-width:110px}
+textarea{width:100%;min-width:0;padding:10px;font-family:Arial,Helvetica,sans-serif;font-size:1rem;font-weight:700;color:#1f7a8c;background:#f7fcfd;border:1px solid #b9dfe8;border-bottom:2px dotted #3ba5b8;border-radius:6px;min-height:70px;line-height:1.6;resize:vertical}
+.correct{border-color:#2e8b57;background:#effaf3;color:#2e8b57}
+.incorrect{border-color:#c0392b;background:#fdefee;color:#c0392b}
+.actions{display:flex;flex-wrap:wrap;gap:8px}
+button{font-family:inherit;font-size:.92rem;font-weight:700;min-height:44px;padding:10px 16px;border:0;border-radius:8px;cursor:pointer;background:#3ba5b8;color:#fff;line-height:1.2}
+button:hover{background:#1f7a8c}
+button.sec{background:#fff;color:#1f7a8c;border:2px solid #3ba5b8}
+button.sec:hover{background:#eaf7fa}
+.feedback{margin:10px 0 0;padding:12px 14px;border-left:5px solid #3ba5b8;border-radius:6px;background:#f4fafb;font-size:clamp(.9rem,2.5vw,1rem);line-height:1.75;overflow-wrap:break-word}
+.feedback.ok{border-left-color:#2e8b57;background:#effaf3;color:#1e6b40}
+.feedback.ko{border-left-color:#c0392b;background:#fdefee;color:#96291d}
+.feedback.warn{border-left-color:#c9820a;background:#fff8ea;color:#8a5b04}
+.aide{margin:10px 0 0;padding:12px 14px;border-left:5px solid #8fd3e8;background:#f2fafd;border-radius:6px;font-size:clamp(.9rem,2.5vw,1rem);line-height:1.75}
+.barre{display:flex;flex-wrap:wrap;gap:10px;margin:18px 0}
+.barre button{flex:1 1 190px}
+.correction{border:2px dashed #3ba5b8;border-radius:12px;background:#fff;padding:16px 18px;margin-bottom:18px;font-size:clamp(.9rem,2.5vw,1rem);line-height:1.8}
+.correction h2{margin:0 0 8px;font-size:1.05rem;color:#1f7a8c}
+.correction h3{margin:14px 0 4px;font-size:.98rem;color:#1f7a8c}
+.bilan{border:2px solid #1f7a8c;border-radius:12px;background:#fff;padding:16px 18px;margin-bottom:18px;font-size:.92rem;line-height:1.8}
+.bilan .score{font-size:clamp(1.05rem,3.2vw,1.25rem);font-weight:900;color:#1f7a8c}
+.bilan .palier{font-weight:700;margin-top:4px}
+.recap{display:flex;flex-wrap:wrap;gap:8px;margin-top:10px}
+.recap span.rc{display:inline-flex;align-items:center;gap:6px;padding:6px 11px;border-radius:8px;background:#f4fafb;font-weight:700;font-size:.9rem;border:1px solid #dceff3}
+.recap .r-ok{color:#2e8b57}
+.recap .r-mid{color:#c9820a}
+.recap .r-ko{color:#c0392b}
+.legende{margin-top:10px;font-size:.85rem;color:#4d6169}
+@media (max-width:768px){.champ{flex:1 1 100%}.actions{width:100%}.actions button{flex:1 1 auto}}
+@media (max-width:480px){body{padding:10px}.bloc{padding:26px 12px 16px}.etq{font-size:.85rem;padding:6px 12px}.etq-rit{margin-left:0}input[type="text"]{max-width:100%}.recap span.rc{font-size:.85rem}}
+</style>
+</head>
+<body>
+<div class="bulle b1"></div><div class="bulle b2"></div><div class="bulle b3"></div><div class="bulle b4"></div>
+
+<main class="wrap">
+  <div class="tete">
+    <span class="etq etq-sem">Semaine 10</span>
+    <span class="etq etq-sea">S&eacute;ance 4</span>
+    <span class="etq etq-rit">Rituel</span>
+  </div>
+
+  <h1>Bilan de la semaine 10</h1>
+
+  <section class="bloc">
+    <span class="onglet">Bilan</span>
+
+    <div class="tete-ex">
+      <span class="pastille">1</span>
+      <p class="consigne">&Eacute;cris pour chacun des nombres le nombre d&eacute;cimal qui convient&nbsp;:</p>
+    </div>
+
+    <div class="item">
+      <div class="ligne">
+        <span class="expr">
+          <span>147 &lt;</span>
+          <input type="text" class="petit" id="in-c1" inputmode="decimal" autocomplete="off" aria-label="Nombre entre 147 et 148">
+          <span>&lt; 148</span>
+        </span>
+        <span class="actions"><button type="button" data-ok="c1">OK</button></span>
+      </div>
+      <div class="feedback" id="fb-c1" hidden></div>
+    </div>
+    <div class="item">
+      <div class="ligne">
+        <span class="expr">
+          <span>51 &gt;</span>
+          <input type="text" class="petit" id="in-c2" inputmode="decimal" autocomplete="off" aria-label="Nombre entre 51 et 52">
+          <span>&gt; 52</span>
+        </span>
+        <span class="actions"><button type="button" data-ok="c2">OK</button></span>
+      </div>
+      <div class="feedback" id="fb-c2" hidden></div>
+    </div>
+    <div class="item">
+      <div class="ligne">
+        <span class="expr">
+          <span>11 &gt;</span>
+          <input type="text" class="petit" id="in-c3" inputmode="decimal" autocomplete="off" aria-label="Nombre entre 11 et 12">
+          <span>&gt; 12</span>
+        </span>
+        <span class="actions"><button type="button" data-ok="c3">OK</button></span>
+      </div>
+      <div class="feedback" id="fb-c3" hidden></div>
+    </div>
+    <div class="item">
+      <div class="ligne">
+        <span class="expr">
+          <span>145 &lt;</span>
+          <input type="text" class="petit" id="in-c4" inputmode="decimal" autocomplete="off" aria-label="Nombre entre 145 et 146">
+          <span>&lt; 146</span>
+        </span>
+        <span class="actions"><button type="button" data-ok="c4">OK</button></span>
+      </div>
+      <div class="feedback" id="fb-c4" hidden></div>
+    </div>
+
+    <div class="tete-ex">
+      <span class="pastille">2</span>
+      <p class="consigne">Sam a r&eacute;dig&eacute; un texte pour expliquer pourquoi les droites (AC) et (BD) ci-contre sont parall&egrave;les. Mais son texte est en miettes&nbsp;! Recopie ces bouts de phrases dans le bon ordre, en mettant les majuscules n&eacute;cessaires et en ponctuant&nbsp;:</p>
+    </div>
+
+    <div class="cadre">
+      <img src="data:image/png;base64,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" alt="Deux droites horizontales (AC) et (BD) coupées par une droite verticale (AB), avec des angles droits marqués aux points A et B">
+    </div>
+
+    <div class="morceaux">
+      <span>sont perpendiculaires</span>
+      <span>donc je peux affirmer</span>
+      <span>d&rsquo;apr&egrave;s les codages</span>
+      <span>les droites (AC) et (BD)</span>
+      <span>qu&rsquo;elles sont parall&egrave;les</span>
+      <span>&agrave; la droite (AB)</span>
+    </div>
+
+    <div class="item">
+      <div class="ligne">
+        <span class="champ" style="flex:1 1 100%"><textarea id="in-phrase" autocomplete="off" aria-label="Phrase reconstituée"></textarea></span>
+      </div>
+      <div class="actions" style="margin-top:8px"><button type="button" data-ok="phrase">OK</button></div>
+      <div class="feedback" id="fb-phrase" hidden></div>
+    </div>
+
+    <div class="tete-ex">
+      <span class="pastille">3</span>
+      <p class="consigne">Dans un supermarch&eacute; les &oelig;ufs sont rang&eacute;s dans des bo&icirc;tes de 12 &oelig;ufs. Dans un carton il y a 80 bo&icirc;tes. Le magasin vient de recevoir sa commande de 5 cartons.</p>
+    </div>
+
+    <div class="item">
+      <p class="q">Combien y a-t-il d&rsquo;&oelig;ufs dans un carton&nbsp;?</p>
+      <div class="ligne">
+        <span class="champ"><input type="text" id="in-p1" inputmode="decimal" autocomplete="off" aria-label="Combien y a-t-il d&rsquo;&oelig;ufs dans un carton&nbsp;?"></span>
+        <span class="actions"><button type="button" data-ok="p1">OK</button><button type="button" class="sec" data-aide="p1">Indice</button></span>
+      </div>
+      <div class="feedback" id="fb-p1" hidden></div>
+      <div class="aide" id="ai-p1" hidden></div>
+    </div>
+
+    <div class="item">
+      <p class="q">Combien de bo&icirc;tes le magasin a-t-il re&ccedil;u pour sa commande&nbsp;?</p>
+      <div class="ligne">
+        <span class="champ"><input type="text" id="in-p2" inputmode="decimal" autocomplete="off" aria-label="Combien de bo&icirc;tes le magasin a-t-il re&ccedil;u pour sa commande&nbsp;?"></span>
+        <span class="actions"><button type="button" data-ok="p2">OK</button><button type="button" class="sec" data-aide="p2">Indice</button></span>
+      </div>
+      <div class="feedback" id="fb-p2" hidden></div>
+      <div class="aide" id="ai-p2" hidden></div>
+    </div>
+
+  </section>
+
+  <div class="barre">
+    <button type="button" id="btn-tout">V&eacute;rifier tout</button>
+    <button type="button" class="sec" id="btn-corr">Voir la correction</button>
+    <button type="button" class="sec" id="btn-reset">R&eacute;initialiser</button>
+  </div>
+
+  <div class="correction" id="correction" hidden></div>
+  <div class="bilan" id="bilan" hidden></div>
+</main>
+
+<script>
+(function(){
+  "use strict";
+
+  var ENCADR = [
+    { id:"c1", gauche:"147", droite:"148", symb:"&lt;" },
+    { id:"c2", gauche:"51",  droite:"52",  symb:"&gt;" },
+    { id:"c3", gauche:"11",  droite:"12",  symb:"&gt;" },
+    { id:"c4", gauche:"145", droite:"146", symb:"&lt;" }
+  ];
+
+  var FRAGMENTS = [
+    "d'apres les codages",
+    "les droites (ac) et (bd)",
+    "sont perpendiculaires",
+    "a la droite (ab)",
+    "donc je peux affirmer",
+    "qu'elles sont paralleles"
+  ];
+  var PHRASE_REF = "D\u2019apr\u00e8s les codages, les droites (AC) et (BD) sont perpendiculaires \u00e0 la droite (AB). Donc je peux affirmer qu\u2019elles sont parall\u00e8les.";
+
+  var PROBLEMES = [
+    { id:"p1", attendu:"4800", unite:"\u0153ufs",
+      pieges:[ { val:"960", txt:"960 est le nombre d\u2019\u0153ufs dans un seul carton (80 \u00d7 12) ; le corrig\u00e9 fourni utilise cependant les 5 cartons de la commande." } ],
+      aide:"Le corrig\u00e9 fourni calcule 5 \u00d7 80 \u00d7 12.",
+      ref:"5 \u00d7 80 \u00d7 12 = <strong><u>4 800 \u0153ufs</u></strong> (calcul repris du corrig\u00e9 fourni)." },
+
+    { id:"p2", attendu:"400", unite:"bo\u00eetes",
+      pieges:[ { val:"80", txt:"80 est le nombre de bo\u00eetes dans <strong>un seul</strong> carton, pas dans toute la commande." },
+               { val:"5", txt:"5 est le nombre de cartons, pas un nombre de bo\u00eetes." } ],
+      aide:"5 cartons de 80 bo\u00eetes chacun&nbsp;: quelle op\u00e9ration donne le nombre total de bo\u00eetes ?",
+      ref:"5 \u00d7 80 = <strong><u>400 bo\u00eetes</u></strong>." }
+  ];
+
+  var etats = {};
+  var occupe = false;
+
+  function trouverEncadr(id){
+    for (var i = 0; i < ENCADR.length; i++){ if (ENCADR[i].id === id) return ENCADR[i]; }
+    return null;
+  }
+  function trouverProbleme(id){
+    for (var i = 0; i < PROBLEMES.length; i++){ if (PROBLEMES[i].id === id) return PROBLEMES[i]; }
+    return null;
+  }
+
+  function esc(txt){
+    var d = document.createElement("div");
+    d.textContent = String(txt);
+    return d.innerHTML;
+  }
+
+  function sansAccents(s){
+    return s
+      .replace(/[\u00e0\u00e2\u00e4\u00e1\u00e3]/g,"a")
+      .replace(/[\u00e9\u00e8\u00ea\u00eb]/g,"e")
+      .replace(/[\u00ee\u00ef\u00ec\u00ed]/g,"i")
+      .replace(/[\u00f4\u00f6\u00f2\u00f3\u00f5]/g,"o")
+      .replace(/[\u00fb\u00fc\u00f9\u00fa]/g,"u")
+      .replace(/[\u00e7]/g,"c")
+      .replace(/[\u2019\u2018\u02bc\u0060]/g,"'");
+  }
+
+  function normTexte(s){
+    var t = sansAccents(String(s).toLowerCase());
+    t = t.replace(/[\u00a0\u202f\u2009]/g," ");
+    t = t.replace(/[.,;:!?]/g," ");
+    t = t.replace(/\s+/g," ").trim();
+    return t;
+  }
+
+  function normalise(brut){
+    var s = String(brut).replace(/[\s\u00a0\u202f\u2009]/g, "");
+    s = s.replace(/[\u2212\u2013\u2014]/g, "-").replace(/,/g, ".");
+    if (s === "") return null;
+    if (!/^-?(\d+(\.\d*)?|\.\d+)$/.test(s)) return null;
+    return s;
+  }
+
+  function decompose(s){
+    var neg = false;
+    if (s.charAt(0) === "-"){ neg = true; s = s.slice(1); }
+    var p = s.split(".");
+    var ent = p[0] === "" ? "0" : p[0];
+    var dec = p.length > 1 ? p[1] : "";
+    ent = ent.replace(/^0+(?=\d)/,"");
+    dec = dec.replace(/0+$/,"");
+    if (ent === "0" && dec === "") neg = false;
+    return { neg:neg, ent:ent, dec:dec };
+  }
+
+  function cmpAbs(a,b){
+    if (a.ent.length !== b.ent.length) return a.ent.length > b.ent.length ? 1 : -1;
+    if (a.ent !== b.ent) return a.ent > b.ent ? 1 : -1;
+    var n = Math.max(a.dec.length, b.dec.length);
+    var da = a.dec + new Array(n - a.dec.length + 1).join("0");
+    var db = b.dec + new Array(n - b.dec.length + 1).join("0");
+    if (da === db) return 0;
+    return da > db ? 1 : -1;
+  }
+
+  function comparer(x,y){
+    var A = decompose(x), B = decompose(y);
+    if (A.neg !== B.neg) return A.neg ? -1 : 1;
+    var r = cmpAbs(A,B);
+    return A.neg ? -r : r;
+  }
+
+  function lireNombre(brut){
+    var s = normTexte(brut).replace(/(\d)\s+(\d{3})(?!\d)/g, "$1$2");
+    var re = /\d+(?:[.,]\d+)?/g;
+    var m, dernier = null;
+    while ((m = re.exec(s)) !== null){ dernier = m[0]; }
+    if (dernier === null) return null;
+    return dernier.replace(/,/g, ".");
+  }
+
+  function afficher(id, type, html){
+    var fb = document.getElementById("fb-" + id);
+    fb.className = "feedback " + type;
+    fb.innerHTML = html;
+    fb.hidden = false;
+  }
+
+  function marquer(input, etat){
+    if (!input) return;
+    input.classList.remove("correct","incorrect");
+    if (etat) input.classList.add(etat);
+  }
+
+  function verifierEncadr(id){
+    var it = trouverEncadr(id);
+    if (!it) return;
+    var input = document.getElementById("in-" + id);
+    var brut = input.value;
+    var min = it.gauche;
+    var max = it.droite;
+    if (String(brut).replace(/\s/g,"") === ""){
+      etats[id] = "vide"; marquer(input,"");
+      afficher(id, "warn", "\u26a0\ufe0f \u00c9cris un nombre d\u00e9cimal strictement compris entre <strong>" + min + "</strong> et <strong>" + max + "</strong>.");
+      return;
+    }
+    var val = normalise(brut);
+    if (val === null){
+      etats[id] = "incorrect"; marquer(input, "incorrect");
+      afficher(id, "warn", "\u26a0\ufe0f Saisie non reconnue&nbsp;: &laquo;&nbsp;" + esc(brut) + "&nbsp;&raquo;.");
+      return;
+    }
+    var cMin = comparer(val, normalise(min));
+    var cMax = comparer(val, normalise(max));
+    if (cMin === 0 || cMax === 0){
+      etats[id] = "incorrect"; marquer(input, "incorrect");
+      afficher(id, "warn", "\u26a0\ufe0f Ta r\u00e9ponse est <strong>\u00e9gale \u00e0 une borne</strong>&nbsp;: il faut un nombre <strong><u>strictement</u></strong> compris entre " + min + " et " + max + ".");
+      return;
+    }
+    if (cMin > 0 && cMax < 0){
+      etats[id] = "correct"; marquer(input, "correct");
+      afficher(id, "ok", "\u2705 Bravo&nbsp;! Ce nombre est bien strictement compris entre " + min + " et " + max + ".");
+      return;
+    }
+    etats[id] = "incorrect"; marquer(input, "incorrect");
+    afficher(id, "ko", "\u274c Ce nombre n\u2019est pas compris entre " + min + " et " + max + ".");
+  }
+
+  function verifierPhrase(){
+    var input = document.getElementById("in-phrase");
+    var brut = input.value;
+    if (String(brut).replace(/\s/g,"") === ""){
+      etats.phrase = "vide"; marquer(input,"");
+      afficher("phrase", "warn", "\u26a0\ufe0f Aucune r\u00e9ponse saisie. Recopie les 6 bouts de phrases dans le bon ordre.");
+      return;
+    }
+    var texte = normTexte(brut);
+    var positions = [];
+    var toutesPresentes = true;
+    for (var i = 0; i < FRAGMENTS.length; i++){
+      var pos = texte.indexOf(FRAGMENTS[i]);
+      if (pos === -1){ toutesPresentes = false; positions.push(null); }
+      else { positions.push(pos); }
+    }
+
+    var nbPresentes = positions.filter(function(p){ return p !== null; }).length;
+
+    if (!toutesPresentes){
+      etats.phrase = nbPresentes > 0 ? "partiel" : "incorrect";
+      marquer(input, "incorrect");
+      afficher("phrase", "warn", "\u26a0\ufe0f " + nbPresentes + "&nbsp;/&nbsp;6 bouts de phrase reconnus. Il en manque&nbsp;: v\u00e9rifie que tu as bien recopi\u00e9 chaque \u00e9tiquette.<br>Phrase attendue&nbsp;: <em>" + esc(PHRASE_REF) + "</em>");
+      return;
+    }
+
+    var enOrdre = true;
+    for (var j = 1; j < positions.length; j++){
+      if (positions[j] <= positions[j-1]){ enOrdre = false; break; }
+    }
+
+    var majusculeDebut = /^[A-Z\u00c0-\u00dc]/.test(brut.trim());
+    var ponctuationFin = /[.!?]\s*$/.test(brut.trim());
+
+    if (enOrdre){
+      etats.phrase = "correct"; marquer(input, "correct");
+      if (majusculeDebut && ponctuationFin){
+        afficher("phrase", "ok", "\u2705 Bravo&nbsp;! Les 6 bouts de phrase sont dans le bon ordre, avec majuscule et ponctuation.");
+      } else {
+        var manque = [];
+        if (!majusculeDebut) manque.push("la majuscule en d\u00e9but de phrase");
+        if (!ponctuationFin) manque.push("le point final");
+        afficher("phrase", "ok", "\u2705 Bravo&nbsp;! L\u2019ordre est correct.<br><strong><u>Plus pr\u00e9cis</u></strong>&nbsp;: pense \u00e0 " + manque.join(" et \u00e0 ") + ".");
+      }
+      return;
+    }
+
+    etats.phrase = "partiel"; marquer(input, "incorrect");
+    afficher("phrase", "warn", "\u26a0\ufe0f Les 6 bouts de phrase sont pr\u00e9sents, mais pas dans le bon ordre.<br>Phrase attendue&nbsp;: <em>" + esc(PHRASE_REF) + "</em>");
+  }
+
+  function verifierProbleme(id){
+    var it = trouverProbleme(id);
+    if (!it) return;
+    var input = document.getElementById("in-" + id);
+    var brut = input.value;
+    if (String(brut).replace(/\s/g,"") === ""){
+      etats[id] = "vide"; marquer(input,"");
+      afficher(id, "warn", "\u26a0\ufe0f Aucune r\u00e9ponse saisie. \u00c9cris le r\u00e9sultat en chiffres.");
+      return;
+    }
+    var val = lireNombre(brut);
+    if (val === null){
+      etats[id] = "incorrect"; marquer(input, "incorrect");
+      afficher(id, "warn", "\u26a0\ufe0f Aucun nombre n\u2019a \u00e9t\u00e9 reconnu dans&nbsp;: &laquo;&nbsp;" + esc(brut) + "&nbsp;&raquo;.");
+      return;
+    }
+    if (comparer(val, normalise(it.attendu)) === 0){
+      etats[id] = "correct"; marquer(input, "correct");
+      afficher(id, "ok", "\u2705 Bravo&nbsp;! " + it.ref);
+      return;
+    }
+    etats[id] = "incorrect"; marquer(input, "incorrect");
+    var piste = "";
+    for (var i = 0; i < it.pieges.length; i++){
+      if (comparer(val, normalise(it.pieges[i].val)) === 0){ piste = it.pieges[i].txt + " "; break; }
+    }
+    if (piste === "") piste = "Reprends l\u2019\u00e9nonc\u00e9. ";
+    afficher(id, "ko", "\u274c " + piste + "<br>R\u00e9ponse attendue&nbsp;: <strong><u>" + it.ref + "</u></strong>");
+  }
+
+  function basculerAide(id){
+    var box = document.getElementById("ai-" + id);
+    var it = trouverProbleme(id);
+    if (!box || !it) return;
+    if (box.hidden){ box.innerHTML = "\ud83d\udca1 <strong>Indice&nbsp;:</strong> " + it.aide; box.hidden = false; }
+    else { box.hidden = true; }
+  }
+
+  function palier(pct){
+    if (pct >= 90) return "\ud83d\udfe2 Excellent";
+    if (pct >= 75) return "\ud83d\udfe2 Tr\u00e8s bien";
+    if (pct >= 60) return "\ud83d\udfe1 Ma\u00eetrise satisfaisante";
+    if (pct >= 40) return "\ud83d\udfe0 Ma\u00eetrise fragile";
+    return "\ud83d\udd34 Ma\u00eetrise insuffisante";
+  }
+
+  function verifierTout(){
+    if (occupe) return;
+    occupe = true;
+    window.setTimeout(function(){ occupe = false; }, 350);
+
+    var total = 0, score = 0, recap = "";
+
+    ENCADR.forEach(function(it){
+      verifierEncadr(it.id); total++;
+      if (etats[it.id] === "correct"){ score++; recap += '<span class="rc r-ok">\u2714 ' + it.id + '</span>'; }
+      else { recap += '<span class="rc r-ko">\u2718 ' + it.id + '</span>'; }
+    });
+
+    verifierPhrase(); total++;
+    if (etats.phrase === "correct"){ score++; recap += '<span class="rc r-ok">\u2714 phrase</span>'; }
+    else if (etats.phrase === "partiel"){ recap += '<span class="rc r-mid">\u25d0 phrase</span>'; }
+    else { recap += '<span class="rc r-ko">\u2718 phrase</span>'; }
+
+    PROBLEMES.forEach(function(it){
+      verifierProbleme(it.id); total++;
+      if (etats[it.id] === "correct"){ score++; recap += '<span class="rc r-ok">\u2714 ' + it.id + '</span>'; }
+      else { recap += '<span class="rc r-ko">\u2718 ' + it.id + '</span>'; }
+    });
+
+    if (score < 0) score = 0;
+    if (score > total) score = total;
+    var pct = Math.round((score/total)*100);
+    var bilan = document.getElementById("bilan");
+    bilan.innerHTML =
+      '<div class="score">Score&nbsp;: ' + score + '\u2009/\u2009' + total + ' (' + pct + '&nbsp;%)</div>' +
+      '<div class="palier">' + palier(pct) + '</div>' +
+      '<div class="recap">' + recap + '</div>' +
+      '<div class="legende">\u2714 correct &nbsp;\u2022&nbsp; \u25d0 partiel &nbsp;\u2022&nbsp; \u2718 incorrect ou non r\u00e9pondu.</div>';
+    bilan.hidden = false;
+  }
+
+  function basculerCorrection(){
+    var box = document.getElementById("correction");
+    var btn = document.getElementById("btn-corr");
+    if (box.hidden){
+      box.innerHTML =
+        "<h2>Correction</h2>" +
+        "<h3>1. Encadrements</h3><ul>" +
+        "<li>147 &lt; <strong><u>147,5</u></strong> &lt; 148</li>" +
+        "<li>51 &gt; <strong><u>51,5</u></strong> &gt; 52</li>" +
+        "<li>11 &gt; <strong><u>11,5</u></strong> &gt; 12</li>" +
+        "<li>145 &lt; <strong><u>145,5</u></strong> &lt; 146</li>" +
+        "</ul>" +
+        "<h3>2. Phrase de Sam</h3><p>" + PHRASE_REF + "</p>" +
+        "<h3>3. Les \u0153ufs du supermarch\u00e9</h3><p>" + trouverProbleme("p1").ref + "<br>" + trouverProbleme("p2").ref + "</p>";
+      box.hidden = false;
+      btn.textContent = "Masquer la correction";
+    } else {
+      box.hidden = true;
+      btn.textContent = "Voir la correction";
+    }
+  }
+
+  function reinitialiser(){
+    ENCADR.forEach(function(it){
+      var input = document.getElementById("in-" + it.id);
+      input.value = ""; input.classList.remove("correct","incorrect");
+      var fb = document.getElementById("fb-" + it.id);
+      fb.hidden = true; fb.innerHTML = ""; fb.className = "feedback";
+      etats[it.id] = "vide";
+    });
+
+    var inPhrase = document.getElementById("in-phrase");
+    inPhrase.value = ""; inPhrase.classList.remove("correct","incorrect");
+    var fbPhrase = document.getElementById("fb-phrase");
+    fbPhrase.hidden = true; fbPhrase.innerHTML = ""; fbPhrase.className = "feedback";
+    etats.phrase = "vide";
+
+    PROBLEMES.forEach(function(it){
+      var input = document.getElementById("in-" + it.id);
+      input.value = ""; input.classList.remove("correct","incorrect");
+      var fb = document.getElementById("fb-" + it.id);
+      fb.hidden = true; fb.innerHTML = ""; fb.className = "feedback";
+      var ai = document.getElementById("ai-" + it.id);
+      if (ai){ ai.hidden = true; ai.innerHTML = ""; }
+      etats[it.id] = "vide";
+    });
+
+    var bilan = document.getElementById("bilan");
+    bilan.hidden = true; bilan.innerHTML = "";
+    var corr = document.getElementById("correction");
+    corr.hidden = true; corr.innerHTML = "";
+    document.getElementById("btn-corr").textContent = "Voir la correction";
+    occupe = false;
+  }
+
+  function init(){
+    ENCADR.forEach(function(it){ etats[it.id] = "vide"; });
+    etats.phrase = "vide";
+    PROBLEMES.forEach(function(it){ etats[it.id] = "vide"; });
+
+    var bOk = document.querySelectorAll("[data-ok]");
+    for (var a = 0; a < bOk.length; a++){
+      bOk[a].addEventListener("click", function(){
+        var id = this.getAttribute("data-ok");
+        if (id === "phrase") verifierPhrase();
+        else if (trouverEncadr(id)) verifierEncadr(id);
+        else if (trouverProbleme(id)) verifierProbleme(id);
+      });
+    }
+    var bAide = document.querySelectorAll("[data-aide]");
+    for (var b = 0; b < bAide.length; b++){
+      bAide[b].addEventListener("click", function(){ basculerAide(this.getAttribute("data-aide")); });
+    }
+    document.getElementById("in-phrase").addEventListener("keydown", function(ev){
+      if (ev.key === "Enter" && ev.ctrlKey){ ev.preventDefault(); verifierPhrase(); }
+    });
+    var champs = document.querySelectorAll('input[type="text"]');
+    for (var e = 0; e < champs.length; e++){
+      champs[e].addEventListener("keydown", function(ev){
+        if (ev.key === "Enter"){
+          ev.preventDefault();
+          var id = this.id.replace(/^in-/,"");
+          if (trouverEncadr(id)) verifierEncadr(id);
+          else if (trouverProbleme(id)) verifierProbleme(id);
+        }
+      });
+    }
+    document.getElementById("btn-tout").addEventListener("click", verifierTout);
+    document.getElementById("btn-corr").addEventListener("click", basculerCorrection);
+    document.getElementById("btn-reset").addEventListener("click", reinitialiser);
+  }
+
+  if (document.readyState === "loading"){
+    document.addEventListener("DOMContentLoaded", init);
+  } else {
+    init();
+  }
+})();
+</script>
+</body>
+</html>
