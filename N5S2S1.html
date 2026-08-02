@@ -1,0 +1,370 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Rituel &mdash; 5e &mdash; Semaine 2 S&eacute;ance 1 &mdash; Calcul mental</title>
+<style>
+*{box-sizing:border-box}
+html,body{margin:0;padding:0}
+body{background:#fffdf7;font-family:Arial,Helvetica,sans-serif;color:#243238;line-height:1.6;padding:14px;overflow-x:hidden}
+.bulle{position:fixed;border-radius:50%;background:#3ba5b8;opacity:.12;pointer-events:none;z-index:0}
+.b1{width:190px;height:190px;top:-70px;left:-70px}
+.b2{width:130px;height:130px;top:-45px;right:-45px}
+.b3{width:160px;height:160px;bottom:-60px;left:-55px}
+.b4{width:110px;height:110px;bottom:-40px;right:-35px}
+.wrap{position:relative;z-index:1;max-width:920px;margin:0 auto}
+.tete{display:flex;flex-wrap:wrap;align-items:center;gap:10px;margin-bottom:14px}
+.etq{display:inline-block;padding:7px 16px;border-radius:8px;color:#fff;font-weight:700;font-size:.95rem}
+.etq-sem{background:#8fd3e8;color:#123f4a}
+.etq-sea{background:#3ba5b8}
+.etq-rit{background:#1f7a8c;font-family:Georgia,"Times New Roman",serif;margin-left:auto}
+h1{font-size:clamp(1.3rem,4.5vw,2rem);font-weight:900;color:#1f7a8c;margin:6px 0 18px;line-height:1.3}
+.bloc{position:relative;border:2px solid #3ba5b8;border-radius:12px;background:#fff;padding:28px 18px 20px;margin-bottom:18px}
+.onglet{position:absolute;top:-17px;left:18px;background:#8fd3e8;color:#123f4a;font-weight:700;font-size:.95rem;padding:5px 18px;border-radius:8px}
+.tete-ex{display:flex;align-items:flex-start;gap:12px;margin-bottom:18px;min-width:0}
+.pastille{flex:0 0 auto;width:34px;height:34px;border-radius:50%;background:#1f7a8c;color:#fff;font-weight:700;font-size:1rem;display:flex;align-items:center;justify-content:center}
+.consigne{margin:4px 0 0;font-weight:700;text-decoration:underline;color:#1f7a8c;font-size:clamp(.95rem,2.6vw,1.05rem);min-width:0;overflow-wrap:break-word}
+.tableau-scroll{overflow-x:auto;margin-bottom:8px}
+.tableau-calc{border-collapse:collapse;width:100%;min-width:640px}
+.tableau-calc th{background:#8fd3e8;color:#123f4a;font-weight:700;padding:10px 8px;border:1px solid #b9dfe8;font-size:.85rem;text-align:center}
+.tableau-calc td{border:1px solid #dceff3;background:#fff;padding:8px 6px;text-align:center;vertical-align:middle}
+.op{display:flex;flex-direction:column;align-items:center;gap:6px;font-weight:700;font-size:.92rem}
+.tableau-calc input[type="text"]{width:90px;max-width:95%;padding:8px 6px;font-family:Arial,Helvetica,sans-serif;font-size:.95rem;font-weight:700;text-align:center;color:#1f7a8c;background:#f7fcfd;border:1px solid #b9dfe8;border-bottom:2px dotted #3ba5b8;border-radius:6px;min-height:40px}
+.tableau-calc input[type="text"]:focus{outline:2px solid #3ba5b8;outline-offset:1px}
+.tableau-calc input.correct{border-color:#2e8b57;background:#effaf3;color:#2e8b57}
+.tableau-calc input.incorrect{border-color:#c0392b;background:#fdefee;color:#c0392b}
+.actions{display:flex;flex-wrap:wrap;gap:8px}
+button{font-family:inherit;font-size:.92rem;font-weight:700;min-height:44px;padding:10px 16px;border:0;border-radius:8px;cursor:pointer;background:#3ba5b8;color:#fff;line-height:1.2}
+button:hover{background:#1f7a8c}
+button.sec{background:#fff;color:#1f7a8c;border:2px solid #3ba5b8}
+button.sec:hover{background:#eaf7fa}
+.barre{display:flex;flex-wrap:wrap;gap:10px;margin:18px 0}
+.barre button{flex:1 1 190px}
+.correction{border:2px dashed #3ba5b8;border-radius:12px;background:#fff;padding:16px 18px;margin-bottom:18px;font-size:clamp(.9rem,2.5vw,1rem);line-height:1.8}
+.correction h2{margin:0 0 8px;font-size:1.05rem;color:#1f7a8c}
+.correction table{border-collapse:collapse;width:100%;margin:10px 0;font-size:.85rem}
+.correction table th,.correction table td{border:1px solid #dceff3;padding:6px 8px;text-align:center}
+.correction table th{background:#f4fafb;color:#1f7a8c}
+.bilan{border:2px solid #1f7a8c;border-radius:12px;background:#fff;padding:16px 18px;margin-bottom:18px;font-size:.92rem;line-height:1.8}
+.bilan .score{font-size:clamp(1.05rem,3.2vw,1.25rem);font-weight:900;color:#1f7a8c}
+.bilan .palier{font-weight:700;margin-top:4px}
+.legende{margin-top:10px;font-size:.85rem;color:#4d6169}
+@media (max-width:480px){
+  body{padding:10px}
+  .bloc{padding:26px 12px 16px}
+  .etq{font-size:.85rem;padding:6px 12px}
+  .etq-rit{margin-left:0}
+  .tableau-calc input[type="text"]{width:64px}
+}
+</style>
+</head>
+<body>
+<div class="bulle b1"></div><div class="bulle b2"></div><div class="bulle b3"></div><div class="bulle b4"></div>
+
+<main class="wrap">
+  <div class="tete">
+    <span class="etq etq-sem">Semaine 2</span>
+    <span class="etq etq-sea">S&eacute;ance 1</span>
+    <span class="etq etq-rit">Rituel</span>
+  </div>
+
+  <h1>Calcul mental</h1>
+
+  <section class="bloc">
+    <span class="onglet">Calcul</span>
+
+    <div class="tete-ex">
+      <span class="pastille">1</span>
+      <p class="consigne">Effectue les calculs suivants&nbsp;:</p>
+    </div>
+
+    <div class="tableau-scroll">
+      <table class="tableau-calc">
+        <tr><th>Table de 6</th><th>Compl&eacute;ment &agrave; une dizaine</th><th>Table de 9</th><th>Multiplier par 10, 100, 1000</th></tr>
+        <tr><td>
+      <div class="op">
+        <span>6 × 7 =</span>
+        <input type="text" id="in-a1" inputmode="decimal" autocomplete="off" aria-label="Résultat de 6 × 7">
+      </div>
+    </td><td>
+      <div class="op">
+        <span>20 &minus; 16 =</span>
+        <input type="text" id="in-b1" inputmode="decimal" autocomplete="off" aria-label="Résultat de 20 &minus; 16">
+      </div>
+    </td><td>
+      <div class="op">
+        <span>9 × 9 =</span>
+        <input type="text" id="in-c1" inputmode="decimal" autocomplete="off" aria-label="Résultat de 9 × 9">
+      </div>
+    </td><td>
+      <div class="op">
+        <span>8,648 × 10 =</span>
+        <input type="text" id="in-d1" inputmode="decimal" autocomplete="off" aria-label="Résultat de 8,648 × 10">
+      </div>
+    </td></tr><tr><td>
+      <div class="op">
+        <span>6 × 6 =</span>
+        <input type="text" id="in-a2" inputmode="decimal" autocomplete="off" aria-label="Résultat de 6 × 6">
+      </div>
+    </td><td>
+      <div class="op">
+        <span>50 &minus; 34 =</span>
+        <input type="text" id="in-b2" inputmode="decimal" autocomplete="off" aria-label="Résultat de 50 &minus; 34">
+      </div>
+    </td><td>
+      <div class="op">
+        <span>10 × 9 =</span>
+        <input type="text" id="in-c2" inputmode="decimal" autocomplete="off" aria-label="Résultat de 10 × 9">
+      </div>
+    </td><td>
+      <div class="op">
+        <span>97,4 × 1 000 =</span>
+        <input type="text" id="in-d2" inputmode="decimal" autocomplete="off" aria-label="Résultat de 97,4 × 1 000">
+      </div>
+    </td></tr><tr><td>
+      <div class="op">
+        <span>6 × 3 =</span>
+        <input type="text" id="in-a3" inputmode="decimal" autocomplete="off" aria-label="Résultat de 6 × 3">
+      </div>
+    </td><td>
+      <div class="op">
+        <span>20 &minus; 8 =</span>
+        <input type="text" id="in-b3" inputmode="decimal" autocomplete="off" aria-label="Résultat de 20 &minus; 8">
+      </div>
+    </td><td>
+      <div class="op">
+        <span>9 × 11 =</span>
+        <input type="text" id="in-c3" inputmode="decimal" autocomplete="off" aria-label="Résultat de 9 × 11">
+      </div>
+    </td><td>
+      <div class="op">
+        <span>91,072 × 1 000 =</span>
+        <input type="text" id="in-d3" inputmode="decimal" autocomplete="off" aria-label="Résultat de 91,072 × 1 000">
+      </div>
+    </td></tr><tr><td>
+      <div class="op">
+        <span>6 × 8 =</span>
+        <input type="text" id="in-a4" inputmode="decimal" autocomplete="off" aria-label="Résultat de 6 × 8">
+      </div>
+    </td><td>
+      <div class="op">
+        <span>60 &minus; 11 =</span>
+        <input type="text" id="in-b4" inputmode="decimal" autocomplete="off" aria-label="Résultat de 60 &minus; 11">
+      </div>
+    </td><td>
+      <div class="op">
+        <span>4 × 9 =</span>
+        <input type="text" id="in-c4" inputmode="decimal" autocomplete="off" aria-label="Résultat de 4 × 9">
+      </div>
+    </td><td>
+      <div class="op">
+        <span>596,4 × 100 =</span>
+        <input type="text" id="in-d4" inputmode="decimal" autocomplete="off" aria-label="Résultat de 596,4 × 100">
+      </div>
+    </td></tr>
+      </table>
+    </div>
+
+  </section>
+
+  <div class="barre">
+    <button type="button" id="btn-tout">V&eacute;rifier tout</button>
+    <button type="button" class="sec" id="btn-corr">Voir la correction</button>
+    <button type="button" class="sec" id="btn-reset">R&eacute;initialiser</button>
+  </div>
+
+  <div class="correction" id="correction" hidden></div>
+  <div class="bilan" id="bilan" hidden></div>
+</main>
+
+<script>
+(function(){
+  "use strict";
+
+  var ITEMS = [
+    { id:"a1", a:"6", b:"7",  signe:"\u00d7", res:"42" },
+    { id:"a2", a:"6", b:"6",  signe:"\u00d7", res:"36" },
+    { id:"a3", a:"6", b:"3",  signe:"\u00d7", res:"18" },
+    { id:"a4", a:"6", b:"8",  signe:"\u00d7", res:"48" },
+
+    { id:"b1", a:"20", b:"16", signe:"-", res:"4" },
+    { id:"b2", a:"50", b:"34", signe:"-", res:"16" },
+    { id:"b3", a:"20", b:"8",  signe:"-", res:"12" },
+    { id:"b4", a:"60", b:"11", signe:"-", res:"49" },
+
+    { id:"c1", a:"9",  b:"9",  signe:"\u00d7", res:"81" },
+    { id:"c2", a:"10", b:"9",  signe:"\u00d7", res:"90" },
+    { id:"c3", a:"9",  b:"11", signe:"\u00d7", res:"99" },
+    { id:"c4", a:"4",  b:"9",  signe:"\u00d7", res:"36" },
+
+    { id:"d1", a:"8,648",  b:"10",   signe:"\u00d7", res:"86,48" },
+    { id:"d2", a:"97,4",   b:"1000", signe:"\u00d7", res:"97400" },
+    { id:"d3", a:"91,072", b:"1000", signe:"\u00d7", res:"91072" },
+    { id:"d4", a:"596,4",  b:"100",  signe:"\u00d7", res:"59640" }
+  ];
+
+  var etats = {};
+  var occupe = false;
+
+  function trouver(id){
+    for (var i = 0; i < ITEMS.length; i++){ if (ITEMS[i].id === id) return ITEMS[i]; }
+    return null;
+  }
+
+  function normalise(brut){
+    var s = String(brut).replace(/[\s\u00a0\u202f\u2009]/g, "");
+    s = s.replace(/[\u2212\u2013\u2014]/g, "-").replace(/,/g, ".");
+    if (s === "") return null;
+    if (!/^-?(\d+(\.\d*)?|\.\d+)$/.test(s)) return null;
+    return s;
+  }
+
+  function decompose(s){
+    var neg = false;
+    if (s.charAt(0) === "-"){ neg = true; s = s.slice(1); }
+    var p = s.split(".");
+    var ent = p[0] === "" ? "0" : p[0];
+    var dec = p.length > 1 ? p[1] : "";
+    ent = ent.replace(/^0+(?=\d)/,"");
+    dec = dec.replace(/0+$/,"");
+    if (ent === "0" && dec === "") neg = false;
+    return { neg:neg, ent:ent, dec:dec };
+  }
+
+  function cmpAbs(a,b){
+    if (a.ent.length !== b.ent.length) return a.ent.length > b.ent.length ? 1 : -1;
+    if (a.ent !== b.ent) return a.ent > b.ent ? 1 : -1;
+    var n = Math.max(a.dec.length, b.dec.length);
+    var da = a.dec + new Array(n - a.dec.length + 1).join("0");
+    var db = b.dec + new Array(n - b.dec.length + 1).join("0");
+    if (da === db) return 0;
+    return da > db ? 1 : -1;
+  }
+
+  function comparer(x,y){
+    var A = decompose(x), B = decompose(y);
+    if (A.neg !== B.neg) return A.neg ? -1 : 1;
+    var r = cmpAbs(A,B);
+    return A.neg ? -r : r;
+  }
+
+  function marquer(input, etat){
+    if (!input) return;
+    input.classList.remove("correct","incorrect");
+    if (etat) input.classList.add(etat);
+  }
+
+  function verifierItem(it){
+    var input = document.getElementById("in-" + it.id);
+    var brut = input.value;
+    if (String(brut).replace(/\s/g,"") === ""){
+      etats[it.id] = "vide"; marquer(input,"");
+      return;
+    }
+    var val = normalise(brut);
+    if (val === null){
+      etats[it.id] = "incorrect"; marquer(input,"incorrect");
+      return;
+    }
+    if (comparer(val, normalise(it.res)) === 0){
+      etats[it.id] = "correct"; marquer(input,"correct");
+    } else {
+      etats[it.id] = "incorrect"; marquer(input,"incorrect");
+    }
+  }
+
+  function palier(pct){
+    if (pct >= 90) return "\ud83d\udfe2 Excellent";
+    if (pct >= 75) return "\ud83d\udfe2 Tr\u00e8s bien";
+    if (pct >= 60) return "\ud83d\udfe1 Ma\u00eetrise satisfaisante";
+    if (pct >= 40) return "\ud83d\udfe0 Ma\u00eetrise fragile";
+    return "\ud83d\udd34 Ma\u00eetrise insuffisante";
+  }
+
+  function verifierTout(){
+    if (occupe) return;
+    occupe = true;
+    window.setTimeout(function(){ occupe = false; }, 350);
+
+    var total = ITEMS.length, score = 0;
+    ITEMS.forEach(function(it){
+      verifierItem(it);
+      if (etats[it.id] === "correct") score++;
+    });
+    var pct = Math.round((score/total)*100);
+    var bilan = document.getElementById("bilan");
+    bilan.innerHTML =
+      '<div class="score">Score&nbsp;: ' + score + '\u2009/\u2009' + total + ' (' + pct + '&nbsp;%)</div>' +
+      '<div class="palier">' + palier(pct) + '</div>' +
+      '<div class="legende">Les cases rouges indiquent les op\u00e9rations \u00e0 revoir. Utilise &laquo;&nbsp;Voir la correction&nbsp;&raquo; pour v\u00e9rifier chaque r\u00e9sultat.</div>';
+    bilan.hidden = false;
+  }
+
+  function basculerCorrection(){
+    var box = document.getElementById("correction");
+    var btn = document.getElementById("btn-corr");
+    if (box.hidden){
+      function ligne(ids){
+        return "<tr>" + ids.map(function(id){
+          var it = trouver(id);
+          return "<td>" + it.a + " " + it.signe + " " + it.b + " = <strong><u>" + it.res + "</u></strong></td>";
+        }).join("") + "</tr>";
+      }
+      box.innerHTML =
+        "<h2>Correction</h2>" +
+        "<table><tr><th>Table de 6</th><th>Compl\u00e9ment \u00e0 une dizaine</th><th>Table de 9</th><th>Multiplier par 10, 100, 1000</th></tr>" +
+        ligne(["a1","b1","c1","d1"]) +
+        ligne(["a2","b2","c2","d2"]) +
+        ligne(["a3","b3","c3","d3"]) +
+        ligne(["a4","b4","c4","d4"]) +
+        "</table>";
+      box.hidden = false;
+      btn.textContent = "Masquer la correction";
+    } else {
+      box.hidden = true;
+      btn.textContent = "Voir la correction";
+    }
+  }
+
+  function reinitialiser(){
+    ITEMS.forEach(function(it){
+      var input = document.getElementById("in-" + it.id);
+      input.value = ""; input.disabled = false; input.readOnly = false;
+      input.classList.remove("correct","incorrect");
+      etats[it.id] = "vide";
+    });
+    var bilan = document.getElementById("bilan");
+    bilan.hidden = true; bilan.innerHTML = "";
+    var corr = document.getElementById("correction");
+    corr.hidden = true; corr.innerHTML = "";
+    document.getElementById("btn-corr").textContent = "Voir la correction";
+    occupe = false;
+  }
+
+  function init(){
+    ITEMS.forEach(function(it){ etats[it.id] = "vide"; });
+    var champs = document.querySelectorAll('input[type="text"]');
+    for (var i = 0; i < champs.length; i++){
+      champs[i].addEventListener("keydown", function(ev){
+        if (ev.key === "Enter"){
+          ev.preventDefault();
+          var it = trouver(this.id.replace("in-",""));
+          if (it) verifierItem(it);
+        }
+      });
+    }
+    document.getElementById("btn-tout").addEventListener("click", verifierTout);
+    document.getElementById("btn-corr").addEventListener("click", basculerCorrection);
+    document.getElementById("btn-reset").addEventListener("click", reinitialiser);
+  }
+
+  if (document.readyState === "loading"){
+    document.addEventListener("DOMContentLoaded", init);
+  } else {
+    init();
+  }
+})();
+</script>
+</body>
+</html>
