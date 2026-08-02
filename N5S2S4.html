@@ -1,0 +1,459 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Rituel &mdash; 5e &mdash; Bilan Semaine 2</title>
+<style>
+*{box-sizing:border-box}
+html,body{margin:0;padding:0}
+body{background:#fffdf7;font-family:Arial,Helvetica,sans-serif;color:#243238;line-height:1.6;padding:14px;overflow-x:hidden}
+.bulle{position:fixed;border-radius:50%;background:#3ba5b8;opacity:.12;pointer-events:none;z-index:0}
+.b1{width:190px;height:190px;top:-70px;left:-70px}
+.b2{width:130px;height:130px;top:-45px;right:-45px}
+.b3{width:160px;height:160px;bottom:-60px;left:-55px}
+.b4{width:110px;height:110px;bottom:-40px;right:-35px}
+.wrap{position:relative;z-index:1;max-width:880px;margin:0 auto}
+.tete{display:flex;flex-wrap:wrap;align-items:center;gap:10px;margin-bottom:14px}
+.etq{display:inline-block;padding:7px 16px;border-radius:8px;color:#fff;font-weight:700;font-size:.95rem}
+.etq-sem{background:#8fd3e8;color:#123f4a}
+.etq-sea{background:#3ba5b8}
+.etq-rit{background:#1f7a8c;font-family:Georgia,"Times New Roman",serif;margin-left:auto}
+h1{font-size:clamp(1.3rem,4.5vw,2rem);font-weight:900;color:#1f7a8c;margin:6px 0 18px;line-height:1.3}
+.bloc{position:relative;border:2px solid #3ba5b8;border-radius:12px;background:#fff;padding:28px 18px 20px;margin-bottom:18px}
+.onglet{position:absolute;top:-17px;left:18px;background:#8fd3e8;color:#123f4a;font-weight:700;font-size:.95rem;padding:5px 18px;border-radius:8px}
+.tete-ex{display:flex;align-items:flex-start;gap:12px;margin:22px 0 14px;min-width:0}
+.pastille{flex:0 0 auto;width:34px;height:34px;border-radius:50%;background:#1f7a8c;color:#fff;font-weight:700;font-size:1rem;display:flex;align-items:center;justify-content:center}
+.consigne{margin:4px 0 0;font-weight:700;text-decoration:underline;color:#1f7a8c;font-size:clamp(.95rem,2.6vw,1.05rem);min-width:0;overflow-wrap:break-word}
+.item{padding:12px 0;border-bottom:1px dashed #dceff3}
+.item:last-of-type{border-bottom:0}
+.q{font-size:clamp(1rem,3vw,1.15rem);font-weight:700;margin:0 0 8px;color:#243238;overflow-wrap:break-word}
+.op-verticale{font-family:'Courier New',monospace;font-size:clamp(1rem,3vw,1.15rem);font-weight:700;color:#243238;white-space:pre;line-height:1.5;text-align:right;display:inline-block;margin-bottom:8px}
+.ligne{display:flex;flex-wrap:wrap;align-items:center;gap:10px;min-width:0}
+.champ{flex:1 1 200px;min-width:0}
+input[type="text"]{width:100%;min-width:0;padding:9px 8px;font-family:Arial,Helvetica,sans-serif;font-size:1rem;font-weight:700;color:#1f7a8c;background:#f7fcfd;border:1px solid #b9dfe8;border-bottom:2px dotted #3ba5b8;border-radius:6px;min-height:44px;text-align:center;max-width:260px}
+.correct{border-color:#2e8b57;background:#effaf3;color:#2e8b57}
+.incorrect{border-color:#c0392b;background:#fdefee;color:#c0392b}
+.actions{display:flex;flex-wrap:wrap;gap:8px}
+button{font-family:inherit;font-size:.92rem;font-weight:700;min-height:44px;padding:10px 16px;border:0;border-radius:8px;cursor:pointer;background:#3ba5b8;color:#fff;line-height:1.2}
+button:hover{background:#1f7a8c}
+button.sec{background:#fff;color:#1f7a8c;border:2px solid #3ba5b8}
+button.sec:hover{background:#eaf7fa}
+.feedback{margin:10px 0 0;padding:12px 14px;border-left:5px solid #3ba5b8;border-radius:6px;background:#f4fafb;font-size:clamp(.9rem,2.5vw,1rem);line-height:1.75;overflow-wrap:break-word}
+.feedback.ok{border-left-color:#2e8b57;background:#effaf3;color:#1e6b40}
+.feedback.ko{border-left-color:#c0392b;background:#fdefee;color:#96291d}
+.feedback.warn{border-left-color:#c9820a;background:#fff8ea;color:#8a5b04}
+.cadre{border:1px solid #dceff3;border-radius:8px;background:#fbfeff;padding:12px;margin:14px 0;text-align:center}
+.cadre img{width:100%;height:auto;max-width:320px;border-radius:6px}
+.barre{display:flex;flex-wrap:wrap;gap:10px;margin:18px 0}
+.barre button{flex:1 1 190px}
+.correction{border:2px dashed #3ba5b8;border-radius:12px;background:#fff;padding:16px 18px;margin-bottom:18px;font-size:clamp(.9rem,2.5vw,1rem);line-height:1.8}
+.correction h2{margin:0 0 8px;font-size:1.05rem;color:#1f7a8c}
+.correction h3{margin:14px 0 4px;font-size:.98rem;color:#1f7a8c}
+.bilan{border:2px solid #1f7a8c;border-radius:12px;background:#fff;padding:16px 18px;margin-bottom:18px;font-size:.92rem;line-height:1.8}
+.bilan .score{font-size:clamp(1.05rem,3.2vw,1.25rem);font-weight:900;color:#1f7a8c}
+.bilan .palier{font-weight:700;margin-top:4px}
+.recap{display:flex;flex-wrap:wrap;gap:8px;margin-top:10px}
+.recap span{display:inline-flex;align-items:center;gap:6px;padding:6px 11px;border-radius:8px;background:#f4fafb;font-weight:700;font-size:.9rem;border:1px solid #dceff3}
+.recap .r-ok{color:#2e8b57}
+.recap .r-ko{color:#c0392b}
+.legende{margin-top:10px;font-size:.85rem;color:#4d6169}
+@media (max-width:768px){.champ{flex:1 1 100%}.actions{width:100%}.actions button{flex:1 1 auto}}
+@media (max-width:480px){body{padding:10px}.bloc{padding:26px 12px 16px}.etq{font-size:.85rem;padding:6px 12px}.etq-rit{margin-left:0}input[type="text"]{max-width:100%}.recap span{font-size:.85rem}}
+</style>
+</head>
+<body>
+<div class="bulle b1"></div><div class="bulle b2"></div><div class="bulle b3"></div><div class="bulle b4"></div>
+
+<main class="wrap">
+  <div class="tete">
+    <span class="etq etq-sem">Semaine 2</span>
+    <span class="etq etq-sea">S&eacute;ance 4</span>
+    <span class="etq etq-rit">Rituel</span>
+  </div>
+
+  <h1>Bilan de la semaine 2</h1>
+
+  <section class="bloc">
+    <span class="onglet">Bilan</span>
+
+    <div class="tete-ex">
+      <span class="pastille">1</span>
+      <p class="consigne">Calcule les diff&eacute;rences suivantes&nbsp;:</p>
+    </div>
+
+    <div class="item">
+      <p class="op-verticale">125,8
+&minus; 45,6
+&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;</p>
+      <div class="ligne">
+        <span class="champ"><input type="text" id="in-d1" inputmode="decimal" autocomplete="off" aria-label="Résultat"></span>
+        <span class="actions"><button type="button" data-ok="d1">OK</button></span>
+      </div>
+      <div class="feedback" id="fb-d1" hidden></div>
+    </div>
+
+    <div class="item">
+      <p class="op-verticale">  90
+&minus; 52,3
+&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;</p>
+      <div class="ligne">
+        <span class="champ"><input type="text" id="in-d2" inputmode="decimal" autocomplete="off" aria-label="Résultat"></span>
+        <span class="actions"><button type="button" data-ok="d2">OK</button></span>
+      </div>
+      <div class="feedback" id="fb-d2" hidden></div>
+    </div>
+
+    <div class="tete-ex">
+      <span class="pastille">2</span>
+      <p class="consigne">&Eacute;cris en chiffres le nombre suivant&nbsp;:</p>
+    </div>
+
+    <div class="item">
+      <p class="q">Onze milliards cent huit millions sept cent vingt mille douze&nbsp;:</p>
+      <div class="ligne">
+        <span class="champ"><input type="text" id="in-n1" autocomplete="off" aria-label="Onze milliards cent huit millions sept cent vingt mille douze&nbsp;:"></span>
+        <span class="actions"><button type="button" data-ok="n1">OK</button></span>
+      </div>
+      <div class="feedback" id="fb-n1" hidden></div>
+    </div>
+
+    <div class="tete-ex">
+      <span class="pastille">3</span>
+      <p class="consigne">Compl&egrave;te &agrave; l&rsquo;aide de la figure suivante&nbsp;:</p>
+    </div>
+
+    <div class="cadre">
+      <img src="data:image/png;base64,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" alt="Segment AB tracé entre deux points A et B">
+    </div>
+
+    <div class="item">
+      <p class="q">A et B sont&hellip;</p>
+      <div class="ligne">
+        <span class="champ"><input type="text" id="in-v1" autocomplete="off" aria-label="A et B sont&hellip;"></span>
+        <span class="actions"><button type="button" data-ok="v1">OK</button></span>
+      </div>
+      <div class="feedback" id="fb-v1" hidden></div>
+    </div>
+
+    <div class="item">
+      <p class="q">[AB] est&hellip;</p>
+      <div class="ligne">
+        <span class="champ"><input type="text" id="in-v2" autocomplete="off" aria-label="[AB] est&hellip;"></span>
+        <span class="actions"><button type="button" data-ok="v2">OK</button></span>
+      </div>
+      <div class="feedback" id="fb-v2" hidden></div>
+    </div>
+
+    <div class="item">
+      <p class="q">(AB) est&hellip;</p>
+      <div class="ligne">
+        <span class="champ"><input type="text" id="in-v3" autocomplete="off" aria-label="(AB) est&hellip;"></span>
+        <span class="actions"><button type="button" data-ok="v3">OK</button></span>
+      </div>
+      <div class="feedback" id="fb-v3" hidden></div>
+    </div>
+
+    <div class="item">
+      <p class="q">[AB) est&hellip;</p>
+      <div class="ligne">
+        <span class="champ"><input type="text" id="in-v4" autocomplete="off" aria-label="[AB) est&hellip;"></span>
+        <span class="actions"><button type="button" data-ok="v4">OK</button></span>
+      </div>
+      <div class="feedback" id="fb-v4" hidden></div>
+    </div>
+
+  </section>
+
+  <div class="barre">
+    <button type="button" id="btn-tout">V&eacute;rifier tout</button>
+    <button type="button" class="sec" id="btn-corr">Voir la correction</button>
+    <button type="button" class="sec" id="btn-reset">R&eacute;initialiser</button>
+  </div>
+
+  <div class="correction" id="correction" hidden></div>
+  <div class="bilan" id="bilan" hidden></div>
+</main>
+
+<script>
+(function(){
+  "use strict";
+
+  var DIFFERENCES = [
+    { id:"d1", attendu:"80,2", ref:"125,8 \u2212 45,6 = <strong><u>80,2</u></strong>." },
+    { id:"d2", attendu:"37,7", ref:"90 \u2212 52,3 = <strong><u>37,7</u></strong>." }
+  ];
+
+  var GRAND_NOMBRE = { id:"n1", attendu:"11108720012",
+    ref:"Onze milliards cent huit millions sept cent vingt mille douze s\u2019\u00e9crit <strong><u>11 108 720 012</u></strong>." };
+
+  var VOCAB = [
+    { id:"v1", cle:["point"], ref:"A et B sont <strong>des points</strong>." },
+    { id:"v2", cle:["segment"], ref:"[AB] est <strong>un segment</strong>." },
+    { id:"v3", cle:["droite"], excluCle:["demi"], ref:"(AB) est <strong>une droite</strong>." },
+    { id:"v4", cle:["demi-droite","demidroite","demi droite"], ref:"[AB) est <strong>une demi-droite</strong>." }
+  ];
+
+  var etats = {};
+  var occupe = false;
+
+  function esc(txt){
+    var d = document.createElement("div");
+    d.textContent = String(txt);
+    return d.innerHTML;
+  }
+
+  function normTexte(s){
+    return String(s).toLowerCase()
+      .replace(/[\u00e9\u00e8\u00ea\u00eb]/g,"e")
+      .replace(/[\u00a0\u202f\u2009]/g," ").replace(/\s+/g," ").trim();
+  }
+
+  function normalise(brut){
+    var s = String(brut).replace(/[\s\u00a0\u202f\u2009]/g, "");
+    s = s.replace(/[\u2212\u2013\u2014]/g, "-").replace(/,/g, ".");
+    if (s === "") return null;
+    if (!/^-?(\d+(\.\d*)?|\.\d+)$/.test(s)) return null;
+    return s;
+  }
+
+  function normEntier(brut){
+    var s = String(brut).replace(/[\s\u00a0\u202f\u2009]/g, "");
+    if (s === "") return null;
+    if (!/^-?\d+$/.test(s)) return null;
+    return s.replace(/^(-?)0+(?=\d)/, "$1");
+  }
+
+  function decompose(s){
+    var neg = false;
+    if (s.charAt(0) === "-"){ neg = true; s = s.slice(1); }
+    var p = s.split(".");
+    var ent = p[0] === "" ? "0" : p[0];
+    var dec = p.length > 1 ? p[1] : "";
+    ent = ent.replace(/^0+(?=\d)/,"");
+    dec = dec.replace(/0+$/,"");
+    if (ent === "0" && dec === "") neg = false;
+    return { neg:neg, ent:ent, dec:dec };
+  }
+
+  function cmpAbs(a,b){
+    if (a.ent.length !== b.ent.length) return a.ent.length > b.ent.length ? 1 : -1;
+    if (a.ent !== b.ent) return a.ent > b.ent ? 1 : -1;
+    var n = Math.max(a.dec.length, b.dec.length);
+    var da = a.dec + new Array(n - a.dec.length + 1).join("0");
+    var db = b.dec + new Array(n - b.dec.length + 1).join("0");
+    if (da === db) return 0;
+    return da > db ? 1 : -1;
+  }
+
+  function comparer(x,y){
+    var A = decompose(x), B = decompose(y);
+    if (A.neg !== B.neg) return A.neg ? -1 : 1;
+    var r = cmpAbs(A,B);
+    return A.neg ? -r : r;
+  }
+
+  function afficher(id, type, html){
+    var fb = document.getElementById("fb-" + id);
+    fb.className = "feedback " + type;
+    fb.innerHTML = html;
+    fb.hidden = false;
+  }
+
+  function marquer(input, etat){
+    if (!input) return;
+    input.classList.remove("correct","incorrect");
+    if (etat) input.classList.add(etat);
+  }
+
+  function verifierDiff(it){
+    var input = document.getElementById("in-" + it.id);
+    var brut = input.value;
+    if (String(brut).replace(/\s/g,"") === ""){
+      etats[it.id] = "vide"; marquer(input,"");
+      afficher(it.id, "warn", "\u26a0\ufe0f Aucune r\u00e9ponse saisie.");
+      return;
+    }
+    var val = normalise(brut);
+    if (val === null){
+      etats[it.id] = "incorrect"; marquer(input, "incorrect");
+      afficher(it.id, "warn", "\u26a0\ufe0f Saisie non reconnue&nbsp;: &laquo;&nbsp;" + esc(brut) + "&nbsp;&raquo;.");
+      return;
+    }
+    if (comparer(val, normalise(it.attendu)) === 0){
+      etats[it.id] = "correct"; marquer(input, "correct");
+      afficher(it.id, "ok", "\u2705 Bravo&nbsp;! " + it.ref);
+      return;
+    }
+    etats[it.id] = "incorrect"; marquer(input, "incorrect");
+    afficher(it.id, "ko", "\u274c Ce n\u2019est pas la bonne r\u00e9ponse.<br>" + it.ref);
+  }
+
+  function verifierGrandNombre(){
+    var it = GRAND_NOMBRE;
+    var input = document.getElementById("in-" + it.id);
+    var brut = input.value;
+    if (String(brut).replace(/\s/g,"") === ""){
+      etats[it.id] = "vide"; marquer(input,"");
+      afficher(it.id, "warn", "\u26a0\ufe0f Aucune r\u00e9ponse saisie.");
+      return;
+    }
+    var val = normEntier(brut);
+    if (val === null){
+      etats[it.id] = "incorrect"; marquer(input, "incorrect");
+      afficher(it.id, "warn", "\u26a0\ufe0f Saisie non reconnue&nbsp;: &laquo;&nbsp;" + esc(brut) + "&nbsp;&raquo;. \u00c9cris uniquement des chiffres.");
+      return;
+    }
+    if (val === it.attendu){
+      etats[it.id] = "correct"; marquer(input, "correct");
+      afficher(it.id, "ok", "\u2705 Bravo&nbsp;! " + it.ref);
+      return;
+    }
+    etats[it.id] = "incorrect"; marquer(input, "incorrect");
+    afficher(it.id, "ko", "\u274c Ce n\u2019est pas le bon nombre.<br>" + it.ref);
+  }
+
+  function verifierVocab(it){
+    var input = document.getElementById("in-" + it.id);
+    var brut = input.value;
+    if (String(brut).replace(/\s/g,"") === ""){
+      etats[it.id] = "vide"; marquer(input,"");
+      afficher(it.id, "warn", "\u26a0\ufe0f Aucune r\u00e9ponse saisie.");
+      return;
+    }
+    var texte = normTexte(brut);
+    var trouve = it.cle.some(function(c){ return texte.indexOf(c) !== -1; });
+    if (it.excluCle){
+      var exclu = it.excluCle.some(function(c){ return texte.indexOf(c) !== -1; });
+      if (exclu) trouve = false;
+    }
+    if (trouve){
+      etats[it.id] = "correct"; marquer(input, "correct");
+      afficher(it.id, "ok", "\u2705 Bravo&nbsp;! " + it.ref);
+      return;
+    }
+    etats[it.id] = "incorrect"; marquer(input, "incorrect");
+    afficher(it.id, "ko", "\u274c Ce n\u2019est pas la bonne r\u00e9ponse.<br>" + it.ref);
+  }
+
+  function palier(pct){
+    if (pct >= 90) return "\ud83d\udfe2 Excellent";
+    if (pct >= 75) return "\ud83d\udfe2 Tr\u00e8s bien";
+    if (pct >= 60) return "\ud83d\udfe1 Ma\u00eetrise satisfaisante";
+    if (pct >= 40) return "\ud83d\udfe0 Ma\u00eetrise fragile";
+    return "\ud83d\udd34 Ma\u00eetrise insuffisante";
+  }
+
+  function verifierTout(){
+    if (occupe) return;
+    occupe = true;
+    window.setTimeout(function(){ occupe = false; }, 350);
+
+    var total = 0, score = 0, recap = "";
+
+    DIFFERENCES.forEach(function(it){
+      verifierDiff(it); total++;
+      if (etats[it.id] === "correct"){ score++; recap += '<span class="r-ok">\u2714 ' + it.id + '</span>'; } else { recap += '<span class="r-ko">\u2718 ' + it.id + '</span>'; }
+    });
+
+    verifierGrandNombre(); total++;
+    if (etats.n1 === "correct"){ score++; recap += '<span class="r-ok">\u2714 n1</span>'; } else { recap += '<span class="r-ko">\u2718 n1</span>'; }
+
+    VOCAB.forEach(function(it){
+      verifierVocab(it); total++;
+      if (etats[it.id] === "correct"){ score++; recap += '<span class="r-ok">\u2714 ' + it.id + '</span>'; } else { recap += '<span class="r-ko">\u2718 ' + it.id + '</span>'; }
+    });
+
+    var pct = Math.round((score/total)*100);
+    var bilan = document.getElementById("bilan");
+    bilan.innerHTML =
+      '<div class="score">Score&nbsp;: ' + score + '\u2009/\u2009' + total + ' (' + pct + '&nbsp;%)</div>' +
+      '<div class="palier">' + palier(pct) + '</div>' +
+      '<div class="recap">' + recap + '</div>' +
+      '<div class="legende">\u2714 correct &nbsp;\u2022&nbsp; \u2718 incorrect ou non r\u00e9pondu.</div>';
+    bilan.hidden = false;
+  }
+
+  function basculerCorrection(){
+    var box = document.getElementById("correction");
+    var btn = document.getElementById("btn-corr");
+    if (box.hidden){
+      box.innerHTML =
+        "<h2>Correction</h2>" +
+        "<h3>1. Diff\u00e9rences</h3><p>" + DIFFERENCES[0].ref + "<br>" + DIFFERENCES[1].ref + "</p>" +
+        "<h3>2. Grand nombre</h3><p>" + GRAND_NOMBRE.ref + "</p>" +
+        "<h3>3. Vocabulaire</h3><p>" + VOCAB.map(function(v){ return v.ref; }).join("<br>") + "</p>";
+      box.hidden = false;
+      btn.textContent = "Masquer la correction";
+    } else {
+      box.hidden = true;
+      btn.textContent = "Voir la correction";
+    }
+  }
+
+  function reinitialiser(){
+    DIFFERENCES.concat([GRAND_NOMBRE]).concat(VOCAB).forEach(function(it){
+      var input = document.getElementById("in-" + it.id);
+      input.value = ""; input.classList.remove("correct","incorrect");
+      var fb = document.getElementById("fb-" + it.id);
+      fb.hidden = true; fb.innerHTML = ""; fb.className = "feedback";
+      etats[it.id] = "vide";
+    });
+    var bilan = document.getElementById("bilan");
+    bilan.hidden = true; bilan.innerHTML = "";
+    var corr = document.getElementById("correction");
+    corr.hidden = true; corr.innerHTML = "";
+    document.getElementById("btn-corr").textContent = "Voir la correction";
+    occupe = false;
+  }
+
+  function init(){
+    DIFFERENCES.forEach(function(it){ etats[it.id] = "vide"; });
+    etats.n1 = "vide";
+    VOCAB.forEach(function(it){ etats[it.id] = "vide"; });
+
+    var bOk = document.querySelectorAll("[data-ok]");
+    for (var a = 0; a < bOk.length; a++){
+      bOk[a].addEventListener("click", function(){
+        var id = this.getAttribute("data-ok");
+        if (id === "n1") verifierGrandNombre();
+        else if (id === "d1" || id === "d2"){
+          var it = DIFFERENCES.filter(function(x){return x.id===id;})[0];
+          verifierDiff(it);
+        } else {
+          var v = VOCAB.filter(function(x){return x.id===id;})[0];
+          if (v) verifierVocab(v);
+        }
+      });
+    }
+    var champs = document.querySelectorAll('input[type="text"]');
+    for (var e = 0; e < champs.length; e++){
+      champs[e].addEventListener("keydown", function(ev){
+        if (ev.key === "Enter"){
+          ev.preventDefault();
+          var id = this.id.replace(/^in-/,"");
+          if (id === "n1") verifierGrandNombre();
+          else if (id === "d1" || id === "d2"){
+            var it = DIFFERENCES.filter(function(x){return x.id===id;})[0];
+            verifierDiff(it);
+          } else {
+            var v = VOCAB.filter(function(x){return x.id===id;})[0];
+            if (v) verifierVocab(v);
+          }
+        }
+      });
+    }
+    document.getElementById("btn-tout").addEventListener("click", verifierTout);
+    document.getElementById("btn-corr").addEventListener("click", basculerCorrection);
+    document.getElementById("btn-reset").addEventListener("click", reinitialiser);
+  }
+
+  if (document.readyState === "loading"){
+    document.addEventListener("DOMContentLoaded", init);
+  } else {
+    init();
+  }
+})();
+</script>
+</body>
+</html>
