@@ -1,0 +1,347 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Rituel &mdash; Semaine 5 S&eacute;ance 2 &mdash; &Eacute;critures d&rsquo;un nombre d&eacute;cimal</title>
+<style>
+*{box-sizing:border-box}
+html,body{margin:0;padding:0}
+body{background:#fffdf7;font-family:Arial,Helvetica,sans-serif;color:#243238;line-height:1.6;padding:14px;overflow-x:hidden}
+.bulle{position:fixed;border-radius:50%;background:#3ba5b8;opacity:.12;pointer-events:none;z-index:0}
+.b1{width:190px;height:190px;top:-70px;left:-70px}
+.b2{width:130px;height:130px;top:-45px;right:-45px}
+.b3{width:160px;height:160px;bottom:-60px;left:-55px}
+.b4{width:110px;height:110px;bottom:-40px;right:-35px}
+.wrap{position:relative;z-index:1;max-width:880px;margin:0 auto}
+.tete{display:flex;flex-wrap:wrap;align-items:center;gap:10px;margin-bottom:14px}
+.etq{display:inline-block;padding:7px 16px;border-radius:8px;color:#fff;font-weight:700;font-size:.95rem}
+.etq-sem{background:#8fd3e8;color:#123f4a}
+.etq-sea{background:#3ba5b8}
+.etq-rit{background:#1f7a8c;font-family:Georgia,"Times New Roman",serif;margin-left:auto}
+h1{font-size:clamp(1.3rem,4.5vw,2rem);font-weight:900;color:#1f7a8c;margin:6px 0 18px;line-height:1.3}
+.bloc{position:relative;border:2px solid #3ba5b8;border-radius:12px;background:#fff;padding:28px 18px 20px;margin-bottom:18px}
+.onglet{position:absolute;top:-17px;left:18px;background:#8fd3e8;color:#123f4a;font-weight:700;font-size:.95rem;padding:5px 18px;border-radius:8px}
+.consigne{margin:4px 0 16px;font-weight:700;text-decoration:underline;color:#1f7a8c;font-size:clamp(.95rem,2.6vw,1.05rem);min-width:0;overflow-wrap:break-word}
+
+.grille{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-bottom:16px}
+.case{
+  position:relative;
+  border:2px solid #dceff3;border-radius:10px;background:#f7fcfd;
+  padding:16px 12px;min-height:76px;cursor:pointer;
+  display:flex;align-items:center;justify-content:center;
+  font-size:clamp(.9rem,2.3vw,1.05rem);font-weight:700;color:#243238;
+  transition:border-color .15s,background .15s;
+}
+.case:hover{border-color:#3ba5b8;background:#eaf7fa}
+.case.sel{border-color:#1f7a8c;background:#eaf7fa}
+.case.sel::after{
+  content:"\2713";position:absolute;top:6px;right:8px;
+  color:#1f7a8c;font-weight:900;font-size:1.1rem;
+}
+.case.bonne-cochee{border-color:#2e8b57;background:#effaf3}
+.case.bonne-cochee::after{content:"\2713";color:#2e8b57}
+.case.mauvaise-cochee{border-color:#c0392b;background:#fdefee}
+.case.mauvaise-cochee::after{content:"\2717";color:#c0392b}
+.case.manquee{border-color:#c9820a;background:#fff8ea}
+
+.expr{display:flex;flex-wrap:wrap;align-items:center;justify-content:center;gap:4px}
+.frac{display:inline-flex;flex-direction:column;align-items:center;vertical-align:middle;margin:0 2px;line-height:1.15}
+.frac .fn{border-bottom:1.5px solid currentColor;padding:0 4px 1px}
+.frac .fd{padding:1px 4px 0}
+
+.actions{display:flex;flex-wrap:wrap;gap:8px}
+button{font-family:inherit;font-size:.92rem;font-weight:700;min-height:44px;padding:10px 16px;border:0;border-radius:8px;cursor:pointer;background:#3ba5b8;color:#fff;line-height:1.2}
+button:hover{background:#1f7a8c}
+button.sec{background:#fff;color:#1f7a8c;border:2px solid #3ba5b8}
+button.sec:hover{background:#eaf7fa}
+.feedback{margin:14px 0 0;padding:12px 14px;border-left:5px solid #3ba5b8;border-radius:6px;background:#f4fafb;font-size:clamp(.9rem,2.5vw,1rem);line-height:1.75;overflow-wrap:break-word}
+.feedback.ok{border-left-color:#2e8b57;background:#effaf3;color:#1e6b40}
+.feedback.ko{border-left-color:#c0392b;background:#fdefee;color:#96291d}
+.feedback.warn{border-left-color:#c9820a;background:#fff8ea;color:#8a5b04}
+.aide{margin:10px 0 0;padding:12px 14px;border-left:5px solid #8fd3e8;background:#f2fafd;border-radius:6px;font-size:clamp(.9rem,2.5vw,1rem);line-height:1.75}
+
+.barre{display:flex;flex-wrap:wrap;gap:10px;margin:18px 0}
+.barre button{flex:1 1 190px}
+.correction{border:2px dashed #3ba5b8;border-radius:12px;background:#fff;padding:16px 18px;margin-bottom:18px;font-size:clamp(.9rem,2.5vw,1rem);line-height:1.8}
+.correction h2{margin:0 0 10px;font-size:1.05rem;color:#1f7a8c}
+.correction ul{margin:6px 0 0;padding-left:20px}
+.correction li{margin-bottom:6px}
+.bilan{border:2px solid #1f7a8c;border-radius:12px;background:#fff;padding:16px 18px;margin-bottom:18px;font-size:.92rem;line-height:1.8}
+.bilan .score{font-size:clamp(1.05rem,3.2vw,1.25rem);font-weight:900;color:#1f7a8c}
+.bilan .palier{font-weight:700;margin-top:4px}
+.recap{display:flex;flex-wrap:wrap;gap:8px;margin-top:10px}
+.recap span{display:inline-flex;align-items:center;gap:6px;padding:6px 11px;border-radius:8px;background:#f4fafb;font-weight:700;font-size:.9rem;border:1px solid #dceff3}
+.recap .r-ok{color:#2e8b57}
+.recap .r-mid{color:#c9820a}
+.recap .r-ko{color:#c0392b}
+.legende{margin-top:10px;font-size:.85rem;color:#4d6169}
+
+@media (max-width:768px){.grille{grid-template-columns:repeat(2,1fr)}}
+@media (max-width:480px){
+  body{padding:10px}
+  .bloc{padding:26px 12px 16px}
+  .etq{font-size:.85rem;padding:6px 12px}
+  .etq-rit{margin-left:0}
+  .grille{grid-template-columns:1fr;gap:10px}
+  .case{min-height:60px;padding:14px 10px}
+}
+</style>
+</head>
+<body>
+<div class="bulle b1"></div><div class="bulle b2"></div><div class="bulle b3"></div><div class="bulle b4"></div>
+
+<main class="wrap">
+
+  <div class="tete">
+    <span class="etq etq-sem">Semaine 5</span>
+    <span class="etq etq-sea">S&eacute;ance 2</span>
+    <span class="etq etq-rit">Rituel</span>
+  </div>
+
+  <h1>&Eacute;critures d&rsquo;un nombre d&eacute;cimal</h1>
+
+  <section class="bloc">
+    <span class="onglet">Alg&egrave;bre</span>
+
+    <p class="consigne">Clique sur les &eacute;critures qui sont &eacute;gales &agrave; 123,45&nbsp;:</p>
+
+    <div class="grille" id="grille">
+      <button type="button" class="case" data-case="a" aria-pressed="false">
+        <span class="expr">12&nbsp;+&nbsp;<span class="frac"><span class="fn">345</span><span class="fd">1&nbsp;000</span></span></span>
+      </button>
+      <button type="button" class="case" data-case="b" aria-pressed="false">
+        <span class="expr"><span class="frac"><span class="fn">12&nbsp;345</span><span class="fd">10&nbsp;000</span></span></span>
+      </button>
+      <button type="button" class="case" data-case="c" aria-pressed="false">
+        <span class="expr"><span class="frac"><span class="fn">1&nbsp;234</span><span class="fd">10</span></span>&nbsp;+&nbsp;<span class="frac"><span class="fn">5</span><span class="fd">1&nbsp;000</span></span></span>
+      </button>
+      <button type="button" class="case" data-case="d" aria-pressed="false">
+        <span class="expr">1&nbsp;+&nbsp;<span class="frac"><span class="fn">2&nbsp;345</span><span class="fd">100</span></span></span>
+      </button>
+      <button type="button" class="case" data-case="e" aria-pressed="false">
+        <span class="expr"><span class="frac"><span class="fn">1&nbsp;234</span><span class="fd">1&nbsp;000</span></span>&nbsp;+&nbsp;<span class="frac"><span class="fn">5</span><span class="fd">100</span></span></span>
+      </button>
+      <button type="button" class="case" data-case="f" aria-pressed="false">
+        <span class="expr">123&nbsp;+&nbsp;<span class="frac"><span class="fn">4</span><span class="fd">10</span></span>&nbsp;+&nbsp;<span class="frac"><span class="fn">5</span><span class="fd">100</span></span></span>
+      </button>
+      <button type="button" class="case" data-case="g" aria-pressed="false">
+        <span class="expr">123&nbsp;+&nbsp;0,45</span>
+      </button>
+      <button type="button" class="case" data-case="h" aria-pressed="false">
+        <span class="expr"><span class="frac"><span class="fn">1&nbsp;234</span><span class="fd">10</span></span>&nbsp;+&nbsp;5</span>
+      </button>
+      <button type="button" class="case" data-case="i" aria-pressed="false">
+        <span class="expr">123&nbsp;+&nbsp;<span class="frac"><span class="fn">45</span><span class="fd">100</span></span></span>
+      </button>
+    </div>
+
+    <div class="actions">
+      <button type="button" id="btn-verif-ex">V&eacute;rifier ce choix</button>
+      <button type="button" class="sec" id="btn-aide-ex">Indice</button>
+    </div>
+    <div class="feedback" id="fb-ex" hidden></div>
+    <div class="aide" id="ai-ex" hidden></div>
+  </section>
+
+  <div class="barre">
+    <button type="button" id="btn-tout">V&eacute;rifier tout</button>
+    <button type="button" class="sec" id="btn-corr">Voir la correction</button>
+    <button type="button" class="sec" id="btn-reset">R&eacute;initialiser</button>
+  </div>
+
+  <div class="correction" id="correction" hidden></div>
+  <div class="bilan" id="bilan" hidden></div>
+
+</main>
+
+<script>
+(function(){
+  "use strict";
+
+  var BONNES_CASES = ["f","g","i"];
+  var TOUTES_CASES = ["a","b","c","d","e","f","g","h","i"];
+
+  var selection = {};
+  var etatEx = "vide";
+  var occupe = false;
+
+  function palier(pct){
+    if (pct >= 90) return "\ud83d\udfe2 Excellent";
+    if (pct >= 75) return "\ud83d\udfe2 Tr\u00e8s bien";
+    if (pct >= 60) return "\ud83d\udfe1 Ma\u00eetrise satisfaisante";
+    if (pct >= 40) return "\ud83d\udfe0 Ma\u00eetrise fragile";
+    return "\ud83d\udd34 Ma\u00eetrise insuffisante";
+  }
+
+  function afficherEx(type, html){
+    var fb = document.getElementById("fb-ex");
+    fb.className = "feedback " + type;
+    fb.innerHTML = html;
+    fb.hidden = false;
+  }
+
+  function basculerSelection(id){
+    var btn = document.querySelector('[data-case="' + id + '"]');
+    if (!btn) return;
+    selection[id] = !selection[id];
+    btn.classList.remove("bonne-cochee","mauvaise-cochee","manquee");
+    if (selection[id]){
+      btn.classList.add("sel");
+      btn.setAttribute("aria-pressed","true");
+    } else {
+      btn.classList.remove("sel");
+      btn.setAttribute("aria-pressed","false");
+    }
+  }
+
+  function verifierExercice(){
+    var vraisPositifs = 0, fauxPositifs = 0, manques = 0;
+
+    for (var i = 0; i < TOUTES_CASES.length; i++){
+      var id = TOUTES_CASES[i];
+      var btn = document.querySelector('[data-case="' + id + '"]');
+      var estBonne = BONNES_CASES.indexOf(id) !== -1;
+      var estCochee = !!selection[id];
+      btn.classList.remove("bonne-cochee","mauvaise-cochee","manquee");
+
+      if (estBonne && estCochee){ btn.classList.add("bonne-cochee"); vraisPositifs++; }
+      else if (!estBonne && estCochee){ btn.classList.add("mauvaise-cochee"); fauxPositifs++; }
+      else if (estBonne && !estCochee){ btn.classList.add("manquee"); manques++; }
+    }
+
+    if (vraisPositifs === 0 && fauxPositifs === 0){
+      etatEx = "vide";
+      afficherEx("warn", "\u26a0\ufe0f Aucune case coch\u00e9e. Clique sur les \u00e9critures qui, une fois calcul\u00e9es, donnent 123,45, puis clique sur <strong>V\u00e9rifier ce choix</strong>.");
+      return;
+    }
+
+    if (vraisPositifs === 3 && fauxPositifs === 0){
+      etatEx = "correct";
+      afficherEx("ok", "\u2705 Bravo&nbsp;! Les trois &eacute;critures &eacute;gales &agrave; 123,45 sont bien <strong><u>123&nbsp;+&nbsp;4/10&nbsp;+&nbsp;5/100</u></strong>, <strong><u>123&nbsp;+&nbsp;0,45</u></strong> et <strong><u>123&nbsp;+&nbsp;45/100</u></strong>.");
+      return;
+    }
+
+    if (vraisPositifs > 0 && fauxPositifs === 0){
+      etatEx = "partiel";
+      afficherEx("warn", "\u26a0\ufe0f Tu as trouv\u00e9 " + vraisPositifs + " bonne" + (vraisPositifs>1?"s":"") + " r\u00e9ponse" + (vraisPositifs>1?"s":"") + " sur 3, sans erreur. Il en manque encore&nbsp;: les cases orange indiquent celles que tu as oubli\u00e9es.");
+      return;
+    }
+
+    if (vraisPositifs === 3 && fauxPositifs > 0){
+      etatEx = "partiel";
+      afficherEx("warn", "\u26a0\ufe0f Tu as bien trouv\u00e9 les 3 bonnes r\u00e9ponses, mais tu as aussi coch\u00e9 " + fauxPositifs + " case" + (fauxPositifs>1?"s":"") + " qui ne convenai" + (fauxPositifs>1?"ent":"t") + " pas (en rouge)&nbsp;: recalcule-les.");
+      return;
+    }
+
+    etatEx = "incorrect";
+    afficherEx("ko", "\u274c Ce n\u2019est pas encore \u00e7a. Les cases rouges sont coch\u00e9es \u00e0 tort, les cases orange auraient d\u00fb l\u2019\u00eatre. Recalcule chaque \u00e9criture en d\u00e9cimal avant de comparer \u00e0 123,45.");
+  }
+
+  function verifierTout(){
+    if (occupe) return;
+    occupe = true;
+    window.setTimeout(function(){ occupe = false; }, 350);
+
+    verifierExercice();
+
+    var total = 1;
+    var score = 0;
+    var recap = "";
+    if (etatEx === "correct"){ score = 1; recap = '<span class="r-ok">\u2714 exercice</span>'; }
+    else if (etatEx === "partiel"){ recap = '<span class="r-mid">\u25d0 exercice</span>'; }
+    else { recap = '<span class="r-ko">\u2718 exercice</span>'; }
+
+    var pct = Math.round((score / total) * 100);
+    var bilan = document.getElementById("bilan");
+    bilan.innerHTML =
+      '<div class="score">Score&nbsp;: ' + score + '\u2009/\u2009' + total + ' (' + pct + '&nbsp;%)</div>' +
+      '<div class="palier">' + palier(pct) + '</div>' +
+      '<div class="recap">' + recap + '</div>' +
+      '<div class="legende">\u2714 correct &nbsp;\u2022&nbsp; \u25d0 partiel (r\u00e9ponses trouv\u00e9es incompl\u00e8tes ou erreurs en plus) &nbsp;\u2022&nbsp; \u2718 incorrect ou non r\u00e9pondu. L\u2019exercice de s\u00e9lection compte pour un seul item.</div>';
+    bilan.hidden = false;
+  }
+
+  function basculerCorrection(){
+    var box = document.getElementById("correction");
+    var btn = document.getElementById("btn-corr");
+    if (box.hidden){
+      box.innerHTML =
+        "<h2>Correction</h2>" +
+        "<p>Les trois &eacute;critures &eacute;gales &agrave; <strong>123,45</strong> sont&nbsp;:</p>" +
+        "<ul>" +
+        "<li><strong>123 + 4/10 + 5/100</strong> = 123 + 0,4 + 0,05 = 123,45</li>" +
+        "<li><strong>123 + 0,45</strong> = 123,45</li>" +
+        "<li><strong>123 + 45/100</strong> = 123 + 0,45 = 123,45</li>" +
+        "</ul>" +
+        "<p>Les six autres &eacute;critures ne donnent pas 123,45&nbsp;:</p>" +
+        "<ul>" +
+        "<li>12 + 345/1 000 = 12,345</li>" +
+        "<li>12 345/10 000 = 1,2345</li>" +
+        "<li>1 234/10 + 5/1 000 = 123,405</li>" +
+        "<li>1 + 2 345/100 = 24,45</li>" +
+        "<li>1 234/1 000 + 5/100 = 1,284</li>" +
+        "<li>1 234/10 + 5 = 128,4</li>" +
+        "</ul>";
+      box.hidden = false;
+      btn.textContent = "Masquer la correction";
+    } else {
+      box.hidden = true;
+      btn.textContent = "Voir la correction";
+    }
+  }
+
+  function reinitialiser(){
+    selection = {};
+    for (var i = 0; i < TOUTES_CASES.length; i++){
+      var btn = document.querySelector('[data-case="' + TOUTES_CASES[i] + '"]');
+      if (btn){
+        btn.classList.remove("sel","bonne-cochee","mauvaise-cochee","manquee");
+        btn.setAttribute("aria-pressed","false");
+      }
+    }
+    etatEx = "vide";
+    var fb = document.getElementById("fb-ex");
+    fb.hidden = true; fb.innerHTML = ""; fb.className = "feedback";
+    var ai = document.getElementById("ai-ex");
+    ai.hidden = true; ai.innerHTML = "";
+    var bilan = document.getElementById("bilan");
+    bilan.hidden = true; bilan.innerHTML = "";
+    var corr = document.getElementById("correction");
+    corr.hidden = true; corr.innerHTML = "";
+    document.getElementById("btn-corr").textContent = "Voir la correction";
+    occupe = false;
+  }
+
+  function init(){
+    for (var i = 0; i < TOUTES_CASES.length; i++){
+      (function(id){
+        document.querySelector('[data-case="' + id + '"]').addEventListener("click", function(){
+          basculerSelection(id);
+        });
+      })(TOUTES_CASES[i]);
+    }
+    document.getElementById("btn-verif-ex").addEventListener("click", verifierExercice);
+    document.getElementById("btn-aide-ex").addEventListener("click", function(){
+      var box = document.getElementById("ai-ex");
+      if (box.hidden){
+        box.innerHTML = "\ud83d\udca1 <strong>Indice&nbsp;:</strong> Calcule chaque \u00e9criture en nombre d\u00e9cimal (diviser par 10, 100, 1 000... revient \u00e0 d\u00e9placer la virgule), puis compare le r\u00e9sultat \u00e0 123,45.";
+        box.hidden = false;
+      } else {
+        box.hidden = true;
+      }
+    });
+    document.getElementById("btn-tout").addEventListener("click", verifierTout);
+    document.getElementById("btn-corr").addEventListener("click", basculerCorrection);
+    document.getElementById("btn-reset").addEventListener("click", reinitialiser);
+  }
+
+  if (document.readyState === "loading"){
+    document.addEventListener("DOMContentLoaded", init);
+  } else {
+    init();
+  }
+})();
+</script>
+</body>
+</html>
