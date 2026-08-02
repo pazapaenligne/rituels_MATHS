@@ -1,0 +1,281 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Rituel &mdash; 5e &mdash; Semaine 2 S&eacute;ance 3 &mdash; Vocabulaire g&eacute;om&eacute;trique</title>
+<style>
+*{box-sizing:border-box}
+html,body{margin:0;padding:0}
+body{background:#fffdf7;font-family:Arial,Helvetica,sans-serif;color:#243238;line-height:1.6;padding:14px;overflow-x:hidden}
+.bulle{position:fixed;border-radius:50%;background:#3ba5b8;opacity:.12;pointer-events:none;z-index:0}
+.b1{width:190px;height:190px;top:-70px;left:-70px}
+.b2{width:130px;height:130px;top:-45px;right:-45px}
+.b3{width:160px;height:160px;bottom:-60px;left:-55px}
+.b4{width:110px;height:110px;bottom:-40px;right:-35px}
+.wrap{position:relative;z-index:1;max-width:880px;margin:0 auto}
+.tete{display:flex;flex-wrap:wrap;align-items:center;gap:10px;margin-bottom:14px}
+.etq{display:inline-block;padding:7px 16px;border-radius:8px;color:#fff;font-weight:700;font-size:.95rem}
+.etq-sem{background:#8fd3e8;color:#123f4a}
+.etq-sea{background:#3ba5b8}
+.etq-rit{background:#1f7a8c;font-family:Georgia,"Times New Roman",serif;margin-left:auto}
+h1{font-size:clamp(1.3rem,4.5vw,2rem);font-weight:900;color:#1f7a8c;margin:6px 0 18px;line-height:1.3}
+.bloc{position:relative;border:2px solid #3ba5b8;border-radius:12px;background:#fff;padding:28px 18px 20px;margin-bottom:18px}
+.onglet{position:absolute;top:-17px;left:18px;background:#8fd3e8;color:#123f4a;font-weight:700;font-size:.95rem;padding:5px 18px;border-radius:8px}
+.tete-ex{display:flex;align-items:flex-start;gap:12px;margin:22px 0 14px;min-width:0}
+.pastille{flex:0 0 auto;width:34px;height:34px;border-radius:50%;background:#1f7a8c;color:#fff;font-weight:700;font-size:1rem;display:flex;align-items:center;justify-content:center}
+.consigne{margin:4px 0 0;font-weight:700;text-decoration:underline;color:#1f7a8c;font-size:clamp(.95rem,2.6vw,1.05rem);min-width:0;overflow-wrap:break-word}
+.banque{background:#f2fafd;border:1px dashed #8fd3e8;border-radius:8px;padding:12px 16px;margin-bottom:16px;text-align:center;font-weight:700;color:#1f7a8c;font-size:.95rem}
+.phrase{font-size:clamp(.95rem,2.6vw,1.05rem);line-height:2.2;margin-bottom:16px}
+.phrase input[type="text"]{display:inline-block;width:130px;padding:6px 8px;font-family:Arial,Helvetica,sans-serif;font-size:.95rem;font-weight:700;text-align:center;color:#1f7a8c;background:#f7fcfd;border:1px solid #b9dfe8;border-bottom:2px dotted #3ba5b8;border-radius:6px;vertical-align:middle;min-height:38px}
+.phrase input.correct{border-color:#2e8b57;background:#effaf3;color:#2e8b57}
+.phrase input.incorrect{border-color:#c0392b;background:#fdefee;color:#c0392b}
+.cadre{border:1px solid #dceff3;border-radius:8px;background:#fbfeff;padding:12px;margin:14px 0;text-align:center;min-height:120px}
+.cadre img{width:100%;height:auto;max-width:420px;border-radius:6px}
+.note-cahier{background:#f2fafd;border-left:5px solid #8fd3e8;border-radius:6px;padding:14px 16px;font-size:clamp(.9rem,2.5vw,1rem);line-height:1.75;margin-bottom:8px}
+.actions{display:flex;flex-wrap:wrap;gap:8px;margin-top:10px}
+button{font-family:inherit;font-size:.92rem;font-weight:700;min-height:44px;padding:10px 16px;border:0;border-radius:8px;cursor:pointer;background:#3ba5b8;color:#fff;line-height:1.2}
+button:hover{background:#1f7a8c}
+button.sec{background:#fff;color:#1f7a8c;border:2px solid #3ba5b8}
+button.sec:hover{background:#eaf7fa}
+.feedback{margin:10px 0 0;padding:12px 14px;border-left:5px solid #3ba5b8;border-radius:6px;background:#f4fafb;font-size:clamp(.9rem,2.5vw,1rem);line-height:1.75;overflow-wrap:break-word}
+.feedback.ok{border-left-color:#2e8b57;background:#effaf3;color:#1e6b40}
+.feedback.ko{border-left-color:#c0392b;background:#fdefee;color:#96291d}
+.feedback.warn{border-left-color:#c9820a;background:#fff8ea;color:#8a5b04}
+.barre{display:flex;flex-wrap:wrap;gap:10px;margin:18px 0}
+.barre button{flex:1 1 190px}
+.correction{border:2px dashed #3ba5b8;border-radius:12px;background:#fff;padding:16px 18px;margin-bottom:18px;font-size:clamp(.9rem,2.5vw,1rem);line-height:1.8}
+.correction h2{margin:0 0 8px;font-size:1.05rem;color:#1f7a8c}
+.correction h3{margin:14px 0 4px;font-size:.95rem;color:#1f7a8c}
+.correction img{display:block;width:100%;max-width:420px;height:auto;margin:8px auto;border:1px solid #dceff3;border-radius:6px}
+.bilan{border:2px solid #1f7a8c;border-radius:12px;background:#fff;padding:16px 18px;margin-bottom:18px;font-size:.92rem;line-height:1.8}
+.bilan .score{font-size:clamp(1.05rem,3.2vw,1.25rem);font-weight:900;color:#1f7a8c}
+.bilan .palier{font-weight:700;margin-top:4px}
+.legende{margin-top:10px;font-size:.85rem;color:#4d6169}
+@media (max-width:480px){
+  body{padding:10px}
+  .bloc{padding:26px 12px 16px}
+  .etq{font-size:.85rem;padding:6px 12px}
+  .etq-rit{margin-left:0}
+  .phrase input[type="text"]{width:100px}
+}
+</style>
+</head>
+<body>
+<div class="bulle b1"></div><div class="bulle b2"></div><div class="bulle b3"></div><div class="bulle b4"></div>
+
+<main class="wrap">
+  <div class="tete">
+    <span class="etq etq-sem">Semaine 2</span>
+    <span class="etq etq-sea">S&eacute;ance 3</span>
+    <span class="etq etq-rit">Rituel</span>
+  </div>
+
+  <h1>Point, segment, droite, demi-droite</h1>
+
+  <section class="bloc">
+    <span class="onglet">G&eacute;om&eacute;trie</span>
+
+    <div class="tete-ex">
+      <span class="pastille">a</span>
+      <p class="consigne">Compl&egrave;te le texte suivant avec les mots qui conviennent&nbsp;:</p>
+    </div>
+
+    <div class="banque">droite &nbsp;&bull;&nbsp; segment &nbsp;&bull;&nbsp; demi-droite &nbsp;&bull;&nbsp; point</div>
+
+    <p class="phrase">
+      Place trois <input type="text" id="in-m1" autocomplete="off" aria-label="mot 1"> I, J et K non align&eacute;s.<br>
+      Trace le <input type="text" id="in-m2" autocomplete="off" aria-label="mot 2"> [IJ], le <input type="text" id="in-m3" autocomplete="off" aria-label="mot 3"> [KJ] et la <input type="text" id="in-m4" autocomplete="off" aria-label="mot 4"> (IK).<br>
+      Sur le <input type="text" id="in-m5" autocomplete="off" aria-label="mot 5"> [IK], place un <input type="text" id="in-m6" autocomplete="off" aria-label="mot 6"> S. Trace la <input type="text" id="in-m7" autocomplete="off" aria-label="mot 7"> [JS).
+    </p>
+
+    <div class="actions"><button type="button" id="btn-verif-texte">V&eacute;rifier le texte</button></div>
+    <div class="feedback" id="fb-texte" hidden></div>
+
+    <div class="tete-ex">
+      <span class="pastille">b</span>
+      <p class="consigne">R&eacute;alise cette figure ci-dessous.</p>
+    </div>
+
+    <div class="cadre"></div>
+
+    <div class="note-cahier">&#9998; Trace cette figure directement <strong>sur ton livret</strong>, r&egrave;gle en main. Une fois termin&eacute;e, clique sur &laquo;&nbsp;Voir la correction&nbsp;&raquo; pour comparer.</div>
+
+  </section>
+
+  <div class="barre">
+    <button type="button" id="btn-tout">V&eacute;rifier tout</button>
+    <button type="button" class="sec" id="btn-corr">Voir la correction</button>
+    <button type="button" class="sec" id="btn-reset">R&eacute;initialiser</button>
+  </div>
+
+  <div class="correction" id="correction" hidden></div>
+  <div class="bilan" id="bilan" hidden></div>
+</main>
+
+<script>
+(function(){
+  "use strict";
+
+  var BLANCS = [
+    { id:"m1", attendu:["point","points"] },
+    { id:"m2", attendu:["segment"] },
+    { id:"m3", attendu:["segment"] },
+    { id:"m4", attendu:["droite"] },
+    { id:"m5", attendu:["segment"] },
+    { id:"m6", attendu:["point"] },
+    { id:"m7", attendu:["demi-droite","demidroite"] }
+  ];
+
+  var etats = {};
+  var occupe = false;
+
+  function trouver(id){
+    for (var i = 0; i < BLANCS.length; i++){ if (BLANCS[i].id === id) return BLANCS[i]; }
+    return null;
+  }
+
+  function esc(txt){
+    var d = document.createElement("div");
+    d.textContent = String(txt);
+    return d.innerHTML;
+  }
+
+  function normMot(s){
+    return String(s).toLowerCase()
+      .replace(/[\u00e9\u00e8\u00ea\u00eb]/g,"e")
+      .replace(/[\s\u00a0\u202f\u2009'\u2019]/g,"")
+      .trim();
+  }
+
+  function marquer(input, etat){
+    if (!input) return;
+    input.classList.remove("correct","incorrect");
+    if (etat) input.classList.add(etat);
+  }
+
+  function verifierBlanc(id){
+    var it = trouver(id);
+    if (!it) return;
+    var input = document.getElementById("in-" + id);
+    var brut = input.value;
+    if (String(brut).replace(/\s/g,"") === ""){
+      etats[id] = "vide"; marquer(input,"");
+      return;
+    }
+    var val = normMot(brut);
+    var ok = it.attendu.some(function(a){ return normMot(a) === val; });
+    if (ok){
+      etats[id] = "correct"; marquer(input, "correct");
+    } else {
+      etats[id] = "incorrect"; marquer(input, "incorrect");
+    }
+  }
+
+  function verifierTexte(){
+    var total = BLANCS.length, score = 0;
+    BLANCS.forEach(function(it){
+      verifierBlanc(it.id);
+      if (etats[it.id] === "correct") score++;
+    });
+    if (score === total){
+      afficherGlobal("ok", "\u2705 Bravo&nbsp;! Les 7 mots sont corrects.");
+    } else if (score === 0){
+      afficherGlobal("warn", "\u26a0\ufe0f Aucune r\u00e9ponse correcte pour l\u2019instant. Utilise la banque de mots ci-dessus (point, segment, droite, demi-droite).");
+    } else {
+      afficherGlobal("warn", "\u26a0\ufe0f " + score + "&nbsp;/&nbsp;" + total + " mots corrects. Les cases rouges sont \u00e0 corriger.");
+    }
+  }
+
+  function afficherGlobal(type, html){
+    var fb = document.getElementById("fb-texte");
+    fb.className = "feedback " + type;
+    fb.innerHTML = html;
+    fb.hidden = false;
+  }
+
+  function palier(pct){
+    if (pct >= 90) return "\ud83d\udfe2 Excellent";
+    if (pct >= 75) return "\ud83d\udfe2 Tr\u00e8s bien";
+    if (pct >= 60) return "\ud83d\udfe1 Ma\u00eetrise satisfaisante";
+    if (pct >= 40) return "\ud83d\udfe0 Ma\u00eetrise fragile";
+    return "\ud83d\udd34 Ma\u00eetrise insuffisante";
+  }
+
+  function verifierTout(){
+    if (occupe) return;
+    occupe = true;
+    window.setTimeout(function(){ occupe = false; }, 350);
+
+    verifierTexte();
+    var total = BLANCS.length, score = 0;
+    BLANCS.forEach(function(it){ if (etats[it.id] === "correct") score++; });
+    var pct = Math.round((score/total)*100);
+    var bilan = document.getElementById("bilan");
+    bilan.innerHTML =
+      '<div class="score">Score&nbsp;: ' + score + '\u2009/\u2009' + total + ' (' + pct + '&nbsp;%)</div>' +
+      '<div class="palier">' + palier(pct) + '</div>' +
+      '<div class="legende">La construction de la figure se fait sur ton livret ; elle n\u2019est pas not\u00e9e ici.</div>';
+    bilan.hidden = false;
+  }
+
+  function basculerCorrection(){
+    var box = document.getElementById("correction");
+    var btn = document.getElementById("btn-corr");
+    if (box.hidden){
+      box.innerHTML =
+        "<h2>Correction</h2>" +
+        "<h3>a. Texte \u00e0 compl\u00e9ter</h3>" +
+        "<p>Place trois <strong><u>points</u></strong> I, J et K non align\u00e9s.<br>" +
+        "Trace le <strong><u>segment</u></strong> [IJ], le <strong><u>segment</u></strong> [KJ] et la <strong><u>droite</u></strong> (IK).<br>" +
+        "Sur le <strong><u>segment</u></strong> [IK], place un <strong><u>point</u></strong> S. Trace la <strong><u>demi-droite</u></strong> [JS).</p>" +
+        "<h3>b. Figure</h3>" +
+        "<img src=\"data:image/png;base64,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\" alt=\"Figure avec les points I, J, K, S et les segments, droite et demi-droite trac\u00e9s\">" +
+        "<p>Compare ta construction avec ce mod\u00e8le&nbsp;: m\u00eames points, m\u00eames segments, m\u00eame droite (IK) prolong\u00e9e des deux c\u00f4t\u00e9s, et la demi-droite [JS) qui part de J et passe par S sans s\u2019arr\u00eater.</p>";
+      box.hidden = false;
+      btn.textContent = "Masquer la correction";
+    } else {
+      box.hidden = true;
+      btn.textContent = "Voir la correction";
+    }
+  }
+
+  function reinitialiser(){
+    BLANCS.forEach(function(it){
+      var input = document.getElementById("in-" + it.id);
+      input.value = ""; input.classList.remove("correct","incorrect");
+      etats[it.id] = "vide";
+    });
+    var fbTexte = document.getElementById("fb-texte");
+    fbTexte.hidden = true; fbTexte.innerHTML = ""; fbTexte.className = "feedback";
+    var bilan = document.getElementById("bilan");
+    bilan.hidden = true; bilan.innerHTML = "";
+    var corr = document.getElementById("correction");
+    corr.hidden = true; corr.innerHTML = "";
+    document.getElementById("btn-corr").textContent = "Voir la correction";
+    occupe = false;
+  }
+
+  function init(){
+    BLANCS.forEach(function(it){ etats[it.id] = "vide"; });
+    document.getElementById("btn-verif-texte").addEventListener("click", verifierTexte);
+    var champs = document.querySelectorAll('input[type="text"]');
+    for (var e = 0; e < champs.length; e++){
+      champs[e].addEventListener("keydown", function(ev){
+        if (ev.key === "Enter"){ ev.preventDefault(); verifierTexte(); }
+      });
+    }
+    document.getElementById("btn-tout").addEventListener("click", verifierTout);
+    document.getElementById("btn-corr").addEventListener("click", basculerCorrection);
+    document.getElementById("btn-reset").addEventListener("click", reinitialiser);
+  }
+
+  if (document.readyState === "loading"){
+    document.addEventListener("DOMContentLoaded", init);
+  } else {
+    init();
+  }
+})();
+</script>
+</body>
+</html>
