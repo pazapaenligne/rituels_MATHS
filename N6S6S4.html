@@ -1,0 +1,651 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Rituel &mdash; Bilan Semaine 6</title>
+<style>
+*{box-sizing:border-box}
+html,body{margin:0;padding:0}
+body{background:#fffdf7;font-family:Arial,Helvetica,sans-serif;color:#243238;line-height:1.6;padding:14px;overflow-x:hidden}
+.bulle{position:fixed;border-radius:50%;background:#3ba5b8;opacity:.12;pointer-events:none;z-index:0}
+.b1{width:190px;height:190px;top:-70px;left:-70px}
+.b2{width:130px;height:130px;top:-45px;right:-45px}
+.b3{width:160px;height:160px;bottom:-60px;left:-55px}
+.b4{width:110px;height:110px;bottom:-40px;right:-35px}
+.wrap{position:relative;z-index:1;max-width:880px;margin:0 auto}
+.tete{display:flex;flex-wrap:wrap;align-items:center;gap:10px;margin-bottom:14px}
+.etq{display:inline-block;padding:7px 16px;border-radius:8px;color:#fff;font-weight:700;font-size:.95rem}
+.etq-sem{background:#8fd3e8;color:#123f4a}
+.etq-sea{background:#3ba5b8}
+.etq-rit{background:#1f7a8c;font-family:Georgia,"Times New Roman",serif;margin-left:auto}
+h1{font-size:clamp(1.3rem,4.5vw,2rem);font-weight:900;color:#1f7a8c;margin:6px 0 18px;line-height:1.3}
+.bloc{position:relative;border:2px solid #3ba5b8;border-radius:12px;background:#fff;padding:28px 18px 20px;margin-bottom:18px}
+.onglet{position:absolute;top:-17px;left:18px;background:#8fd3e8;color:#123f4a;font-weight:700;font-size:.95rem;padding:5px 18px;border-radius:8px}
+.enonce{background:#fdf6f6;border-left:5px solid #7a3e3e;border-radius:6px;padding:14px 16px;margin-bottom:20px;color:#7a3e3e;font-weight:700;font-size:clamp(.92rem,2.5vw,1rem);line-height:1.85;overflow-wrap:break-word}
+.tete-ex{display:flex;align-items:flex-start;gap:12px;margin:22px 0 14px;min-width:0}
+.pastille{flex:0 0 auto;width:34px;height:34px;border-radius:50%;background:#1f7a8c;color:#fff;font-weight:700;font-size:1rem;display:flex;align-items:center;justify-content:center}
+.consigne{margin:4px 0 0;font-weight:700;text-decoration:underline;color:#1f7a8c;font-size:clamp(.95rem,2.6vw,1.05rem);min-width:0;overflow-wrap:break-word}
+.item{padding:12px 0;border-bottom:1px dashed #dceff3}
+.item:last-of-type{border-bottom:0}
+.q{font-size:clamp(1rem,3vw,1.15rem);font-weight:700;margin:0 0 8px;color:#243238;overflow-wrap:break-word}
+.expr{display:flex;flex-wrap:wrap;align-items:center;gap:8px;min-width:0;font-size:clamp(1rem,3vw,1.15rem);font-weight:700}
+.signe{color:#243238;font-weight:700}
+.champ-lbl{display:flex;flex-direction:column;align-items:center;gap:3px}
+.champ-lbl span{font-size:.72rem;font-weight:700;color:#4d6169;text-transform:uppercase;letter-spacing:.03em}
+.ligne{display:flex;flex-wrap:wrap;align-items:center;gap:10px;min-width:0}
+.champ{flex:1 1 260px;min-width:0}
+input[type="text"]{width:100%;min-width:0;padding:10px;font-family:Arial,Helvetica,sans-serif;font-size:1rem;font-weight:700;color:#1f7a8c;background:#f7fcfd;border:1px solid #b9dfe8;border-bottom:2px dotted #3ba5b8;border-radius:6px;min-height:44px;text-align:center;max-width:220px}
+input[type="text"].intercale{max-width:130px}
+.correct{border-color:#2e8b57;background:#effaf3;color:#2e8b57}
+.partiel{border-color:#c9820a;background:#fff8ea;color:#a86c06}
+.incorrect{border-color:#c0392b;background:#fdefee;color:#c0392b}
+.actions{display:flex;flex-wrap:wrap;gap:8px}
+button{font-family:inherit;font-size:.92rem;font-weight:700;min-height:44px;padding:10px 16px;border:0;border-radius:8px;cursor:pointer;background:#3ba5b8;color:#fff;line-height:1.2}
+button:hover{background:#1f7a8c}
+button.sec{background:#fff;color:#1f7a8c;border:2px solid #3ba5b8}
+button.sec:hover{background:#eaf7fa}
+.feedback{margin:10px 0 0;padding:12px 14px;border-left:5px solid #3ba5b8;border-radius:6px;background:#f4fafb;font-size:clamp(.9rem,2.5vw,1rem);line-height:1.75;overflow-wrap:break-word}
+.feedback.ok{border-left-color:#2e8b57;background:#effaf3;color:#1e6b40}
+.feedback.ko{border-left-color:#c0392b;background:#fdefee;color:#96291d}
+.feedback.warn{border-left-color:#c9820a;background:#fff8ea;color:#8a5b04}
+.aide{margin:10px 0 0;padding:12px 14px;border-left:5px solid #8fd3e8;background:#f2fafd;border-radius:6px;font-size:clamp(.9rem,2.5vw,1rem);line-height:1.75}
+.barre{display:flex;flex-wrap:wrap;gap:10px;margin:18px 0}
+.barre button{flex:1 1 190px}
+.correction{border:2px dashed #3ba5b8;border-radius:12px;background:#fff;padding:16px 18px;margin-bottom:18px;font-size:clamp(.9rem,2.5vw,1rem);line-height:1.8}
+.correction h2{margin:0 0 8px;font-size:1.05rem;color:#1f7a8c}
+.correction h3{margin:14px 0 4px;font-size:.98rem;color:#1f7a8c}
+.correction ul{margin:6px 0 0;padding-left:20px}
+.correction li{margin-bottom:6px}
+.bilan{border:2px solid #1f7a8c;border-radius:12px;background:#fff;padding:16px 18px;margin-bottom:18px;font-size:.92rem;line-height:1.8}
+.bilan .score{font-size:clamp(1.05rem,3.2vw,1.25rem);font-weight:900;color:#1f7a8c}
+.bilan .palier{font-weight:700;margin-top:4px}
+.recap{display:flex;flex-wrap:wrap;gap:8px;margin-top:10px}
+.recap span{display:inline-flex;align-items:center;gap:6px;padding:6px 11px;border-radius:8px;background:#f4fafb;font-weight:700;font-size:.9rem;border:1px solid #dceff3}
+.recap .r-ok{color:#2e8b57}
+.recap .r-mid{color:#c9820a}
+.recap .r-ko{color:#c0392b}
+.legende{margin-top:10px;font-size:.85rem;color:#4d6169}
+@media (max-width:768px){.champ{flex:1 1 100%}.actions{width:100%}.actions button{flex:1 1 auto}}
+@media (max-width:480px){body{padding:10px}.bloc{padding:26px 12px 16px}.etq{font-size:.85rem;padding:6px 12px}.etq-rit{margin-left:0}input[type="text"]{max-width:100%}.recap span{font-size:.85rem}}
+</style>
+</head>
+<body>
+<div class="bulle b1"></div><div class="bulle b2"></div><div class="bulle b3"></div><div class="bulle b4"></div>
+
+<main class="wrap">
+  <div class="tete">
+    <span class="etq etq-sem">Semaine 6</span>
+    <span class="etq etq-sea">S&eacute;ance 4</span>
+    <span class="etq etq-rit">Rituel</span>
+  </div>
+
+  <h1>Bilan de la semaine 6</h1>
+
+  <section class="bloc">
+    <span class="onglet">Bilan</span>
+
+    <div class="tete-ex">
+      <span class="pastille">1</span>
+      <p class="consigne">Pose et calcule&nbsp;:</p>
+    </div>
+
+    <div class="item">
+      <div class="ligne">
+        <span class="expr">
+          <span>189,2 &minus; 140,1 =</span>
+          <input type="text" id="in-n1" inputmode="decimal" autocomplete="off" aria-label="Résultat de 189,2 moins 140,1">
+        </span>
+        <span class="actions"><button type="button" data-ok="n1">OK</button><button type="button" class="sec" data-aide="n1">Indice</button></span>
+      </div>
+      <div class="feedback" id="fb-n1" hidden></div>
+      <div class="aide" id="ai-n1" hidden></div>
+    </div>
+
+    <div class="item">
+      <div class="ligne">
+        <span class="expr">
+          <span>145 : 15 =</span>
+          <span class="champ-lbl"><span>Quotient</span><input type="text" id="in-n2-q" inputmode="numeric" autocomplete="off" aria-label="Quotient de 145 par 15"></span>
+          <span class="champ-lbl"><span>Reste</span><input type="text" id="in-n2-r" inputmode="numeric" autocomplete="off" aria-label="Reste de 145 par 15"></span>
+        </span>
+        <span class="actions"><button type="button" data-ok="n2">OK</button><button type="button" class="sec" data-aide="n2">Indice</button></span>
+      </div>
+      <div class="feedback" id="fb-n2" hidden></div>
+      <div class="aide" id="ai-n2" hidden></div>
+    </div>
+
+    <div class="item">
+      <div class="ligne">
+        <span class="expr">
+          <span>45 &times; 15 =</span>
+          <input type="text" id="in-n3" inputmode="decimal" autocomplete="off" aria-label="Résultat de 45 fois 15">
+        </span>
+        <span class="actions"><button type="button" data-ok="n3">OK</button><button type="button" class="sec" data-aide="n3">Indice</button></span>
+      </div>
+      <div class="feedback" id="fb-n3" hidden></div>
+      <div class="aide" id="ai-n3" hidden></div>
+    </div>
+
+
+    <div class="tete-ex">
+      <span class="pastille">2</span>
+      <p class="consigne">Trouve un nombre d&eacute;cimal compris strictement entre les deux bornes&nbsp;:</p>
+    </div>
+
+    <div class="item">
+      <div class="ligne">
+        <span class="expr">
+          <span>7 &lt;</span>
+          <input type="text" class="intercale" id="in-e1" inputmode="decimal" autocomplete="off" aria-label="Nombre entre 7 et 8">
+          <span>&lt; 8</span>
+        </span>
+        <span class="actions"><button type="button" data-ok="e1">OK</button></span>
+      </div>
+      <div class="feedback" id="fb-e1" hidden></div>
+    </div>
+
+    <div class="item">
+      <div class="ligne">
+        <span class="expr">
+          <span>9 &lt;</span>
+          <input type="text" class="intercale" id="in-e2" inputmode="decimal" autocomplete="off" aria-label="Nombre entre 9 et 10">
+          <span>&lt; 10</span>
+        </span>
+        <span class="actions"><button type="button" data-ok="e2">OK</button></span>
+      </div>
+      <div class="feedback" id="fb-e2" hidden></div>
+    </div>
+
+    <div class="item">
+      <div class="ligne">
+        <span class="expr">
+          <span>4,3 &lt;</span>
+          <input type="text" class="intercale" id="in-e3" inputmode="decimal" autocomplete="off" aria-label="Nombre entre 4,3 et 5,2">
+          <span>&lt; 5,2</span>
+        </span>
+        <span class="actions"><button type="button" data-ok="e3">OK</button></span>
+      </div>
+      <div class="feedback" id="fb-e3" hidden></div>
+    </div>
+
+
+    <div class="tete-ex">
+      <span class="pastille">3</span>
+      <p class="consigne">Un centre de loisirs organise une visite au Parc de Courzieux pour les 48 enfants inscrits. Le co&ucirc;t total de la visite est &eacute;valu&eacute; &agrave; 780&nbsp;&euro;, dont 250&nbsp;&euro; pour le transport. Le centre dispose encore de 381,20&nbsp;&euro; en caisse et la mairie se charge de payer le transport. La somme restante sera demand&eacute;e aux familles.</p>
+    </div>
+
+    <div class="item">
+      <p class="q">Quel est le prix de la visite sans le transport&nbsp;?</p>
+      <div class="ligne">
+        <span class="champ"><input type="text" id="in-p1" inputmode="decimal" autocomplete="off" aria-label="Quel est le prix de la visite sans le transport&nbsp;?"></span>
+        <span class="actions"><button type="button" data-ok="p1">OK</button><button type="button" class="sec" data-aide="p1">Indice</button></span>
+      </div>
+      <div class="feedback" id="fb-p1" hidden></div>
+      <div class="aide" id="ai-p1" hidden></div>
+    </div>
+
+    <div class="item">
+      <p class="q">Quelle somme manque-t-il au centre de loisirs&nbsp;?</p>
+      <div class="ligne">
+        <span class="champ"><input type="text" id="in-p2" inputmode="decimal" autocomplete="off" aria-label="Quelle somme manque-t-il au centre de loisirs&nbsp;?"></span>
+        <span class="actions"><button type="button" data-ok="p2">OK</button><button type="button" class="sec" data-aide="p2">Indice</button></span>
+      </div>
+      <div class="feedback" id="fb-p2" hidden></div>
+      <div class="aide" id="ai-p2" hidden></div>
+    </div>
+
+    <div class="item">
+      <p class="q">Combien doit-on demander &agrave; chaque famille&nbsp;?</p>
+      <div class="ligne">
+        <span class="champ"><input type="text" id="in-p3" inputmode="decimal" autocomplete="off" aria-label="Combien doit-on demander &agrave; chaque famille&nbsp;?"></span>
+        <span class="actions"><button type="button" data-ok="p3">OK</button><button type="button" class="sec" data-aide="p3">Indice</button></span>
+      </div>
+      <div class="feedback" id="fb-p3" hidden></div>
+      <div class="aide" id="ai-p3" hidden></div>
+    </div>
+
+  </section>
+
+  <div class="barre">
+    <button type="button" id="btn-tout">V&eacute;rifier tout</button>
+    <button type="button" class="sec" id="btn-corr">Voir la correction</button>
+    <button type="button" class="sec" id="btn-reset">R&eacute;initialiser</button>
+  </div>
+
+  <div class="correction" id="correction" hidden></div>
+  <div class="bilan" id="bilan" hidden></div>
+</main>
+
+<script>
+(function(){
+  "use strict";
+
+  var SIMPLES = [
+    { id:"n1", type:"deci", a:"189,2", b:"140,1", res:"49,1", signe:"\u2212",
+      aide:"Aligne les unit\u00e9s et les dixi\u00e8mes avant de soustraire." },
+    { id:"n3", type:"mult", a:"45", b:"15", res:"675", signe:"\u00d7",
+      aide:"D\u00e9compose 15 en 10 + 5 : 45\u00d710 = 450, 45\u00d75 = 225, puis additionne." }
+  ];
+
+  var DIVISION = { id:"n2", dividende:"145", diviseur:"15", quotient:"9", reste:"10",
+    aide:"Cherche combien de fois 15 tient dans 145 sans d\u00e9passer, puis calcule ce qu\u2019il reste." };
+
+  var INTERVALLES = [
+    { id:"e1", min:"7", max:"8" },
+    { id:"e2", min:"9", max:"10" },
+    { id:"e3", min:"4,3", max:"5,2" }
+  ];
+
+  var PROBLEMES = [
+    { id:"p1", attendu:"530", unite:"euros",
+      pieges:[ { val:"780", txt:"780&nbsp;\u20ac est le co\u00fbt total, transport <strong>compris</strong>." },
+               { val:"250", txt:"250&nbsp;\u20ac est le prix du transport seul, pas celui de la visite." } ],
+      aide:"Le co\u00fbt total (780&nbsp;\u20ac) comprend le transport (250&nbsp;\u20ac). Quelle op\u00e9ration donne le prix de la visite seule ?",
+      ref:"780 \u2212 250 = <strong><u>530&nbsp;\u20ac</u></strong>. Le prix de la visite sans le transport est de 530&nbsp;\u20ac." },
+    { id:"p2", attendu:"148,80", unite:"euros",
+      pieges:[ { val:"530", txt:"530&nbsp;\u20ac est le prix de la visite, il faut encore retirer ce que le centre a d\u00e9j\u00e0 en caisse." },
+               { val:"381,20", txt:"381,20&nbsp;\u20ac est ce que le centre a <strong>d\u00e9j\u00e0</strong> en caisse, pas la somme manquante." } ],
+      aide:"Le centre doit payer 530&nbsp;\u20ac (la visite, le transport \u00e9tant pay\u00e9 par la mairie) et a d\u00e9j\u00e0 381,20&nbsp;\u20ac. Quelle op\u00e9ration donne ce qui manque ?",
+      ref:"530 \u2212 381,20 = <strong><u>148,80&nbsp;\u20ac</u></strong>. Il manque 148,80&nbsp;\u20ac au centre de loisirs." },
+    { id:"p3", attendu:"3,10", unite:"euros",
+      pieges:[ { val:"148,80", txt:"148,80&nbsp;\u20ac est la somme totale manquante, \u00e0 <strong>r\u00e9partir</strong> entre les 48 enfants." },
+               { val:"48", txt:"48 est le nombre d\u2019enfants inscrits, pas un montant en euros." } ],
+      aide:"La somme manquante (148,80&nbsp;\u20ac) est demand\u00e9e aux familles des 48 enfants inscrits. Quelle op\u00e9ration donne le montant par famille ?",
+      ref:"148,80 \u00f7 48 = <strong><u>3,10&nbsp;\u20ac</u></strong> par famille." }
+  ];
+
+  var etats = {};
+  var occupe = false;
+
+  function trouverSimple(id){
+    for (var i = 0; i < SIMPLES.length; i++){ if (SIMPLES[i].id === id) return SIMPLES[i]; }
+    return null;
+  }
+  function trouverIntervalle(id){
+    for (var i = 0; i < INTERVALLES.length; i++){ if (INTERVALLES[i].id === id) return INTERVALLES[i]; }
+    return null;
+  }
+  function trouverProbleme(id){
+    for (var i = 0; i < PROBLEMES.length; i++){ if (PROBLEMES[i].id === id) return PROBLEMES[i]; }
+    return null;
+  }
+
+  function esc(txt){
+    var d = document.createElement("div");
+    d.textContent = String(txt);
+    return d.innerHTML;
+  }
+
+  function normTexte(s){
+    return String(s).toLowerCase().replace(/[\u00a0\u202f\u2009]/g," ").replace(/\s+/g," ").trim();
+  }
+
+  function normalise(brut){
+    var s = String(brut).replace(/[\s\u00a0\u202f\u2009]/g, "");
+    s = s.replace(/[\u2212\u2013\u2014]/g, "-").replace(/,/g, ".");
+    if (s === "") return null;
+    if (!/^-?(\d+(\.\d*)?|\.\d+)$/.test(s)) return null;
+    return s;
+  }
+
+  function normEntier(brut){
+    var s = String(brut).replace(/[\s\u00a0\u202f\u2009]/g, "");
+    if (s === "") return null;
+    if (!/^-?\d+$/.test(s)) return null;
+    return s.replace(/^(-?)0+(?=\d)/, "$1");
+  }
+
+  function decompose(s){
+    var neg = false;
+    if (s.charAt(0) === "-"){ neg = true; s = s.slice(1); }
+    var p = s.split(".");
+    var ent = p[0] === "" ? "0" : p[0];
+    var dec = p.length > 1 ? p[1] : "";
+    ent = ent.replace(/^0+(?=\d)/,"");
+    dec = dec.replace(/0+$/,"");
+    if (ent === "0" && dec === "") neg = false;
+    return { neg:neg, ent:ent, dec:dec };
+  }
+
+  function cmpAbs(a,b){
+    if (a.ent.length !== b.ent.length) return a.ent.length > b.ent.length ? 1 : -1;
+    if (a.ent !== b.ent) return a.ent > b.ent ? 1 : -1;
+    var n = Math.max(a.dec.length, b.dec.length);
+    var da = a.dec + new Array(n - a.dec.length + 1).join("0");
+    var db = b.dec + new Array(n - b.dec.length + 1).join("0");
+    if (da === db) return 0;
+    return da > db ? 1 : -1;
+  }
+
+  function comparer(x,y){
+    var A = decompose(x), B = decompose(y);
+    if (A.neg !== B.neg) return A.neg ? -1 : 1;
+    var r = cmpAbs(A,B);
+    return A.neg ? -r : r;
+  }
+
+  function lireNombre(brut){
+    var s = normTexte(brut).replace(/(\d)\s+(\d{3})(?!\d)/g, "$1$2");
+    var re = /\d+(?:[.,]\d+)?/g;
+    var m, dernier = null;
+    while ((m = re.exec(s)) !== null){ dernier = m[0]; }
+    if (dernier === null) return null;
+    return dernier.replace(/,/g, ".");
+  }
+
+  function afficher(id, type, html){
+    var fb = document.getElementById("fb-" + id);
+    fb.className = "feedback " + type;
+    fb.innerHTML = html;
+    fb.hidden = false;
+  }
+
+  function marquer(input, etat){
+    if (!input) return;
+    input.classList.remove("correct","partiel","incorrect");
+    if (etat) input.classList.add(etat);
+  }
+
+  function verifierSimple(id){
+    var it = trouverSimple(id);
+    if (!it) return;
+    var input = document.getElementById("in-" + id);
+    var brut = input.value;
+    if (String(brut).replace(/\s/g,"") === ""){
+      etats[id] = "vide"; marquer(input,"");
+      afficher(id, "warn", "\u26a0\ufe0f Aucune r\u00e9ponse saisie. Pose l\u2019op\u00e9ration sur ton cahier, puis \u00e9cris le r\u00e9sultat.");
+      return;
+    }
+    var val = normalise(brut);
+    if (val === null){
+      etats[id] = "incorrect"; marquer(input, "incorrect");
+      afficher(id, "warn", "\u26a0\ufe0f Saisie non reconnue&nbsp;: &laquo;&nbsp;" + esc(brut) + "&nbsp;&raquo;.");
+      return;
+    }
+    if (comparer(val, normalise(it.res)) === 0){
+      etats[id] = "correct"; marquer(input, "correct");
+      afficher(id, "ok", "\u2705 Bravo&nbsp;! " + it.a + " " + it.signe + " " + it.b + " = " + it.res + ".");
+      return;
+    }
+    etats[id] = "incorrect"; marquer(input, "incorrect");
+    afficher(id, "ko", "\u274c Ce n\u2019est pas le r\u00e9sultat attendu.<br>R\u00e9ponse attendue&nbsp;: <strong><u>" + it.res + "</u></strong>.");
+  }
+
+  function verifierDivision(){
+    var it = DIVISION;
+    var inQ = document.getElementById("in-n2-q");
+    var inR = document.getElementById("in-n2-r");
+    var bq = inQ.value, br = inR.value;
+    if (String(bq).replace(/\s/g,"") === "" && String(br).replace(/\s/g,"") === ""){
+      etats.n2 = "vide"; marquer(inQ,""); marquer(inR,"");
+      afficher("n2", "warn", "\u26a0\ufe0f Aucune r\u00e9ponse saisie. Compl\u00e8te le <strong>quotient</strong> et le <strong>reste</strong>.");
+      return;
+    }
+    var vq = normEntier(bq), vr = normEntier(br);
+    if (vq === null || vr === null){
+      etats.n2 = "incorrect";
+      marquer(inQ, vq === null ? "incorrect" : "correct");
+      marquer(inR, vr === null ? "incorrect" : "correct");
+      afficher("n2", "warn", "\u26a0\ufe0f Saisie non reconnue. \u00c9cris un <strong>nombre entier</strong> dans chaque case.");
+      return;
+    }
+    var qOk = (vq === it.quotient), rOk = (vr === it.reste);
+    marquer(inQ, qOk ? "correct" : "incorrect");
+    marquer(inR, rOk ? "correct" : "incorrect");
+    if (qOk && rOk){
+      etats.n2 = "correct";
+      afficher("n2", "ok", "\u2705 Bravo&nbsp;! " + it.dividende + " = " + it.diviseur + " \u00d7 " + it.quotient + " + " + it.reste + ".");
+      return;
+    }
+    if (qOk || rOk){
+      etats.n2 = "partiel";
+      var manque = qOk ? "le <strong>reste</strong>" : "le <strong>quotient</strong>";
+      afficher("n2", "warn", "\u26a0\ufe0f Presque&nbsp;! " + (qOk ? "Le quotient est correct" : "Le reste est correct") + ", mais " + manque + " ne l\u2019est pas.<br>R\u00e9ponse attendue&nbsp;: quotient <strong><u>" + it.quotient + "</u></strong>, reste <strong><u>" + it.reste + "</u></strong>.");
+      return;
+    }
+    etats.n2 = "incorrect";
+    afficher("n2", "ko", "\u274c Ni le quotient ni le reste ne sont corrects.<br>R\u00e9ponse attendue&nbsp;: quotient <strong><u>" + it.quotient + "</u></strong>, reste <strong><u>" + it.reste + "</u></strong>.");
+  }
+
+  function verifierIntervalle(id){
+    var it = trouverIntervalle(id);
+    if (!it) return;
+    var input = document.getElementById("in-" + id);
+    var brut = input.value;
+    if (String(brut).replace(/\s/g,"") === ""){
+      etats[id] = "vide"; marquer(input,"");
+      afficher(id, "warn", "\u26a0\ufe0f \u00c9cris un nombre d\u00e9cimal entre <strong>" + it.min + "</strong> et <strong>" + it.max + "</strong>.");
+      return;
+    }
+    var val = normalise(brut);
+    if (val === null){
+      etats[id] = "incorrect"; marquer(input, "incorrect");
+      afficher(id, "warn", "\u26a0\ufe0f Saisie non reconnue&nbsp;: &laquo;&nbsp;" + esc(brut) + "&nbsp;&raquo;.");
+      return;
+    }
+    var cMin = comparer(val, normalise(it.min));
+    var cMax = comparer(val, normalise(it.max));
+    if (cMin === 0 || cMax === 0){
+      etats[id] = "partiel"; marquer(input, "partiel");
+      afficher(id, "warn", "\u26a0\ufe0f Presque. Ta r\u00e9ponse est <strong>\u00e9gale \u00e0 une borne</strong>&nbsp;: il faut un nombre <strong><u>strictement</u></strong> compris entre " + it.min + " et " + it.max + ".");
+      return;
+    }
+    if (cMin > 0 && cMax < 0){
+      etats[id] = "correct"; marquer(input, "correct");
+      afficher(id, "ok", "\u2705 Bravo&nbsp;! Ce nombre est bien strictement compris entre " + it.min + " et " + it.max + ".");
+      return;
+    }
+    etats[id] = "incorrect"; marquer(input, "incorrect");
+    afficher(id, "ko", "\u274c Ce nombre n\u2019est pas compris entre " + it.min + " et " + it.max + ".");
+  }
+
+  function verifierProbleme(id){
+    var it = trouverProbleme(id);
+    if (!it) return;
+    var input = document.getElementById("in-" + id);
+    var brut = input.value;
+    if (String(brut).replace(/\s/g,"") === ""){
+      etats[id] = "vide"; marquer(input,"");
+      afficher(id, "warn", "\u26a0\ufe0f Aucune r\u00e9ponse saisie. \u00c9cris le r\u00e9sultat en chiffres.");
+      return;
+    }
+    var val = lireNombre(brut);
+    if (val === null){
+      etats[id] = "incorrect"; marquer(input, "incorrect");
+      afficher(id, "warn", "\u26a0\ufe0f Aucun nombre n\u2019a \u00e9t\u00e9 reconnu dans&nbsp;: &laquo;&nbsp;" + esc(brut) + "&nbsp;&raquo;.");
+      return;
+    }
+    if (comparer(val, normalise(it.attendu)) === 0){
+      etats[id] = "correct"; marquer(input, "correct");
+      afficher(id, "ok", "\u2705 Bravo&nbsp;! " + it.ref);
+      return;
+    }
+    etats[id] = "incorrect"; marquer(input, "incorrect");
+    var piste = "";
+    for (var i = 0; i < it.pieges.length; i++){
+      if (comparer(val, normalise(it.pieges[i].val)) === 0){ piste = it.pieges[i].txt + " "; break; }
+    }
+    if (piste === "") piste = "Reprends l\u2019\u00e9nonc\u00e9. ";
+    afficher(id, "ko", "\u274c " + piste + "<br>R\u00e9ponse attendue&nbsp;: <strong><u>" + it.ref + "</u></strong>");
+  }
+
+  function basculerAide(id){
+    var box = document.getElementById("ai-" + id);
+    var aideTxt = null;
+    if (id === "n2") aideTxt = DIVISION.aide;
+    else { var s = trouverSimple(id); if (s) aideTxt = s.aide; else { var p = trouverProbleme(id); if (p) aideTxt = p.aide; } }
+    if (!box || !aideTxt) return;
+    if (box.hidden){
+      box.innerHTML = "\ud83d\udca1 <strong>Indice&nbsp;:</strong> " + aideTxt;
+      box.hidden = false;
+    } else {
+      box.hidden = true;
+    }
+  }
+
+  function palier(pct){
+    if (pct >= 90) return "\ud83d\udfe2 Excellent";
+    if (pct >= 75) return "\ud83d\udfe2 Tr\u00e8s bien";
+    if (pct >= 60) return "\ud83d\udfe1 Ma\u00eetrise satisfaisante";
+    if (pct >= 40) return "\ud83d\udfe0 Ma\u00eetrise fragile";
+    return "\ud83d\udd34 Ma\u00eetrise insuffisante";
+  }
+
+  function verifierTout(){
+    if (occupe) return;
+    occupe = true;
+    window.setTimeout(function(){ occupe = false; }, 350);
+
+    var total = 0, score = 0, recap = "";
+    var ordre = ["n1","n2","n3","e1","e2","e3","p1","p2","p3"];
+    ordre.forEach(function(id){
+      if (id === "n2") verifierDivision();
+      else if (id === "n1" || id === "n3") verifierSimple(id);
+      else if (id.charAt(0) === "e") verifierIntervalle(id);
+      else verifierProbleme(id);
+      total++;
+      var e = etats[id];
+      if (e === "correct"){ score++; recap += '<span class="r-ok">\u2714 ' + id + '</span>'; }
+      else if (e === "partiel"){ recap += '<span class="r-mid">\u25d0 ' + id + '</span>'; }
+      else { recap += '<span class="r-ko">\u2718 ' + id + '</span>'; }
+    });
+    if (score < 0) score = 0;
+    if (score > total) score = total;
+    var pct = Math.round((score/total)*100);
+    var bilan = document.getElementById("bilan");
+    bilan.innerHTML =
+      '<div class="score">Score&nbsp;: ' + score + '\u2009/\u2009' + total + ' (' + pct + '&nbsp;%)</div>' +
+      '<div class="palier">' + palier(pct) + '</div>' +
+      '<div class="recap">' + recap + '</div>' +
+      '<div class="legende">\u2714 correct &nbsp;\u2022&nbsp; \u25d0 partiel &nbsp;\u2022&nbsp; \u2718 incorrect ou non r\u00e9pondu.</div>';
+    bilan.hidden = false;
+  }
+
+  function basculerCorrection(){
+    var box = document.getElementById("correction");
+    var btn = document.getElementById("btn-corr");
+    if (box.hidden){
+      box.innerHTML =
+        "<h2>Correction</h2>" +
+        "<h3>1. Calculs</h3><ul>" +
+        "<li>189,2 \u2212 140,1 = <strong><u>49,1</u></strong></li>" +
+        "<li>145 = 15 \u00d7 <strong><u>9</u></strong> + <strong><u>10</u></strong></li>" +
+        "<li>45 \u00d7 15 = <strong><u>675</u></strong></li>" +
+        "</ul>" +
+        "<h3>2. Encadrements</h3><ul>" +
+        "<li>7 &lt; <strong><u>7,5</u></strong> (par exemple) &lt; 8</li>" +
+        "<li>9 &lt; <strong><u>9,5</u></strong> (par exemple) &lt; 10</li>" +
+        "<li>4,3 &lt; <strong><u>4,8</u></strong> (par exemple) &lt; 5,2</li>" +
+        "</ul>" +
+        "<h3>3. Visite au Parc de Courzieux</h3><ul>" +
+        "<li>" + trouverProbleme("p1").ref + "</li>" +
+        "<li>" + trouverProbleme("p2").ref + "</li>" +
+        "<li>" + trouverProbleme("p3").ref + "</li>" +
+        "</ul>";
+      box.hidden = false;
+      btn.textContent = "Masquer la correction";
+    } else {
+      box.hidden = true;
+      btn.textContent = "Voir la correction";
+    }
+  }
+
+  function reinitialiser(){
+    ["n1","n3"].forEach(function(id){
+      var input = document.getElementById("in-" + id);
+      input.value = ""; input.disabled = false; input.readOnly = false;
+      input.classList.remove("correct","partiel","incorrect");
+      var fb = document.getElementById("fb-" + id);
+      fb.hidden = true; fb.innerHTML = ""; fb.className = "feedback";
+      var ai = document.getElementById("ai-" + id);
+      ai.hidden = true; ai.innerHTML = "";
+      etats[id] = "vide";
+    });
+    var inQ = document.getElementById("in-n2-q");
+    var inR = document.getElementById("in-n2-r");
+    inQ.value = ""; inR.value = "";
+    inQ.disabled = false; inR.disabled = false;
+    inQ.readOnly = false; inR.readOnly = false;
+    inQ.classList.remove("correct","partiel","incorrect");
+    inR.classList.remove("correct","partiel","incorrect");
+    var fbN2 = document.getElementById("fb-n2");
+    fbN2.hidden = true; fbN2.innerHTML = ""; fbN2.className = "feedback";
+    var aiN2 = document.getElementById("ai-n2");
+    aiN2.hidden = true; aiN2.innerHTML = "";
+    etats.n2 = "vide";
+
+    INTERVALLES.forEach(function(it){
+      var input = document.getElementById("in-" + it.id);
+      input.value = ""; input.disabled = false; input.readOnly = false;
+      input.classList.remove("correct","partiel","incorrect");
+      var fb = document.getElementById("fb-" + it.id);
+      fb.hidden = true; fb.innerHTML = ""; fb.className = "feedback";
+      etats[it.id] = "vide";
+    });
+
+    PROBLEMES.forEach(function(it){
+      var input = document.getElementById("in-" + it.id);
+      input.value = ""; input.disabled = false; input.readOnly = false;
+      input.classList.remove("correct","incorrect");
+      var fb = document.getElementById("fb-" + it.id);
+      fb.hidden = true; fb.innerHTML = ""; fb.className = "feedback";
+      var ai = document.getElementById("ai-" + it.id);
+      if (ai){ ai.hidden = true; ai.innerHTML = ""; }
+      etats[it.id] = "vide";
+    });
+
+    var bilan = document.getElementById("bilan");
+    bilan.hidden = true; bilan.innerHTML = "";
+    var corr = document.getElementById("correction");
+    corr.hidden = true; corr.innerHTML = "";
+    document.getElementById("btn-corr").textContent = "Voir la correction";
+    occupe = false;
+  }
+
+  function init(){
+    etats.n1 = "vide"; etats.n2 = "vide"; etats.n3 = "vide";
+    INTERVALLES.forEach(function(it){ etats[it.id] = "vide"; });
+    PROBLEMES.forEach(function(it){ etats[it.id] = "vide"; });
+
+    var bOk = document.querySelectorAll("[data-ok]");
+    for (var a = 0; a < bOk.length; a++){
+      bOk[a].addEventListener("click", function(){
+        var id = this.getAttribute("data-ok");
+        if (id === "n2") verifierDivision();
+        else if (id === "n1" || id === "n3") verifierSimple(id);
+        else if (id.charAt(0) === "e") verifierIntervalle(id);
+        else verifierProbleme(id);
+      });
+    }
+    var bAide = document.querySelectorAll("[data-aide]");
+    for (var b = 0; b < bAide.length; b++){
+      bAide[b].addEventListener("click", function(){ basculerAide(this.getAttribute("data-aide")); });
+    }
+    var champs = document.querySelectorAll('input[type="text"]');
+    for (var e = 0; e < champs.length; e++){
+      champs[e].addEventListener("keydown", function(ev){
+        if (ev.key === "Enter"){
+          ev.preventDefault();
+          var id = this.id.replace(/^in-/,"").replace(/-(q|r)$/,"");
+          if (id === "n2") verifierDivision();
+          else if (id === "n1" || id === "n3") verifierSimple(id);
+          else if (id.charAt(0) === "e") verifierIntervalle(id);
+          else verifierProbleme(id);
+        }
+      });
+    }
+    document.getElementById("btn-tout").addEventListener("click", verifierTout);
+    document.getElementById("btn-corr").addEventListener("click", basculerCorrection);
+    document.getElementById("btn-reset").addEventListener("click", reinitialiser);
+  }
+
+  if (document.readyState === "loading"){
+    document.addEventListener("DOMContentLoaded", init);
+  } else {
+    init();
+  }
+})();
+</script>
+</body>
+</html>
