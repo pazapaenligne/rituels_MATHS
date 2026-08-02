@@ -1,0 +1,377 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Rituel &mdash; Semaine 10 S&eacute;ance 3 &mdash; Classer des angles</title>
+<style>
+*{box-sizing:border-box}
+html,body{margin:0;padding:0}
+body{background:#fffdf7;font-family:Arial,Helvetica,sans-serif;color:#243238;line-height:1.6;padding:14px;overflow-x:hidden}
+.bulle{position:fixed;border-radius:50%;background:#3ba5b8;opacity:.12;pointer-events:none;z-index:0}
+.b1{width:190px;height:190px;top:-70px;left:-70px}
+.b2{width:130px;height:130px;top:-45px;right:-45px}
+.b3{width:160px;height:160px;bottom:-60px;left:-55px}
+.b4{width:110px;height:110px;bottom:-40px;right:-35px}
+.wrap{position:relative;z-index:1;max-width:880px;margin:0 auto}
+.tete{display:flex;flex-wrap:wrap;align-items:center;gap:10px;margin-bottom:14px}
+.etq{display:inline-block;padding:7px 16px;border-radius:8px;color:#fff;font-weight:700;font-size:.95rem}
+.etq-sem{background:#8fd3e8;color:#123f4a}
+.etq-sea{background:#3ba5b8}
+.etq-rit{background:#1f7a8c;font-family:Georgia,"Times New Roman",serif;margin-left:auto}
+h1{font-size:clamp(1.3rem,4.5vw,2rem);font-weight:900;color:#1f7a8c;margin:6px 0 18px;line-height:1.3}
+.bloc{position:relative;border:2px solid #3ba5b8;border-radius:12px;background:#fff;padding:28px 18px 20px;margin-bottom:18px}
+.onglet{position:absolute;top:-17px;left:18px;background:#8fd3e8;color:#123f4a;font-weight:700;font-size:.95rem;padding:5px 18px;border-radius:8px}
+.tete-ex{display:flex;align-items:flex-start;gap:12px;margin:22px 0 14px;min-width:0}
+.pastille{flex:0 0 auto;width:34px;height:34px;border-radius:50%;background:#1f7a8c;color:#fff;font-weight:700;font-size:1rem;display:flex;align-items:center;justify-content:center}
+.consigne{margin:4px 0 0;font-weight:700;text-decoration:underline;color:#1f7a8c;font-size:clamp(.95rem,2.6vw,1.05rem);min-width:0;overflow-wrap:break-word}
+.cadre{border:1px solid #dceff3;border-radius:8px;background:#fbfeff;padding:12px;margin-bottom:14px;text-align:center}
+.cadre img{width:100%;height:auto;max-width:360px;border-radius:6px}
+.item{padding:12px 0;border-bottom:1px dashed #dceff3}
+.item:last-of-type{border-bottom:0}
+.q{font-size:clamp(1rem,3vw,1.15rem);font-weight:700;margin:0 0 8px;color:#243238;overflow-wrap:break-word}
+.ligne{display:flex;flex-wrap:wrap;align-items:center;gap:10px;min-width:0}
+.champ{flex:1 1 260px;min-width:0}
+input[type="text"]{width:100%;min-width:0;padding:9px 8px;font-family:Arial,Helvetica,sans-serif;font-size:1rem;font-weight:700;color:#1f7a8c;background:#f7fcfd;border:1px solid #b9dfe8;border-bottom:2px dotted #3ba5b8;border-radius:6px;min-height:44px;text-align:center;max-width:260px}
+.correct{border-color:#2e8b57;background:#effaf3;color:#2e8b57}
+.incorrect{border-color:#c0392b;background:#fdefee;color:#c0392b}
+.actions{display:flex;flex-wrap:wrap;gap:8px}
+button{font-family:inherit;font-size:.92rem;font-weight:700;min-height:44px;padding:10px 16px;border:0;border-radius:8px;cursor:pointer;background:#3ba5b8;color:#fff;line-height:1.2}
+button:hover{background:#1f7a8c}
+button.sec{background:#fff;color:#1f7a8c;border:2px solid #3ba5b8}
+button.sec:hover{background:#eaf7fa}
+.feedback{margin:10px 0 0;padding:12px 14px;border-left:5px solid #3ba5b8;border-radius:6px;background:#f4fafb;font-size:clamp(.9rem,2.5vw,1rem);line-height:1.75;overflow-wrap:break-word}
+.feedback.ok{border-left-color:#2e8b57;background:#effaf3;color:#1e6b40}
+.feedback.ko{border-left-color:#c0392b;background:#fdefee;color:#96291d}
+.feedback.warn{border-left-color:#c9820a;background:#fff8ea;color:#8a5b04}
+.tableau-scroll{overflow-x:auto;margin-bottom:8px}
+.tableau-ang{border-collapse:collapse;width:100%;min-width:360px}
+.tableau-ang th{background:#8fd3e8;color:#123f4a;font-weight:700;padding:8px 6px;border:1px solid #b9dfe8;font-size:.85rem}
+.tableau-ang td.lib{border:1px solid #dceff3;background:#fbfeff;padding:8px 6px;text-align:center;font-weight:700;color:#1f7a8c;width:60px}
+.tableau-ang td.cell-clic{border:1px solid #dceff3;background:#f7fcfd;cursor:pointer;text-align:center;width:80px;height:46px;font-size:1.2rem;font-weight:900;color:#1f7a8c;-webkit-user-select:none;user-select:none}
+.tableau-ang td.cell-clic:hover{background:#eaf7fa}
+.tableau-ang td.cell-clic.sel::after{content:"¹5"}
+.tableau-ang td.cell-clic.bonne{background:#effaf3;color:#2e8b57}
+.tableau-ang td.cell-clic.bonne::after{content:"¹5"}
+.tableau-ang td.cell-clic.incorrect{background:#fdefee;color:#c0392b}
+.barre{display:flex;flex-wrap:wrap;gap:10px;margin:18px 0}
+.barre button{flex:1 1 190px}
+.correction{border:2px dashed #3ba5b8;border-radius:12px;background:#fff;padding:16px 18px;margin-bottom:18px;font-size:clamp(.9rem,2.5vw,1rem);line-height:1.8}
+.correction h2{margin:0 0 8px;font-size:1.05rem;color:#1f7a8c}
+.correction h3{margin:14px 0 6px;font-size:.95rem;color:#1f7a8c}
+.correction table{border-collapse:collapse;width:100%;margin:10px 0;font-size:.9rem}
+.correction table th,.correction table td{border:1px solid #dceff3;padding:6px 10px;text-align:center}
+.correction table th{background:#f4fafb;color:#1f7a8c}
+.bilan{border:2px solid #1f7a8c;border-radius:12px;background:#fff;padding:16px 18px;margin-bottom:18px;font-size:.92rem;line-height:1.8}
+.bilan .score{font-size:clamp(1.05rem,3.2vw,1.25rem);font-weight:900;color:#1f7a8c}
+.bilan .palier{font-weight:700;margin-top:4px}
+.legende{margin-top:10px;font-size:.85rem;color:#4d6169}
+@media (max-width:480px){
+  body{padding:10px}
+  .bloc{padding:26px 12px 16px}
+  .etq{font-size:.85rem;padding:6px 12px}
+  .etq-rit{margin-left:0}
+  .tableau-ang td.cell-clic{width:60px;height:40px}
+}
+</style>
+</head>
+<body>
+<div class="bulle b1"></div><div class="bulle b2"></div><div class="bulle b3"></div><div class="bulle b4"></div>
+
+<main class="wrap">
+  <div class="tete">
+    <span class="etq etq-sem">Semaine 10</span>
+    <span class="etq etq-sea">S&eacute;ance 3</span>
+    <span class="etq etq-rit">Rituel</span>
+  </div>
+
+  <h1>Classer des angles</h1>
+
+  <section class="bloc">
+    <span class="onglet">G&eacute;om&eacute;trie</span>
+
+    <div class="tete-ex">
+      <span class="pastille">1</span>
+      <p class="consigne">Voici un angle &Acirc;. Clique dans la bonne case pour classer les angles &#9312; &agrave; &#9317;&nbsp;:</p>
+    </div>
+
+    <div class="cadre">
+      <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAUEAAAEtCAMAAACh5iIiAAAAwFBMVEX////9//////z//wD//v7+/v/+/v7//v3+/f39/v79/f38/fz8/Pz0+/78+/r6+vr5+fnz9vj39/Xz8/T39cvu7u7n6+7s6dvi4uLd3d7f29bmz6jM3+vL1dzOz8PHx8e2wsy0xUW4t7essLS7rJukp5f/lgPMj0eenpyak46Qm5qOjoyJh4yEhH59hoZ4eHUzgbF5b2Vra2tmZmdiYl52QT75AMO9ABNcXVhGXGhTT00/SEw9MjEhLDldC50xDDniaq8fAAAeaElEQVR42u1dC1ujOBeubieODFIESYEW6JC6hpuMgX6LlE7//7/6Elq19UqAXlTOs8/MrFaEl3N5zyVJr9dJJ5100kknD9Lvf8rblszx+ZHcyunpZwRQGQW+NfiyOthXYPlwin65/sqZBoUH5dEuQd0LbqqgoeuDL+sYTkfzyQl9yul8/KAy0Z8HMK/u0C/+C96Pn3+l+MP/Jl76Alk4TgiHsz8XVHHu/sBeHwDAVMYSez36zx89xR6Xd82+zr5Jv1Z+ZCWg/Pfq6yer/z8BYI3g0+f6ynQ5b+4IRTdyLahIAjg2BKWb+/HJ2SifXPSHLp5cnlAELyiMUzQWKYLsyek3YO/UnFzSv21Mv1sCI5tT+u8TxbVMNIFU1YbTCXStEsGf5aXWCF7NfPaWGgpMY5IlcYQdXTkuECl4SGAwnl3dFYvFLWRWLE3zxeJ+fHXnMyvuT4txifR0QYrFfFLqkzSiH5n7l1ez+9li8efi54j+lRR/GIKno/JSlz/KX0AdhHcPTxrep5NDFZquF8VZEro2VOWjwZEa8IVGlUS5uZ+Y0wIxBKnnskz3JYLLP5Y9u79YIYixly7GV7P5xPQWY+2O/ri3LBFU7u4tY5pPfj1cn6p4QzMWokgsXYcMLRfFWVpqo3wcsYTqCAsn1Ngu2ONSBFWKVq//S3xEcPmgg5Pz05sFLIGZ5lTPFpMrZqGjYnJVoPP+1UoHr4p5kqRFabr9UeHrJv1QMyXUUufJAQ9UaLhBHKdphBxDO7g2Uuhu7iH9C1H/94RgGYs3dXDOEDx5QJBGIMehX7jKHxE8odcoERwVxXw+zxFDUJouF0VBY8mPZkZM9OdfkjXHxVGexSHVxoOyJeVmnjP1u7m39FHur6zY13X70YpHBdLt2TaCFCzdvHtCcDijPz5d6+DdrWWaThnI6dfDMIwKX1S1X7XvUQrC1zACkqIZDtVGksRUG+GBYszZqFiMTyhty6myUCdGEVSigqoRtdASwd7wblHM820EtRv2NYpgsUJwQK8yzxiCcxpJ8vLn2Q/TbzG+eXcPvT+wvhHH6J3vDqDNtDEnATqMb1Sumb31z4bXt+jyXLIpsZHtILQulKlVBgD2HWuEoemPT05HfklTgDKNJkM81q4nYo/+fS6Znm/n6HSIKPUZXke+dcEMd4TZx/smhlN0WfsWzVR//wMAiDJ0PJJQbcTUNypHSr/fC0hD17KjhbWTiwMUKZU+KGumi8MsT3xk64x+g0+E4NXdcrlAFzu5uBY7HDolKLqDSUYIIzzq4LOA2JeGrmtdnOzi2iIKVU6llRRKeHBA8iRwbQpjtWRQ0qD4JcsfVAXrGb9MIzVKMsLod5VAbc6el0W+hohupNb+YaGk334YJWlQEh7hveSCEogvqYLEbWxbMjQdFGX5PMau+VZUUmZ/WqiBHJ8ITgLbiAaMfgez2awoMuJPXqHfZzS5pSnuyZdDUIoiqa1rRb//+eef379njPDfPqffNCsbmzP09ZRQ3ygqNK5DMQRLWcFI05gn30hTMJqoNsicjjWOoFRri5hfZv9syRrG0GW/4ZTmpfT/FtZXM2OYtKaCwClu/nkhv2eLMpVS7ua3URQVf86/FoDATZTWroWXxUsE/5kVSFkV6y/KrscXM2OFoPbehlPMXqpgkZvMD/40MWtFnJn+10IQvFJarX8xMf39EsBYPyvT0p8i8xb9M+lrWbEaxy1mqj+i2QsLxmrvS4s5d9q83HMEi7k7AF8bQTdvtQPiFNsWnJni18avJ0RBq8VmbdMR3hSh9sUVkLrBzG31GSV/9o1cYEmnid3uBY3896MLdMDXB7Bnx3q7F5S82doFpqbwDQDs4bDtK1r5CsBQ630LQbHc8hXl61npAhXwPRB0UqN113o3oy5Q6n0T0dLW3f0AF8QQvguAPTFxW0ZQRjnWet9IAtyqugAYpo4IvhOCbtBm2gV0Qkyh960kmLcYjEU3C9TeNxM7a49SqyjD3w7Anuq1VqLWoswWvx2APbEtTi2YMTFB7xuKU5it5MMOvwvsf9KVoM9TiKyFIjVQcIa487j+51wJ+sKM2+jVqQFlgdw/9UV0sBdETb2XYJLY+GYscFNw0bRTYucRBN8XwJ6eN2OEtVzglxKNNCkuABhk36eU9YYXc+P6gzOikRC9993lw9U4b8vATYNv7QLXVIS4tV1gjuVeJ1Lg1UpnSxc46PBjk+hxndECoCfkO7PALV3KA35bZLXAzgU+uLPQ5eYjsptjpYPukc+EvGBoUW5JHXKP4iR8hSnBIMTqLHiTES64+MzAzUKtQ21TjCVHhQso1/m12mngNoI8OkhdoNO5wOdWXL08A4woNjsW+CKSZFXdmmR3LvC10IriarEYKChDagfYK4waVXNsKk5cscPrFdeWVWr0Mhaody7wtQwXV9psRrBJpHck5jWBaZWOsXKdIrkD69UMA5GPoyuAXuZ2AL5Bp/OPB4GBHne1wDfdWxB/WGeWnCTo+klviT7/MKNT3K4d8g463keBmLpA0iXC73nBjxbW6SQ2OxLzthf0P9itZ+Ak32CJaxMuSN4NxEB2U9TVAt9LR1D8Lhf8pqPRHKJGGLzHAiNidQB+ECXM91hgGnS1wA/Eyt/cPQcoKO9qgR+KQ97ESPMSt8vjPhQze0MHBTOOu0S4ih98g0+LdhZ1QzGVcrogeC2nU1CCuqGYSgLs5OX0BtC8rEuEK2d13osNMAWdkM6COTxh/Gw5nOgQr6sF8mXGW6NvlAVedy6QzxWaJIRPLtBPHLkzYV5DTh7bwEbHAmtpIQyp4vVYLbBbHVJTVJyjQU9xs240uq4WiqwZFyV2xwLr80IzDonV4dBEBoNOATvppJNOOunk+EiO62hdltdERBwnMTJhtw67drIis/Ml8xg7Dc46/Nn/5iACoDkRIQQ7eq0DY/vfHcGVNWsWivLEcw1V6oo3taOKauGEkNDVlS641DVoSTVcj2QRsjS5Q7G2QaumG6dxhA5yHPkXUUVRgQ6OstqxpZOVVzTdIE0i31K60FIbRFmlEZpkoWtq3ZxmbYtWDAcnWRy4XfZXH0RBgm5IqFu09WNrNfc/j4eRoE0pN/GQoRzTuQanvz5XPqTaHiFJUCdCK44D1UHr4IOzz5ZRCpRyB0kWIJtSbh44tIBiT5k6VLqYxFBEMeU5rqFUB1FQoOXiMMtijGxdHXxzhkQpt+7gmKLBZ9D0xyyqwjT5jpDZxXaRGnSYkhgZPNkfEAYKNBEOUhaWHF1t0ajFg78TWTN0rgcSZM26DpI8wRZnlVtUdZumPBkhITLbWtRy/uOghgltHMWJz11NAKqRLosiv3U5B2MBVUfVRF6U5GmAHOPTpj1A1kwHhVkeR9g16izzFNPZv//OZiWKBvdCW+oMHNenehyXAV4CnyjG0FyjrMFE1CVh16pdhpHzf1dCQSwIdlRJ4EeBxvcwJnkafhZtXGleRMlF7LnNCoHAKP59lBumioTSvhpTTqVvxCRLIqqNUJWP9Uw3IMoqpSIBRY+arQkb164EtIFgqYoMxYCyxVpXBizEx3FGtZHyRun4NM9wKBsmJPYco0mVQNJ0XT1f607+7wthBh1rtV9ySb/jPItKwjMQwFFonqY7KKB3FWLHgI1Kz/2fJuXFxJ/A8xNmxa8gSDFckGYsRZCh6YY0FySBa1IUD5qGydBmmpfEPnXTze9FGoU4jsPJdTg+Z4MjxWsAFl7zxd9lrDPLZJB6HOobDwCjxHyeR2NcQDVPU8Q27OF0FI5V25mSsR2OT3pAe9WKUXulRBpiLKaNMQmpd92n5VK+GhGqe2XAaO/1XXkT5gGvUqRM/QvKZtKb5wC2fr4xYG6IamNAeavPfOOOtZGxVIQpzQsoSdYGYqss9XTkwxOG4N3k19XtuNcbZLNt/G6KeDf7GLJ+ts1KE0wbzVq8s1qmRNOzOGOat5NXJTHFo+Fyejv+oYQT+kvR7JkFh3C3GkLpt0fTcUK10YBSm5pHSbK/Ts925y4UD51QGNP7yUVPKg8FNWbPXOAeHP6KfidZRrkFTUaVZvGRkWRo4TAkWczSs906CWVKETwbmlNiCYpHdbCnbTpC6gL3N4woaGnBJE8C9txibZ/nhmnK0jNjH81x6gcvSmu+8y+ubtkiH/HJjJkL3CfXUPPfTGYljklZ4lEqE3DqiihJvg7CNIuuXQPuaz6jfxVY5z8FoNz5Cg0q7Ev6U21hz7ugweL3o7BsclFQ4kapx4dmKMjMDURM84J6JalmfBAOJ/oomZiMDzLxZo8scL98V99A8PeTOi5S+G56RnkRSWnSiB1TO0T3VpmG11lyO3HDya/1g6SlC9z/iQgvEWRSLHPtLT4EHZpwF4vFYu7Ag7W++5KNAxL7eCyerG3CnVEXmBh7vyEtfwXA2at8VIKmg8mcYrf4w2R+0M0mzhTTtuDF020qcVEE+/Em4KcoimDdElHSVwBcPHPGQBA11lpkmnf/50EW5rpMok2jWwR/Hbr0ExV72gVNsa/vMoKsVWlNIrMXJlw4W85Y2dK8J1kEJYDa9BZ5Pv0Pnh8SQSMm5n4cyHAaTgzToH9elq8ufO4IqTPepoX6fFPzNhDE7Ho0tbfc4NY3pqtc9TAiWkkM98OllGsfDqf++HQYTEpW6ubPLDh57t4UJ36hfyWCqCzU+VCB58M7JE9XNPcQoqAc72kfQ0akTkd39+Pe2agsTvaMfDuGhK/sxKHa5BUM5wYrjwTlVZSbPxdXqwsewAVqe9zQn2reee/0KhlTMKfoogxhs00XiF7PKCX7pR7eU2Xtj8JS8YazPxfSdHIQJSy3ct0bjSqraaejlP7ZG91eljyq2HSBb/FRoFjPMbyH7DUwBPuKdz8+P536lwcAcGCn4f52sOmPNhGM4TYjLNJ3NyOS7GgTw3t2YMYKQWl6T1ODwyAo7s8FvkTwtkRQxA/FheCDlBzI5gaGCwTWVnw6yiciK9gdwIo1L3X2mRgxK/6xRrA/WqkMgOmsdIEVNiMCG3F5XvoeFj6Gd38u2bX3H0mAFqfmfgc0JGZpJYL94apbQ2+DEZpiXnFfbdFY6eF9UkY/xmamhe+64wOwGeBk0b439O8Pw4nIEGRM+HLNgNWoKNLq57SqZVwu+TQLIte+7YVhOKEkc8+MWnZTvP/twH+OQgQV49KkD/yomKi45bqTgRkVC2cVdVhW57qu4+09JdGC59nTnuzYxDgIfYwekiCgosTlrWmoVpwG67EXxZxGt9jacxwW9PhgG/qfmi6aPJUBtKjWrryU22SBebgxOyfddUOz6qusvTE55dhREpiH2U1QZfsYHsVwn0RfZX1nLNphFhgHGLBTg8w5it1VgIJzt4kSgYEZpoEp79lujKM52Y5tTN70TmQnSjDc5/MIZhofiwskMWw8EQSAqGPim3uzZRllqKILlIxd0kUgOhl/TUN4VdkU0ydY30t6ChQvq+x49NjY4a0o11mN3vTp6Rtvm+oh3sfZ60acVG+H4Gh3bAvAIHVaDQCK4cW+seMF6JKVRtV9rlbpyN+aAG7sUd7e4xnMH+6SYw+4NvQXcbCzwuHATYLG0ezHjx/rUPL4XmTDj73dTW9BL3U5WKBOrF3dCTuboTkfBevI8VPaiu9UD3fDsdn5xjyHewIc7YinAhi2ckghWCvfNh8CAx3H3g5yPYmTOlBHtSsV5HyVdXgmZtym3YuKNBHm8moDHO4mZaevcufjOUCALKa0aUOQZU9ct60nO9ETILv5XmoaAwO3yLEBpCyQT6kFHO1EBbUo3VdZVyw5dju/jJ1pwht2duKqgBETa381AIVyG9wCx2ZnmvA6HuoFd1D9kpw02u8xo4OSYzd8Z6wdwo0GDcQ7SMlpIrzvc1qBYuBmHFsw4pi/HSLuIhBrQeYeoqshUm7j1ebYArWbGtmT0f4okmAerKwLqC3H9fopQEG12iEijtp+VsHOwgMeVQ0Yx66hh0pQby6w/aKMgvPDntNa1rFprselTow61FrcIOGg3acFGj6MC9x+LMaxeSKZZCU1zzc2iN2uBesk0Y+htSpAl8OTsCPea2oSjtqNhXYaHss5rRxZnubXHo1u2QvK6DMeUggaFJCkVkvT5VHVn++cVomNRtflIzqxW3xgPU7Mz7fPo9BoNLrN0rT4Oc9phQFXO+T5TyftqWBZC+x9PgDj1KjPvVps0AEtzJzPd0zmwGm2OqS9Bh2LZgc9pxXU2cumrKE30SEBtVWaZp0t9aDK5NRIxAGrBQqN9Kal7ghQ3BSrh4whQE0XLn/21LSGPmgrI9aCzDlsIizh5TLmDKig+Wh0S6VpoEeJeeBKgj7/77853+iZwlxgM7sZvN+g0yrGeNEk4aFZ4CBa/vff0uW5C4XaTUMqDIz3U0EzrUYVBQfVK6YC1WopjgGn+I8iSDh8GtsmoWn2JOLw3e0yFL9ikUquSeiB3dZ4spJSFfzvv6IyGxCsNkajaTryQYCN4p0SFNFvqccqoBJAasZVEb+uPBr9bvQKP3IDRorlHSIox7i9MFIiWC0aAzXI3BbeXZUGnZ7vcmdCmLSzYYsYr1SQmnGVaAxYG7GN3+tXKE0DN9vd1AZwslbaeYL5AOB/S/SxaYpW1g51gJVK09J1trP5fhkHrfgILX1CkHxsnAO0UUAC9TeGrdqgU6N4V4u66TtsQ78F/AggNeOPtQsoT+8NQLd2rKw8pgATb0c1PzNrhcvoxROANBrz5UZmUtvEcFSxlAfMDO2m6oeiNriMEi43EUz4dEqL3JoWBhOn6k+Kbu7sJJrEuA334GyqYMVovOHMIr/mZro8pWkRZ7vo/2qkjS6rli23EFxe8w164Liej+IrTWvxLgYpraQFNyihbQBpNOZDxKl5oghnaVpL219rMsBxG2nBtg2XZsw3gV+LrfGXpu3cbTuaaLHb/CJytHyO4JIv7mmZU8MbS9wjq6KTtz0gZ8ybGzFwipcI8kVjJaqTt+r8kzISTlsex3KT5lqtxnHy0oy5ku1BHU4l4RpFK5qbtLvVQOg1fiM0a9cVlxRbIC6XmE+N+ZNzoKc2v+ICmLSTxT68kcRtvOGCntIMhJ2Le8d2VV8ul/TPuyDe5ic/f37gTTLusVWx3vIlYKVtRhOz+Y4Egrd+EKBA20Fx6CHHUAd2ZvIgqEXcoQTWnBcUnBZzEwGRptm2YGaPqT0AQJAkUWALZ5UUbaYZ/Q+O7JZC3qxkgOuW7mUaTdpCUAn9pkasxW8U0H2+l8PNS/W07rAWkIO4rRUOeta0PC3g7I1mr5VzOQiHV6P8uL4p6nFbK10bl6dZGHlTORHPTRqEz7Jgo6lpPcPtuMLG5Wkl2KgQl6c2iE/ayVUtoFkJpxdstHGYm7fSNxmQhh0sSuMeNUcykUeIj8YP3W+Ta8MDJUY8oYSmI43MUEattLn0pktYNIIfHlsahRNNlIbTx52BBwmPGUsuVxEexQ05HY0mzafcBLdhSBpg8tC9kUb+eHgdRf54FI7XX8OE4ymBzdNt0IgDGqtP84m5QdhwKaTxVOgYBuOTUXYb+PD0cXdli6tqATlit4Cal0qBkaCmk24aaVbZkqPH4lKfnSQ3ImN2QuwwWm+vTKkixxuS4+qhRI+d5mREcJOm0cTIG1FzwXnqsJUHTozyW7a/vPawZbiAeUpcYlC9FuG2MUkERNSUDqNm96GlT5FC8dAvymbc6Bb2lJs1gj0j44hUABNQ2XicVviwGjXbWl2IGu3CJeCNs+3Wh56cjfLJkw725JSnxOVUTQPb8IIPrL9RNIFZkzcJrGwjL+2vT9QcppMnP8gZjfWq525C0lql3kwbdOGB06hYO4jCzd9NY/G5oqmjZCxtnHRgzTlK6lpFkiy47c1TskpXbTUS/KgBKQXO9qAG44PmHbmdKJQP/nhyNLg6YZDi6yofBlQF2xs9EHH9Zew0jWrCR58VevvSNJhYlkFzEuvXhrqkHJwdeVV0S0St7imjBrVNETYZqBNeVv8kEwdlXny+BTTHQg87rfIsWtxqvxKo5MMh4jfNsH5KJ5ivDH/3ZU3XtcHJNk3mINXavAI9k9y2p8qtmvt5DHCD4Ww1rvjDAuIoQolVSn6Q2C0PYAl2vVKj1oDLAJRWZKJAz6vPZQhhBfqIo9aHAGt24c20NpcBMK1cV1RiXPmJAY4/fJCWveD6JgNSA4wGE0dKEFd2AMCt3kgA7od5tIR2ssUlpF6Ju10d1+7SATvlSMiNvHpubH6YlbS7ocfTIxmEOzfRktrlaY1gjt+mxH717eCTj8ptKN7N4lX+Ljyw87puUERcHlRApLIZS/EHKUxbRZlXqAni3C1tgGrSSNYodDk/X/2pP1gbIu7GC66Yq8fX8qj/MuWAs7QkhbhyzHLej4l6y5u7PSOaXK0uo64RA4e7ruumlSHX3++VoHiH++gAvi587WahmnAvntCrBy313ewA7swLPrzq6g1uEAX17gW4/GNPSlT53cohetcL7nYjGMl9g6ZJQxe548Ez2lAPQbPGIjzgVq4fifhxh4G+XB7x+GtLBXu7FSUir3Thz7Sp7wX+tb9RdQJWUq9LJwR1Mpnq7QTw6DN/Dj3shb6HLs8fvxftfFNeGL+MJv2hh+AvzdqYxmD2QGpxmXOnVntQiIKqivswU/tzdDsxpyTxn466bbU0/WZu8qIL39eu0WVPubkfS6PwsQGkhgjUe0WoVjLt5lUdmBaX7oUdt0zvXIeXynR9uq+I9rEdluA8PwvxlB05Lk1n9+OesmpIrkhDrU6zgGsWZY3Kk200XWc6IE3RJX3jKxua/Foz2N4eRELpdm6iTCcn0uj2miJ4Nno8qsJJ1VoqXncttxJVLuqV8/nsaHhpGjve5OLH6erYedHd0+kMarDtboeR1aNvcUQR7F0FD2Yc1FqftzVtyRmNKy9/LJco9ke3Y+Vmjq7vJhe90S3s7aI0/da9avFWJ2sYsf7t5QrBh064ktRxg4wK1iW0Wl41ly5neSiCcOW76X2PGBcCuHYezy1Wvtk3UbwJVUF9ej8WqUdZh7VaJygASK5r19eFuCqDL4eB+1dUB70/F6cUwX6pgzspTb/1pNZmZkRdsuYlSb64hdJ6MKPmIpKBRxo4IjdXqrohtHrx8jSGp+UIBA2A0k4z4lci5pO1nZnBWFZV+i6FYbAeCJK9GmvpgJk1mp2vulPvoOyV0PABRzG14ls4Yjx2d2fQveHxN2pEJQ1kNzRkxLBXmxeoUaOxfzmouHYTOJlacggfTkMcjM2AkZldHgb7qi8hG0+rjHyk64Ydosv1OItZY/BScNNGGxQBp2o0NsuEs09zqMnUn9A/LxmTd/a7sSIwyUbucGq6d0mMrMeBqjolDi1HDd9qVSegRasPKvY0JrcTRh+kHZamK+UmfUnTtMvHYQyJYG6TkHHThWhS6FXjc9JDLexMobddzpDsqEH3gT9+u4xXp0hk5013ihXcvOI7wC885v5VsN8HirdVk1NVDRo4dBHUlBqLSGQSNE0IAEzd164BwI/nWUkE6d1CqKmqsK5nOPtWwf7PPv21/mM0GehRlOf5kkqeeoS75Sq4LazHlV8fdBBenP5i5vntnEoWpY6hCC1ud86jg/2yb1KmECK8Torl37//W8vfJfeOl3rmNleCzSV4Wzr4/NJwTu/273L5l73xxDd32qB7P5qwvglQ3Wz2iF4pBa8bFHErZRFY8T2oKUPwQZZUFw+1Tf7AJabskNn/tuUvb58TWFkrCYEcVisOyMEmgn//LpyDbbIthyTI/z4D8H8z3hFQLcaDdowiq1TbEd0tBHk34mtVYLL83wtZunxhVXBJSzvcqGm1X61vIbhwDwcgzU2KFyr4v4IvrAIjdVsqbVZd9K4VGxAuyQFPzWTTui8g/MtZ4JfD9riEU20FsZxsIugc9sQuGT+34yXf4CVwUrO1u6nY5wf+csMLHvrEKe25Kyz43IoW4/YGv6WwWoUMLY/DC66TqWzZgMuImLR5DqGVVloEZBdPXlDtHVzsLVf4l6taDninLT8QBVUKYzA/Fi+4plebEPJxGTUKD+GGZLJ88IJHcWwc5fgbCHIZsZMd5PRZ8SGULNzjOPlRjZdPblDm+cEUH+SGgbM8Hi+4iib5A4RLnsFLCRN4mDuGi7UXPJrDR50HV7jkCQxmdqgnkMusZJkez+mjIjWL0ojnHH5tELd0+FCN/K8MJQvniA4QFlfRZJlUd4OCk5mHMqIyKzloUeblLa2iyZJj4khvraJQ43bdxUHrgq8Dks8oghw7W+FDFkWsgnpB9agA7AFz/vfvXK3+8cQ6oBfSsuWxqSCbQy6WYWWKr8aefMCbHZAlOb5jwGWfg+JbRD/ozXoL5+gApNHEru7ZNOOwh9BC+xOeRN9JJ5100kknnXTSuvwf/mxXrdjk0mwAAAAASUVORK5CYII=" alt="Angle A de référence et six angles numérotés de 1 à 6 à comparer">
+    </div>
+
+    <div class="tableau-scroll">
+      <table class="tableau-ang">
+        <tr><th>Angle</th><th>Plus petit</th><th>&Eacute;gal</th><th>Plus grand</th></tr>
+        <tr><td class="lib">1</td><td class="cell-clic" data-comp="a1" data-i="0" role="button" tabindex="0" aria-label="Angle 1, plus petit"></td><td class="cell-clic" data-comp="a1" data-i="1" role="button" tabindex="0" aria-label="Angle 1, égal"></td><td class="cell-clic" data-comp="a1" data-i="2" role="button" tabindex="0" aria-label="Angle 1, plus grand"></td></tr><tr><td class="lib">2</td><td class="cell-clic" data-comp="a2" data-i="0" role="button" tabindex="0" aria-label="Angle 2, plus petit"></td><td class="cell-clic" data-comp="a2" data-i="1" role="button" tabindex="0" aria-label="Angle 2, égal"></td><td class="cell-clic" data-comp="a2" data-i="2" role="button" tabindex="0" aria-label="Angle 2, plus grand"></td></tr><tr><td class="lib">3</td><td class="cell-clic" data-comp="a3" data-i="0" role="button" tabindex="0" aria-label="Angle 3, plus petit"></td><td class="cell-clic" data-comp="a3" data-i="1" role="button" tabindex="0" aria-label="Angle 3, égal"></td><td class="cell-clic" data-comp="a3" data-i="2" role="button" tabindex="0" aria-label="Angle 3, plus grand"></td></tr><tr><td class="lib">4</td><td class="cell-clic" data-comp="a4" data-i="0" role="button" tabindex="0" aria-label="Angle 4, plus petit"></td><td class="cell-clic" data-comp="a4" data-i="1" role="button" tabindex="0" aria-label="Angle 4, égal"></td><td class="cell-clic" data-comp="a4" data-i="2" role="button" tabindex="0" aria-label="Angle 4, plus grand"></td></tr><tr><td class="lib">5</td><td class="cell-clic" data-comp="a5" data-i="0" role="button" tabindex="0" aria-label="Angle 5, plus petit"></td><td class="cell-clic" data-comp="a5" data-i="1" role="button" tabindex="0" aria-label="Angle 5, égal"></td><td class="cell-clic" data-comp="a5" data-i="2" role="button" tabindex="0" aria-label="Angle 5, plus grand"></td></tr><tr><td class="lib">6</td><td class="cell-clic" data-comp="a6" data-i="0" role="button" tabindex="0" aria-label="Angle 6, plus petit"></td><td class="cell-clic" data-comp="a6" data-i="1" role="button" tabindex="0" aria-label="Angle 6, égal"></td><td class="cell-clic" data-comp="a6" data-i="2" role="button" tabindex="0" aria-label="Angle 6, plus grand"></td></tr>
+      </table>
+    </div>
+    <div class="actions" style="margin:10px 0 0"><button type="button" id="btn-verif-comp">V&eacute;rifier le tableau</button></div>
+    <div class="feedback" id="fb-comparaison" hidden></div>
+
+    <div class="tete-ex">
+      <span class="pastille">2</span>
+      <p class="consigne">Voici six angles.</p>
+    </div>
+
+    <div class="cadre">
+      <img src="data:image/png;base64,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" alt="Six angles numérotés de 1 à 6">
+    </div>
+
+    <div class="item">
+      <p class="q">Classe ces angles du plus petit au plus grand (s&eacute;pare les num&eacute;ros par des virgules)&nbsp;:</p>
+      <div class="ligne">
+        <span class="champ"><input type="text" id="in-ordre" autocomplete="off" aria-label="Ordre des angles du plus petit au plus grand" placeholder="ex&nbsp;: 2, 1, 3, 4, 5, 6"></span>
+        <span class="actions"><button type="button" id="btn-ok-ordre">OK</button></span>
+      </div>
+      <div class="feedback" id="fb-ordre" hidden></div>
+    </div>
+
+    <div class="item">
+      <p class="q">Classe ces angles dans le tableau ci-dessous&nbsp;:</p>
+      <div class="tableau-scroll">
+        <table class="tableau-ang">
+          <tr><th>Angle</th><th>Aigu</th><th>Droit</th><th>Obtus</th></tr>
+          <tr><td class="lib">1</td><td class="cell-clic" data-nat="n1" data-i="0" role="button" tabindex="0" aria-label="Angle 1, aigu"></td><td class="cell-clic" data-nat="n1" data-i="1" role="button" tabindex="0" aria-label="Angle 1, droit"></td><td class="cell-clic" data-nat="n1" data-i="2" role="button" tabindex="0" aria-label="Angle 1, obtus"></td></tr><tr><td class="lib">2</td><td class="cell-clic" data-nat="n2" data-i="0" role="button" tabindex="0" aria-label="Angle 2, aigu"></td><td class="cell-clic" data-nat="n2" data-i="1" role="button" tabindex="0" aria-label="Angle 2, droit"></td><td class="cell-clic" data-nat="n2" data-i="2" role="button" tabindex="0" aria-label="Angle 2, obtus"></td></tr><tr><td class="lib">3</td><td class="cell-clic" data-nat="n3" data-i="0" role="button" tabindex="0" aria-label="Angle 3, aigu"></td><td class="cell-clic" data-nat="n3" data-i="1" role="button" tabindex="0" aria-label="Angle 3, droit"></td><td class="cell-clic" data-nat="n3" data-i="2" role="button" tabindex="0" aria-label="Angle 3, obtus"></td></tr><tr><td class="lib">4</td><td class="cell-clic" data-nat="n4" data-i="0" role="button" tabindex="0" aria-label="Angle 4, aigu"></td><td class="cell-clic" data-nat="n4" data-i="1" role="button" tabindex="0" aria-label="Angle 4, droit"></td><td class="cell-clic" data-nat="n4" data-i="2" role="button" tabindex="0" aria-label="Angle 4, obtus"></td></tr><tr><td class="lib">5</td><td class="cell-clic" data-nat="n5" data-i="0" role="button" tabindex="0" aria-label="Angle 5, aigu"></td><td class="cell-clic" data-nat="n5" data-i="1" role="button" tabindex="0" aria-label="Angle 5, droit"></td><td class="cell-clic" data-nat="n5" data-i="2" role="button" tabindex="0" aria-label="Angle 5, obtus"></td></tr><tr><td class="lib">6</td><td class="cell-clic" data-nat="n6" data-i="0" role="button" tabindex="0" aria-label="Angle 6, aigu"></td><td class="cell-clic" data-nat="n6" data-i="1" role="button" tabindex="0" aria-label="Angle 6, droit"></td><td class="cell-clic" data-nat="n6" data-i="2" role="button" tabindex="0" aria-label="Angle 6, obtus"></td></tr>
+        </table>
+      </div>
+      <div class="actions" style="margin:10px 0 0"><button type="button" id="btn-verif-nat">V&eacute;rifier le tableau</button></div>
+      <div class="feedback" id="fb-nature" hidden></div>
+    </div>
+
+  </section>
+
+  <div class="barre">
+    <button type="button" id="btn-tout">V&eacute;rifier tout</button>
+    <button type="button" class="sec" id="btn-corr">Voir la correction</button>
+    <button type="button" class="sec" id="btn-reset">R&eacute;initialiser</button>
+  </div>
+
+  <div class="correction" id="correction" hidden></div>
+  <div class="bilan" id="bilan" hidden></div>
+</main>
+
+<script>
+(function(){
+  "use strict";
+
+  var COMPARAISON = [
+    { id:"a1", bonne:1 },
+    { id:"a2", bonne:0 },
+    { id:"a3", bonne:2 },
+    { id:"a4", bonne:2 },
+    { id:"a5", bonne:1 },
+    { id:"a6", bonne:0 }
+  ];
+  var LIB_COMP = ["plus petit que l\u2019angle \u00c2","\u00e9gal \u00e0 l\u2019angle \u00c2","plus grand que l\u2019angle \u00c2"];
+
+  var NATURE = [
+    { id:"n1", bonne:2 },
+    { id:"n2", bonne:0 },
+    { id:"n3", bonne:0 },
+    { id:"n4", bonne:2 },
+    { id:"n5", bonne:0 },
+    { id:"n6", bonne:2 }
+  ];
+  var LIB_NAT = ["aigu","droit","obtus"];
+
+  var ORDRE_ATTENDU = ["5","2","3","1","4","6"];
+
+  var etats = {};
+  var choixComp = {};
+  var choixNat = {};
+  var occupe = false;
+
+  function esc(txt){
+    var d = document.createElement("div");
+    d.textContent = String(txt);
+    return d.innerHTML;
+  }
+
+  function afficher(id, type, html){
+    var fb = document.getElementById("fb-" + id);
+    fb.className = "feedback " + type;
+    fb.innerHTML = html;
+    fb.hidden = false;
+  }
+
+  function marquer(input, etat){
+    if (!input) return;
+    input.classList.remove("correct","incorrect");
+    if (etat) input.classList.add(etat);
+  }
+
+  function choisir(groupe, id, idx, store){
+    store[id] = idx;
+    var opts = document.querySelectorAll('[data-' + groupe + '="' + id + '"]');
+    for (var i = 0; i < opts.length; i++){
+      opts[i].classList.remove("sel");
+      if (Number(opts[i].getAttribute("data-i")) === idx) opts[i].classList.add("sel");
+    }
+  }
+
+  function verifierGroupe(groupe, items, store, libelles){
+    items.forEach(function(it){
+      var opts = document.querySelectorAll('[data-' + groupe + '="' + it.id + '"]');
+      for (var i = 0; i < opts.length; i++){
+        opts[i].classList.remove("bonne","incorrect");
+        var idx = Number(opts[i].getAttribute("data-i"));
+        if (idx === it.bonne){ opts[i].classList.add("bonne"); }
+        else if (idx === store[it.id]){ opts[i].classList.add("incorrect"); }
+      }
+      var choix = store[it.id];
+      etats[it.id] = (choix === it.bonne) ? "correct" : (choix === undefined || choix === null ? "vide" : "incorrect");
+    });
+    var nb = items.filter(function(it){ return etats[it.id] === "correct"; }).length;
+    var fbId = groupe === "comp" ? "comparaison" : "nature";
+    if (nb === items.length){
+      afficher(fbId, "ok", "\u2705 Bravo&nbsp;! Les 6 angles sont bien class\u00e9s.");
+    } else if (nb === 0){
+      afficher(fbId, "warn", "\u26a0\ufe0f Aucune r\u00e9ponse correcte pour l\u2019instant.");
+    } else {
+      afficher(fbId, "warn", "\u26a0\ufe0f " + nb + "&nbsp;/&nbsp;" + items.length + " angles bien class\u00e9s. La case verte indique la bonne r\u00e9ponse.");
+    }
+  }
+
+  function verifierOrdre(){
+    var input = document.getElementById("in-ordre");
+    var brut = input.value;
+    if (String(brut).replace(/\s/g,"") === ""){
+      etats.ordre = "vide"; marquer(input,"");
+      afficher("ordre", "warn", "\u26a0\ufe0f Aucune r\u00e9ponse saisie. \u00c9cris les num\u00e9ros des 6 angles, s\u00e9par\u00e9s par des virgules, du plus petit au plus grand.");
+      return;
+    }
+    var nums = brut.split(/[,;\s]+/).map(function(s){ return s.replace(/[^\d]/g,""); }).filter(function(s){ return s !== ""; });
+    var identique = nums.length === ORDRE_ATTENDU.length && nums.every(function(n, i){ return n === ORDRE_ATTENDU[i]; });
+    if (identique){
+      etats.ordre = "correct"; marquer(input, "correct");
+      afficher("ordre", "ok", "\u2705 Bravo&nbsp;! L\u2019ordre du plus petit au plus grand est bien " + ORDRE_ATTENDU.join(", ") + ".");
+      return;
+    }
+    var memesNombres = nums.length === ORDRE_ATTENDU.length && ORDRE_ATTENDU.every(function(n){ return nums.indexOf(n) !== -1; });
+    etats.ordre = "incorrect"; marquer(input, "incorrect");
+    if (memesNombres){
+      afficher("ordre", "ko", "\u274c Tu as les 6 bons num\u00e9ros, mais pas dans le bon ordre.<br>R\u00e9ponse attendue&nbsp;: <strong><u>" + ORDRE_ATTENDU.join(", ") + "</u></strong>.");
+    } else {
+      afficher("ordre", "ko", "\u274c Ce n\u2019est pas l\u2019ordre attendu. Il faut les 6 angles, chacun une seule fois.<br>R\u00e9ponse attendue&nbsp;: <strong><u>" + ORDRE_ATTENDU.join(", ") + "</u></strong>.");
+    }
+  }
+
+  function palier(pct){
+    if (pct >= 90) return "\ud83d\udfe2 Excellent";
+    if (pct >= 75) return "\ud83d\udfe2 Tr\u00e8s bien";
+    if (pct >= 60) return "\ud83d\udfe1 Ma\u00eetrise satisfaisante";
+    if (pct >= 40) return "\ud83d\udfe0 Ma\u00eetrise fragile";
+    return "\ud83d\udd34 Ma\u00eetrise insuffisante";
+  }
+
+  function verifierTout(){
+    if (occupe) return;
+    occupe = true;
+    window.setTimeout(function(){ occupe = false; }, 350);
+
+    verifierGroupe("comp", COMPARAISON, choixComp, LIB_COMP);
+    verifierOrdre();
+    verifierGroupe("nat", NATURE, choixNat, LIB_NAT);
+
+    var total = COMPARAISON.length + 1 + NATURE.length;
+    var score = COMPARAISON.filter(function(it){ return etats[it.id] === "correct"; }).length +
+                (etats.ordre === "correct" ? 1 : 0) +
+                NATURE.filter(function(it){ return etats[it.id] === "correct"; }).length;
+    var pct = Math.round((score/total)*100);
+    var bilan = document.getElementById("bilan");
+    bilan.innerHTML =
+      '<div class="score">Score&nbsp;: ' + score + '\u2009/\u2009' + total + ' (' + pct + '&nbsp;%)</div>' +
+      '<div class="palier">' + palier(pct) + '</div>' +
+      '<div class="legende">Chaque angle bien class\u00e9 (comparaison ou nature) compte pour 1 point ; le rangement du plus petit au plus grand compte pour 1 point suppl\u00e9mentaire.</div>';
+    bilan.hidden = false;
+  }
+
+  function basculerCorrection(){
+    var box = document.getElementById("correction");
+    var btn = document.getElementById("btn-corr");
+    if (box.hidden){
+      box.innerHTML =
+        "<h2>Correction</h2>" +
+        "<h3>1. Comparaison \u00e0 l\u2019angle \u00c2</h3>" +
+        "<table><tr><th>Plus petits</th><th>\u00c9gaux</th><th>Plus grands</th></tr>" +
+        "<tr><td>\u2461, \u2466</td><td>\u2460, \u2464</td><td>\u2462, \u2463</td></tr></table>" +
+        "<h3>2. Rangement du plus petit au plus grand</h3><p><strong><u>" + ORDRE_ATTENDU.join(", ") + "</u></strong></p>" +
+        "<h3>3. Nature des angles</h3>" +
+        "<table><tr><th>Aigus</th><th>Droits</th><th>Obtus</th></tr>" +
+        "<tr><td>\u2464, \u2461, \u2462</td><td>\u2460</td><td>\u2463, \u2466</td></tr></table>";
+      box.hidden = false;
+      btn.textContent = "Masquer la correction";
+    } else {
+      box.hidden = true;
+      btn.textContent = "Voir la correction";
+    }
+  }
+
+  function reinitialiser(){
+    COMPARAISON.forEach(function(it){
+      choixComp[it.id] = null;
+      var opts = document.querySelectorAll('[data-comp="' + it.id + '"]');
+      for (var i = 0; i < opts.length; i++){ opts[i].classList.remove("sel","bonne","incorrect"); }
+      etats[it.id] = "vide";
+    });
+    NATURE.forEach(function(it){
+      choixNat[it.id] = null;
+      var opts = document.querySelectorAll('[data-nat="' + it.id + '"]');
+      for (var i = 0; i < opts.length; i++){ opts[i].classList.remove("sel","bonne","incorrect"); }
+      etats[it.id] = "vide";
+    });
+    var inOrdre = document.getElementById("in-ordre");
+    inOrdre.value = ""; inOrdre.classList.remove("correct","incorrect");
+    etats.ordre = "vide";
+
+    ["comparaison","ordre","nature"].forEach(function(id){
+      var fb = document.getElementById("fb-" + id);
+      fb.hidden = true; fb.innerHTML = ""; fb.className = "feedback";
+    });
+
+    var bilan = document.getElementById("bilan");
+    bilan.hidden = true; bilan.innerHTML = "";
+    var corr = document.getElementById("correction");
+    corr.hidden = true; corr.innerHTML = "";
+    document.getElementById("btn-corr").textContent = "Voir la correction";
+    occupe = false;
+  }
+
+  function init(){
+    COMPARAISON.forEach(function(it){ etats[it.id] = "vide"; choixComp[it.id] = null; });
+    NATURE.forEach(function(it){ etats[it.id] = "vide"; choixNat[it.id] = null; });
+    etats.ordre = "vide";
+
+    var bComp = document.querySelectorAll("[data-comp]");
+    for (var i = 0; i < bComp.length; i++){
+      bComp[i].addEventListener("click", function(){
+        choisir("comp", this.getAttribute("data-comp"), Number(this.getAttribute("data-i")), choixComp);
+      });
+    }
+    var bNat = document.querySelectorAll("[data-nat]");
+    for (var j = 0; j < bNat.length; j++){
+      bNat[j].addEventListener("click", function(){
+        choisir("nat", this.getAttribute("data-nat"), Number(this.getAttribute("data-i")), choixNat);
+      });
+    }
+    document.getElementById("btn-verif-comp").addEventListener("click", function(){ verifierGroupe("comp", COMPARAISON, choixComp, LIB_COMP); });
+    document.getElementById("btn-verif-nat").addEventListener("click", function(){ verifierGroupe("nat", NATURE, choixNat, LIB_NAT); });
+    document.getElementById("btn-ok-ordre").addEventListener("click", verifierOrdre);
+    document.getElementById("in-ordre").addEventListener("keydown", function(ev){
+      if (ev.key === "Enter"){ ev.preventDefault(); verifierOrdre(); }
+    });
+
+    document.getElementById("btn-tout").addEventListener("click", verifierTout);
+    document.getElementById("btn-corr").addEventListener("click", basculerCorrection);
+    document.getElementById("btn-reset").addEventListener("click", reinitialiser);
+  }
+
+  if (document.readyState === "loading"){
+    document.addEventListener("DOMContentLoaded", init);
+  } else {
+    init();
+  }
+})();
+</script>
+</body>
+</html>
