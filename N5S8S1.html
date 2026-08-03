@@ -1,0 +1,451 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Rituel &mdash; Semaine 8 S&eacute;ance 1 &mdash; Automatismes de calcul</title>
+<style>
+*{box-sizing:border-box}
+html,body{margin:0;padding:0}
+body{background:#fffdf7;font-family:Arial,Helvetica,sans-serif;color:#243238;line-height:1.6;padding:14px;overflow-x:hidden}
+.bulle{position:fixed;border-radius:50%;background:#3ba5b8;opacity:.12;pointer-events:none;z-index:0}
+.b1{width:190px;height:190px;top:-70px;left:-70px}
+.b2{width:130px;height:130px;top:-45px;right:-45px}
+.b3{width:160px;height:160px;bottom:-60px;left:-55px}
+.b4{width:110px;height:110px;bottom:-40px;right:-35px}
+.wrap{position:relative;z-index:1;max-width:880px;margin:0 auto}
+.tete{display:flex;flex-wrap:wrap;align-items:center;gap:10px;margin-bottom:14px}
+.etq{display:inline-block;padding:7px 16px;border-radius:8px;color:#fff;font-weight:700;font-size:.95rem}
+.etq-sem{background:#8fd3e8;color:#123f4a}
+.etq-sea{background:#3ba5b8}
+.etq-rit{background:#1f7a8c;font-family:Georgia,"Times New Roman",serif;margin-left:auto}
+h1{font-size:clamp(1.3rem,4.5vw,2rem);font-weight:900;color:#1f7a8c;margin:6px 0 18px;line-height:1.3}
+.bloc{position:relative;border:2px solid #3ba5b8;border-radius:12px;background:#fff;padding:28px 18px 20px;margin-bottom:18px}
+.onglet{position:absolute;top:-17px;left:18px;background:#8fd3e8;color:#123f4a;font-weight:700;font-size:.95rem;padding:5px 18px;border-radius:8px}
+.tete-ex{display:flex;align-items:flex-start;gap:12px;margin:6px 0 16px;min-width:0}
+.pastille{flex:0 0 auto;width:34px;height:34px;border-radius:50%;background:#1f7a8c;color:#fff;font-weight:700;font-size:1rem;display:flex;align-items:center;justify-content:center}
+.consigne{margin:4px 0 0;font-weight:700;text-decoration:underline;color:#1f7a8c;font-size:clamp(.95rem,2.6vw,1.05rem);min-width:0;overflow-wrap:break-word}
+.sous-consigne{margin:4px 0 12px;font-weight:700;color:#1f7a8c;font-size:clamp(.9rem,2.4vw,1rem)}
+.item{padding:12px 0;border-bottom:1px dashed #dceff3}
+.item:last-of-type{border-bottom:0}
+.ligne{display:flex;flex-wrap:wrap;align-items:center;gap:10px;min-width:0}
+.calc{font-size:clamp(1rem,3vw,1.15rem);font-weight:700;color:#243238;white-space:nowrap}
+.qr{display:inline-flex;align-items:center;gap:6px;font-weight:700;color:#1f7a8c}
+input[type="text"]{width:clamp(70px,22vw,110px);min-width:0;padding:9px 8px;font-family:Arial,Helvetica,sans-serif;font-size:1rem;font-weight:700;text-align:center;color:#1f7a8c;background:#f7fcfd;border:1px solid #b9dfe8;border-bottom:2px dotted #3ba5b8;border-radius:6px}
+.qr input[type="text"]{width:clamp(60px,16vw,80px)}
+input[type="text"]:focus{outline:2px solid #3ba5b8;outline-offset:1px}
+input.correct{border-color:#2e8b57;background:#effaf3;color:#2e8b57}
+input.partiel{border-color:#c9820a;background:#fff8ea;color:#a86c06}
+input.incorrect{border-color:#c0392b;background:#fdefee;color:#c0392b}
+.actions{display:flex;flex-wrap:wrap;gap:8px;margin-left:auto}
+button{font-family:inherit;font-size:.92rem;font-weight:700;min-height:44px;padding:10px 16px;border:0;border-radius:8px;cursor:pointer;background:#3ba5b8;color:#fff;line-height:1.2}
+button:hover{background:#1f7a8c}
+button.sec{background:#fff;color:#1f7a8c;border:2px solid #3ba5b8}
+button.sec:hover{background:#eaf7fa}
+.feedback{margin:10px 0 0;padding:12px 14px;border-left:5px solid #3ba5b8;border-radius:6px;background:#f4fafb;font-size:clamp(.9rem,2.5vw,1rem);line-height:1.75;overflow-wrap:break-word}
+.feedback.ok{border-left-color:#2e8b57;background:#effaf3;color:#1e6b40}
+.feedback.ko{border-left-color:#c0392b;background:#fdefee;color:#96291d}
+.feedback.warn{border-left-color:#c9820a;background:#fff8ea;color:#8a5b04}
+.aide{margin:10px 0 0;padding:12px 14px;border-left:5px solid #8fd3e8;background:#f2fafd;border-radius:6px;font-size:clamp(.9rem,2.5vw,1rem);line-height:1.75}
+.barre{display:flex;flex-wrap:wrap;gap:10px;margin:18px 0}
+.barre button{flex:1 1 190px}
+.correction{border:2px dashed #3ba5b8;border-radius:12px;background:#fff;padding:16px 18px;margin-bottom:18px;font-size:clamp(.9rem,2.5vw,1rem);line-height:1.8}
+.correction h2{margin:0 0 10px;font-size:1.05rem;color:#1f7a8c}
+.correction h3{margin:14px 0 4px;font-size:.98rem;color:#1f7a8c}
+.correction ul{margin:6px 0 0;padding-left:20px}
+.correction li{margin-bottom:6px}
+.bilan{border:2px solid #1f7a8c;border-radius:12px;background:#fff;padding:16px 18px;margin-bottom:18px;font-size:.92rem;line-height:1.8}
+.bilan .score{font-size:clamp(1.05rem,3.2vw,1.25rem);font-weight:900;color:#1f7a8c}
+.bilan .palier{font-weight:700;margin-top:4px}
+.recap{display:flex;flex-wrap:wrap;gap:8px;margin-top:10px}
+.recap span{display:inline-flex;align-items:center;gap:6px;padding:6px 11px;border-radius:8px;background:#f4fafb;font-weight:700;font-size:.9rem;border:1px solid #dceff3}
+.recap .r-ok{color:#2e8b57}
+.recap .r-mid{color:#c9820a}
+.recap .r-ko{color:#c0392b}
+.legende{margin-top:10px;font-size:.85rem;color:#4d6169}
+@media (max-width:768px){.actions{margin-left:0;width:100%}.actions button{flex:1 1 auto}}
+@media (max-width:480px){
+  body{padding:10px}
+  .bloc{padding:26px 12px 16px}
+  .etq{font-size:.85rem;padding:6px 12px}
+  .etq-rit{margin-left:0}
+  .recap span{font-size:.85rem}
+}
+</style>
+</head>
+<body>
+<div class="bulle b1"></div><div class="bulle b2"></div><div class="bulle b3"></div><div class="bulle b4"></div>
+
+<main class="wrap">
+
+  <div class="tete">
+    <span class="etq etq-sem">Semaine 8</span>
+    <span class="etq etq-sea">S&eacute;ance 1</span>
+    <span class="etq etq-rit">Rituel</span>
+  </div>
+
+  <h1>Automatismes de calcul</h1>
+
+  <section class="bloc">
+    <span class="onglet">Calcul</span>
+
+    <div class="tete-ex">
+      <span class="pastille">1</span>
+      <p class="consigne">Effectue les calculs suivants&nbsp;:</p>
+    </div>
+
+    <p class="sous-consigne">Somme de 2 nombres et un entier</p>
+    <div class="item"><div class="ligne"><span class="calc">46&nbsp;+&nbsp;44&nbsp;+&nbsp;18&nbsp;=</span><input type="text" id="sm-a" inputmode="numeric" aria-label="46 plus 44 plus 18"><span class="actions"><button type="button" data-ok="sm-a">OK</button><button type="button" class="sec" data-aide="sm-a">Indice</button></span></div><div class="feedback" id="fb-sm-a" hidden></div><div class="aide" id="ai-sm-a" hidden></div></div>
+    <div class="item"><div class="ligne"><span class="calc">61&nbsp;+&nbsp;14&nbsp;+&nbsp;9&nbsp;=</span><input type="text" id="sm-b" inputmode="numeric" aria-label="61 plus 14 plus 9"><span class="actions"><button type="button" data-ok="sm-b">OK</button><button type="button" class="sec" data-aide="sm-b">Indice</button></span></div><div class="feedback" id="fb-sm-b" hidden></div><div class="aide" id="ai-sm-b" hidden></div></div>
+    <div class="item"><div class="ligne"><span class="calc">20&nbsp;+&nbsp;37&nbsp;+&nbsp;43&nbsp;=</span><input type="text" id="sm-c" inputmode="numeric" aria-label="20 plus 37 plus 43"><span class="actions"><button type="button" data-ok="sm-c">OK</button><button type="button" class="sec" data-aide="sm-c">Indice</button></span></div><div class="feedback" id="fb-sm-c" hidden></div><div class="aide" id="ai-sm-c" hidden></div></div>
+    <div class="item"><div class="ligne"><span class="calc">14&nbsp;+&nbsp;26&nbsp;+&nbsp;36&nbsp;=</span><input type="text" id="sm-d" inputmode="numeric" aria-label="14 plus 26 plus 36"><span class="actions"><button type="button" data-ok="sm-d">OK</button><button type="button" class="sec" data-aide="sm-d">Indice</button></span></div><div class="feedback" id="fb-sm-d" hidden></div><div class="aide" id="ai-sm-d" hidden></div></div>
+
+    <p class="sous-consigne">Vocabulaire&nbsp;: multiple (M) ou diviseur (D)</p>
+    <div class="item"><div class="ligne"><span class="calc">5 est un</span><input type="text" id="vc-a" maxlength="1" aria-label="5 est un multiple ou diviseur de 45"><span class="calc">de 45</span><span class="actions"><button type="button" data-ok="vc-a">OK</button><button type="button" class="sec" data-aide="vc-a">Indice</button></span></div><div class="feedback" id="fb-vc-a" hidden></div><div class="aide" id="ai-vc-a" hidden></div></div>
+    <div class="item"><div class="ligne"><span class="calc">12 est un</span><input type="text" id="vc-b" maxlength="1" aria-label="12 est un multiple ou diviseur de 3"><span class="calc">de 3</span><span class="actions"><button type="button" data-ok="vc-b">OK</button><button type="button" class="sec" data-aide="vc-b">Indice</button></span></div><div class="feedback" id="fb-vc-b" hidden></div><div class="aide" id="ai-vc-b" hidden></div></div>
+    <div class="item"><div class="ligne"><span class="calc">34 est un</span><input type="text" id="vc-c" maxlength="1" aria-label="34 est un multiple ou diviseur de 17"><span class="calc">de 17</span><span class="actions"><button type="button" data-ok="vc-c">OK</button><button type="button" class="sec" data-aide="vc-c">Indice</button></span></div><div class="feedback" id="fb-vc-c" hidden></div><div class="aide" id="ai-vc-c" hidden></div></div>
+    <div class="item"><div class="ligne"><span class="calc">3 est un</span><input type="text" id="vc-d" maxlength="1" aria-label="3 est un multiple ou diviseur de 33"><span class="calc">de 33</span><span class="actions"><button type="button" data-ok="vc-d">OK</button><button type="button" class="sec" data-aide="vc-d">Indice</button></span></div><div class="feedback" id="fb-vc-d" hidden></div><div class="aide" id="ai-vc-d" hidden></div></div>
+
+    <p class="sous-consigne">Division euclidienne</p>
+    <div class="item"><div class="ligne"><span class="calc">12&nbsp;:&nbsp;2</span><span class="qr"><label for="dv-a-q">Q&nbsp;=</label><input type="text" id="dv-a-q" inputmode="numeric" aria-label="Quotient 12 divise par 2"></span><span class="qr"><label for="dv-a-r">R&nbsp;=</label><input type="text" id="dv-a-r" inputmode="numeric" aria-label="Reste 12 divise par 2"></span><span class="actions"><button type="button" data-ok="dv-a">OK</button><button type="button" class="sec" data-aide="dv-a">Indice</button></span></div><div class="feedback" id="fb-dv-a" hidden></div><div class="aide" id="ai-dv-a" hidden></div></div>
+    <div class="item"><div class="ligne"><span class="calc">12&nbsp;:&nbsp;8</span><span class="qr"><label for="dv-b-q">Q&nbsp;=</label><input type="text" id="dv-b-q" inputmode="numeric" aria-label="Quotient 12 divise par 8"></span><span class="qr"><label for="dv-b-r">R&nbsp;=</label><input type="text" id="dv-b-r" inputmode="numeric" aria-label="Reste 12 divise par 8"></span><span class="actions"><button type="button" data-ok="dv-b">OK</button><button type="button" class="sec" data-aide="dv-b">Indice</button></span></div><div class="feedback" id="fb-dv-b" hidden></div><div class="aide" id="ai-dv-b" hidden></div></div>
+    <div class="item"><div class="ligne"><span class="calc">24&nbsp;:&nbsp;4</span><span class="qr"><label for="dv-c-q">Q&nbsp;=</label><input type="text" id="dv-c-q" inputmode="numeric" aria-label="Quotient 24 divise par 4"></span><span class="qr"><label for="dv-c-r">R&nbsp;=</label><input type="text" id="dv-c-r" inputmode="numeric" aria-label="Reste 24 divise par 4"></span><span class="actions"><button type="button" data-ok="dv-c">OK</button><button type="button" class="sec" data-aide="dv-c">Indice</button></span></div><div class="feedback" id="fb-dv-c" hidden></div><div class="aide" id="ai-dv-c" hidden></div></div>
+    <div class="item"><div class="ligne"><span class="calc">20&nbsp;:&nbsp;5</span><span class="qr"><label for="dv-d-q">Q&nbsp;=</label><input type="text" id="dv-d-q" inputmode="numeric" aria-label="Quotient 20 divise par 5"></span><span class="qr"><label for="dv-d-r">R&nbsp;=</label><input type="text" id="dv-d-r" inputmode="numeric" aria-label="Reste 20 divise par 5"></span><span class="actions"><button type="button" data-ok="dv-d">OK</button><button type="button" class="sec" data-aide="dv-d">Indice</button></span></div><div class="feedback" id="fb-dv-d" hidden></div><div class="aide" id="ai-dv-d" hidden></div></div>
+
+    <p class="sous-consigne">Multiplier par 11, 12, 21, 22</p>
+    <div class="item"><div class="ligne"><span class="calc">39&nbsp;&times;&nbsp;21&nbsp;=</span><input type="text" id="ml-a" inputmode="numeric" aria-label="39 fois 21"><span class="actions"><button type="button" data-ok="ml-a">OK</button><button type="button" class="sec" data-aide="ml-a">Indice</button></span></div><div class="feedback" id="fb-ml-a" hidden></div><div class="aide" id="ai-ml-a" hidden></div></div>
+    <div class="item"><div class="ligne"><span class="calc">34&nbsp;&times;&nbsp;12&nbsp;=</span><input type="text" id="ml-b" inputmode="numeric" aria-label="34 fois 12"><span class="actions"><button type="button" data-ok="ml-b">OK</button><button type="button" class="sec" data-aide="ml-b">Indice</button></span></div><div class="feedback" id="fb-ml-b" hidden></div><div class="aide" id="ai-ml-b" hidden></div></div>
+    <div class="item"><div class="ligne"><span class="calc">32&nbsp;&times;&nbsp;11&nbsp;=</span><input type="text" id="ml-c" inputmode="numeric" aria-label="32 fois 11"><span class="actions"><button type="button" data-ok="ml-c">OK</button><button type="button" class="sec" data-aide="ml-c">Indice</button></span></div><div class="feedback" id="fb-ml-c" hidden></div><div class="aide" id="ai-ml-c" hidden></div></div>
+    <div class="item"><div class="ligne"><span class="calc">44&nbsp;&times;&nbsp;11&nbsp;=</span><input type="text" id="ml-d" inputmode="numeric" aria-label="44 fois 11"><span class="actions"><button type="button" data-ok="ml-d">OK</button><button type="button" class="sec" data-aide="ml-d">Indice</button></span></div><div class="feedback" id="fb-ml-d" hidden></div><div class="aide" id="ai-ml-d" hidden></div></div>
+  </section>
+
+  <div class="barre">
+    <button type="button" id="btn-tout">V&eacute;rifier tout</button>
+    <button type="button" class="sec" id="btn-corr">Voir la correction</button>
+    <button type="button" class="sec" id="btn-reset">R&eacute;initialiser</button>
+  </div>
+
+  <div class="correction" id="correction" hidden></div>
+  <div class="bilan" id="bilan" hidden></div>
+
+</main>
+
+<script>
+(function(){
+  "use strict";
+
+  function esc(txt){
+    var d = document.createElement("div");
+    d.textContent = String(txt);
+    return d.innerHTML;
+  }
+  function afficher(id, type, html){
+    var fb = document.getElementById("fb-" + id);
+    if (!fb) return;
+    fb.className = "feedback " + type;
+    fb.innerHTML = html;
+    fb.hidden = false;
+  }
+  function marquer(input, etat){
+    if (!input) return;
+    input.classList.remove("correct","partiel","incorrect");
+    if (etat) input.classList.add(etat);
+  }
+  function basculerAide(id, texte){
+    var box = document.getElementById("ai-" + id);
+    if (!box) return;
+    if (box.hidden){
+      box.innerHTML = "\ud83d\udca1 <strong>Indice&nbsp;:</strong> " + texte;
+      box.hidden = false;
+    } else {
+      box.hidden = true;
+    }
+  }
+  function palier(pct){
+    if (pct >= 90) return "\ud83d\udfe2 Excellent";
+    if (pct >= 75) return "\ud83d\udfe2 Tr\u00e8s bien";
+    if (pct >= 60) return "\ud83d\udfe1 Ma\u00eetrise satisfaisante";
+    if (pct >= 40) return "\ud83d\udfe0 Ma\u00eetrise fragile";
+    return "\ud83d\udd34 Ma\u00eetrise insuffisante";
+  }
+
+  function lireEntier(brut){
+    var v = String(brut).replace(/[\s\u00a0]/g,"");
+    if (v === "") return "";
+    if (!/^\d+$/.test(v)) return null;
+    return Number(v);
+  }
+
+  var etats = {};
+  var occupe = false;
+
+  // ---------- Sommes et multiplications (r\u00e9sultat unique) ----------
+  var SIMPLES = {
+    "sm-a": { attendu:108, enonce:"46 + 44 + 18" },
+    "sm-b": { attendu:84,  enonce:"61 + 14 + 9" },
+    "sm-c": { attendu:100, enonce:"20 + 37 + 43" },
+    "sm-d": { attendu:76,  enonce:"14 + 26 + 36" },
+    "ml-a": { attendu:819, enonce:"39 \u00d7 21" },
+    "ml-b": { attendu:408, enonce:"34 \u00d7 12" },
+    "ml-c": { attendu:352, enonce:"32 \u00d7 11" },
+    "ml-d": { attendu:484, enonce:"44 \u00d7 11" }
+  };
+  var AIDES_SIMPLES = {
+    "sm-a": "Additionne les trois nombres, dans l\u2019ordre que tu veux.",
+    "sm-b": "Additionne les trois nombres, dans l\u2019ordre que tu veux.",
+    "sm-c": "Additionne les trois nombres, dans l\u2019ordre que tu veux.",
+    "sm-d": "Additionne les trois nombres, dans l\u2019ordre que tu veux.",
+    "ml-a": "39 \u00d7 21 = 39 \u00d7 20 + 39.",
+    "ml-b": "34 \u00d7 12 = 34 \u00d7 10 + 34 \u00d7 2.",
+    "ml-c": "32 \u00d7 11 = 32 \u00d7 10 + 32.",
+    "ml-d": "44 \u00d7 11 = 44 \u00d7 10 + 44."
+  };
+
+  function verifierSimple(id){
+    var it = SIMPLES[id];
+    var input = document.getElementById(id);
+    var v = lireEntier(input.value);
+    if (v === ""){
+      etats[id] = "vide";
+      marquer(input, "");
+      afficher(id, "warn", "\u26a0\ufe0f Aucune r\u00e9ponse saisie. \u00c9cris le r\u00e9sultat, puis clique sur <strong>OK</strong>.");
+      return;
+    }
+    if (v === null){
+      etats[id] = "incorrect";
+      marquer(input, "incorrect");
+      afficher(id, "warn", "\u26a0\ufe0f \u00c9cris un nombre entier seul.");
+      return;
+    }
+    if (v === it.attendu){
+      etats[id] = "correct";
+      marquer(input, "correct");
+      afficher(id, "ok", "\u2705 Bravo&nbsp;! " + it.enonce + " = <strong><u>" + it.attendu + "</u></strong>.");
+      return;
+    }
+    etats[id] = "incorrect";
+    marquer(input, "incorrect");
+    afficher(id, "ko", "\u274c Ce n\u2019est pas le bon r\u00e9sultat.<br>R\u00e9ponse attendue&nbsp;: <strong><u>" + it.attendu + "</u></strong>.");
+  }
+
+  // ---------- Vocabulaire multiple/diviseur ----------
+  var VOCAB = {
+    "vc-a": { attendu:"d", a:5,  b:45, aide:"45 \u00f7 5 tombe juste&nbsp;: 5 divise 45." },
+    "vc-b": { attendu:"m", a:12, b:3,  aide:"12 = 3 \u00d7 4&nbsp;: 12 est un multiple de 3." },
+    "vc-c": { attendu:"m", a:34, b:17, aide:"34 = 17 \u00d7 2&nbsp;: 34 est un multiple de 17." },
+    "vc-d": { attendu:"d", a:3,  b:33, aide:"33 \u00f7 3 tombe juste&nbsp;: 3 divise 33." }
+  };
+
+  function lireMD(brut){
+    var t = String(brut).replace(/[\s\u00a0]/g,"").toLowerCase();
+    if (t === "") return "";
+    if (t === "m") return "m";
+    if (t === "d") return "d";
+    return null;
+  }
+
+  function verifierVocab(id){
+    var it = VOCAB[id];
+    var input = document.getElementById(id);
+    var v = lireMD(input.value);
+    var motAttendu = it.attendu === "m" ? "multiple (M)" : "diviseur (D)";
+
+    if (v === ""){
+      etats[id] = "vide";
+      marquer(input, "");
+      afficher(id, "warn", "\u26a0\ufe0f Aucune r\u00e9ponse saisie. \u00c9cris <strong>M</strong> ou <strong>D</strong>, puis clique sur <strong>OK</strong>.");
+      return;
+    }
+    if (v === null){
+      etats[id] = "incorrect";
+      marquer(input, "incorrect");
+      afficher(id, "warn", "\u26a0\ufe0f \u00c9cris seulement <strong>M</strong> ou <strong>D</strong>.");
+      return;
+    }
+    if (v === it.attendu){
+      etats[id] = "correct";
+      marquer(input, "correct");
+      afficher(id, "ok", "\u2705 Bravo&nbsp;! " + it.a + " est un " + motAttendu + " de " + it.b + ".");
+      return;
+    }
+    etats[id] = "incorrect";
+    marquer(input, "incorrect");
+    afficher(id, "ko", "\u274c Ce n\u2019est pas le bon mot.<br>R\u00e9ponse attendue&nbsp;: <strong><u>" + motAttendu + "</u></strong>.");
+  }
+
+  // ---------- Division euclidienne ----------
+  var DIVISIONS = {
+    "dv-a": { dividende:12, diviseur:2, q:6, r:0 },
+    "dv-b": { dividende:12, diviseur:8, q:1, r:4 },
+    "dv-c": { dividende:24, diviseur:4, q:6, r:0 },
+    "dv-d": { dividende:20, diviseur:5, q:4, r:0 }
+  };
+
+  function verifierDivision(id){
+    var it = DIVISIONS[id];
+    var inputQ = document.getElementById(id + "-q");
+    var inputR = document.getElementById(id + "-r");
+    var vQ = lireEntier(inputQ.value), vR = lireEntier(inputR.value);
+    var ref = it.dividende + " = " + it.q + " \u00d7 " + it.diviseur + " + " + it.r + " (Q=" + it.q + ", R=" + it.r + ")";
+
+    if (vQ === "" && vR === ""){
+      etats[id] = "vide";
+      marquer(inputQ, ""); marquer(inputR, "");
+      afficher(id, "warn", "\u26a0\ufe0f Aucune r\u00e9ponse saisie. Compl\u00e8te Q et R, puis clique sur <strong>OK</strong>.");
+      return;
+    }
+    if (vQ === null || vR === null){
+      etats[id] = "incorrect";
+      marquer(inputQ, vQ===null?"incorrect":""); marquer(inputR, vR===null?"incorrect":"");
+      afficher(id, "warn", "\u26a0\ufe0f Q et R doivent \u00eatre des nombres entiers seuls.");
+      return;
+    }
+    var okQ = vQ === it.q, okR = vR === it.r;
+    marquer(inputQ, okQ?"correct":"incorrect");
+    marquer(inputR, okR?"correct":"incorrect");
+
+    if (okQ && okR){
+      etats[id] = "correct";
+      afficher(id, "ok", "\u2705 Bravo&nbsp;! " + ref + ".");
+      return;
+    }
+    if (okQ || okR){
+      etats[id] = "partiel";
+      afficher(id, "warn", "\u26a0\ufe0f " + (okQ ? "Le quotient est correct, mais pas le reste." : "Le reste est correct, mais pas le quotient.") + "<br>R\u00e9ponse attendue&nbsp;: " + ref + ".");
+      return;
+    }
+    etats[id] = "incorrect";
+    afficher(id, "ko", "\u274c Ni le quotient ni le reste ne sont corrects.<br>R\u00e9ponse attendue&nbsp;: " + ref + ".");
+  }
+
+  var ORDRE_ITEMS = ["sm-a","sm-b","sm-c","sm-d","vc-a","vc-b","vc-c","vc-d","dv-a","dv-b","dv-c","dv-d","ml-a","ml-b","ml-c","ml-d"];
+
+  function verifierTout(){
+    if (occupe) return;
+    occupe = true;
+    window.setTimeout(function(){ occupe = false; }, 350);
+
+    ["sm-a","sm-b","sm-c","sm-d","ml-a","ml-b","ml-c","ml-d"].forEach(verifierSimple);
+    ["vc-a","vc-b","vc-c","vc-d"].forEach(verifierVocab);
+    ["dv-a","dv-b","dv-c","dv-d"].forEach(verifierDivision);
+
+    var total = ORDRE_ITEMS.length;
+    var score = 0;
+    var recap = "";
+    for (var j = 0; j < ORDRE_ITEMS.length; j++){
+      var id = ORDRE_ITEMS[j];
+      var e = etats[id];
+      if (e === "correct"){
+        score++;
+        recap += '<span class="r-ok">\u2714 ' + id + '</span>';
+      } else if (e === "partiel"){
+        recap += '<span class="r-mid">\u25d0 ' + id + '</span>';
+      } else {
+        recap += '<span class="r-ko">\u2718 ' + id + '</span>';
+      }
+    }
+    var pct = Math.round((score / total) * 100);
+    var bilan = document.getElementById("bilan");
+    bilan.innerHTML =
+      '<div class="score">Score&nbsp;: ' + score + '\u2009/\u2009' + total + ' (' + pct + '&nbsp;%)</div>' +
+      '<div class="palier">' + palier(pct) + '</div>' +
+      '<div class="recap">' + recap + '</div>' +
+      '<div class="legende">\u2714 correct &nbsp;\u2022&nbsp; \u25d0 partiel (division&nbsp;: quotient ou reste correct, pas les deux) &nbsp;\u2022&nbsp; \u2718 incorrect ou non r\u00e9pondu.</div>';
+    bilan.hidden = false;
+  }
+
+  function basculerCorrection(){
+    var box = document.getElementById("correction");
+    var btn = document.getElementById("btn-corr");
+    if (box.hidden){
+      box.innerHTML =
+        "<h2>Correction</h2>" +
+        "<h3>Sommes</h3><ul>" +
+        "<li>46 + 44 + 18 = <strong>108</strong></li><li>61 + 14 + 9 = <strong>84</strong></li>" +
+        "<li>20 + 37 + 43 = <strong>100</strong></li><li>14 + 26 + 36 = <strong>76</strong></li></ul>" +
+        "<h3>Vocabulaire</h3><ul>" +
+        "<li>5 est un <strong>diviseur (D)</strong> de 45</li><li>12 est un <strong>multiple (M)</strong> de 3</li>" +
+        "<li>34 est un <strong>multiple (M)</strong> de 17</li><li>3 est un <strong>diviseur (D)</strong> de 33</li></ul>" +
+        "<h3>Division euclidienne</h3><ul>" +
+        "<li>12 = 6 &times; 2 + 0 (Q=6, R=0)</li><li>12 = 1 &times; 8 + 4 (Q=1, R=4)</li>" +
+        "<li>24 = 6 &times; 4 + 0 (Q=6, R=0)</li><li>20 = 4 &times; 5 + 0 (Q=4, R=0)</li></ul>" +
+        "<h3>Multiplications</h3><ul>" +
+        "<li>39 &times; 21 = <strong>819</strong></li><li>34 &times; 12 = <strong>408</strong></li>" +
+        "<li>32 &times; 11 = <strong>352</strong></li><li>44 &times; 11 = <strong>484</strong></li></ul>";
+      box.hidden = false;
+      btn.textContent = "Masquer la correction";
+    } else {
+      box.hidden = true;
+      btn.textContent = "Voir la correction";
+    }
+  }
+
+  function reinitialiser(){
+    var champsSimples = ["sm-a","sm-b","sm-c","sm-d","vc-a","vc-b","vc-c","vc-d","ml-a","ml-b","ml-c","ml-d"];
+    for (var i = 0; i < champsSimples.length; i++){
+      var input = document.getElementById(champsSimples[i]);
+      if (input){ input.value=""; input.classList.remove("correct","partiel","incorrect"); }
+    }
+    var champsDiv = ["dv-a","dv-b","dv-c","dv-d"];
+    for (var j = 0; j < champsDiv.length; j++){
+      var q = document.getElementById(champsDiv[j] + "-q");
+      var r = document.getElementById(champsDiv[j] + "-r");
+      if (q){ q.value=""; q.classList.remove("correct","partiel","incorrect"); }
+      if (r){ r.value=""; r.classList.remove("correct","partiel","incorrect"); }
+    }
+    for (var k = 0; k < ORDRE_ITEMS.length; k++){
+      var idk = ORDRE_ITEMS[k];
+      var fb = document.getElementById("fb-" + idk);
+      if (fb){ fb.hidden = true; fb.innerHTML = ""; fb.className = "feedback"; }
+      var ai = document.getElementById("ai-" + idk);
+      if (ai){ ai.hidden = true; ai.innerHTML = ""; }
+    }
+    etats = {};
+    var bilan = document.getElementById("bilan");
+    bilan.hidden = true; bilan.innerHTML = "";
+    var corr = document.getElementById("correction");
+    corr.hidden = true; corr.innerHTML = "";
+    document.getElementById("btn-corr").textContent = "Voir la correction";
+    occupe = false;
+  }
+
+  function init(){
+    ["sm-a","sm-b","sm-c","sm-d","ml-a","ml-b","ml-c","ml-d"].forEach(function(id){
+      document.querySelector('[data-ok="' + id + '"]').addEventListener("click", function(){ verifierSimple(id); });
+      document.querySelector('[data-aide="' + id + '"]').addEventListener("click", function(){ basculerAide(id, AIDES_SIMPLES[id]); });
+    });
+    ["vc-a","vc-b","vc-c","vc-d"].forEach(function(id){
+      document.querySelector('[data-ok="' + id + '"]').addEventListener("click", function(){ verifierVocab(id); });
+      document.querySelector('[data-aide="' + id + '"]').addEventListener("click", function(){ basculerAide(id, VOCAB[id].aide); });
+    });
+    ["dv-a","dv-b","dv-c","dv-d"].forEach(function(id){
+      document.querySelector('[data-ok="' + id + '"]').addEventListener("click", function(){ verifierDivision(id); });
+      document.querySelector('[data-aide="' + id + '"]').addEventListener("click", function(){ basculerAide(id, "Cherche combien de fois le diviseur tient dans le dividende (Q), puis calcule ce qu\u2019il reste&nbsp;: R = dividende \u2212 (Q \u00d7 diviseur)."); });
+    });
+
+    var champs = document.querySelectorAll('input[type="text"]');
+    for (var i = 0; i < champs.length; i++){
+      champs[i].addEventListener("keydown", function(ev){
+        if (ev.key !== "Enter") return;
+        ev.preventDefault();
+        var id = this.id;
+        if (id.indexOf("dv-") === 0) verifierDivision(id.replace(/-[qr]$/, ""));
+        else if (id.indexOf("vc-") === 0) verifierVocab(id);
+        else verifierSimple(id);
+      });
+    }
+
+    document.getElementById("btn-tout").addEventListener("click", verifierTout);
+    document.getElementById("btn-corr").addEventListener("click", basculerCorrection);
+    document.getElementById("btn-reset").addEventListener("click", reinitialiser);
+  }
+
+  if (document.readyState === "loading"){
+    document.addEventListener("DOMContentLoaded", init);
+  } else {
+    init();
+  }
+})();
+</script>
+</body>
+</html>
