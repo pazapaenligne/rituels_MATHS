@@ -1,0 +1,379 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Rituel &mdash; Semaine 1 S&eacute;ance 4 &mdash; Bilan semaine 1</title>
+<style>
+*{box-sizing:border-box}
+html,body{margin:0;padding:0}
+body{background:#fffdf7;font-family:Arial,Helvetica,sans-serif;color:#243238;line-height:1.6;padding:14px;overflow-x:hidden}
+.bulle{position:fixed;border-radius:50%;background:#3ba5b8;opacity:.12;pointer-events:none;z-index:0}
+.b1{width:190px;height:190px;top:-70px;left:-70px}
+.b2{width:130px;height:130px;top:-45px;right:-45px}
+.b3{width:160px;height:160px;bottom:-60px;left:-55px}
+.b4{width:110px;height:110px;bottom:-40px;right:-35px}
+.wrap{position:relative;z-index:1;max-width:880px;margin:0 auto}
+.tete{display:flex;flex-wrap:wrap;align-items:center;gap:10px;margin-bottom:14px}
+.etq{display:inline-block;padding:7px 16px;border-radius:8px;color:#fff;font-weight:700;font-size:.95rem}
+.etq-sem{background:#8fd3e8;color:#123f4a}
+.etq-sea{background:#3ba5b8}
+.etq-rit{background:#1f7a8c;font-family:Georgia,"Times New Roman",serif;margin-left:auto}
+h1{font-size:clamp(1.3rem,4.5vw,2rem);font-weight:900;color:#1f7a8c;margin:6px 0 18px;line-height:1.3}
+.bloc{position:relative;border:2px solid #3ba5b8;border-radius:12px;background:#fff;padding:28px 18px 20px;margin-bottom:18px}
+.onglet{position:absolute;top:-17px;left:18px;background:#8fd3e8;color:#123f4a;font-weight:700;font-size:.95rem;padding:5px 18px;border-radius:8px}
+.tete-ex{display:flex;align-items:flex-start;gap:12px;margin:6px 0 16px;min-width:0}
+.pastille{flex:0 0 auto;width:34px;height:34px;border-radius:50%;background:#1f7a8c;color:#fff;font-weight:700;font-size:1rem;display:flex;align-items:center;justify-content:center}
+.consigne{margin:4px 0 0;font-weight:700;text-decoration:underline;color:#1f7a8c;font-size:clamp(.95rem,2.6vw,1.05rem);min-width:0;overflow-wrap:break-word;line-height:1.7}
+.item{padding:12px 0;border-bottom:1px dashed #dceff3}
+.item:last-of-type{border-bottom:0}
+.ligne{display:flex;flex-wrap:wrap;align-items:center;gap:10px;min-width:0}
+.calc{font-size:clamp(.95rem,2.8vw,1.1rem);font-weight:700;color:#243238}
+input[type="text"]{width:clamp(90px,26vw,130px);min-width:0;padding:9px 8px;font-family:Arial,Helvetica,sans-serif;font-size:1rem;font-weight:700;text-align:center;color:#1f7a8c;background:#f7fcfd;border:1px solid #b9dfe8;border-bottom:2px dotted #3ba5b8;border-radius:6px}
+input[type="text"]:focus{outline:2px solid #3ba5b8;outline-offset:1px}
+input.correct{border-color:#2e8b57;background:#effaf3;color:#2e8b57}
+input.incorrect{border-color:#c0392b;background:#fdefee;color:#c0392b}
+.actions{display:flex;flex-wrap:wrap;gap:8px;margin-left:auto}
+button{font-family:inherit;font-size:.92rem;font-weight:700;min-height:44px;padding:10px 16px;border:0;border-radius:8px;cursor:pointer;background:#3ba5b8;color:#fff;line-height:1.2}
+button:hover{background:#1f7a8c}
+button.sec{background:#fff;color:#1f7a8c;border:2px solid #3ba5b8}
+button.sec:hover{background:#eaf7fa}
+.feedback{margin:10px 0 0;padding:12px 14px;border-left:5px solid #3ba5b8;border-radius:6px;background:#f4fafb;font-size:clamp(.9rem,2.5vw,1rem);line-height:1.75;overflow-wrap:break-word}
+.feedback.ok{border-left-color:#2e8b57;background:#effaf3;color:#1e6b40}
+.feedback.ko{border-left-color:#c0392b;background:#fdefee;color:#96291d}
+.feedback.warn{border-left-color:#c9820a;background:#fff8ea;color:#8a5b04}
+.aide{margin:10px 0 0;padding:12px 14px;border-left:5px solid #8fd3e8;background:#f2fafd;border-radius:6px;font-size:clamp(.9rem,2.5vw,1rem);line-height:1.75}
+.note-cahier{background:#fdf6f6;border-left:5px solid #7a3e3e;border-radius:6px;padding:14px 16px;color:#7a3e3e;font-weight:700;font-size:clamp(.9rem,2.4vw,1rem);line-height:1.8}
+.figure-diagramme{max-width:260px;margin:10px 0}
+.figure-diagramme img{width:100%;height:auto;border:1px solid #dceff3;border-radius:8px;background:#fff}
+.barre{display:flex;flex-wrap:wrap;gap:10px;margin:18px 0}
+.barre button{flex:1 1 190px}
+.correction{border:2px dashed #3ba5b8;border-radius:12px;background:#fff;padding:16px 18px;margin-bottom:18px;font-size:clamp(.9rem,2.5vw,1rem);line-height:1.8}
+.correction h2{margin:0 0 10px;font-size:1.05rem;color:#1f7a8c}
+.correction ul{margin:6px 0 0;padding-left:20px}
+.correction li{margin-bottom:6px}
+.correction p{margin:6px 0}
+.bilan{border:2px solid #1f7a8c;border-radius:12px;background:#fff;padding:16px 18px;margin-bottom:18px;font-size:.92rem;line-height:1.8}
+.bilan .score{font-size:clamp(1.05rem,3.2vw,1.25rem);font-weight:900;color:#1f7a8c}
+.bilan .palier{font-weight:700;margin-top:4px}
+.recap{display:flex;flex-wrap:wrap;gap:8px;margin-top:10px}
+.recap span{display:inline-flex;align-items:center;gap:6px;padding:6px 11px;border-radius:8px;background:#f4fafb;font-weight:700;font-size:.9rem;border:1px solid #dceff3}
+.recap .r-ok{color:#2e8b57}
+.recap .r-ko{color:#c0392b}
+.legende{margin-top:10px;font-size:.85rem;color:#4d6169}
+@media (max-width:768px){.actions{margin-left:0;width:100%}.actions button{flex:1 1 auto}}
+@media (max-width:480px){
+  body{padding:10px}
+  .bloc{padding:26px 12px 16px}
+  .etq{font-size:.85rem;padding:6px 12px}
+  .etq-rit{margin-left:0}
+  .recap span{font-size:.85rem}
+}
+</style>
+</head>
+<body>
+<div class="bulle b1"></div><div class="bulle b2"></div><div class="bulle b3"></div><div class="bulle b4"></div>
+
+<main class="wrap">
+
+  <div class="tete">
+    <span class="etq etq-sem">Semaine 1</span>
+    <span class="etq etq-sea">S&eacute;ance 4</span>
+    <span class="etq etq-rit">Rituel</span>
+  </div>
+
+  <h1>Bilan semaine 1</h1>
+
+  <section class="bloc">
+    <span class="onglet">Calcul</span>
+
+    <div class="tete-ex">
+      <span class="pastille">1</span>
+      <p class="consigne">Calcule mental.</p>
+    </div>
+
+    <div class="item">
+      <div class="ligne">
+        <span class="calc">(&minus;2)&nbsp;&times;&nbsp;4&nbsp;&times;&nbsp;(&minus;5)&nbsp;&times;&nbsp;(&minus;1)&nbsp;&times;&nbsp;10&nbsp;=</span>
+        <input type="text" id="in-a" inputmode="numeric" autocomplete="off" aria-label="Produit de -2, 4, -5, -1 et 10">
+        <span class="actions"><button type="button" data-ok="a">OK</button><button type="button" class="sec" data-aide="a">Indice</button></span>
+      </div>
+      <div class="feedback" id="fb-a" hidden></div>
+      <div class="aide" id="ai-a" hidden></div>
+    </div>
+
+    <div class="item">
+      <div class="ligne">
+        <span class="calc">(&minus;5)&nbsp;&times;&nbsp;(&minus;2)&nbsp;&times;&nbsp;6&nbsp;&times;&nbsp;(&minus;2)&nbsp;&times;&nbsp;5&nbsp;=</span>
+        <input type="text" id="in-b" inputmode="numeric" autocomplete="off" aria-label="Produit de -5, -2, 6, -2 et 5">
+        <span class="actions"><button type="button" data-ok="b">OK</button><button type="button" class="sec" data-aide="b">Indice</button></span>
+      </div>
+      <div class="feedback" id="fb-b" hidden></div>
+      <div class="aide" id="ai-b" hidden></div>
+    </div>
+  </section>
+
+  <section class="bloc">
+    <span class="onglet">Alg&egrave;bre</span>
+
+    <div class="tete-ex">
+      <span class="pastille">2</span>
+      <p class="consigne">Un dauphin est &agrave; 10 m&egrave;tres au-dessus de la mer. Il fait un plongeon de 8 m&egrave;tres pour aller chercher sa nourriture. De combien de m&egrave;tres est-il descendu&nbsp;?</p>
+    </div>
+
+    <div class="item">
+      <div class="ligne">
+        <input type="text" id="in-c" inputmode="numeric" autocomplete="off" aria-label="Nombre de metres descendus par le dauphin">
+        <span class="calc">m</span>
+        <span class="actions"><button type="button" data-ok="c">OK</button><button type="button" class="sec" data-aide="c">Indice</button></span>
+      </div>
+      <div class="feedback" id="fb-c" hidden></div>
+      <div class="aide" id="ai-c" hidden></div>
+    </div>
+  </section>
+
+  <section class="bloc">
+    <span class="onglet">G&eacute;om&eacute;trie</span>
+
+    <div class="tete-ex">
+      <span class="pastille">3</span>
+      <p class="consigne">Construire un triangle ABC tel que&nbsp;: B&Acirc;C&nbsp;=&nbsp;90&deg;, AB&nbsp;=&nbsp;3&nbsp;cm et AC&nbsp;=&nbsp;5&nbsp;cm.</p>
+    </div>
+
+    <p class="note-cahier">&#9998; Construis ce triangle sur ton cahier &agrave; la r&egrave;gle et au rapporteur (l&rsquo;utilisation du rapporteur sera obligatoire pour placer l&rsquo;angle de 90&deg;). Cet exercice n&rsquo;est pas not&eacute; ici.</p>
+  </section>
+
+  <div class="barre">
+    <button type="button" id="btn-tout">V&eacute;rifier tout</button>
+    <button type="button" class="sec" id="btn-corr">Voir la correction</button>
+    <button type="button" class="sec" id="btn-reset">R&eacute;initialiser</button>
+  </div>
+
+  <div class="correction" id="correction" hidden></div>
+  <div class="bilan" id="bilan" hidden></div>
+
+</main>
+
+<script>
+(function(){
+  "use strict";
+
+  function esc(txt){
+    var d = document.createElement("div");
+    d.textContent = String(txt);
+    return d.innerHTML;
+  }
+  function afficher(id, type, html){
+    var fb = document.getElementById("fb-" + id);
+    if (!fb) return;
+    fb.className = "feedback " + type;
+    fb.innerHTML = html;
+    fb.hidden = false;
+  }
+  function marquer(input, etat){
+    if (!input) return;
+    input.classList.remove("correct","incorrect");
+    if (etat) input.classList.add(etat);
+  }
+  function basculerAide(id, texte){
+    var box = document.getElementById("ai-" + id);
+    if (!box) return;
+    if (box.hidden){
+      box.innerHTML = "\ud83d\udca1 <strong>Indice&nbsp;:</strong> " + texte;
+      box.hidden = false;
+    } else {
+      box.hidden = true;
+    }
+  }
+  function palier(pct){
+    if (pct >= 90) return "\ud83d\udfe2 Excellent";
+    if (pct >= 75) return "\ud83d\udfe2 Tr\u00e8s bien";
+    if (pct >= 60) return "\ud83d\udfe1 Ma\u00eetrise satisfaisante";
+    if (pct >= 40) return "\ud83d\udfe0 Ma\u00eetrise fragile";
+    return "\ud83d\udd34 Ma\u00eetrise insuffisante";
+  }
+  function lireEntier(brut){
+    var v = String(brut).replace(/[\s\u00a0]/g,"");
+    v = v.replace(/[\u2212\u2013\u2014]/g, "-");
+    if (v === "") return "";
+    if (!/^-?\d+$/.test(v)) return null;
+    return Number(v);
+  }
+
+  var etats = {};
+  var occupe = false;
+
+  var ITEMS = {
+    a: { attendu:-400, enonce:"(&minus;2) &times; 4 &times; (&minus;5) &times; (&minus;1) &times; 10",
+         aide:"Compte le nombre de facteurs n\u00e9gatifs&nbsp;: s\u2019il y en a un nombre impair, le r\u00e9sultat est n\u00e9gatif." },
+    b: { attendu:-600, enonce:"(&minus;5) &times; (&minus;2) &times; 6 &times; (&minus;2) &times; 5",
+         aide:"Compte le nombre de facteurs n\u00e9gatifs&nbsp;: s\u2019il y en a un nombre impair, le r\u00e9sultat est n\u00e9gatif." }
+  };
+
+  function verifierCalcul(id){
+    var it = ITEMS[id];
+    var input = document.getElementById("in-" + id);
+    var v = lireEntier(input.value);
+    if (v === ""){
+      etats[id] = "vide";
+      marquer(input, "");
+      afficher(id, "warn", "\u26a0\ufe0f Aucune r\u00e9ponse saisie. \u00c9cris le r\u00e9sultat, puis clique sur <strong>OK</strong>.");
+      return;
+    }
+    if (v === null){
+      etats[id] = "incorrect";
+      marquer(input, "incorrect");
+      afficher(id, "warn", "\u26a0\ufe0f \u00c9cris un nombre entier seul (le signe &minus; est accept\u00e9).");
+      return;
+    }
+    if (v === it.attendu){
+      etats[id] = "correct";
+      marquer(input, "correct");
+      afficher(id, "ok", "\u2705 Bravo&nbsp;! " + it.enonce + " = <strong><u>" + it.attendu + "</u></strong>.");
+      return;
+    }
+    etats[id] = "incorrect";
+    marquer(input, "incorrect");
+    afficher(id, "ko", "\u274c Ce n\u2019est pas le bon r\u00e9sultat.<br>R\u00e9ponse attendue&nbsp;: <strong><u>" + it.attendu + "</u></strong>.");
+  }
+
+  function verifierDauphin(){
+    var input = document.getElementById("in-c");
+    var v = lireEntier(input.value);
+    if (v === ""){
+      etats["c"] = "vide";
+      marquer(input, "");
+      afficher("c", "warn", "\u26a0\ufe0f Aucune r\u00e9ponse saisie. \u00c9cris le nombre de m\u00e8tres, puis clique sur <strong>OK</strong>.");
+      return;
+    }
+    if (v === null){
+      etats["c"] = "incorrect";
+      marquer(input, "incorrect");
+      afficher("c", "warn", "\u26a0\ufe0f \u00c9cris un nombre entier seul.");
+      return;
+    }
+    if (v === 18){
+      etats["c"] = "correct";
+      marquer(input, "correct");
+      afficher("c", "ok", "\u2705 Bravo&nbsp;! Le dauphin est descendu de <strong><u>18 m</u></strong>&nbsp;: 10 m pour rejoindre la surface, puis 8 m de plus sous l\u2019eau.");
+      return;
+    }
+    etats["c"] = "incorrect";
+    marquer(input, "incorrect");
+    afficher("c", "ko", "\u274c Ce n\u2019est pas le bon r\u00e9sultat.<br>R\u00e9ponse attendue&nbsp;: <strong><u>18 m</u></strong>.");
+  }
+
+  var ORDRE_ITEMS = ["a","b","c"];
+
+  function verifierTout(){
+    if (occupe) return;
+    occupe = true;
+    window.setTimeout(function(){ occupe = false; }, 350);
+
+    verifierCalcul("a");
+    verifierCalcul("b");
+    verifierDauphin();
+
+    var total = ORDRE_ITEMS.length;
+    var score = 0;
+    var recap = "";
+    for (var j = 0; j < ORDRE_ITEMS.length; j++){
+      var id = ORDRE_ITEMS[j];
+      if (etats[id] === "correct"){
+        score++;
+        recap += '<span class="r-ok">\u2714 ' + id + '</span>';
+      } else {
+        recap += '<span class="r-ko">\u2718 ' + id + '</span>';
+      }
+    }
+    var pct = Math.round((score / total) * 100);
+    var bilan = document.getElementById("bilan");
+    bilan.innerHTML =
+      '<div class="score">Score&nbsp;: ' + score + '\u2009/\u2009' + total + ' (' + pct + '&nbsp;%)</div>' +
+      '<div class="palier">' + palier(pct) + '</div>' +
+      '<div class="recap">' + recap + '</div>' +
+      '<div class="legende">\u2714 correct &nbsp;\u2022&nbsp; \u2718 incorrect ou non r\u00e9pondu. La construction (question 3) n\u2019est pas not\u00e9e (travail sur le cahier).</div>';
+    bilan.hidden = false;
+  }
+
+  function basculerCorrection(){
+    var box = document.getElementById("correction");
+    var btn = document.getElementById("btn-corr");
+    if (box.hidden){
+      box.innerHTML =
+        "<h2>Correction</h2>" +
+        "<ul>" +
+        "<li>(&minus;2) &times; 4 &times; (&minus;5) &times; (&minus;1) &times; 10 = <strong>&minus;400</strong></li>" +
+        "<li>(&minus;5) &times; (&minus;2) &times; 6 &times; (&minus;2) &times; 5 = <strong>&minus;600</strong></li>" +
+        "</ul>" +
+        "<p>Le dauphin a parcouru les 10 m qui le s&eacute;paraient de la surface, puis a plong&eacute; de 8 m sous la surface. Il est donc descendu de 10&nbsp;+&nbsp;8&nbsp;=&nbsp;<strong>18 m</strong>.</p>" +
+        "<div class=\"figure-diagramme\"><img src=\"data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAcIAAAFoBAMAAAA2seb+AAAAMFBMVEX///////n8//79/v77/f73/v/3/P/3/P33+v77+/n1/Pzq7Oev2+OwvrFuvMl7eIAFAGb1AAASH0lEQVR42u2de2wcx32Av92VDTGOxb2TYtRGXM2NXOfhCF1qA8FCikBi5bR/9KEgD6RITZzlmnKaxHAC1PKjDRSjCOoGSAwVUP1obEJJ82JQCTaSALGpsIlTJ7JWXke2bCnScODEkSyRtysFkW3Su9M/7kiREimRNCUuNzOAeHN7e3f76feem5l1mF0Lb/pePxBGk74aHHi81khlrjbHXIjmrQ9GuysXd3Ko+xxfs+h8JMBkFFHz4OSA7HvAwU9x3Zs/y3y38xCG3TDi9039ejbp/97qmsCVIPIgLjhhtGkKNdkmj92jp5Kht7HS7BRBiO50TgrOOnCplO8IvKlOd4Tf6oprC66lzkPCaU+PdDXN0QsiwiwOwcel8uHfXH7wJ4c/5U9tjoVo5yQMnpOdkEcf+UE39AZeJdhXMR1XbGDkFDJZ/A+vHpJDq9fCyERrjD0tW930YMFl+EcArtx02hyfBH4IbWA2a+ed8Noklpr1SNHsJTspth2mYDTVSjDJa0bj5ofTeDJLzVXr0aQFl6ELDYWoffKzwqhNd4ujd2zPXxbUkkdA7jEv3DPAyBNUkiNdE9/39MZW58XYy4odLcA0EH61E/x/r4rXXNlYVKthGrB0qTHu+me2d4LZ4zEeJNjXskNnRfZ+A2RxgQn1qc+/7AJUxbLlR7fL9hM1cKonAafWg9gHOE5PfUI8fKAVLZzF999e/Hi4I4clu5R2RqM4uWaFAI3T/ABNbYIqBvtrY/HwPU3kMCiuDPnIiF4+3LVd4v8OF9Ci8VfP+wmZEj6QM6RE1T8jjp7u9fok6ttRkWXoAJc+1SkAPEAwoLUD6SOjjrNLT/yYeFiN9U/UKpVaeGcQFpfQfC8WuK3wNgJgTgGg0C1LBXNmPGy9xECKFE7lmi9/rsgydMEn12e9cA7/+IuWEBtmJ0pXpey4Ysosdt4J5T/2kLgMfRBwLgVwrnsMA7UNYhK7a7b33abJFaaxOUmgoXErfjE9jQ9Uq+Tg/gRAngQtKkKYpnZO1WJPtSfaMQfjRc8KHL+xirU/LSRhDkuXYvRJsXQpKFGtYgSepAEaffWYsZ5ZIAa3PfbCXY/lGW/eAXDZ/yKKGy1ANV7uHJOZXgaYgZMY0K2D+cCZqXc2rHqGvzLcV/TqiaNowWH1n890ylybhpIKcqChqhCrJUqgxHH0kjMT7DjY5K38IV5GCBU2FZUwdg7lh+DnO51dCo7/x70K0pO1KDWb39h+TKn2r4gjXxBDDdX+SHaWo81iyCCCFf58ytCZzknjxwydH9WeqnPeisELsjgcq/2/vM68cPMcFhlzOZrYHI+aYJVmC5z3arOoKGMb5yH0tkFvEnmr64zs6F9dH9k5uIk1d/UO7guyOPTTyuC+dYNx6PdR2HYewuwhICLbPQwRu4chht3DxMQZ8co4jEli4pUsWMJRTcuisb9hZTACMshimro4nwXuHOSlZzEnReaZC8JCD47ODSGW0BJaQktoCS2hJbSEltASWkJLaAktoSW0hJbQElrCP0TCRYW7ouYvVuGcjaQXjtDrHsliwm5GdpRUhtkmmHp+eQnsMOyE5tyrSaaXl0KGkfMEr9SzK7fXkhe7AK+FOXujLBhhkI5cs/wpL/9GJ8ZseDxjdR1Gvr+B75ZFhs49nQJ4SIIjP/o4PP00wA9LY4dBKiV4l0qBpnrtmI6OmebCl+FiaE6DyPYgWNvf9gTUktRdru7rKwehzvdWBS6kQO3GvpNuJ+Ra4t/Un5VBS2MO/yvkSFSucAAJuBKqK0oSD4eHR6PCt0cP5Roa4MzWEgtGmH3x7vEWCZAojOp3KIkMye5vdV4fPaLqcCrHz0pC6AnGx4jmrPI8LVN9GIDjA5+YqwstGuHVX4I3+8d7mkVv8SKLRth0pRr5NokhAN5sTtotS17qbZNw3c4c//OYgZ0wuvKoLITBCSkF1coJvFUY9l1evgp4sSvBFbkGGoMaMKAbNNO4cvjSVhCEfGAIlNJpnqcpKicrhR2+niug8dthQZL8C3Fb3khRoNoHy2GHsacAzKMHEMk2DcOqvaehlnz11a8eL4kvbY604WW3AEHcfL5pkgRgodthNi42vtVWtLE2r6P+/RHT53X4ZigGQrI4JPKCWQ+2FY0wM49CRvZsCykKYiLIZi/Qwo15T1gccFpVo5LZ4Vw2S2gJLaElvPDtokULr8PMzxKwi0aY7Sm9lnol11IHJ5yfZW8XTUuv+paB/N/ikhKmSKqAub1eTsLg2Q8jARQXf2Osi+Rp0ubD2G6DZSMcMz5dWk+zzqc5xJSW15eqRgrkPVlpCfltnflpFyunMeXPvBetB5KoxIRvJpQ8ayPOym2Htsa3hJbQElpCS2gJLaEltISW0BJaQktoCS2hJbSEltASWkJLaAktoSW0hJbQElpCS2gJLaEltISWsAhtUWGvLJyj9SeFJfS652jjxEVFFVm2qWR2uKa7e1lQajts7q03rl25HfOl/vLI8MxFUYFz7zXrKxu98sgwe1hgvtQfRnhB5AVwvRTUDgQQQQgRXjBL31oMwuCA7GRo4xufzOIrKkFbHVyJGbikm5Es9roZufyn26B3IcuwKqH67iOfgSNH4Gm47HlU8p3/Oe1VNy1oOwwq2wU4zgRnal79W3XaQsPJrHXhyFBXYOg5wac/feyf7xb/d5WgckLwrp0b+5YnL9TbHqslB258WC5XH5rNurBiaKl2USrHFe3Xy45Tb5cCYGl1eyfGOFuvEca8d73A77l5wUYLAfKSGzYI6bjS95uAgASn9m0pcORWAdX3ioVKKMip/gm4sKFpg4d3wdBJkWsqVUnOCUmuHfkFb4ESxqaOc/0zdWAnAI2nurR5vktF78NFmD27UmF+9kGmefviImppukTjdmwYe67qwCWol9BUyV9UKeQNqu2z2OO7GITxJX+m8XxGtfTUmi1wybX6A88LfFLvli6cq59f0Flb7CiETEdDIT9/eT0Md8pxgpALO/O+8ot/rqiM2qGzKADYOAqVdTQfG+mClWHbvctF/eVm2AB4M76q6WLjVaTArYswKk1Mj4kXJmFwQC5/2AVwNgrztlFddUnUKqB6XerCb9YuZDt0Rc1xaWhZHR/TcyqrINeiWkWLd+5JzB3xQiXMtWzanCPhVGtJrdPcyTtdhuRwzgryvR37siJ6mjAMz5dtvRsgV0oDpKr57HiXBtJTCkyiNLjObBT1IhBGUdRzvpymS5Hv3X+b0krtTVGpQac0lM6VOqkUKulSmtz8uLB2qM8XDtuU4njdUTmq0n991k/jUOXnr6v8EMnXfvGY4uhRlR8i6S9o9bT+Q+eN1q/dAHgrbwHgUeC1TUDzKTcA4S1FHYny1rF+hV+Rh6czHHUOTzn7VeAXmvAvPofj4+bn2dnRW10f2dFH2N2bVAa9ymBMSBavqY/s5Elvdb13MF5TZ2RH38Uh9GaS36+rNKNBsi84l+Sy3cNkED0ESUwYNze93D0MGdnuYZr96CLJMJvJFy1eJ3MNybG+aX3ouL/x2MEsmum3XkwtfTZVkDD09/OWTcyC8P0fncHJ0iRgUn2nP8UJ5sm+ghEG+zb7M32PUwmnfrE2FBdMho5fmdMrMH7RtHSR44o5vIDcXOD9v2ZO+Ca5mtNRqKJ5mtjb2zGnVzCUZgXT0uwOFlSz82kmq2hncrJ/4uOCgztmmW/PE+GM0qdg3+aKWc334oUkw5mGTx/+4p03Z6UlxHEF+Stl9jRJrubVn13o747NowPJ3gXmS2cYPn/wAy77tV9mLQU6Si1Dwgq3XvDkc15lGCUJ5ZbhvGw1/weVl1pCS2gJLaEltISW0BJaQktoCS2hJbSEltASWkJLaAktoSW0hJbQElpCS2gJLaEltISW0BJaQktoCS2hJbSEf4CEXkdYcsKKX5kvxIu0L8bgkzMReDCX9ygvoh2u7u6uBAtNhlf1muy+eJonn7WXaeFlGGhkTS5bO83N1oIFaYeu5PB0r/y55l6mNFfJReFbNMqLuAOPnqYID8hODv9Tv5eFlY8x4n+c3iBeGITTbM5WCTKpf52IJ4G+BWCHsSBXapqbywRIAU5t7QKzQ6U5mE7rzPrDksFfdlZ9p+NWidOuqk6+bWfxCX/7dzNYYWn2a4D0GuEKwzIxdMvjWbG1dMaW2CaaHSlwVgmq71jrFp9w2kLY8scKKWj8bkkAaFxw5I1OUHTCpe+fbuKdvl5nqURtATCHYGgXs9q39CITDj077aidLNFgjmqARqpR4Jcr83ZuB7hyiwDUFsyp+ltDLBxhsFiKXDu14Ll4bj6wcIT1X0p+9kGqVQAhYNGWchF6IEyea+eSqwGtwZSMEIDLelodAU5WMi3NACpSGH69sPLS6bcetFgBjaOtgsuUztNwrQLMwIkmmoJc6XQW+wcXljA2XQpUciPk6niOSiHRZdJSYkcpzDfJB7q2D710KIvzXZf3Z2Ui5E9vAAhijtzQvDXJLSWzw9Y+oPFcfVwBZeitrtM7GIO3bjAOK4P7grc02FZAwmz3cFOEWRIThTHxypLJ8PRWpVHz31vbWMP+fmgJLaEltISW0BJaQktoCS2hJbSEltASWkJLWIx2oUaiQrKYcA4nwhaOMBr7U1ItHZ1bEgYlJQyitifup+3BB+d5D+ELRuj9mq3iPWGnlHUvLKUdZkMPS1feeJmElVEpZRi0SQGeBHHf7G5qX3TCtq3Cle67cYUrHwzKRxiwUSJAClxcWY/LJ8M2ISQIEEiEKKOWui7g4gLCdeaZ8AL+fiiLkfdeAMI4VKfvrJrnOvRLp6XZ7flYX6v/ivpi/JLZYa71aA/imd24dGHY4bvUmAPNf9Vb8SnYPUq8MJiyKPBCwvNmmjG3jQpRq55KVcq8WDLMoqlLuyyaTtE3ppY5vICAgbRkWhoFo940f3EkUSY192cFIvSu2PKdXd6HjkVeMG4mS0gWh+zfuvzY73uTaExWEd5kM5b07c+Pds199c8ULB6uvpc7nf2fzzd73SM7gjgkCsk8xzehU/9vUXG449hXyWIvAG7y+4KbdobRWZnpp0e7K7I9e4oW8V921+698R6p/P5NrbGWMYA9ba6fyGRbNM5ao8ns8sBoyHcvDWKvwzd980fonl0ZSLejghQfEXBmcecKcMUGb/zpk7VVYvTT5c1ke5KhosVD90oXht54gqE7X72//c67Ko9uQJoBV6R6uSvMdd9K3t61DXDF8XseFrx65i2p9z1AC1Eo4QVRRNEIHQdwviHw771Lsk769WWIxJE0TiJwaunS7OMSkPjXS4Ff//oEVxkckO5YlXHpfI8pTh4taj1wlZAIs0Wav3QrVSloVCSmigsVROK6QklJ+0YpMB/7+kRvvHVcTSjv/2wR68MqICW4Uro+QvqtUx1qAK4UG6SoStCugNo7/nq8vQb7JWOIAuEVkdDxmwk0IHBdEORakKcuOeb0neJyI4Gzi1x3YjFcPEKFjyvZq6iOZpRmb6pRClJQGsABs7eZftY2TFLI50o187YCEhqQIMzv/0Y76NZFvtKFeaUOOY39W1pn5a/UJxuFeT3P9Vh2c7pbJBk2mleVAqJ1SpoyVgONCSxtHsgH+sev3YmN1jnoHI1Ck80v4bkybx/Q61vR+sotzZrBHV2K5ABL12KilKF4IsUDt+IKtCtzlOopogxPKVrbWJjRFar50S2TTCnP+uH3N9zwiTOOR4/kucpfynOd5w9FRSQEWIKz8pciR3urBFD1x0q+6gd6WDqal2ln5eFnvnmmNb72FY3+mta5uruQngbTpfEVVUmSgpx4lnZWLNHNoULfzRVVGV4TnhHz4h8plceP5PpgVMRfZvI0TRW6S4M52KWakbGRkjcgBwVGASbROn1djSZ5ZxT5D6q7vTfUnT3BvMvwLE8Tr1Gkp1T7YONQTuNXKEQDlZof54o0V6pxUpiX3hA00vSQec58QQpMEmVnDXbsgb2bKECbesw9jADvfK5+qs1xWjMVLtBvwN76Md1YubiTQ93xbKJFBNPYziI+17sLMVNhEsKwMhiv+eSjcXMJWdgNvYOf+m4fYeVJwspgW713sK3OyM7Eae/D20ZzoVlhm3MOHW1Oh/GCeOUEgjCLxx30gnkQ1Vxo6ekx0yw6QxWjCQeziGI3O6/NElpCS2gJLaEltISW0BJaQktoCS2hJbSEltASWkJLaAktYVna/wMQzcLwWJU+GQAAAABJRU5ErkJggg==\" alt=\"Schema du dauphin descendant de 10 m jusqu'a la surface puis 8 m sous l'eau.\"></div>";
+      box.hidden = false;
+      btn.textContent = "Masquer la correction";
+    } else {
+      box.hidden = true;
+      btn.textContent = "Voir la correction";
+    }
+  }
+
+  function reinitialiser(){
+    var champs = ["in-a","in-b","in-c"];
+    for (var i = 0; i < champs.length; i++){
+      var input = document.getElementById(champs[i]);
+      if (input){
+        input.value = "";
+        input.disabled = false;
+        input.readOnly = false;
+        input.classList.remove("correct","incorrect");
+      }
+    }
+    for (var j = 0; j < ORDRE_ITEMS.length; j++){
+      var id = ORDRE_ITEMS[j];
+      var fb = document.getElementById("fb-" + id);
+      if (fb){ fb.hidden = true; fb.innerHTML = ""; fb.className = "feedback"; }
+      var ai = document.getElementById("ai-" + id);
+      if (ai){ ai.hidden = true; ai.innerHTML = ""; }
+    }
+    etats = {};
+    var bilan = document.getElementById("bilan");
+    bilan.hidden = true; bilan.innerHTML = "";
+    var corr = document.getElementById("correction");
+    corr.hidden = true; corr.innerHTML = "";
+    document.getElementById("btn-corr").textContent = "Voir la correction";
+    occupe = false;
+  }
+
+  function init(){
+    document.querySelector('[data-ok="a"]').addEventListener("click", function(){ verifierCalcul("a"); });
+    document.querySelector('[data-ok="b"]').addEventListener("click", function(){ verifierCalcul("b"); });
+    document.querySelector('[data-aide="a"]').addEventListener("click", function(){ basculerAide("a", ITEMS.a.aide); });
+    document.querySelector('[data-aide="b"]').addEventListener("click", function(){ basculerAide("b", ITEMS.b.aide); });
+
+    document.querySelector('[data-ok="c"]').addEventListener("click", verifierDauphin);
+    document.querySelector('[data-aide="c"]').addEventListener("click", function(){ basculerAide("c", "Place la surface de la mer \u00e0 0&nbsp;: le dauphin part de +10 et arrive \u00e0 &minus;8. La distance descendue est la diff\u00e9rence entre ces deux positions."); });
+
+    var champs = document.querySelectorAll('input[type="text"]');
+    for (var i = 0; i < champs.length; i++){
+      champs[i].addEventListener("keydown", function(ev){
+        if (ev.key !== "Enter") return;
+        ev.preventDefault();
+        var id = this.id.replace("in-", "");
+        if (id === "a" || id === "b") verifierCalcul(id);
+        else if (id === "c") verifierDauphin();
+      });
+    }
+
+    document.getElementById("btn-tout").addEventListener("click", verifierTout);
+    document.getElementById("btn-corr").addEventListener("click", basculerCorrection);
+    document.getElementById("btn-reset").addEventListener("click", reinitialiser);
+  }
+
+  if (document.readyState === "loading"){
+    document.addEventListener("DOMContentLoaded", init);
+  } else {
+    init();
+  }
+})();
+</script>
+</body>
+</html>
