@@ -1,0 +1,415 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Rituel &mdash; Semaine 8 S&eacute;ance 2 &mdash; Traduire une phrase en expression math&eacute;matique</title>
+<style>
+*{box-sizing:border-box}
+html,body{margin:0;padding:0}
+body{background:#fffdf7;font-family:Arial,Helvetica,sans-serif;color:#243238;line-height:1.6;padding:14px;overflow-x:hidden}
+.bulle{position:fixed;border-radius:50%;background:#3ba5b8;opacity:.12;pointer-events:none;z-index:0}
+.b1{width:190px;height:190px;top:-70px;left:-70px}
+.b2{width:130px;height:130px;top:-45px;right:-45px}
+.b3{width:160px;height:160px;bottom:-60px;left:-55px}
+.b4{width:110px;height:110px;bottom:-40px;right:-35px}
+.wrap{position:relative;z-index:1;max-width:880px;margin:0 auto}
+.tete{display:flex;flex-wrap:wrap;align-items:center;gap:10px;margin-bottom:14px}
+.etq{display:inline-block;padding:7px 16px;border-radius:8px;color:#fff;font-weight:700;font-size:.95rem}
+.etq-sem{background:#8fd3e8;color:#123f4a}
+.etq-sea{background:#3ba5b8}
+.etq-rit{background:#1f7a8c;font-family:Georgia,"Times New Roman",serif;margin-left:auto}
+h1{font-size:clamp(1.2rem,4.2vw,1.9rem);font-weight:900;color:#1f7a8c;margin:6px 0 18px;line-height:1.3}
+.bloc{position:relative;border:2px solid #3ba5b8;border-radius:12px;background:#fff;padding:28px 18px 20px;margin-bottom:18px}
+.onglet{position:absolute;top:-17px;left:18px;background:#8fd3e8;color:#123f4a;font-weight:700;font-size:.95rem;padding:5px 18px;border-radius:8px}
+.consigne{margin:4px 0 18px;font-weight:700;text-decoration:underline;color:#1f7a8c;font-size:clamp(.95rem,2.6vw,1.05rem);min-width:0;overflow-wrap:break-word}
+.item{padding:14px 0;border-bottom:1px dashed #dceff3}
+.item:last-of-type{border-bottom:0}
+.q{font-size:clamp(1rem,3vw,1.1rem);font-weight:700;margin:0 0 10px;color:#243238;overflow-wrap:break-word;line-height:1.8}
+.q .lettre{color:#1f7a8c;margin-right:4px}
+.ligne{display:flex;flex-wrap:wrap;align-items:center;gap:10px;min-width:0}
+input[type="text"]{flex:0 1 auto;width:clamp(150px,42vw,210px);min-width:0;padding:9px 10px;font-family:Arial,Helvetica,sans-serif;font-size:1rem;font-weight:700;text-align:left;color:#1f7a8c;background:#f7fcfd;border:1px solid #b9dfe8;border-bottom:2px dotted #3ba5b8;border-radius:6px}
+input[type="text"]:focus{outline:2px solid #3ba5b8;outline-offset:1px}
+input.correct{border-color:#2e8b57;background:#effaf3;color:#2e8b57}
+input.partiel{border-color:#c9820a;background:#fff8ea;color:#a86c06}
+input.incorrect{border-color:#c0392b;background:#fdefee;color:#c0392b}
+.actions{display:flex;flex-wrap:wrap;gap:8px}
+button{font-family:inherit;font-size:.92rem;font-weight:700;min-height:44px;padding:10px 16px;border:0;border-radius:8px;cursor:pointer;background:#3ba5b8;color:#fff;line-height:1.2}
+button:hover{background:#1f7a8c}
+button.sec{background:#fff;color:#1f7a8c;border:2px solid #3ba5b8}
+button.sec:hover{background:#eaf7fa}
+.feedback{margin:10px 0 0;padding:12px 14px;border-left:5px solid #3ba5b8;border-radius:6px;background:#f4fafb;font-size:clamp(.9rem,2.5vw,1rem);line-height:1.75;overflow-wrap:break-word}
+.feedback.ok{border-left-color:#2e8b57;background:#effaf3;color:#1e6b40}
+.feedback.ko{border-left-color:#c0392b;background:#fdefee;color:#96291d}
+.feedback.warn{border-left-color:#c9820a;background:#fff8ea;color:#8a5b04}
+.aide{margin:10px 0 0;padding:12px 14px;border-left:5px solid #8fd3e8;background:#f2fafd;border-radius:6px;font-size:clamp(.9rem,2.5vw,1rem);line-height:1.75}
+.barre{display:flex;flex-wrap:wrap;gap:10px;margin:18px 0}
+.barre button{flex:1 1 190px}
+.correction{border:2px dashed #3ba5b8;border-radius:12px;background:#fff;padding:16px 18px;margin-bottom:18px;font-size:clamp(.9rem,2.5vw,1rem);line-height:1.8}
+.correction h2{margin:0 0 10px;font-size:1.05rem;color:#1f7a8c}
+.correction ul{margin:6px 0 0;padding-left:20px}
+.correction li{margin-bottom:6px}
+.bilan{border:2px solid #1f7a8c;border-radius:12px;background:#fff;padding:16px 18px;margin-bottom:18px;font-size:.92rem;line-height:1.8}
+.bilan .score{font-size:clamp(1.05rem,3.2vw,1.25rem);font-weight:900;color:#1f7a8c}
+.bilan .palier{font-weight:700;margin-top:4px}
+.recap{display:flex;flex-wrap:wrap;gap:8px;margin-top:10px}
+.recap span{display:inline-flex;align-items:center;gap:6px;padding:6px 11px;border-radius:8px;background:#f4fafb;font-weight:700;font-size:.9rem;border:1px solid #dceff3}
+.recap .r-ok{color:#2e8b57}
+.recap .r-mid{color:#c9820a}
+.recap .r-ko{color:#c0392b}
+.legende{margin-top:10px;font-size:.85rem;color:#4d6169}
+@media (max-width:768px){.ligne{flex-direction:column;align-items:stretch}input[type="text"]{width:100%}.actions{width:100%}.actions button{flex:1 1 auto}}
+@media (max-width:480px){
+  body{padding:10px}
+  .bloc{padding:26px 12px 16px}
+  .etq{font-size:.85rem;padding:6px 12px}
+  .etq-rit{margin-left:0}
+  .recap span{font-size:.85rem}
+}
+</style>
+</head>
+<body>
+<div class="bulle b1"></div><div class="bulle b2"></div><div class="bulle b3"></div><div class="bulle b4"></div>
+
+<main class="wrap">
+
+  <div class="tete">
+    <span class="etq etq-sem">Semaine 8</span>
+    <span class="etq etq-sea">S&eacute;ance 2</span>
+    <span class="etq etq-rit">Rituel</span>
+  </div>
+
+  <h1>Traduire une phrase en expression math&eacute;matique</h1>
+
+  <section class="bloc">
+    <span class="onglet">Alg&egrave;bre</span>
+
+    <p class="consigne">&Eacute;cris chacune des phrases sous la forme d&rsquo;une expression math&eacute;matique puis calcule-la.</p>
+
+    <div class="item">
+      <p class="q"><span class="lettre">a.</span>La somme de 3 et 25&nbsp;:</p>
+      <div class="ligne">
+        <input type="text" id="in-a" autocomplete="off" placeholder="ex&nbsp;: a + b = résultat" aria-label="Expression pour la somme de 3 et 25">
+        <span class="actions"><button type="button" data-ok="a">OK</button><button type="button" class="sec" data-aide="a">Indice</button></span>
+      </div>
+      <div class="feedback" id="fb-a" hidden></div>
+      <div class="aide" id="ai-a" hidden></div>
+    </div>
+
+    <div class="item">
+      <p class="q"><span class="lettre">b.</span>La diff&eacute;rence de 78 et 54&nbsp;:</p>
+      <div class="ligne">
+        <input type="text" id="in-b" autocomplete="off" placeholder="ex&nbsp;: a - b = résultat" aria-label="Expression pour la difference de 78 et 54">
+        <span class="actions"><button type="button" data-ok="b">OK</button><button type="button" class="sec" data-aide="b">Indice</button></span>
+      </div>
+      <div class="feedback" id="fb-b" hidden></div>
+      <div class="aide" id="ai-b" hidden></div>
+    </div>
+
+    <div class="item">
+      <p class="q"><span class="lettre">c.</span>Le produit de 14 par 3&nbsp;:</p>
+      <div class="ligne">
+        <input type="text" id="in-c" autocomplete="off" placeholder="ex&nbsp;: a &times; b = résultat" aria-label="Expression pour le produit de 14 par 3">
+        <span class="actions"><button type="button" data-ok="c">OK</button><button type="button" class="sec" data-aide="c">Indice</button></span>
+      </div>
+      <div class="feedback" id="fb-c" hidden></div>
+      <div class="aide" id="ai-c" hidden></div>
+    </div>
+
+    <div class="item">
+      <p class="q"><span class="lettre">d.</span>La somme de 98, 17 et 22&nbsp;:</p>
+      <div class="ligne">
+        <input type="text" id="in-d" autocomplete="off" placeholder="ex&nbsp;: a + b + c = résultat" aria-label="Expression pour la somme de 98, 17 et 22">
+        <span class="actions"><button type="button" data-ok="d">OK</button><button type="button" class="sec" data-aide="d">Indice</button></span>
+      </div>
+      <div class="feedback" id="fb-d" hidden></div>
+      <div class="aide" id="ai-d" hidden></div>
+    </div>
+
+    <div class="item">
+      <p class="q"><span class="lettre">e.</span>Le triple de 25&nbsp;:</p>
+      <div class="ligne">
+        <input type="text" id="in-e" autocomplete="off" placeholder="ex&nbsp;: a &times; b = résultat" aria-label="Expression pour le triple de 25">
+        <span class="actions"><button type="button" data-ok="e">OK</button><button type="button" class="sec" data-aide="e">Indice</button></span>
+      </div>
+      <div class="feedback" id="fb-e" hidden></div>
+      <div class="aide" id="ai-e" hidden></div>
+    </div>
+  </section>
+
+  <div class="barre">
+    <button type="button" id="btn-tout">V&eacute;rifier tout</button>
+    <button type="button" class="sec" id="btn-corr">Voir la correction</button>
+    <button type="button" class="sec" id="btn-reset">R&eacute;initialiser</button>
+  </div>
+
+  <div class="correction" id="correction" hidden></div>
+  <div class="bilan" id="bilan" hidden></div>
+
+</main>
+
+<script>
+(function(){
+  "use strict";
+
+  function esc(txt){
+    var d = document.createElement("div");
+    d.textContent = String(txt);
+    return d.innerHTML;
+  }
+  function afficher(id, type, html){
+    var fb = document.getElementById("fb-" + id);
+    if (!fb) return;
+    fb.className = "feedback " + type;
+    fb.innerHTML = html;
+    fb.hidden = false;
+  }
+  function marquer(input, etat){
+    if (!input) return;
+    input.classList.remove("correct","partiel","incorrect");
+    if (etat) input.classList.add(etat);
+  }
+  function basculerAide(id, texte){
+    var box = document.getElementById("ai-" + id);
+    if (!box) return;
+    if (box.hidden){
+      box.innerHTML = "\ud83d\udca1 <strong>Indice&nbsp;:</strong> " + texte;
+      box.hidden = false;
+    } else {
+      box.hidden = true;
+    }
+  }
+  function palier(pct){
+    if (pct >= 90) return "\ud83d\udfe2 Excellent";
+    if (pct >= 75) return "\ud83d\udfe2 Tr\u00e8s bien";
+    if (pct >= 60) return "\ud83d\udfe1 Ma\u00eetrise satisfaisante";
+    if (pct >= 40) return "\ud83d\udfe0 Ma\u00eetrise fragile";
+    return "\ud83d\udd34 Ma\u00eetrise insuffisante";
+  }
+
+  // ---------- Analyse d'une expression saisie (jamais eval) ----------
+  function normaliserExpr(brut){
+    var s = String(brut).toLowerCase();
+    s = s.replace(/[\s\u00a0\u202f\u2009]/g, "");
+    s = s.replace(/[\u00d7x\*]/g, "*");
+    s = s.replace(/[\u2212\u2013\u2014]/g, "-");
+    return s;
+  }
+  function tokeniser(expr){
+    var re = /^(\d+)((?:[+\-*]\d+)*)$/;
+    var m = expr.match(re);
+    if (!m) return null;
+    var nums = [Number(m[1])];
+    var ops = [];
+    var rest = m[2];
+    var reOp = /([+\-*])(\d+)/g;
+    var mm;
+    while ((mm = reOp.exec(rest)) !== null){ ops.push(mm[1]); nums.push(Number(mm[2])); }
+    return { nums:nums, ops:ops };
+  }
+  function evaluerGauche(nums, ops){
+    var v = nums[0];
+    for (var i = 0; i < ops.length; i++){
+      if (ops[i] === "+") v += nums[i+1];
+      else if (ops[i] === "-") v -= nums[i+1];
+      else if (ops[i] === "*") v *= nums[i+1];
+    }
+    return v;
+  }
+  function memeMultiset(a, b){
+    if (a.length !== b.length) return false;
+    var aa = a.slice().sort(function(x,y){ return x-y; });
+    var bb = b.slice().sort(function(x,y){ return x-y; });
+    for (var i = 0; i < aa.length; i++){ if (aa[i] !== bb[i]) return false; }
+    return true;
+  }
+
+  var etats = {};
+  var occupe = false;
+
+  var SYMBOLE_OP = { "+":"+", "-":"\u2212", "*":"\u00d7" };
+
+  var PHRASES = {
+    a: { operandes:[3,25], operateur:"+", resultat:28, phrase:"la somme de 3 et 25",
+         aide:"Une somme s\u2019\u00e9crit avec le signe +&nbsp;: place les deux nombres de la phrase de chaque c\u00f4t\u00e9." },
+    b: { operandes:[78,54], operateur:"-", resultat:24, phrase:"la diff\u00e9rence de 78 et 54",
+         aide:"Une diff\u00e9rence s\u2019\u00e9crit avec le signe \u2212, dans l\u2019ordre o\u00f9 les nombres sont donn\u00e9s&nbsp;: le premier nombre de la phrase, moins le second." },
+    c: { operandes:[14,3], operateur:"*", resultat:42, phrase:"le produit de 14 par 3",
+         aide:"Un produit s\u2019\u00e9crit avec le signe &times;&nbsp;: place les deux nombres de la phrase de chaque c\u00f4t\u00e9." },
+    d: { operandes:[98,17,22], operateur:"+", resultat:137, phrase:"la somme de 98, 17 et 22",
+         aide:"Une somme de trois nombres s\u2019\u00e9crit avec deux signes +&nbsp;: additionne les trois nombres de la phrase." },
+    e: { operandes:[25,3], operateur:"*", resultat:75, phrase:"le triple de 25",
+         aide:"Le triple d\u2019un nombre, c\u2019est ce nombre multipli\u00e9 par 3." }
+  };
+  var ORDRE_ITEMS = ["a","b","c","d","e"];
+
+  function refAffichee(it){
+    var expr = it.operandes.join(" " + SYMBOLE_OP[it.operateur] + " ");
+    return expr + " = " + it.resultat;
+  }
+
+  function verifier(id){
+    var it = PHRASES[id];
+    var input = document.getElementById("in-" + id);
+    var brut = input.value;
+
+    if (String(brut).replace(/[\s\u00a0]/g,"") === ""){
+      etats[id] = "vide";
+      marquer(input, "");
+      afficher(id, "warn", "\u26a0\ufe0f Aucune r\u00e9ponse saisie. \u00c9cris l\u2019expression puis son r\u00e9sultat, par exemple &laquo;&nbsp;3 + 25 = 28&nbsp;&raquo;, puis clique sur <strong>OK</strong>.");
+      return;
+    }
+
+    var s = normaliserExpr(brut);
+    var parts = s.split("=");
+    if (parts.length > 2){
+      etats[id] = "incorrect";
+      marquer(input, "incorrect");
+      afficher(id, "warn", "\u26a0\ufe0f Une seule expression est attendue, avec au plus un signe =.");
+      return;
+    }
+    var lhs = parts[0];
+    var rhsStr = parts.length === 2 ? parts[1] : null;
+    var parsed = tokeniser(lhs);
+
+    if (!parsed){
+      etats[id] = "incorrect";
+      marquer(input, "incorrect");
+      afficher(id, "warn", "\u26a0\ufe0f Saisie non reconnue&nbsp;: &laquo;&nbsp;" + esc(brut) + "&nbsp;&raquo;. \u00c9cris une expression avec des nombres et des signes +, \u2212 ou &times; seulement.");
+      return;
+    }
+
+    var valeurLHS = evaluerGauche(parsed.nums, parsed.ops);
+    var operandesOk = memeMultiset(parsed.nums, it.operandes);
+    var nbOpsAttendu = it.operandes.length - 1;
+    var operateurOk = parsed.ops.length === nbOpsAttendu && parsed.ops.every(function(o){ return o === it.operateur; });
+    var rhsMatches = rhsStr !== null && /^\d+$/.test(rhsStr) && Number(rhsStr) === it.resultat;
+    var valeurOk = valeurLHS === it.resultat;
+
+    var ref = refAffichee(it);
+
+    if (operandesOk && operateurOk && valeurOk && rhsMatches){
+      etats[id] = "correct";
+      marquer(input, "correct");
+      afficher(id, "ok", "\u2705 Bravo&nbsp;! <strong><u>" + ref + "</u></strong>.");
+      return;
+    }
+    if (operandesOk){
+      etats[id] = "partiel";
+      marquer(input, "partiel");
+      var piste;
+      if (!operateurOk) piste = "V\u00e9rifie l\u2019op\u00e9ration &agrave; utiliser pour \u00ab&nbsp;" + it.phrase + "&nbsp;\u00bb.";
+      else if (!valeurOk) piste = "V\u00e9rifie le calcul&nbsp;: relis bien l\u2019ordre des nombres.";
+      else piste = "N\u2019oublie pas d\u2019\u00e9crire le signe = suivi du r\u00e9sultat.";
+      afficher(id, "warn", "\u26a0\ufe0f Tu as les bons nombres, mais ce n\u2019est pas encore complet. " + piste + "<br>R\u00e9ponse attendue&nbsp;: <strong><u>" + ref + "</u></strong>.");
+      return;
+    }
+    etats[id] = "incorrect";
+    marquer(input, "incorrect");
+    afficher(id, "ko", "\u274c Ce ne sont pas les nombres attendus pour &laquo;&nbsp;" + it.phrase + "&nbsp;&raquo;.<br>R\u00e9ponse attendue&nbsp;: <strong><u>" + ref + "</u></strong>.");
+  }
+
+  function verifierTout(){
+    if (occupe) return;
+    occupe = true;
+    window.setTimeout(function(){ occupe = false; }, 350);
+
+    for (var i = 0; i < ORDRE_ITEMS.length; i++){ verifier(ORDRE_ITEMS[i]); }
+
+    var total = ORDRE_ITEMS.length;
+    var score = 0;
+    var recap = "";
+    for (var j = 0; j < ORDRE_ITEMS.length; j++){
+      var id = ORDRE_ITEMS[j];
+      var e = etats[id];
+      if (e === "correct"){
+        score++;
+        recap += '<span class="r-ok">\u2714 ' + id + '</span>';
+      } else if (e === "partiel"){
+        recap += '<span class="r-mid">\u25d0 ' + id + '</span>';
+      } else {
+        recap += '<span class="r-ko">\u2718 ' + id + '</span>';
+      }
+    }
+    var pct = Math.round((score / total) * 100);
+    var bilan = document.getElementById("bilan");
+    bilan.innerHTML =
+      '<div class="score">Score&nbsp;: ' + score + '\u2009/\u2009' + total + ' (' + pct + '&nbsp;%)</div>' +
+      '<div class="palier">' + palier(pct) + '</div>' +
+      '<div class="recap">' + recap + '</div>' +
+      '<div class="legende">\u2714 correct &nbsp;\u2022&nbsp; \u25d0 partiel (bons nombres, mais op\u00e9ration, calcul ou r\u00e9sultat &agrave; corriger) &nbsp;\u2022&nbsp; \u2718 incorrect ou non r\u00e9pondu.</div>';
+    bilan.hidden = false;
+  }
+
+  function basculerCorrection(){
+    var box = document.getElementById("correction");
+    var btn = document.getElementById("btn-corr");
+    if (box.hidden){
+      var lignes = "";
+      for (var i = 0; i < ORDRE_ITEMS.length; i++){
+        var id = ORDRE_ITEMS[i];
+        var it = PHRASES[id];
+        lignes += "<li><strong>" + id + ".</strong> " + refAffichee(it) + "</li>";
+      }
+      box.innerHTML = "<h2>Correction</h2><ul>" + lignes + "</ul>";
+      box.hidden = false;
+      btn.textContent = "Masquer la correction";
+    } else {
+      box.hidden = true;
+      btn.textContent = "Voir la correction";
+    }
+  }
+
+  function reinitialiser(){
+    for (var i = 0; i < ORDRE_ITEMS.length; i++){
+      var id = ORDRE_ITEMS[i];
+      var input = document.getElementById("in-" + id);
+      if (input){
+        input.value = "";
+        input.disabled = false;
+        input.readOnly = false;
+        input.classList.remove("correct","partiel","incorrect");
+      }
+      var fb = document.getElementById("fb-" + id);
+      if (fb){ fb.hidden = true; fb.innerHTML = ""; fb.className = "feedback"; }
+      var ai = document.getElementById("ai-" + id);
+      if (ai){ ai.hidden = true; ai.innerHTML = ""; }
+    }
+    etats = {};
+    var bilan = document.getElementById("bilan");
+    bilan.hidden = true; bilan.innerHTML = "";
+    var corr = document.getElementById("correction");
+    corr.hidden = true; corr.innerHTML = "";
+    document.getElementById("btn-corr").textContent = "Voir la correction";
+    occupe = false;
+  }
+
+  function init(){
+    for (var i = 0; i < ORDRE_ITEMS.length; i++){
+      (function(id){
+        document.querySelector('[data-ok="' + id + '"]').addEventListener("click", function(){ verifier(id); });
+        document.querySelector('[data-aide="' + id + '"]').addEventListener("click", function(){ basculerAide(id, PHRASES[id].aide); });
+      })(ORDRE_ITEMS[i]);
+    }
+    var champs = document.querySelectorAll('input[type="text"]');
+    for (var k = 0; k < champs.length; k++){
+      champs[k].addEventListener("keydown", function(ev){
+        if (ev.key !== "Enter") return;
+        ev.preventDefault();
+        verifier(this.id.replace("in-", ""));
+      });
+    }
+    document.getElementById("btn-tout").addEventListener("click", verifierTout);
+    document.getElementById("btn-corr").addEventListener("click", basculerCorrection);
+    document.getElementById("btn-reset").addEventListener("click", reinitialiser);
+  }
+
+  if (document.readyState === "loading"){
+    document.addEventListener("DOMContentLoaded", init);
+  } else {
+    init();
+  }
+})();
+</script>
+</body>
+</html>
