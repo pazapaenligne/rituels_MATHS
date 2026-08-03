@@ -1,0 +1,509 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Rituel &mdash; Semaine 3 S&eacute;ance 4 &mdash; Bilan semaine 3</title>
+<style>
+*{box-sizing:border-box}
+html,body{margin:0;padding:0}
+body{background:#fffdf7;font-family:Arial,Helvetica,sans-serif;color:#243238;line-height:1.6;padding:14px;overflow-x:hidden}
+.bulle{position:fixed;border-radius:50%;background:#3ba5b8;opacity:.12;pointer-events:none;z-index:0}
+.b1{width:190px;height:190px;top:-70px;left:-70px}
+.b2{width:130px;height:130px;top:-45px;right:-45px}
+.b3{width:160px;height:160px;bottom:-60px;left:-55px}
+.b4{width:110px;height:110px;bottom:-40px;right:-35px}
+.wrap{position:relative;z-index:1;max-width:880px;margin:0 auto}
+.tete{display:flex;flex-wrap:wrap;align-items:center;gap:10px;margin-bottom:14px}
+.etq{display:inline-block;padding:7px 16px;border-radius:8px;color:#fff;font-weight:700;font-size:.95rem}
+.etq-sem{background:#8fd3e8;color:#123f4a}
+.etq-sea{background:#3ba5b8}
+.etq-rit{background:#1f7a8c;font-family:Georgia,"Times New Roman",serif;margin-left:auto}
+h1{font-size:clamp(1.3rem,4.5vw,2rem);font-weight:900;color:#1f7a8c;margin:6px 0 18px;line-height:1.3}
+.bloc{position:relative;border:2px solid #3ba5b8;border-radius:12px;background:#fff;padding:28px 18px 20px;margin-bottom:18px}
+.onglet{position:absolute;top:-17px;left:18px;background:#8fd3e8;color:#123f4a;font-weight:700;font-size:.95rem;padding:5px 18px;border-radius:8px}
+.tete-ex{display:flex;align-items:flex-start;gap:12px;margin:6px 0 16px;min-width:0}
+.pastille{flex:0 0 auto;width:34px;height:34px;border-radius:50%;background:#1f7a8c;color:#fff;font-weight:700;font-size:1rem;display:flex;align-items:center;justify-content:center}
+.consigne{margin:4px 0 0;font-weight:700;text-decoration:underline;color:#1f7a8c;font-size:clamp(.92rem,2.5vw,1.02rem);min-width:0;overflow-wrap:break-word;line-height:1.7}
+.item{padding:14px 0;border-bottom:1px dashed #dceff3}
+.item:last-of-type{border-bottom:0}
+.q{font-size:clamp(.95rem,2.6vw,1.05rem);font-weight:700;margin:0 0 10px;color:#243238}
+.ligne{display:flex;flex-wrap:wrap;align-items:center;gap:8px;min-width:0}
+.calc{font-size:clamp(.95rem,2.8vw,1.1rem);font-weight:700;color:#243238;white-space:nowrap}
+input[type="text"]{width:clamp(64px,18vw,90px);min-width:0;padding:8px 6px;font-family:Arial,Helvetica,sans-serif;font-size:.95rem;font-weight:700;text-align:center;color:#1f7a8c;background:#f7fcfd;border:1px solid #b9dfe8;border-bottom:2px dotted #3ba5b8;border-radius:6px}
+input[type="text"]:focus{outline:2px solid #3ba5b8;outline-offset:1px}
+input.correct{border-color:#2e8b57;background:#effaf3;color:#2e8b57}
+input.incorrect{border-color:#c0392b;background:#fdefee;color:#c0392b}
+.actions{display:flex;flex-wrap:wrap;gap:8px;margin-left:auto}
+button{font-family:inherit;font-size:.92rem;font-weight:700;min-height:44px;padding:10px 16px;border:0;border-radius:8px;cursor:pointer;background:#3ba5b8;color:#fff;line-height:1.2}
+button:hover{background:#1f7a8c}
+button.sec{background:#fff;color:#1f7a8c;border:2px solid #3ba5b8}
+button.sec:hover{background:#eaf7fa}
+.feedback{margin:10px 0 0;padding:12px 14px;border-left:5px solid #3ba5b8;border-radius:6px;background:#f4fafb;font-size:clamp(.87rem,2.4vw,.98rem);line-height:1.75;overflow-wrap:break-word}
+.feedback.ok{border-left-color:#2e8b57;background:#effaf3;color:#1e6b40}
+.feedback.ko{border-left-color:#c0392b;background:#fdefee;color:#96291d}
+.feedback.warn{border-left-color:#c9820a;background:#fff8ea;color:#8a5b04}
+.aide{margin:10px 0 0;padding:12px 14px;border-left:5px solid #8fd3e8;background:#f2fafd;border-radius:6px;font-size:clamp(.87rem,2.4vw,.98rem);line-height:1.75}
+.note-cahier{background:#fdf6f6;border-left:5px solid #7a3e3e;border-radius:6px;padding:14px 16px;color:#7a3e3e;font-weight:700;font-size:clamp(.9rem,2.4vw,1rem);line-height:1.8}
+
+.pyramide{display:flex;flex-direction:column;align-items:center;gap:4px;margin:10px 0 18px}
+.rangee-pyr{display:flex;gap:4px}
+.case-pyr{
+  width:70px;height:52px;border-radius:6px;
+  display:flex;align-items:center;justify-content:center;
+  font-weight:900;font-size:1rem;color:#0b3a44;
+  background:#bfe3ee;border:1px solid #8fd3e8;
+}
+.case-pyr.fixe{background:#8fd3e8;color:#123f4a}
+.case-pyr.sommet{background:#1f7a8c;color:#fff}
+.case-pyr input[type="text"]{width:56px;height:38px;padding:2px;font-size:.95rem;margin:0}
+@media (max-width:480px){
+  .case-pyr{width:56px;height:44px;font-size:.88rem}
+  .case-pyr input[type="text"]{width:44px;height:32px}
+}
+
+.barre{display:flex;flex-wrap:wrap;gap:10px;margin:18px 0}
+.barre button{flex:1 1 190px}
+.correction{border:2px dashed #3ba5b8;border-radius:12px;background:#fff;padding:16px 18px;margin-bottom:18px;font-size:clamp(.9rem,2.5vw,1rem);line-height:1.8}
+.correction h2{margin:0 0 10px;font-size:1.05rem;color:#1f7a8c}
+.correction h3{margin:14px 0 4px;font-size:.98rem;color:#1f7a8c}
+.correction ul{margin:6px 0 0;padding-left:20px}
+.correction li{margin-bottom:6px}
+.bilan{border:2px solid #1f7a8c;border-radius:12px;background:#fff;padding:16px 18px;margin-bottom:18px;font-size:.92rem;line-height:1.8}
+.bilan .score{font-size:clamp(1.05rem,3.2vw,1.25rem);font-weight:900;color:#1f7a8c}
+.bilan .palier{font-weight:700;margin-top:4px}
+.recap{display:flex;flex-wrap:wrap;gap:8px;margin-top:10px}
+.recap span{display:inline-flex;align-items:center;gap:6px;padding:6px 11px;border-radius:8px;background:#f4fafb;font-weight:700;font-size:.9rem;border:1px solid #dceff3}
+.recap .r-ok{color:#2e8b57}
+.recap .r-ko{color:#c0392b}
+.legende{margin-top:10px;font-size:.85rem;color:#4d6169}
+@media (max-width:768px){.actions{margin-left:0;width:100%}.actions button{flex:1 1 auto}}
+@media (max-width:480px){
+  body{padding:10px}
+  .bloc{padding:26px 12px 16px}
+  .etq{font-size:.85rem;padding:6px 12px}
+  .etq-rit{margin-left:0}
+  .recap span{font-size:.85rem}
+}
+</style>
+</head>
+<body>
+<div class="bulle b1"></div><div class="bulle b2"></div><div class="bulle b3"></div><div class="bulle b4"></div>
+
+<main class="wrap">
+
+  <div class="tete">
+    <span class="etq etq-sem">Semaine 3</span>
+    <span class="etq etq-sea">S&eacute;ance 4</span>
+    <span class="etq etq-rit">Rituel</span>
+  </div>
+
+  <h1>Bilan semaine 3</h1>
+
+  <section class="bloc">
+    <span class="onglet">Alg&egrave;bre</span>
+
+    <div class="tete-ex">
+      <span class="pastille">1</span>
+      <p class="consigne">Recopier et compl&eacute;ter de mani&egrave;re logique les suites de nombres propos&eacute;es ci-dessous.</p>
+    </div>
+
+    <div class="item">
+      <p class="q">a. 1&nbsp;; &minus;2&nbsp;; +4&nbsp;;</p>
+      <div class="ligne">
+        <input type="text" id="in-a-1" inputmode="numeric" aria-label="Quatrieme terme de la suite a">
+        <span class="calc">;</span>
+        <input type="text" id="in-a-2" inputmode="numeric" aria-label="Cinquieme terme de la suite a">
+        <span class="actions"><button type="button" data-ok="a">OK</button><button type="button" class="sec" data-aide="a">Indice</button></span>
+      </div>
+      <div class="feedback" id="fb-a" hidden></div>
+      <div class="aide" id="ai-a" hidden></div>
+    </div>
+
+    <div class="item">
+      <p class="q">b. 0,5&nbsp;; &minus;5&nbsp;; 50&nbsp;;</p>
+      <div class="ligne">
+        <input type="text" id="in-b-1" inputmode="numeric" aria-label="Quatrieme terme de la suite b">
+        <span class="calc">;</span>
+        <input type="text" id="in-b-2" inputmode="numeric" aria-label="Cinquieme terme de la suite b">
+        <span class="actions"><button type="button" data-ok="b">OK</button><button type="button" class="sec" data-aide="b">Indice</button></span>
+      </div>
+      <div class="feedback" id="fb-b" hidden></div>
+      <div class="aide" id="ai-b" hidden></div>
+    </div>
+  </section>
+
+  <section class="bloc">
+    <span class="onglet">Alg&egrave;bre</span>
+
+    <div class="tete-ex">
+      <span class="pastille">2</span>
+      <p class="consigne">Compl&egrave;te la pyramide suivante sachant que le nombre contenu dans une case est le produit des nombres contenus dans les deux cases situ&eacute;es en dessous de lui.</p>
+    </div>
+
+    <div class="pyramide">
+      <div class="rangee-pyr">
+        <div class="case-pyr sommet" id="pyr-4-0"><input type="text" id="in-p4" inputmode="numeric" aria-label="Sommet de la pyramide"></div>
+      </div>
+      <div class="rangee-pyr">
+        <div class="case-pyr" id="pyr-3-0"><input type="text" id="in-p3a" inputmode="numeric" aria-label="Rangee 3, case 1"></div>
+        <div class="case-pyr" id="pyr-3-1"><input type="text" id="in-p3b" inputmode="numeric" aria-label="Rangee 3, case 2"></div>
+      </div>
+      <div class="rangee-pyr">
+        <div class="case-pyr" id="pyr-2-0"><input type="text" id="in-p2a" inputmode="numeric" aria-label="Rangee 2, case 1"></div>
+        <div class="case-pyr" id="pyr-2-1"><input type="text" id="in-p2b" inputmode="numeric" aria-label="Rangee 2, case 2"></div>
+        <div class="case-pyr" id="pyr-2-2"><input type="text" id="in-p2c" inputmode="numeric" aria-label="Rangee 2, case 3"></div>
+      </div>
+      <div class="rangee-pyr">
+        <div class="case-pyr fixe">&minus;1</div>
+        <div class="case-pyr fixe">+1</div>
+        <div class="case-pyr fixe">+1</div>
+        <div class="case-pyr fixe">&minus;1</div>
+      </div>
+    </div>
+
+    <div class="actions" style="margin-bottom:8px"><button type="button" data-ok="pyr">OK</button><button type="button" class="sec" data-aide="pyr">Indice</button></div>
+    <div class="feedback" id="fb-pyr" hidden></div>
+    <div class="aide" id="ai-pyr" hidden></div>
+  </section>
+
+  <section class="bloc">
+    <span class="onglet">G&eacute;om&eacute;trie</span>
+
+    <div class="tete-ex">
+      <span class="pastille">3</span>
+      <p class="consigne">ABC est un triangle tel que AC&nbsp;=&nbsp;8&nbsp;cm, B&Acirc;C&nbsp;=&nbsp;53&deg; et AC&Ircirc;B&nbsp;=&nbsp;37&deg;. Faire une figure.</p>
+    </div>
+
+    <p class="note-cahier">&#9998; Construis ce triangle sur ton cahier &agrave; la r&egrave;gle et au rapporteur (l&rsquo;utilisation du rapporteur sera obligatoire). Cet exercice n&rsquo;est pas not&eacute; ici.</p>
+  </section>
+
+  <div class="barre">
+    <button type="button" id="btn-tout">V&eacute;rifier tout</button>
+    <button type="button" class="sec" id="btn-corr">Voir la correction</button>
+    <button type="button" class="sec" id="btn-reset">R&eacute;initialiser</button>
+  </div>
+
+  <div class="correction" id="correction" hidden></div>
+  <div class="bilan" id="bilan" hidden></div>
+
+</main>
+
+<script>
+(function(){
+  "use strict";
+
+  function esc(txt){
+    var d = document.createElement("div");
+    d.textContent = String(txt);
+    return d.innerHTML;
+  }
+  function afficher(id, type, html){
+    var fb = document.getElementById("fb-" + id);
+    if (!fb) return;
+    fb.className = "feedback " + type;
+    fb.innerHTML = html;
+    fb.hidden = false;
+  }
+  function marquer(el, etat){
+    if (!el) return;
+    el.classList.remove("correct","incorrect");
+    if (etat) el.classList.add(etat);
+  }
+  function basculerAide(id, texte){
+    var box = document.getElementById("ai-" + id);
+    if (!box) return;
+    if (box.hidden){
+      box.innerHTML = "\ud83d\udca1 <strong>Indice&nbsp;:</strong> " + texte;
+      box.hidden = false;
+    } else {
+      box.hidden = true;
+    }
+  }
+  function palier(pct){
+    if (pct >= 90) return "\ud83d\udfe2 Excellent";
+    if (pct >= 75) return "\ud83d\udfe2 Tr\u00e8s bien";
+    if (pct >= 60) return "\ud83d\udfe1 Ma\u00eetrise satisfaisante";
+    if (pct >= 40) return "\ud83d\udfe0 Ma\u00eetrise fragile";
+    return "\ud83d\udd34 Ma\u00eetrise insuffisante";
+  }
+
+  function decompose(s){
+    var neg = false;
+    if (s.charAt(0) === "-"){ neg = true; s = s.slice(1); }
+    var p = s.split(".");
+    var ent = p[0] === "" ? "0" : p[0];
+    var dec = p.length > 1 ? p[1] : "";
+    ent = ent.replace(/^0+(?=\d)/, "");
+    dec = dec.replace(/0+$/, "");
+    if (ent === "0" && dec === "") neg = false;
+    return { neg:neg, ent:ent, dec:dec };
+  }
+  function cmpAbs(a, b){
+    if (a.ent.length !== b.ent.length) return a.ent.length > b.ent.length ? 1 : -1;
+    if (a.ent !== b.ent) return a.ent > b.ent ? 1 : -1;
+    var n = Math.max(a.dec.length, b.dec.length);
+    var da = a.dec + new Array(n - a.dec.length + 1).join("0");
+    var db = b.dec + new Array(n - b.dec.length + 1).join("0");
+    if (da === db) return 0;
+    return da > db ? 1 : -1;
+  }
+  function comparer(x, y){
+    var A = decompose(x), B = decompose(y);
+    if (A.neg !== B.neg) return A.neg ? -1 : 1;
+    var r = cmpAbs(A, B);
+    return A.neg ? -r : r;
+  }
+  function normalise(brut){
+    var s = String(brut).replace(/[\s\u00a0\u202f\u2009]/g, "");
+    s = s.replace(/[\u2212\u2013\u2014]/g, "-").replace(/,/g, ".");
+    if (s === "") return null;
+    if (!/^-?(\d+(\.\d*)?|\.\d+)$/.test(s)) return null;
+    return s;
+  }
+
+  var etats = {};
+  var occupe = false;
+
+  // ---------- Suites logiques ----------
+  var SUITES = {
+    a: { termes:["-8","16"], ref:"1&nbsp;; &minus;2&nbsp;; +4&nbsp;; &minus;8&nbsp;; +16 (chaque terme est multipli\u00e9 par &minus;2)",
+         aide:"Chaque terme est multipli\u00e9 par &minus;2 pour obtenir le suivant." },
+    b: { termes:["-500","5000"], ref:"0,5&nbsp;; &minus;5&nbsp;; 50&nbsp;; &minus;500&nbsp;; +5000 (chaque terme est multipli\u00e9 par &minus;10)",
+         aide:"Chaque terme est multipli\u00e9 par &minus;10 pour obtenir le suivant." }
+  };
+
+  function verifierSuite(id){
+    var it = SUITES[id];
+    var input1 = document.getElementById("in-" + id + "-1");
+    var input2 = document.getElementById("in-" + id + "-2");
+    var v1 = normalise(input1.value), v2 = normalise(input2.value);
+    var vide1 = String(input1.value).replace(/[\s\u00a0]/g,"") === "";
+    var vide2 = String(input2.value).replace(/[\s\u00a0]/g,"") === "";
+
+    if (vide1 && vide2){
+      etats[id] = "vide";
+      marquer(input1, ""); marquer(input2, "");
+      afficher(id, "warn", "\u26a0\ufe0f Aucune r\u00e9ponse saisie. Compl\u00e8te les deux termes suivants, puis clique sur <strong>OK</strong>.");
+      return;
+    }
+    if ((v1 === null && !vide1) || (v2 === null && !vide2)){
+      etats[id] = "incorrect";
+      marquer(input1, v1===null?"incorrect":""); marquer(input2, v2===null?"incorrect":"");
+      afficher(id, "warn", "\u26a0\ufe0f Chaque terme doit \u00eatre un nombre seul.");
+      return;
+    }
+
+    var ok1 = v1 !== null && comparer(v1, it.termes[0]) === 0;
+    var ok2 = v2 !== null && comparer(v2, it.termes[1]) === 0;
+    marquer(input1, ok1 ? "correct" : "incorrect");
+    marquer(input2, ok2 ? "correct" : "incorrect");
+
+    if (ok1 && ok2){
+      etats[id] = "correct";
+      afficher(id, "ok", "\u2705 Bravo&nbsp;! " + it.ref + ".");
+      return;
+    }
+    if (ok1 || ok2){
+      etats[id] = "partiel";
+      afficher(id, "warn", "\u26a0\ufe0f Un des deux termes est correct.<br>R\u00e9ponse attendue&nbsp;: " + it.ref + ".");
+      return;
+    }
+    etats[id] = "incorrect";
+    afficher(id, "ko", "\u274c Ce n\u2019est pas la bonne suite.<br>R\u00e9ponse attendue&nbsp;: " + it.ref + ".");
+  }
+
+  // ---------- Pyramide ----------
+  var PYRAMIDE_ATTENDU = {
+    p2a:-1, p2b:1, p2c:-1,
+    p3a:-1, p3b:-1,
+    p4:1
+  };
+  var PYRAMIDE_IDS = ["p2a","p2b","p2c","p3a","p3b","p4"];
+
+  function lireEntierPyr(brut){
+    var v = String(brut).replace(/[\s\u00a0]/g,"");
+    v = v.replace(/[\u2212\u2013\u2014]/g, "-");
+    if (v === "") return "";
+    if (!/^-?\d+$/.test(v)) return null;
+    return Number(v);
+  }
+
+  function verifierPyramide(){
+    var valeurs = {};
+    var tousVides = true;
+    var uneInvalide = false;
+
+    PYRAMIDE_IDS.forEach(function(id){
+      var input = document.getElementById("in-" + id);
+      var v = lireEntierPyr(input.value);
+      valeurs[id] = v;
+      if (v !== "") tousVides = false;
+      if (v === null) uneInvalide = true;
+    });
+
+    if (tousVides){
+      etats["pyr"] = "vide";
+      PYRAMIDE_IDS.forEach(function(id){ marquer(document.getElementById("in-" + id), ""); });
+      afficher("pyr", "warn", "\u26a0\ufe0f Aucune r\u00e9ponse saisie. Compl\u00e8te les 6 cases, puis clique sur <strong>OK</strong>.");
+      return;
+    }
+    if (uneInvalide){
+      etats["pyr"] = "incorrect";
+      PYRAMIDE_IDS.forEach(function(id){
+        var input = document.getElementById("in-" + id);
+        marquer(input, valeurs[id] === null ? "incorrect" : "");
+      });
+      afficher("pyr", "warn", "\u26a0\ufe0f Chaque case doit contenir un nombre entier seul (+1 ou &minus;1 attendu).");
+      return;
+    }
+
+    var nbCorrects = 0;
+    var nbRemplies = 0;
+    PYRAMIDE_IDS.forEach(function(id){
+      var input = document.getElementById("in-" + id);
+      if (valeurs[id] === ""){
+        marquer(input, "");
+        return;
+      }
+      nbRemplies++;
+      var ok = valeurs[id] === PYRAMIDE_ATTENDU[id];
+      if (ok) nbCorrects++;
+      marquer(input, ok ? "correct" : "incorrect");
+    });
+
+    if (nbCorrects === PYRAMIDE_IDS.length){
+      etats["pyr"] = "correct";
+      afficher("pyr", "ok", "\u2705 Bravo&nbsp;! Toute la pyramide est correcte.");
+      return;
+    }
+    if (nbRemplies < PYRAMIDE_IDS.length){
+      etats["pyr"] = "partiel";
+      afficher("pyr", "warn", "\u26a0\ufe0f " + nbCorrects + " case(s) sur " + nbRemplies + " remplie(s) sont correctes&nbsp;; il reste " + (PYRAMIDE_IDS.length - nbRemplies) + " case(s) vide(s) &agrave; compl\u00e9ter.");
+      return;
+    }
+    if (nbCorrects > 0){
+      etats["pyr"] = "partiel";
+      afficher("pyr", "warn", "\u26a0\ufe0f " + nbCorrects + " case(s) sur 6 sont correctes. V\u00e9rifie le produit des deux cases juste en dessous pour chaque case fausse.");
+      return;
+    }
+    etats["pyr"] = "incorrect";
+    afficher("pyr", "ko", "\u274c Aucune case n\u2019est correcte pour l\u2019instant. Chaque case = produit des deux cases situ\u00e9es juste en dessous.");
+  }
+
+  var ORDRE_ITEMS = ["a","b","pyr"];
+
+  function verifierTout(){
+    if (occupe) return;
+    occupe = true;
+    window.setTimeout(function(){ occupe = false; }, 350);
+
+    verifierSuite("a");
+    verifierSuite("b");
+    verifierPyramide();
+
+    var total = ORDRE_ITEMS.length;
+    var score = 0;
+    var recap = "";
+    for (var j = 0; j < ORDRE_ITEMS.length; j++){
+      var id = ORDRE_ITEMS[j];
+      if (etats[id] === "correct"){
+        score++;
+        recap += '<span class="r-ok">\u2714 ' + id + '</span>';
+      } else {
+        recap += '<span class="r-ko">\u2718 ' + id + '</span>';
+      }
+    }
+    var pct = Math.round((score / total) * 100);
+    var bilan = document.getElementById("bilan");
+    bilan.innerHTML =
+      '<div class="score">Score&nbsp;: ' + score + '\u2009/\u2009' + total + ' (' + pct + '&nbsp;%)</div>' +
+      '<div class="palier">' + palier(pct) + '</div>' +
+      '<div class="recap">' + recap + '</div>' +
+      '<div class="legende">\u2714 correct &nbsp;\u2022&nbsp; \u2718 incorrect, partiel ou non r\u00e9pondu. La construction (question 3) n\u2019est pas not\u00e9e (travail sur le cahier).</div>';
+    bilan.hidden = false;
+  }
+
+  function basculerCorrection(){
+    var box = document.getElementById("correction");
+    var btn = document.getElementById("btn-corr");
+    if (box.hidden){
+      box.innerHTML =
+        "<h2>Correction</h2>" +
+        "<h3>1. Suites logiques</h3><ul>" +
+        "<li>a. 1&nbsp;; &minus;2&nbsp;; +4&nbsp;; <strong>&minus;8</strong>&nbsp;; <strong>+16</strong> (&times;&nbsp;&minus;2 &agrave; chaque \u00e9tape)</li>" +
+        "<li>b. 0,5&nbsp;; &minus;5&nbsp;; 50&nbsp;; <strong>&minus;500</strong>&nbsp;; <strong>+5000</strong> (&times;&nbsp;&minus;10 &agrave; chaque \u00e9tape)</li></ul>" +
+        "<h3>2. Pyramide</h3>" +
+        "<p>Rang\u00e9e du bas (donn\u00e9e)&nbsp;: &minus;1&nbsp;; +1&nbsp;; +1&nbsp;; &minus;1<br>" +
+        "Rang\u00e9e suivante&nbsp;: <strong>&minus;1</strong>&nbsp;; <strong>+1</strong>&nbsp;; <strong>&minus;1</strong><br>" +
+        "Rang\u00e9e suivante&nbsp;: <strong>&minus;1</strong>&nbsp;; <strong>&minus;1</strong><br>" +
+        "Sommet&nbsp;: <strong>+1</strong></p>" +
+        "<h3>3. Triangle ABC</h3>" +
+        "<p>AC&nbsp;=&nbsp;8&nbsp;cm, B&Acirc;C&nbsp;=&nbsp;53&deg;, AC&Ircirc;B&nbsp;=&nbsp;37&deg; (le troisi&egrave;me angle ABC vaut donc 180&nbsp;&minus;&nbsp;53&nbsp;&minus;&nbsp;37&nbsp;=&nbsp;90&deg;).</p>";
+      box.hidden = false;
+      btn.textContent = "Masquer la correction";
+    } else {
+      box.hidden = true;
+      btn.textContent = "Voir la correction";
+    }
+  }
+
+  function reinitialiser(){
+    ["a-1","a-2","b-1","b-2"].forEach(function(id){
+      var el = document.getElementById("in-" + id);
+      if (el){ el.value = ""; el.classList.remove("correct","incorrect"); }
+    });
+    PYRAMIDE_IDS.forEach(function(id){
+      var el = document.getElementById("in-" + id);
+      if (el){ el.value = ""; el.classList.remove("correct","incorrect"); }
+    });
+    ["a","b","pyr"].forEach(function(id){
+      var fb = document.getElementById("fb-" + id);
+      if (fb){ fb.hidden = true; fb.innerHTML = ""; fb.className = "feedback"; }
+      var ai = document.getElementById("ai-" + id);
+      if (ai){ ai.hidden = true; ai.innerHTML = ""; }
+    });
+    etats = {};
+    var bilan = document.getElementById("bilan");
+    bilan.hidden = true; bilan.innerHTML = "";
+    var corr = document.getElementById("correction");
+    corr.hidden = true; corr.innerHTML = "";
+    document.getElementById("btn-corr").textContent = "Voir la correction";
+    occupe = false;
+  }
+
+  function init(){
+    document.querySelector('[data-ok="a"]').addEventListener("click", function(){ verifierSuite("a"); });
+    document.querySelector('[data-ok="b"]').addEventListener("click", function(){ verifierSuite("b"); });
+    document.querySelector('[data-aide="a"]').addEventListener("click", function(){ basculerAide("a", SUITES.a.aide); });
+    document.querySelector('[data-aide="b"]').addEventListener("click", function(){ basculerAide("b", SUITES.b.aide); });
+
+    document.querySelector('[data-ok="pyr"]').addEventListener("click", verifierPyramide);
+    document.querySelector('[data-aide="pyr"]').addEventListener("click", function(){ basculerAide("pyr", "Chaque case (sauf la rang\u00e9e du bas) est le produit des deux cases juste en dessous d\u2019elle."); });
+
+    var champs = document.querySelectorAll('input[type="text"]');
+    for (var i = 0; i < champs.length; i++){
+      champs[i].addEventListener("keydown", function(ev){
+        if (ev.key !== "Enter") return;
+        ev.preventDefault();
+        var id = this.id;
+        if (id === "in-a-1" || id === "in-a-2") verifierSuite("a");
+        else if (id === "in-b-1" || id === "in-b-2") verifierSuite("b");
+        else verifierPyramide();
+      });
+    }
+
+    document.getElementById("btn-tout").addEventListener("click", verifierTout);
+    document.getElementById("btn-corr").addEventListener("click", basculerCorrection);
+    document.getElementById("btn-reset").addEventListener("click", reinitialiser);
+  }
+
+  if (document.readyState === "loading"){
+    document.addEventListener("DOMContentLoaded", init);
+  } else {
+    init();
+  }
+})();
+</script>
+</body>
+</html>
