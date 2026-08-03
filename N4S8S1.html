@@ -1,0 +1,362 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Rituel &mdash; Semaine 8 S&eacute;ance 1 &mdash; Compl&eacute;ter des &eacute;galit&eacute;s avec les nombres relatifs</title>
+<style>
+*{box-sizing:border-box}
+html,body{margin:0;padding:0}
+body{background:#fffdf7;font-family:Arial,Helvetica,sans-serif;color:#243238;line-height:1.6;padding:14px;overflow-x:hidden}
+.bulle{position:fixed;border-radius:50%;background:#3ba5b8;opacity:.12;pointer-events:none;z-index:0}
+.b1{width:190px;height:190px;top:-70px;left:-70px}
+.b2{width:130px;height:130px;top:-45px;right:-45px}
+.b3{width:160px;height:160px;bottom:-60px;left:-55px}
+.b4{width:110px;height:110px;bottom:-40px;right:-35px}
+.wrap{position:relative;z-index:1;max-width:880px;margin:0 auto}
+.tete{display:flex;flex-wrap:wrap;align-items:center;gap:10px;margin-bottom:14px}
+.etq{display:inline-block;padding:7px 16px;border-radius:8px;color:#fff;font-weight:700;font-size:.95rem}
+.etq-sem{background:#8fd3e8;color:#123f4a}
+.etq-sea{background:#3ba5b8}
+.etq-rit{background:#1f7a8c;font-family:Georgia,"Times New Roman",serif;margin-left:auto}
+h1{font-size:clamp(1.3rem,4.5vw,2rem);font-weight:900;color:#1f7a8c;margin:6px 0 18px;line-height:1.3}
+.bloc{position:relative;border:2px solid #3ba5b8;border-radius:12px;background:#fff;padding:26px 18px 20px;margin-bottom:18px}
+.onglet{position:absolute;top:-17px;left:18px;background:#8fd3e8;color:#123f4a;font-weight:700;font-size:.95rem;padding:5px 18px;border-radius:8px}
+.consigne-intro{margin:4px 0 18px;font-weight:700;color:#1f7a8c;font-size:clamp(.95rem,2.6vw,1.05rem);line-height:1.75}
+.item{padding:14px 0 16px;border-bottom:1px dashed #dceff3}
+.item:last-of-type{border-bottom:0}
+.equation{display:flex;align-items:center;gap:10px;margin:0 0 12px;flex-wrap:wrap}
+.lettre-item{font-weight:700;color:#1f7a8c;min-width:18px}
+.eq-texte{font-size:clamp(1.05rem,3vw,1.2rem);font-weight:700;color:#243238;display:flex;align-items:center;gap:6px;flex-wrap:wrap}
+.losange{display:inline-flex;align-items:center;justify-content:center;width:30px;height:30px;color:#8fd3e8;font-size:1.3rem}
+.losange.n1{color:#c9820a}
+.losange.n2{color:#7a3e3e}
+.sous-question{font-weight:700;color:#1f7a8c;font-size:.9rem;margin:10px 0 6px}
+.qcm-op{display:flex;flex-wrap:wrap;gap:8px;margin:6px 0}
+.op-btn{
+  min-width:52px;min-height:44px;padding:8px 14px;border:2px solid #dceff3;border-radius:8px;
+  background:#f7fcfd;color:#243238;font-size:1.15rem;font-weight:700;cursor:pointer;
+}
+.op-btn:hover{background:#eaf7fa}
+.op-btn.sel{border-color:#3ba5b8;background:#eaf7fa}
+.op-btn.bonne{border-color:#2e8b57;background:#effaf3;color:#1e6b40}
+.op-btn.incorrect{border-color:#c0392b;background:#fdefee;color:#96291d}
+.actions{display:flex;flex-wrap:wrap;gap:8px;margin-top:8px}
+button{font-family:inherit;font-size:.92rem;font-weight:700;min-height:44px;padding:10px 16px;border:0;border-radius:8px;cursor:pointer;background:#3ba5b8;color:#fff;line-height:1.2}
+button:hover{background:#1f7a8c}
+button.sec{background:#fff;color:#1f7a8c;border:2px solid #3ba5b8}
+button.sec:hover{background:#eaf7fa}
+.feedback{margin:10px 0 0;padding:12px 14px;border-left:5px solid #3ba5b8;border-radius:6px;background:#f4fafb;font-size:clamp(.9rem,2.5vw,1rem);line-height:1.75;overflow-wrap:break-word}
+.feedback.ok{border-left-color:#2e8b57;background:#effaf3;color:#1e6b40}
+.feedback.ko{border-left-color:#c0392b;background:#fdefee;color:#96291d}
+.feedback.warn{border-left-color:#c9820a;background:#fff8ea;color:#8a5b04}
+.aide{margin:10px 0 0;padding:12px 14px;border-left:5px solid #8fd3e8;background:#f2fafd;border-radius:6px;font-size:clamp(.9rem,2.5vw,1rem);line-height:1.75}
+.barre{display:flex;flex-wrap:wrap;gap:10px;margin:18px 0}
+.barre button{flex:1 1 190px}
+.correction{border:2px dashed #3ba5b8;border-radius:12px;background:#fff;padding:16px 18px;margin-bottom:18px;font-size:clamp(.9rem,2.5vw,1rem);line-height:1.8}
+.correction h2{margin:0 0 8px;font-size:1.05rem;color:#1f7a8c}
+.correction ul{margin:6px 0;padding-left:20px}
+.correction li{margin-bottom:6px}
+.bilan{border:2px solid #1f7a8c;border-radius:12px;background:#fff;padding:16px 18px;margin-bottom:18px;font-size:.92rem;line-height:1.8}
+.bilan .score{font-size:clamp(1.05rem,3.2vw,1.25rem);font-weight:900;color:#1f7a8c}
+.bilan .palier{font-weight:700;margin-top:4px}
+.recap{display:flex;flex-wrap:wrap;gap:8px;margin-top:10px}
+.recap span{display:inline-flex;align-items:center;gap:6px;padding:6px 11px;border-radius:8px;background:#f4fafb;font-weight:700;font-size:.9rem;border:1px solid #dceff3}
+.recap .r-ok{color:#2e8b57}
+.recap .r-ko{color:#c0392b}
+.legende{margin-top:10px;font-size:.85rem;color:#4d6169}
+@media (max-width:480px){body{padding:10px}.bloc{padding:24px 12px 16px}.etq{font-size:.85rem;padding:6px 12px}.etq-rit{margin-left:0}.recap span{font-size:.85rem}}
+</style>
+</head>
+<body>
+<div class="bulle b1"></div>
+<div class="bulle b2"></div>
+<div class="bulle b3"></div>
+<div class="bulle b4"></div>
+
+<main class="wrap">
+
+  <div class="tete">
+    <span class="etq etq-sem">Semaine 8</span>
+    <span class="etq etq-sea">S&eacute;ance 1</span>
+    <span class="etq etq-rit">Rituel</span>
+  </div>
+
+  <h1>Compl&eacute;ter des &eacute;galit&eacute;s avec des nombres relatifs</h1>
+
+  <section class="bloc">
+    <span class="onglet">Calcul</span>
+
+    <p class="consigne-intro">Recopie et compl&egrave;te les &eacute;galit&eacute;s suivantes afin de les rendre vraies&nbsp;: remplace le losange <span class="losange">&loz;</span> par le symbole op&eacute;ratoire qui convient (addition, soustraction, multiplication ou division).</p>
+
+    <div class="item">
+      <div class="equation">
+        <span class="lettre-item">a.</span>
+        <span class="eq-texte">(&minus;3) <span class="losange">&loz;</span> (&minus;2) = &minus;5</span>
+      </div>
+      <div class="qcm-op" id="qcm-a">
+        <button type="button" class="op-btn" data-item="a" data-op="+">+</button>
+        <button type="button" class="op-btn" data-item="a" data-op="-">&minus;</button>
+        <button type="button" class="op-btn" data-item="a" data-op="x">&times;</button>
+        <button type="button" class="op-btn" data-item="a" data-op="/">&divide;</button>
+      </div>
+      <div class="actions"><button type="button" data-qcmok="a">V&eacute;rifier</button></div>
+      <div class="feedback" id="fb-a" hidden></div>
+    </div>
+
+    <div class="item">
+      <div class="equation">
+        <span class="lettre-item">b.</span>
+        <span class="eq-texte">(&minus;3) <span class="losange">&loz;</span> (&minus;2) = +6</span>
+      </div>
+      <div class="qcm-op" id="qcm-b">
+        <button type="button" class="op-btn" data-item="b" data-op="+">+</button>
+        <button type="button" class="op-btn" data-item="b" data-op="-">&minus;</button>
+        <button type="button" class="op-btn" data-item="b" data-op="x">&times;</button>
+        <button type="button" class="op-btn" data-item="b" data-op="/">&divide;</button>
+      </div>
+      <div class="actions"><button type="button" data-qcmok="b">V&eacute;rifier</button></div>
+      <div class="feedback" id="fb-b" hidden></div>
+    </div>
+
+    <div class="item">
+      <div class="equation">
+        <span class="lettre-item">c.</span>
+        <span class="eq-texte">(&minus;2) <span class="losange">&loz;</span> (&minus;2) = +4</span>
+      </div>
+      <div class="qcm-op" id="qcm-c">
+        <button type="button" class="op-btn" data-item="c" data-op="+">+</button>
+        <button type="button" class="op-btn" data-item="c" data-op="-">&minus;</button>
+        <button type="button" class="op-btn" data-item="c" data-op="x">&times;</button>
+        <button type="button" class="op-btn" data-item="c" data-op="/">&divide;</button>
+      </div>
+      <div class="actions"><button type="button" data-qcmok="c">V&eacute;rifier</button></div>
+      <div class="feedback" id="fb-c" hidden></div>
+    </div>
+
+    <div class="item">
+      <div class="equation">
+        <span class="lettre-item">d.</span>
+        <span class="eq-texte">(&minus;2) <span class="losange">&loz;</span> (&minus;2) = &minus;4</span>
+      </div>
+      <div class="qcm-op" id="qcm-d">
+        <button type="button" class="op-btn" data-item="d" data-op="+">+</button>
+        <button type="button" class="op-btn" data-item="d" data-op="-">&minus;</button>
+        <button type="button" class="op-btn" data-item="d" data-op="x">&times;</button>
+        <button type="button" class="op-btn" data-item="d" data-op="/">&divide;</button>
+      </div>
+      <div class="actions"><button type="button" data-qcmok="d">V&eacute;rifier</button></div>
+      <div class="feedback" id="fb-d" hidden></div>
+    </div>
+
+    <div class="item">
+      <div class="equation">
+        <span class="lettre-item">e.</span>
+        <span class="eq-texte">(&minus;5) <span class="losange n1">&loz;</span> (+4) = (&minus;12) <span class="losange n2">&loz;</span> (+8)</span>
+      </div>
+
+      <p class="sous-question">1er symbole&nbsp;:</p>
+      <div class="qcm-op" id="qcm-e1">
+        <button type="button" class="op-btn" data-item="e1" data-op="+">+</button>
+        <button type="button" class="op-btn" data-item="e1" data-op="-">&minus;</button>
+        <button type="button" class="op-btn" data-item="e1" data-op="x">&times;</button>
+        <button type="button" class="op-btn" data-item="e1" data-op="/">&divide;</button>
+      </div>
+      <div class="actions"><button type="button" data-qcmok="e1">V&eacute;rifier</button></div>
+      <div class="feedback" id="fb-e1" hidden></div>
+
+      <p class="sous-question">2e symbole&nbsp;:</p>
+      <div class="qcm-op" id="qcm-e2">
+        <button type="button" class="op-btn" data-item="e2" data-op="+">+</button>
+        <button type="button" class="op-btn" data-item="e2" data-op="-">&minus;</button>
+        <button type="button" class="op-btn" data-item="e2" data-op="x">&times;</button>
+        <button type="button" class="op-btn" data-item="e2" data-op="/">&divide;</button>
+      </div>
+      <div class="actions"><button type="button" data-qcmok="e2">V&eacute;rifier</button></div>
+      <div class="feedback" id="fb-e2" hidden></div>
+    </div>
+
+  </section>
+
+  <div class="barre">
+    <button type="button" id="btn-tout">V&eacute;rifier tout</button>
+    <button type="button" class="sec" id="btn-corr">Voir la correction</button>
+    <button type="button" class="sec" id="btn-reset">R&eacute;initialiser</button>
+  </div>
+
+  <div class="correction" id="correction" hidden></div>
+  <div class="bilan" id="bilan" hidden></div>
+
+</main>
+
+<script>
+(function(){
+  "use strict";
+
+  var ITEMS = [
+    { id:"a",  bonne:"+", ref:"(&minus;3)&nbsp;+&nbsp;(&minus;2)&nbsp;=&nbsp;<strong>&minus;5</strong>." },
+    { id:"b",  bonne:"x", ref:"(&minus;3)&nbsp;&times;&nbsp;(&minus;2)&nbsp;=&nbsp;<strong>+6</strong> (le produit de deux nombres n\u00e9gatifs est positif)." },
+    { id:"c",  bonne:"x", ref:"(&minus;2)&nbsp;&times;&nbsp;(&minus;2)&nbsp;=&nbsp;<strong>+4</strong>." },
+    { id:"d",  bonne:"+", ref:"(&minus;2)&nbsp;+&nbsp;(&minus;2)&nbsp;=&nbsp;<strong>&minus;4</strong>." },
+    { id:"e1", bonne:"x", ref:"(&minus;5)&nbsp;&times;&nbsp;(+4)&nbsp;=&nbsp;<strong>&minus;20</strong>." },
+    { id:"e2", bonne:"-", ref:"(&minus;12)&nbsp;&minus;&nbsp;(+8)&nbsp;=&nbsp;<strong>&minus;20</strong>, ce qui correspond bien au r\u00e9sultat du premier membre." }
+  ];
+
+  var SYMBOLES = { "+":"+", "-":"\u2212", "x":"\u00d7", "/":"\u00f7" };
+  var NOMS = { "+":"addition", "-":"soustraction", "x":"multiplication", "/":"division" };
+
+  var choix = {};
+  var etats = {};
+  var occupe = false;
+
+  function trouver(id){
+    for (var i = 0; i < ITEMS.length; i++){ if (ITEMS[i].id === id) return ITEMS[i]; }
+    return null;
+  }
+
+  function afficher(id, type, html){
+    var fb = document.getElementById("fb-" + id);
+    fb.className = "feedback " + type;
+    fb.innerHTML = html;
+    fb.hidden = false;
+  }
+
+  function choisir(item, op){
+    choix[item] = op;
+    var btns = document.querySelectorAll('.op-btn[data-item="' + item + '"]');
+    for (var i = 0; i < btns.length; i++){
+      btns[i].classList.remove("sel");
+      if (btns[i].getAttribute("data-op") === op) btns[i].classList.add("sel");
+    }
+  }
+
+  function verifier(item){
+    var it = trouver(item);
+    if (!it) return;
+    var btns = document.querySelectorAll('.op-btn[data-item="' + item + '"]');
+    for (var i = 0; i < btns.length; i++){
+      btns[i].classList.remove("bonne","incorrect");
+      var op = btns[i].getAttribute("data-op");
+      if (op === it.bonne) btns[i].classList.add("bonne");
+      else if (op === choix[item]) btns[i].classList.add("incorrect");
+    }
+
+    if (choix[item] === undefined || choix[item] === null){
+      etats[item] = "incorrect";
+      afficher(item, "warn", "\u26a0\ufe0f Aucun symbole choisi.<br>R\u00e9ponse attendue&nbsp;: <strong><u>" + SYMBOLES[it.bonne] + "</u></strong> (" + NOMS[it.bonne] + "). " + it.ref);
+      return;
+    }
+
+    if (choix[item] === it.bonne){
+      etats[item] = "correct";
+      afficher(item, "ok", "\u2705 Bravo&nbsp;! " + it.ref);
+    } else {
+      etats[item] = "incorrect";
+      afficher(item, "ko", "\u274c Ce n\u2019est pas le bon symbole.<br>R\u00e9ponse attendue&nbsp;: <strong><u>" + SYMBOLES[it.bonne] + "</u></strong> (" + NOMS[it.bonne] + "). " + it.ref);
+    }
+  }
+
+  function palier(pct){
+    if (pct >= 90) return "\ud83d\udfe2 Excellent";
+    if (pct >= 75) return "\ud83d\udfe2 Tr\u00e8s bien";
+    if (pct >= 60) return "\ud83d\udfe1 Ma\u00eetrise satisfaisante";
+    if (pct >= 40) return "\ud83d\udfe0 Ma\u00eetrise fragile";
+    return "\ud83d\udd34 Ma\u00eetrise insuffisante";
+  }
+
+  function verifierTout(){
+    if (occupe) return;
+    occupe = true;
+    window.setTimeout(function(){ occupe = false; }, 350);
+
+    for (var i = 0; i < ITEMS.length; i++){ verifier(ITEMS[i].id); }
+
+    var total = ITEMS.length;
+    var score = 0;
+    var recap = "";
+    for (var j = 0; j < ITEMS.length; j++){
+      var id = ITEMS[j].id;
+      if (etats[id] === "correct"){ score++; recap += '<span class="r-ok">\u2714 ' + id + '</span>'; }
+      else { recap += '<span class="r-ko">\u2718 ' + id + '</span>'; }
+    }
+
+    if (score < 0) score = 0;
+    if (score > total) score = total;
+    var pct = Math.round((score / total) * 100);
+
+    var bilan = document.getElementById("bilan");
+    bilan.innerHTML =
+      '<div class="score">Score&nbsp;: ' + score + '\u2009/\u2009' + total + ' (' + pct + '&nbsp;%)</div>' +
+      '<div class="palier">' + palier(pct) + '</div>' +
+      '<div class="recap">' + recap + '</div>' +
+      '<div class="legende">\u2714 correct &nbsp;\u2022&nbsp; \u2718 incorrect ou non r\u00e9pondu.</div>';
+    bilan.hidden = false;
+  }
+
+  function basculerCorrection(){
+    var box = document.getElementById("correction");
+    var btn = document.getElementById("btn-corr");
+    if (box.hidden){
+      var html = "<h2>Correction</h2><ul>" +
+        "<li><strong>a.</strong> " + ITEMS[0].ref + "</li>" +
+        "<li><strong>b.</strong> " + ITEMS[1].ref + "</li>" +
+        "<li><strong>c.</strong> " + ITEMS[2].ref + "</li>" +
+        "<li><strong>d.</strong> " + ITEMS[3].ref + "</li>" +
+        "<li><strong>e.</strong> " + ITEMS[4].ref + " Puis " + ITEMS[5].ref + "</li>" +
+        "</ul>" +
+        "<p><strong>Rappel&nbsp;:</strong> le produit ou le quotient de deux nombres de <u>m\u00eame signe</u> est positif&nbsp;; celui de deux nombres de <u>signes diff\u00e9rents</u> est n\u00e9gatif.</p>";
+      box.innerHTML = html;
+      box.hidden = false;
+      btn.textContent = "Masquer la correction";
+    } else {
+      box.hidden = true;
+      btn.textContent = "Voir la correction";
+    }
+  }
+
+  function reinitialiser(){
+    choix = {};
+    for (var i = 0; i < ITEMS.length; i++){
+      var id = ITEMS[i].id;
+      etats[id] = "vide";
+      var btns = document.querySelectorAll('.op-btn[data-item="' + id + '"]');
+      for (var j = 0; j < btns.length; j++){ btns[j].classList.remove("sel","bonne","incorrect"); }
+      var fb = document.getElementById("fb-" + id);
+      fb.hidden = true; fb.innerHTML = ""; fb.className = "feedback";
+    }
+    var bilan = document.getElementById("bilan");
+    bilan.hidden = true; bilan.innerHTML = "";
+    var corr = document.getElementById("correction");
+    corr.hidden = true; corr.innerHTML = "";
+    document.getElementById("btn-corr").textContent = "Voir la correction";
+    occupe = false;
+  }
+
+  function init(){
+    for (var i = 0; i < ITEMS.length; i++){ etats[ITEMS[i].id] = "vide"; }
+
+    var btns = document.querySelectorAll(".op-btn");
+    for (var b = 0; b < btns.length; b++){
+      btns[b].addEventListener("click", function(){
+        choisir(this.getAttribute("data-item"), this.getAttribute("data-op"));
+      });
+    }
+    var bVer = document.querySelectorAll("[data-qcmok]");
+    for (var v = 0; v < bVer.length; v++){
+      bVer[v].addEventListener("click", function(){ verifier(this.getAttribute("data-qcmok")); });
+    }
+
+    document.getElementById("btn-tout").addEventListener("click", verifierTout);
+    document.getElementById("btn-corr").addEventListener("click", basculerCorrection);
+    document.getElementById("btn-reset").addEventListener("click", reinitialiser);
+  }
+
+  if (document.readyState === "loading"){
+    document.addEventListener("DOMContentLoaded", init);
+  } else {
+    init();
+  }
+})();
+</script>
+</body>
+</html>
