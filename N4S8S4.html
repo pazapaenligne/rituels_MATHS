@@ -1,0 +1,624 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Rituel &mdash; Semaine 8 S&eacute;ance 4 &mdash; Bilan semaine 8</title>
+<style>
+*{box-sizing:border-box}
+html,body{margin:0;padding:0}
+body{background:#fffdf7;font-family:Arial,Helvetica,sans-serif;color:#243238;line-height:1.6;padding:14px;overflow-x:hidden}
+.bulle{position:fixed;border-radius:50%;background:#3ba5b8;opacity:.12;pointer-events:none;z-index:0}
+.b1{width:190px;height:190px;top:-70px;left:-70px}
+.b2{width:130px;height:130px;top:-45px;right:-45px}
+.b3{width:160px;height:160px;bottom:-60px;left:-55px}
+.b4{width:110px;height:110px;bottom:-40px;right:-35px}
+.wrap{position:relative;z-index:1;max-width:880px;margin:0 auto}
+.tete{display:flex;flex-wrap:wrap;align-items:center;gap:10px;margin-bottom:14px}
+.etq{display:inline-block;padding:7px 16px;border-radius:8px;color:#fff;font-weight:700;font-size:.95rem}
+.etq-sem{background:#8fd3e8;color:#123f4a}
+.etq-sea{background:#3ba5b8}
+.etq-rit{background:#1f7a8c;font-family:Georgia,"Times New Roman",serif;margin-left:auto}
+h1{font-size:clamp(1.3rem,4.5vw,2rem);font-weight:900;color:#1f7a8c;margin:6px 0 18px;line-height:1.3}
+.bloc{position:relative;border:2px solid #3ba5b8;border-radius:12px;background:#fff;padding:26px 18px 20px;margin-bottom:18px}
+.onglet{position:absolute;top:-17px;left:18px;background:#8fd3e8;color:#123f4a;font-weight:700;font-size:.95rem;padding:5px 18px;border-radius:8px}
+.enonce{background:#fdf6f6;border-left:5px solid #7a3e3e;border-radius:6px;padding:14px 16px;margin-bottom:16px;color:#7a3e3e;font-weight:700;font-size:clamp(.92rem,2.5vw,1rem);line-height:1.85}
+.tete-ex{display:flex;align-items:flex-start;gap:12px;margin:20px 0 12px}
+.pastille{flex:0 0 auto;width:34px;height:34px;border-radius:50%;background:#1f7a8c;color:#fff;font-weight:700;font-size:1rem;display:flex;align-items:center;justify-content:center}
+.consigne{margin:4px 0 0;font-weight:700;text-decoration:underline;color:#1f7a8c;font-size:clamp(.95rem,2.6vw,1.05rem);overflow-wrap:break-word}
+.item{padding:10px 0 12px;border-bottom:1px dashed #dceff3}
+.item:last-of-type{border-bottom:0}
+.q{font-size:clamp(1rem,3vw,1.1rem);font-weight:700;margin:0 0 8px;color:#243238}
+.ligne{display:flex;flex-wrap:wrap;align-items:flex-start;gap:10px;min-width:0}
+.champ{flex:1 1 220px;min-width:0}
+textarea,input[type="text"]{
+  padding:9px 8px;font-family:Arial,Helvetica,sans-serif;font-size:1rem;font-weight:700;
+  color:#1f7a8c;background:#f7fcfd;border:1px solid #b9dfe8;border-bottom:2px dotted #3ba5b8;
+  border-radius:6px;
+}
+input[type="text"]{width:150px;min-height:44px;text-align:center}
+textarea{width:100%;min-width:0;min-height:64px;text-align:left;resize:vertical;line-height:1.6}
+input:focus,textarea:focus{outline:2px solid #3ba5b8;outline-offset:1px}
+.correct{border-color:#2e8b57;background:#effaf3;color:#1e6b40}
+.partiel{border-color:#c9820a;background:#fff8ea;color:#a86c06}
+.incorrect{border-color:#c0392b;background:#fdefee;color:#96291d}
+.actions{display:flex;flex-wrap:wrap;gap:8px}
+button{font-family:inherit;font-size:.92rem;font-weight:700;min-height:44px;padding:10px 16px;border:0;border-radius:8px;cursor:pointer;background:#3ba5b8;color:#fff;line-height:1.2}
+button:hover{background:#1f7a8c}
+button.sec{background:#fff;color:#1f7a8c;border:2px solid #3ba5b8}
+button.sec:hover{background:#eaf7fa}
+.feedback{margin:10px 0 0;padding:12px 14px;border-left:5px solid #3ba5b8;border-radius:6px;background:#f4fafb;font-size:clamp(.9rem,2.5vw,1rem);line-height:1.75;overflow-wrap:break-word}
+.feedback.ok{border-left-color:#2e8b57;background:#effaf3;color:#1e6b40}
+.feedback.ko{border-left-color:#c0392b;background:#fdefee;color:#96291d}
+.feedback.warn{border-left-color:#c9820a;background:#fff8ea;color:#8a5b04}
+.aide{margin:10px 0 0;padding:12px 14px;border-left:5px solid #8fd3e8;background:#f2fafd;border-radius:6px;font-size:clamp(.9rem,2.5vw,1rem);line-height:1.75}
+.barre{display:flex;flex-wrap:wrap;gap:10px;margin:18px 0}
+.barre button{flex:1 1 190px}
+.correction{border:2px dashed #3ba5b8;border-radius:12px;background:#fff;padding:16px 18px;margin-bottom:18px;font-size:clamp(.9rem,2.5vw,1rem);line-height:1.8}
+.correction h2{margin:0 0 8px;font-size:1.05rem;color:#1f7a8c}
+.correction h3{margin:14px 0 4px;font-size:.98rem;color:#1f7a8c}
+.correction p{margin:4px 0}
+.correction ul{margin:6px 0;padding-left:20px}
+.correction li{margin-bottom:4px}
+.bilan{border:2px solid #1f7a8c;border-radius:12px;background:#fff;padding:16px 18px;margin-bottom:18px;font-size:.92rem;line-height:1.8}
+.bilan .score{font-size:clamp(1.05rem,3.2vw,1.25rem);font-weight:900;color:#1f7a8c}
+.bilan .palier{font-weight:700;margin-top:4px}
+.recap{display:flex;flex-wrap:wrap;gap:8px;margin-top:10px}
+.recap span{display:inline-flex;align-items:center;gap:6px;padding:6px 11px;border-radius:8px;background:#f4fafb;font-weight:700;font-size:.9rem;border:1px solid #dceff3}
+.recap .r-ok{color:#2e8b57}
+.recap .r-mid{color:#c9820a}
+.recap .r-ko{color:#c0392b}
+.legende{margin-top:10px;font-size:.85rem;color:#4d6169}
+@media (max-width:768px){.champ{flex:1 1 100%}.actions{width:100%}.actions button{flex:1 1 auto}}
+@media (max-width:480px){body{padding:10px}.bloc{padding:24px 12px 16px}.etq{font-size:.85rem;padding:6px 12px}.etq-rit{margin-left:0}input[type="text"]{width:100%}.recap span{font-size:.85rem}}
+</style>
+</head>
+<body>
+<div class="bulle b1"></div>
+<div class="bulle b2"></div>
+<div class="bulle b3"></div>
+<div class="bulle b4"></div>
+
+<main class="wrap">
+
+  <div class="tete">
+    <span class="etq etq-sem">Semaine 8</span>
+    <span class="etq etq-sea">S&eacute;ance 4</span>
+    <span class="etq etq-rit">Rituel</span>
+  </div>
+
+  <h1>Bilan semaine 8</h1>
+
+  <section class="bloc">
+    <span class="onglet">Calcul</span>
+
+    <div class="tete-ex">
+      <span class="pastille">1</span>
+      <p class="consigne">Calcule cette expression&nbsp;: A&nbsp;=&nbsp;10&nbsp;+&nbsp;6&nbsp;+&nbsp;7&nbsp;&minus;&nbsp;2.</p>
+    </div>
+    <div class="item">
+      <p class="q">A&nbsp;=</p>
+      <div class="ligne">
+        <span class="champ"><input type="text" id="in-A" inputmode="decimal" autocomplete="off" aria-label="Valeur de A"></span>
+        <span class="actions">
+          <button type="button" data-ok="A">OK</button>
+          <button type="button" class="sec" data-aide="A">Indice</button>
+        </span>
+      </div>
+      <div class="feedback" id="fb-A" hidden></div>
+      <div class="aide" id="ai-A" hidden></div>
+    </div>
+
+  </section>
+
+  <section class="bloc">
+    <span class="onglet">Probl&egrave;me</span>
+
+    <div class="tete-ex">
+      <span class="pastille">2</span>
+      <p class="consigne">R&eacute;sous le probl&egrave;me suivant&nbsp;:</p>
+    </div>
+    <p class="enonce">Je vide 3/5 de l&rsquo;&eacute;vier dans une bassine.</p>
+
+    <div class="item">
+      <p class="q">a.&nbsp;Quelle fraction de l&rsquo;&eacute;vier est encore remplie&nbsp;?</p>
+      <div class="ligne">
+        <span class="champ"><input type="text" id="in-fract" autocomplete="off" aria-label="Fraction encore remplie" placeholder="ex&nbsp;: a/b"></span>
+        <span class="actions">
+          <button type="button" data-ok="fract">OK</button>
+          <button type="button" class="sec" data-aide="fract">Indice</button>
+        </span>
+      </div>
+      <div class="feedback" id="fb-fract" hidden></div>
+      <div class="aide" id="ai-fract" hidden></div>
+    </div>
+
+    <div class="item">
+      <p class="q">b.&nbsp;L&rsquo;&eacute;vier contenait 60 litres. Combien de litres ai-je vid&eacute;s dans la bassine&nbsp;?</p>
+      <div class="ligne">
+        <span class="champ"><input type="text" id="in-videL" inputmode="decimal" autocomplete="off" aria-label="Litres vidés dans la bassine"></span>
+        <span class="actions">
+          <button type="button" data-ok="videL">OK</button>
+          <button type="button" class="sec" data-aide="videL">Indice</button>
+        </span>
+      </div>
+      <div class="feedback" id="fb-videL" hidden></div>
+      <div class="aide" id="ai-videL" hidden></div>
+    </div>
+
+    <div class="item">
+      <p class="q">c.&nbsp;Combien de litres d&rsquo;eau y a-t-il maintenant dans l&rsquo;&eacute;vier&nbsp;?</p>
+      <div class="ligne">
+        <span class="champ"><input type="text" id="in-resteL" inputmode="decimal" autocomplete="off" aria-label="Litres restants dans l'évier"></span>
+        <span class="actions">
+          <button type="button" data-ok="resteL">OK</button>
+          <button type="button" class="sec" data-aide="resteL">Indice</button>
+        </span>
+      </div>
+      <div class="feedback" id="fb-resteL" hidden></div>
+      <div class="aide" id="ai-resteL" hidden></div>
+    </div>
+
+  </section>
+
+  <section class="bloc">
+    <span class="onglet">G&eacute;om&eacute;trie</span>
+
+    <div class="tete-ex">
+      <span class="pastille">3</span>
+      <p class="consigne">R&eacute;ponds aux questions suivantes&nbsp;:</p>
+    </div>
+
+    <div class="item">
+      <p class="q">a.&nbsp;Donne la d&eacute;finition d&rsquo;un parall&eacute;logramme.</p>
+      <div class="ligne">
+        <span class="champ"><textarea id="in-defpara" aria-label="Définition d'un parallélogramme"></textarea></span>
+        <span class="actions">
+          <button type="button" data-ok="defpara">OK</button>
+          <button type="button" class="sec" data-aide="defpara">Indice</button>
+        </span>
+      </div>
+      <div class="feedback" id="fb-defpara" hidden></div>
+      <div class="aide" id="ai-defpara" hidden></div>
+    </div>
+
+    <div class="item">
+      <p class="q">b.&nbsp;Que peut-on dire d&rsquo;un quadrilat&egrave;re dont les diagonales sont perpendiculaires et de m&ecirc;me longueur&nbsp;?</p>
+      <div class="ligne">
+        <span class="champ"><textarea id="in-carre" aria-label="Nature du quadrilatère"></textarea></span>
+        <span class="actions">
+          <button type="button" data-ok="carre">OK</button>
+          <button type="button" class="sec" data-aide="carre">Indice</button>
+        </span>
+      </div>
+      <div class="feedback" id="fb-carre" hidden></div>
+      <div class="aide" id="ai-carre" hidden></div>
+    </div>
+
+    <div class="item">
+      <p class="q">c.&nbsp;Comment d&eacute;montre-t-on qu&rsquo;un quadrilat&egrave;re est un carr&eacute;&nbsp;?</p>
+      <div class="ligne">
+        <span class="champ"><textarea id="in-democarre" aria-label="Comment démontrer qu'un quadrilatère est un carré"></textarea></span>
+        <span class="actions">
+          <button type="button" data-ok="democarre">OK</button>
+          <button type="button" class="sec" data-aide="democarre">Indice</button>
+        </span>
+      </div>
+      <div class="feedback" id="fb-democarre" hidden></div>
+      <div class="aide" id="ai-democarre" hidden></div>
+    </div>
+
+  </section>
+
+  <div class="barre">
+    <button type="button" id="btn-tout">V&eacute;rifier tout</button>
+    <button type="button" class="sec" id="btn-corr">Voir la correction</button>
+    <button type="button" class="sec" id="btn-reset">R&eacute;initialiser</button>
+  </div>
+
+  <div class="correction" id="correction" hidden></div>
+  <div class="bilan" id="bilan" hidden></div>
+
+</main>
+
+<script>
+(function(){
+  "use strict";
+
+  function esc(txt){
+    var d = document.createElement("div");
+    d.textContent = String(txt);
+    return d.innerHTML;
+  }
+  function sansAccents(s){
+    return s
+      .replace(/[\u00e0\u00e2\u00e4\u00e1\u00e3]/g,"a")
+      .replace(/[\u00e9\u00e8\u00ea\u00eb]/g,"e")
+      .replace(/[\u00ee\u00ef\u00ec\u00ed]/g,"i")
+      .replace(/[\u00f4\u00f6\u00f2\u00f3\u00f5]/g,"o")
+      .replace(/[\u00fb\u00fc\u00f9\u00fa]/g,"u")
+      .replace(/[\u00e7]/g,"c")
+      .replace(/[\u2019\u2018\u02bc\u0060]/g,"'");
+  }
+  function normTexte(s){
+    var t = String(s).toLowerCase();
+    t = sansAccents(t);
+    t = t.replace(/[\u00a0\u202f\u2009]/g," ");
+    t = t.replace(/\s+/g," ");
+    return t.trim();
+  }
+  function contient(texte, mots){
+    for (var i = 0; i < mots.length; i++){
+      if (texte.indexOf(mots[i]) !== -1) return true;
+    }
+    return false;
+  }
+  function normalise(brut){
+    var s = String(brut).replace(/[\s\u00a0\u202f\u2009]/g, "");
+    s = s.replace(/[\u2212\u2013\u2014]/g, "-").replace(/,/g, ".");
+    if (s === "") return null;
+    if (!/^-?(\d+(\.\d*)?|\.\d+)$/.test(s)) return null;
+    return s;
+  }
+  function pgcd(a, b){
+    a = Math.abs(a); b = Math.abs(b);
+    while (b !== 0){ var t = b; b = a % b; a = t; }
+    return a;
+  }
+  function parseFraction(brut){
+    var s = String(brut).replace(/[\s\u00a0\u202f\u2009]/g, "");
+    s = s.replace(/[\u2212\u2013\u2014]/g, "-");
+    if (s === "") return null;
+    var m = s.match(/^(-?\d+)\/(-?\d+)$/);
+    if (m){
+      var num = parseInt(m[1], 10);
+      var den = parseInt(m[2], 10);
+      if (den === 0) return null;
+      if (den < 0){ den = -den; num = -num; }
+      return { num: num, den: den };
+    }
+    return null;
+  }
+  function fracEgales(a, b){ return a.num * b.den === b.num * a.den; }
+  function fracSimplifiee(f){ return pgcd(f.num, f.den) === 1; }
+  function fracTexte(f){ return f.num + "/" + f.den; }
+
+  var etats = {};
+  var occupe = false;
+
+  function afficher(id, type, html){
+    var fb = document.getElementById("fb-" + id);
+    fb.className = "feedback " + type;
+    fb.innerHTML = html;
+    fb.hidden = false;
+  }
+  function marquer(input, etat){
+    if (!input) return;
+    input.classList.remove("correct","partiel","incorrect");
+    if (etat === "correct" || etat === "partiel" || etat === "incorrect") input.classList.add(etat);
+  }
+
+  // ---------- A (calcul) ----------
+  var TOLERANCE = 0.005;
+  function verifierA(){
+    var input = document.getElementById("in-A");
+    var brut = input.value;
+    if (String(brut).replace(/[\s\u00a0]/g,"") === ""){
+      etats.A = "vide"; marquer(input, "");
+      afficher("A", "warn", "\u26a0\ufe0f Aucune r\u00e9ponse saisie. Calcule A, puis clique sur <strong>OK</strong>.");
+      return;
+    }
+    var norm = normalise(brut);
+    if (norm === null){
+      etats.A = "incorrect"; marquer(input, "incorrect");
+      afficher("A", "warn", "\u26a0\ufe0f Saisie non reconnue&nbsp;: &laquo;&nbsp;" + esc(brut) + "&nbsp;&raquo;. \u00c9cris un nombre seul.");
+      return;
+    }
+    var val = Number(norm);
+    if (Math.abs(val - 21) <= TOLERANCE){
+      etats.A = "correct"; marquer(input, "correct");
+      afficher("A", "ok", "\u2705 Bravo&nbsp;! A&nbsp;=&nbsp;10&nbsp;+&nbsp;6&nbsp;+&nbsp;7&nbsp;\u2212&nbsp;2&nbsp;=&nbsp;23&nbsp;\u2212&nbsp;2&nbsp;=&nbsp;<strong>21</strong>.");
+      return;
+    }
+    etats.A = "incorrect"; marquer(input, "incorrect");
+    afficher("A", "ko", "\u274c Ce n\u2019est pas la bonne valeur.<br>R\u00e9ponse attendue&nbsp;: A&nbsp;=&nbsp;10&nbsp;+&nbsp;6&nbsp;+&nbsp;7&nbsp;\u2212&nbsp;2&nbsp;=&nbsp;23&nbsp;\u2212&nbsp;2&nbsp;=&nbsp;<strong>21</strong>.");
+  }
+
+  // ---------- fraction restante ----------
+  function verifierFract(){
+    var input = document.getElementById("in-fract");
+    var brut = input.value;
+    if (String(brut).replace(/[\s\u00a0]/g,"") === ""){
+      etats.fract = "vide"; marquer(input, "");
+      afficher("fract", "warn", "\u26a0\ufe0f Aucune r\u00e9ponse saisie. \u00c9cris une fraction sous la forme <strong>a/b</strong>.");
+      return;
+    }
+    var f = parseFraction(brut);
+    if (f === null){
+      etats.fract = "incorrect"; marquer(input, "incorrect");
+      afficher("fract", "warn", "\u26a0\ufe0f Saisie non reconnue&nbsp;: &laquo;&nbsp;" + esc(brut) + "&nbsp;&raquo;. \u00c9cris ta r\u00e9ponse sous la forme <strong>a/b</strong>.");
+      return;
+    }
+    var attendu = { num:2, den:5 };
+    if (fracEgales(f, attendu)){
+      etats.fract = "correct"; marquer(input, "correct");
+      if (fracSimplifiee(f)){
+        afficher("fract", "ok", "\u2705 Bravo&nbsp;! L&rsquo;&eacute;vier repr\u00e9sente 5/5&nbsp;; on en vide 3/5, il en reste 5/5&nbsp;\u2212&nbsp;3/5&nbsp;=&nbsp;<strong>2/5</strong>.");
+      } else {
+        afficher("fract", "ok", "\u2705 Bravo&nbsp;! Ta fraction est bien \u00e9gale \u00e0 <strong>2/5</strong>. <strong><u>Plus pr\u00e9cis</u></strong>&nbsp;: simplifie-la compl\u00e8tement.");
+      }
+      return;
+    }
+    etats.fract = "incorrect"; marquer(input, "incorrect");
+    afficher("fract", "ko", "\u274c Ce n\u2019est pas la bonne fraction.<br>R\u00e9ponse attendue&nbsp;: 5/5&nbsp;\u2212&nbsp;3/5&nbsp;=&nbsp;<strong>2/5</strong>.");
+  }
+
+  // ---------- litres (b, c) ----------
+  var ITEMS_L = [
+    { id:"videL", val:36, ref:"60&nbsp;&times;&nbsp;(3/5)&nbsp;=&nbsp;180/5&nbsp;=&nbsp;<strong>36&nbsp;L</strong> ont &eacute;t&eacute; vid&eacute;s dans la bassine." },
+    { id:"resteL", val:24, ref:"60&nbsp;\u2212&nbsp;36&nbsp;=&nbsp;<strong>24&nbsp;L</strong> restent dans l&rsquo;&eacute;vier." }
+  ];
+  function trouverL(id){
+    for (var i=0;i<ITEMS_L.length;i++){ if (ITEMS_L[i].id===id) return ITEMS_L[i]; }
+    return null;
+  }
+  function verifierL(id){
+    var it = trouverL(id);
+    if (!it) return;
+    var input = document.getElementById("in-" + id);
+    var brut = input.value;
+    if (String(brut).replace(/[\s\u00a0]/g,"") === ""){
+      etats[id] = "vide"; marquer(input, "");
+      afficher(id, "warn", "\u26a0\ufe0f Aucune r\u00e9ponse saisie. \u00c9cris un nombre de litres.");
+      return;
+    }
+    var norm = normalise(brut);
+    if (norm === null){
+      etats[id] = "incorrect"; marquer(input, "incorrect");
+      afficher(id, "warn", "\u26a0\ufe0f Saisie non reconnue&nbsp;: &laquo;&nbsp;" + esc(brut) + "&nbsp;&raquo;.");
+      return;
+    }
+    var val = Number(norm);
+    if (Math.abs(val - it.val) <= 0.01){
+      etats[id] = "correct"; marquer(input, "correct");
+      afficher(id, "ok", "\u2705 Bravo&nbsp;! " + it.ref);
+      return;
+    }
+    etats[id] = "incorrect"; marquer(input, "incorrect");
+    afficher(id, "ko", "\u274c Ce n\u2019est pas la bonne valeur.<br>R\u00e9ponse attendue&nbsp;: " + it.ref);
+  }
+
+  // ---------- définitions géométriques ----------
+  var ITEMS_DEF = [
+    { id:"defpara",
+       cle:["parallele"],
+       precisions:[{ nom:"les <strong>diagonales</strong> qui se coupent en leur <strong>milieu</strong>", mots:["milieu"] }],
+       aide:"Un parall\u00e9logramme se d\u00e9finit par ses c\u00f4t\u00e9s (parall\u00e8les deux \u00e0 deux) et par ses diagonales (qui se coupent comment&nbsp;?).",
+       ref:"Un parall\u00e9logramme est un quadrilat\u00e8re dont les c\u00f4t\u00e9s oppos\u00e9s sont parall\u00e8les deux \u00e0 deux et dont les diagonales se coupent en leur milieu." },
+    { id:"carre",
+       cle:["carre"],
+       precisions:[],
+       aide:"Diagonales perpendiculaires ET de m\u00eame longueur&nbsp;: cela cumule les propri\u00e9t\u00e9s du losange et du rectangle. Quel quadrilat\u00e8re est \u00e0 la fois losange et rectangle&nbsp;?",
+       ref:"C&rsquo;est un parall\u00e9logramme particulier&nbsp;: un <strong>carr\u00e9</strong>." },
+    { id:"democarre",
+       cle:[["diagonale"],["perpendicul"]],
+       precisions:[
+         { nom:"l&rsquo;<strong>\u00e9galit\u00e9</strong> des diagonales (m\u00eame longueur)", mots:[["diagonale"],["egal","egaux","meme longueur"]] },
+         { nom:"le fait qu&rsquo;elles se coupent en leur <strong>milieu</strong>", mots:["milieu"] }
+       ],
+       aide:"Pense aux trois propri\u00e9t\u00e9s des diagonales qu&rsquo;il faut r\u00e9unir pour prouver qu&rsquo;un quadrilat\u00e8re est un carr\u00e9.",
+       ref:"Un quadrilat\u00e8re est un carr\u00e9 si on d\u00e9montre que ses diagonales se coupent en leur milieu, ont la <strong>m\u00eame longueur</strong> et sont <strong>perpendiculaires</strong> (ou, de mani\u00e8re \u00e9quivalente, que c&rsquo;est un parall\u00e9logramme avec un angle droit et deux c\u00f4t\u00e9s cons\u00e9cutifs de m\u00eame longueur)." }
+  ];
+  function trouverDef(id){
+    for (var i=0;i<ITEMS_DEF.length;i++){ if (ITEMS_DEF[i].id===id) return ITEMS_DEF[i]; }
+    return null;
+  }
+  function conditionOk(texte, condition){
+    if (condition.length === 0) return false;
+    if (typeof condition[0] === "string"){ return contient(texte, condition); }
+    for (var i=0;i<condition.length;i++){
+      if (!contient(texte, condition[i])) return false;
+    }
+    return true;
+  }
+  function verifierDef(id){
+    var it = trouverDef(id);
+    if (!it) return;
+    var input = document.getElementById("in-" + id);
+    if (String(input.value).replace(/[\s\u00a0]/g,"") === ""){
+      etats[id] = "vide"; marquer(input, "");
+      afficher(id, "warn", "\u26a0\ufe0f Aucune r\u00e9ponse saisie. R\u00e9ponds, puis clique sur <strong>OK</strong>.");
+      return;
+    }
+    var texte = normTexte(input.value);
+    var essentiel = conditionOk(texte, it.cle);
+    var manquants = [];
+    for (var g=0; g<it.precisions.length; g++){
+      if (!conditionOk(texte, it.precisions[g].mots)) manquants.push(it.precisions[g].nom);
+    }
+
+    if (essentiel){
+      etats[id] = "correct"; marquer(input, "correct");
+      if (manquants.length === 0){
+        afficher(id, "ok", "\u2705 Bravo&nbsp;! " + it.ref);
+      } else {
+        var liste = "";
+        for (var j=0;j<manquants.length;j++){ liste += "<li>" + manquants[j] + "</li>"; }
+        afficher(id, "ok", "\u2705 Bravo&nbsp;! R\u00e9ponse correcte.<br><strong><u>Plus complet</u></strong>, pr\u00e9cise aussi&nbsp;:<ul>" + liste + "</ul>" + it.ref);
+      }
+      return;
+    }
+    if (it.precisions.length > 0 && manquants.length < it.precisions.length){
+      etats[id] = "partiel"; marquer(input, "partiel");
+      afficher(id, "warn", "\u26a0\ufe0f Tu cites des \u00e9l\u00e9ments utiles, mais l&rsquo;essentiel n&rsquo;est pas encore l\u00e0.<br>R\u00e9ponse attendue&nbsp;: <strong><u>" + it.ref + "</u></strong>");
+      return;
+    }
+    etats[id] = "incorrect"; marquer(input, "incorrect");
+    afficher(id, "ko", "\u274c Ce n\u2019est pas la bonne r\u00e9ponse.<br>R\u00e9ponse attendue&nbsp;: <strong><u>" + it.ref + "</u></strong>");
+  }
+
+  // ---------- Aides ----------
+  var AIDES_SIMPLES = {
+    A: "Effectue les op\u00e9rations de gauche \u00e0 droite&nbsp;: 10&nbsp;+&nbsp;6&nbsp;+&nbsp;7, puis soustrais 2.",
+    fract: "L&rsquo;&eacute;vier plein repr\u00e9sente 5/5. Combien reste-t-il si on en retire 3/5&nbsp;?",
+    videL: "Calcule 3/5 de 60&nbsp;: (60&nbsp;&times;&nbsp;3)/5.",
+    resteL: "Retire au total (60&nbsp;L) la quantit\u00e9 vid\u00e9e dans la bassine (question b)."
+  };
+
+  function basculerAide(id){
+    var box = document.getElementById("ai-" + id);
+    if (!box) return;
+    var texte = null;
+    var d = trouverDef(id);
+    if (d) texte = d.aide;
+    else if (AIDES_SIMPLES[id]) texte = AIDES_SIMPLES[id];
+    if (texte === null) return;
+    if (box.hidden){
+      box.innerHTML = "\ud83d\udca1 <strong>Indice&nbsp;:</strong> " + texte;
+      box.hidden = false;
+    } else {
+      box.hidden = true;
+    }
+  }
+
+  function palier(pct){
+    if (pct >= 90) return "\ud83d\udfe2 Excellent";
+    if (pct >= 75) return "\ud83d\udfe2 Tr\u00e8s bien";
+    if (pct >= 60) return "\ud83d\udfe1 Ma\u00eetrise satisfaisante";
+    if (pct >= 40) return "\ud83d\udfe0 Ma\u00eetrise fragile";
+    return "\ud83d\udd34 Ma\u00eetrise insuffisante";
+  }
+
+  var ORDRE_SCORE = ["A","fract","videL","resteL","defpara","carre","democarre"];
+
+  function verifierTout(){
+    if (occupe) return;
+    occupe = true;
+    window.setTimeout(function(){ occupe = false; }, 350);
+
+    verifierA();
+    verifierFract();
+    verifierL("videL");
+    verifierL("resteL");
+    verifierDef("defpara");
+    verifierDef("carre");
+    verifierDef("democarre");
+
+    var total = ORDRE_SCORE.length;
+    var score = 0;
+    var recap = "";
+    for (var i=0;i<ORDRE_SCORE.length;i++){
+      var id = ORDRE_SCORE[i];
+      var e = etats[id];
+      if (e === "correct"){ score++; recap += '<span class="r-ok">\u2714 ' + id + '</span>'; }
+      else if (e === "partiel"){ recap += '<span class="r-mid">\u25d0 ' + id + '</span>'; }
+      else { recap += '<span class="r-ko">\u2718 ' + id + '</span>'; }
+    }
+
+    if (score < 0) score = 0;
+    if (score > total) score = total;
+    var pct = Math.round((score / total) * 100);
+
+    var bilan = document.getElementById("bilan");
+    bilan.innerHTML =
+      '<div class="score">Score&nbsp;: ' + score + '\u2009/\u2009' + total + ' (' + pct + '&nbsp;%)</div>' +
+      '<div class="palier">' + palier(pct) + '</div>' +
+      '<div class="recap">' + recap + '</div>' +
+      '<div class="legende">\u2714 correct &nbsp;\u2022&nbsp; \u25d0 partiel &nbsp;\u2022&nbsp; \u2718 incorrect ou non r\u00e9pondu.</div>';
+    bilan.hidden = false;
+  }
+
+  function basculerCorrection(){
+    var box = document.getElementById("correction");
+    var btn = document.getElementById("btn-corr");
+    if (box.hidden){
+      var html = "<h2>Correction</h2>" +
+        "<h3>1. Calcul</h3><p>A&nbsp;=&nbsp;10&nbsp;+&nbsp;6&nbsp;+&nbsp;7&nbsp;\u2212&nbsp;2&nbsp;=&nbsp;23&nbsp;\u2212&nbsp;2&nbsp;=&nbsp;<strong>21</strong>.</p>" +
+        "<h3>2. L&rsquo;&eacute;vier</h3><ul>" +
+        "<li>a. 5/5&nbsp;\u2212&nbsp;3/5&nbsp;=&nbsp;<strong>2/5</strong> encore rempli.</li>" +
+        "<li>b. 60&nbsp;&times;&nbsp;(3/5)&nbsp;=&nbsp;180/5&nbsp;=&nbsp;<strong>36&nbsp;L</strong> vid\u00e9s.</li>" +
+        "<li>c. 60&nbsp;\u2212&nbsp;36&nbsp;=&nbsp;<strong>24&nbsp;L</strong> restants.</li>" +
+        "</ul>" +
+        "<h3>3. G\u00e9om\u00e9trie</h3><ul>" +
+        "<li>a. " + ITEMS_DEF[0].ref + "</li>" +
+        "<li>b. " + ITEMS_DEF[1].ref + "</li>" +
+        "<li>c. " + ITEMS_DEF[2].ref + "</li>" +
+        "</ul>";
+      box.innerHTML = html;
+      box.hidden = false;
+      btn.textContent = "Masquer la correction";
+    } else {
+      box.hidden = true;
+      btn.textContent = "Voir la correction";
+    }
+  }
+
+  function reinitialiser(){
+    var champsIds = ["A","fract","videL","resteL","defpara","carre","democarre"];
+    for (var i=0;i<champsIds.length;i++){
+      var id = champsIds[i];
+      var input = document.getElementById("in-" + id);
+      if (input){
+        input.value = "";
+        input.disabled = false;
+        input.readOnly = false;
+        input.classList.remove("correct","partiel","incorrect");
+      }
+      var fb = document.getElementById("fb-" + id);
+      if (fb){ fb.hidden = true; fb.innerHTML = ""; fb.className = "feedback"; }
+      var ai = document.getElementById("ai-" + id);
+      if (ai){ ai.hidden = true; ai.innerHTML = ""; }
+      etats[id] = "vide";
+    }
+    var bilan = document.getElementById("bilan");
+    bilan.hidden = true; bilan.innerHTML = "";
+    var corr = document.getElementById("correction");
+    corr.hidden = true; corr.innerHTML = "";
+    document.getElementById("btn-corr").textContent = "Voir la correction";
+    occupe = false;
+  }
+
+  function init(){
+    var champsIds = ["A","fract","videL","resteL","defpara","carre","democarre"];
+    for (var i=0;i<champsIds.length;i++){ etats[champsIds[i]] = "vide"; }
+
+    document.querySelector('[data-ok="A"]').addEventListener("click", verifierA);
+    document.querySelector('[data-ok="fract"]').addEventListener("click", verifierFract);
+    document.querySelector('[data-ok="videL"]').addEventListener("click", function(){ verifierL("videL"); });
+    document.querySelector('[data-ok="resteL"]').addEventListener("click", function(){ verifierL("resteL"); });
+    document.querySelector('[data-ok="defpara"]').addEventListener("click", function(){ verifierDef("defpara"); });
+    document.querySelector('[data-ok="carre"]').addEventListener("click", function(){ verifierDef("carre"); });
+    document.querySelector('[data-ok="democarre"]').addEventListener("click", function(){ verifierDef("democarre"); });
+
+    var bAide = document.querySelectorAll("[data-aide]");
+    for (var b=0;b<bAide.length;b++){
+      bAide[b].addEventListener("click", function(){ basculerAide(this.getAttribute("data-aide")); });
+    }
+
+    var champsTexte = document.querySelectorAll('input[type="text"]');
+    for (var e=0;e<champsTexte.length;e++){
+      champsTexte[e].addEventListener("keydown", function(ev){
+        if (ev.key === "Enter"){
+          ev.preventDefault();
+          var id = this.id.replace("in-","");
+          if (id === "A") verifierA();
+          else if (id === "fract") verifierFract();
+          else if (id === "videL" || id === "resteL") verifierL(id);
+        }
+      });
+    }
+
+    document.getElementById("btn-tout").addEventListener("click", verifierTout);
+    document.getElementById("btn-corr").addEventListener("click", basculerCorrection);
+    document.getElementById("btn-reset").addEventListener("click", reinitialiser);
+  }
+
+  if (document.readyState === "loading"){
+    document.addEventListener("DOMContentLoaded", init);
+  } else {
+    init();
+  }
+})();
+</script>
+</body>
+</html>
