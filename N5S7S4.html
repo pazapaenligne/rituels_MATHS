@@ -1,0 +1,532 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Rituel &mdash; Semaine 7 S&eacute;ance 4 &mdash; Bilan semaine 7</title>
+<style>
+*{box-sizing:border-box}
+html,body{margin:0;padding:0}
+body{background:#fffdf7;font-family:Arial,Helvetica,sans-serif;color:#243238;line-height:1.6;padding:14px;overflow-x:hidden}
+.bulle{position:fixed;border-radius:50%;background:#3ba5b8;opacity:.12;pointer-events:none;z-index:0}
+.b1{width:190px;height:190px;top:-70px;left:-70px}
+.b2{width:130px;height:130px;top:-45px;right:-45px}
+.b3{width:160px;height:160px;bottom:-60px;left:-55px}
+.b4{width:110px;height:110px;bottom:-40px;right:-35px}
+.wrap{position:relative;z-index:1;max-width:880px;margin:0 auto}
+.tete{display:flex;flex-wrap:wrap;align-items:center;gap:10px;margin-bottom:14px}
+.etq{display:inline-block;padding:7px 16px;border-radius:8px;color:#fff;font-weight:700;font-size:.95rem}
+.etq-sem{background:#8fd3e8;color:#123f4a}
+.etq-sea{background:#3ba5b8}
+.etq-rit{background:#1f7a8c;font-family:Georgia,"Times New Roman",serif;margin-left:auto}
+h1{font-size:clamp(1.3rem,4.5vw,2rem);font-weight:900;color:#1f7a8c;margin:6px 0 18px;line-height:1.3}
+.bloc{position:relative;border:2px solid #3ba5b8;border-radius:12px;background:#fff;padding:28px 18px 20px;margin-bottom:18px}
+.onglet{position:absolute;top:-17px;left:18px;background:#8fd3e8;color:#123f4a;font-weight:700;font-size:.95rem;padding:5px 18px;border-radius:8px}
+.tete-ex{display:flex;align-items:flex-start;gap:12px;margin:6px 0 16px;min-width:0}
+.pastille{flex:0 0 auto;width:34px;height:34px;border-radius:50%;background:#1f7a8c;color:#fff;font-weight:700;font-size:1rem;display:flex;align-items:center;justify-content:center}
+.consigne{margin:4px 0 0;font-weight:700;text-decoration:underline;color:#1f7a8c;font-size:clamp(.95rem,2.6vw,1.05rem);min-width:0;overflow-wrap:break-word}
+.item{padding:14px 0;border-bottom:1px dashed #dceff3}
+.item:last-of-type{border-bottom:0}
+.ligne{display:flex;flex-wrap:wrap;align-items:center;gap:10px;min-width:0}
+.calc{font-size:clamp(1rem,3vw,1.15rem);font-weight:700;color:#243238;white-space:nowrap}
+.fraction{display:inline-flex;flex-direction:column;align-items:center;vertical-align:middle;font-weight:700;font-size:clamp(1rem,3vw,1.15rem);color:#243238}
+.fraction .fn{border-bottom:2px solid #243238;padding:0 8px 2px}
+.fraction .fd{padding:2px 8px 0}
+.q{font-size:clamp(1rem,3vw,1.1rem);font-weight:700;margin:0 0 10px;color:#243238;overflow-wrap:break-word;line-height:1.8}
+input[type="text"]{width:clamp(90px,26vw,180px);min-width:0;padding:9px 8px;font-family:Arial,Helvetica,sans-serif;font-size:1rem;font-weight:700;text-align:center;color:#1f7a8c;background:#f7fcfd;border:1px solid #b9dfe8;border-bottom:2px dotted #3ba5b8;border-radius:6px}
+input[type="text"]:focus{outline:2px solid #3ba5b8;outline-offset:1px}
+input.correct,textarea.correct{border-color:#2e8b57;background:#effaf3;color:#2e8b57}
+input.partiel,textarea.partiel{border-color:#c9820a;background:#fff8ea;color:#a86c06}
+input.incorrect,textarea.incorrect{border-color:#c0392b;background:#fdefee;color:#c0392b}
+.symbole-input{width:56px;font-size:1.2rem}
+textarea{width:100%;min-width:0;padding:10px;font-family:Arial,Helvetica,sans-serif;font-size:1rem;font-weight:700;color:#1f7a8c;background:#f7fcfd;border:1px solid #b9dfe8;border-bottom:2px dotted #3ba5b8;border-radius:6px;line-height:1.6;resize:vertical;min-height:52px}
+textarea:focus{outline:2px solid #3ba5b8;outline-offset:1px}
+.champ-nature{max-width:200px}
+.sous-label{font-weight:700;color:#1f7a8c;font-size:.9rem;margin:10px 0 4px}
+.figure-triangle{max-width:170px;margin:6px auto 18px}
+.figure-triangle img{width:100%;height:auto;border:1px solid #dceff3;border-radius:8px;background:#fff}
+.actions{display:flex;flex-wrap:wrap;gap:8px;margin-top:8px}
+button{font-family:inherit;font-size:.92rem;font-weight:700;min-height:44px;padding:10px 16px;border:0;border-radius:8px;cursor:pointer;background:#3ba5b8;color:#fff;line-height:1.2}
+button:hover{background:#1f7a8c}
+button.sec{background:#fff;color:#1f7a8c;border:2px solid #3ba5b8}
+button.sec:hover{background:#eaf7fa}
+.feedback{margin:10px 0 0;padding:12px 14px;border-left:5px solid #3ba5b8;border-radius:6px;background:#f4fafb;font-size:clamp(.9rem,2.5vw,1rem);line-height:1.75;overflow-wrap:break-word}
+.feedback.ok{border-left-color:#2e8b57;background:#effaf3;color:#1e6b40}
+.feedback.ko{border-left-color:#c0392b;background:#fdefee;color:#96291d}
+.feedback.warn{border-left-color:#c9820a;background:#fff8ea;color:#8a5b04}
+.aide{margin:10px 0 0;padding:12px 14px;border-left:5px solid #8fd3e8;background:#f2fafd;border-radius:6px;font-size:clamp(.9rem,2.5vw,1rem);line-height:1.75}
+.barre{display:flex;flex-wrap:wrap;gap:10px;margin:18px 0}
+.barre button{flex:1 1 190px}
+.correction{border:2px dashed #3ba5b8;border-radius:12px;background:#fff;padding:16px 18px;margin-bottom:18px;font-size:clamp(.9rem,2.5vw,1rem);line-height:1.8}
+.correction h2{margin:0 0 10px;font-size:1.05rem;color:#1f7a8c}
+.correction ul{margin:6px 0 0;padding-left:20px}
+.correction li{margin-bottom:6px}
+.bilan{border:2px solid #1f7a8c;border-radius:12px;background:#fff;padding:16px 18px;margin-bottom:18px;font-size:.92rem;line-height:1.8}
+.bilan .score{font-size:clamp(1.05rem,3.2vw,1.25rem);font-weight:900;color:#1f7a8c}
+.bilan .palier{font-weight:700;margin-top:4px}
+.recap{display:flex;flex-wrap:wrap;gap:8px;margin-top:10px}
+.recap span{display:inline-flex;align-items:center;gap:6px;padding:6px 11px;border-radius:8px;background:#f4fafb;font-weight:700;font-size:.9rem;border:1px solid #dceff3}
+.recap .r-ok{color:#2e8b57}
+.recap .r-mid{color:#c9820a}
+.recap .r-ko{color:#c0392b}
+.legende{margin-top:10px;font-size:.85rem;color:#4d6169}
+@media (max-width:480px){
+  body{padding:10px}
+  .bloc{padding:26px 12px 16px}
+  .etq{font-size:.85rem;padding:6px 12px}
+  .etq-rit{margin-left:0}
+  .recap span{font-size:.85rem}
+}
+</style>
+</head>
+<body>
+<div class="bulle b1"></div><div class="bulle b2"></div><div class="bulle b3"></div><div class="bulle b4"></div>
+
+<main class="wrap">
+
+  <div class="tete">
+    <span class="etq etq-sem">Semaine 7</span>
+    <span class="etq etq-sea">S&eacute;ance 4</span>
+    <span class="etq etq-rit">Rituel</span>
+  </div>
+
+  <h1>Bilan semaine 7</h1>
+
+  <section class="bloc">
+    <span class="onglet">Calcul</span>
+
+    <div class="tete-ex">
+      <span class="pastille">1</span>
+      <p class="consigne">Effectue le calcul suivant&nbsp;:</p>
+    </div>
+
+    <div class="item">
+      <div class="ligne">
+        <span class="calc">1&nbsp;456,789&nbsp;:&nbsp;1&nbsp;000&nbsp;=</span>
+        <input type="text" id="in-1" inputmode="decimal" autocomplete="off" aria-label="1456,789 divise par 1000">
+        <span class="actions"><button type="button" data-ok="1">OK</button><button type="button" class="sec" data-aide="1">Indice</button></span>
+      </div>
+      <div class="feedback" id="fb-1" hidden></div>
+      <div class="aide" id="ai-1" hidden></div>
+    </div>
+  </section>
+
+  <section class="bloc">
+    <span class="onglet">Calcul</span>
+
+    <div class="tete-ex">
+      <span class="pastille">2</span>
+      <p class="consigne">Compl&egrave;te par &lt;, = ou &gt;.</p>
+    </div>
+
+    <div class="item">
+      <div class="ligne">
+        <span class="fraction"><span class="fn">15</span><span class="fd">10</span></span>
+        <input type="text" id="in-2a" class="symbole-input" maxlength="1" autocomplete="off" aria-label="Signe de comparaison, 15 dixiemes et 15 centiemes">
+        <span class="fraction"><span class="fn">15</span><span class="fd">100</span></span>
+        <span class="actions"><button type="button" data-ok="2a">OK</button><button type="button" class="sec" data-aide="2a">Indice</button></span>
+      </div>
+      <div class="feedback" id="fb-2a" hidden></div>
+      <div class="aide" id="ai-2a" hidden></div>
+    </div>
+
+    <div class="item">
+      <div class="ligne">
+        <span class="fraction"><span class="fn">20</span><span class="fd">100</span></span>
+        <input type="text" id="in-2b" class="symbole-input" maxlength="1" autocomplete="off" aria-label="Signe de comparaison, 20 centiemes et 2 dixiemes">
+        <span class="fraction"><span class="fn">2</span><span class="fd">10</span></span>
+        <span class="actions"><button type="button" data-ok="2b">OK</button><button type="button" class="sec" data-aide="2b">Indice</button></span>
+      </div>
+      <div class="feedback" id="fb-2b" hidden></div>
+      <div class="aide" id="ai-2b" hidden></div>
+    </div>
+
+    <div class="item">
+      <div class="ligne">
+        <span class="fraction"><span class="fn">112</span><span class="fd">10</span></span>
+        <input type="text" id="in-2c" class="symbole-input" maxlength="1" autocomplete="off" aria-label="Signe de comparaison, 112 dixiemes et 11">
+        <span class="calc">11</span>
+        <span class="actions"><button type="button" data-ok="2c">OK</button><button type="button" class="sec" data-aide="2c">Indice</button></span>
+      </div>
+      <div class="feedback" id="fb-2c" hidden></div>
+      <div class="aide" id="ai-2c" hidden></div>
+    </div>
+  </section>
+
+  <section class="bloc">
+    <span class="onglet">G&eacute;om&eacute;trie</span>
+
+    <div class="tete-ex">
+      <span class="pastille">3</span>
+      <p class="consigne">Quelle est la nature du triangle TEG&nbsp;? Justifie.</p>
+    </div>
+
+    <div class="figure-triangle">
+      <img src="data:image/png;base64,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" alt="Triangle TEG avec T en haut a gauche, E a droite, G en bas, et deux cotes marques comme egaux (TG et TE).">
+    </div>
+
+    <div class="item">
+      <p class="sous-label">Nature du triangle&nbsp;:</p>
+      <input type="text" id="in-3-nature" class="champ-nature" autocomplete="off" aria-label="Nature du triangle TEG">
+      <p class="sous-label">Justification&nbsp;:</p>
+      <textarea id="in-3-just" aria-label="Justification de la nature du triangle TEG"></textarea>
+      <div class="actions"><button type="button" data-ok="3">OK</button><button type="button" class="sec" data-aide="3">Indice</button></div>
+      <div class="feedback" id="fb-3" hidden></div>
+      <div class="aide" id="ai-3" hidden></div>
+    </div>
+  </section>
+
+  <div class="barre">
+    <button type="button" id="btn-tout">V&eacute;rifier tout</button>
+    <button type="button" class="sec" id="btn-corr">Voir la correction</button>
+    <button type="button" class="sec" id="btn-reset">R&eacute;initialiser</button>
+  </div>
+
+  <div class="correction" id="correction" hidden></div>
+  <div class="bilan" id="bilan" hidden></div>
+
+</main>
+
+<script>
+(function(){
+  "use strict";
+
+  function esc(txt){
+    var d = document.createElement("div");
+    d.textContent = String(txt);
+    return d.innerHTML;
+  }
+  function sansAccents(s){
+    return s
+      .replace(/[\u00e0\u00e2\u00e4\u00e1\u00e3]/g,"a")
+      .replace(/[\u00e9\u00e8\u00ea\u00eb]/g,"e")
+      .replace(/[\u00ee\u00ef\u00ec\u00ed]/g,"i")
+      .replace(/[\u00f4\u00f6\u00f2\u00f3\u00f5]/g,"o")
+      .replace(/[\u00fb\u00fc\u00f9\u00fa]/g,"u")
+      .replace(/[\u00e7]/g,"c")
+      .replace(/[\u2019\u2018\u02bc\u0060]/g,"'");
+  }
+  function normTexte(s){
+    var t = sansAccents(String(s).toLowerCase());
+    t = t.replace(/[\u00a0\u202f\u2009]/g," ").replace(/\s+/g," ");
+    return t.trim();
+  }
+  function contient(texte, mots){
+    for (var i = 0; i < mots.length; i++){
+      if (texte.indexOf(mots[i]) !== -1) return true;
+    }
+    return false;
+  }
+  function afficher(id, type, html){
+    var fb = document.getElementById("fb-" + id);
+    if (!fb) return;
+    fb.className = "feedback " + type;
+    fb.innerHTML = html;
+    fb.hidden = false;
+  }
+  function marquer(el, etat){
+    if (!el) return;
+    el.classList.remove("correct","partiel","incorrect");
+    if (etat) el.classList.add(etat);
+  }
+  function basculerAide(id, texte){
+    var box = document.getElementById("ai-" + id);
+    if (!box) return;
+    if (box.hidden){
+      box.innerHTML = "\ud83d\udca1 <strong>Indice&nbsp;:</strong> " + texte;
+      box.hidden = false;
+    } else {
+      box.hidden = true;
+    }
+  }
+  function palier(pct){
+    if (pct >= 90) return "\ud83d\udfe2 Excellent";
+    if (pct >= 75) return "\ud83d\udfe2 Tr\u00e8s bien";
+    if (pct >= 60) return "\ud83d\udfe1 Ma\u00eetrise satisfaisante";
+    if (pct >= 40) return "\ud83d\udfe0 Ma\u00eetrise fragile";
+    return "\ud83d\udd34 Ma\u00eetrise insuffisante";
+  }
+
+  // ---------- Comparaison d\u00e9cimale exacte ----------
+  function decompose(s){
+    var neg = false;
+    if (s.charAt(0) === "-"){ neg = true; s = s.slice(1); }
+    var p = s.split(".");
+    var ent = p[0] === "" ? "0" : p[0];
+    var dec = p.length > 1 ? p[1] : "";
+    ent = ent.replace(/^0+(?=\d)/, "");
+    dec = dec.replace(/0+$/, "");
+    if (ent === "0" && dec === "") neg = false;
+    return { neg:neg, ent:ent, dec:dec };
+  }
+  function cmpAbs(a, b){
+    if (a.ent.length !== b.ent.length) return a.ent.length > b.ent.length ? 1 : -1;
+    if (a.ent !== b.ent) return a.ent > b.ent ? 1 : -1;
+    var n = Math.max(a.dec.length, b.dec.length);
+    var da = a.dec + new Array(n - a.dec.length + 1).join("0");
+    var db = b.dec + new Array(n - b.dec.length + 1).join("0");
+    if (da === db) return 0;
+    return da > db ? 1 : -1;
+  }
+  function comparer(x, y){
+    var A = decompose(x), B = decompose(y);
+    if (A.neg !== B.neg) return A.neg ? -1 : 1;
+    var r = cmpAbs(A, B);
+    return A.neg ? -r : r;
+  }
+  function normalise(brut){
+    var s = String(brut).replace(/[\s\u00a0\u202f\u2009]/g, "");
+    s = s.replace(/[\u2212\u2013\u2014]/g, "-").replace(/,/g, ".");
+    if (s === "") return null;
+    if (!/^-?(\d+(\.\d*)?|\.\d+)$/.test(s)) return null;
+    return s;
+  }
+
+  var etats = {};
+  var occupe = false;
+
+  // ---------- Item 1 : division ----------
+  function verifierDivision(){
+    var input = document.getElementById("in-1");
+    var brut = input.value;
+    var attendu = "1.456789";
+    if (String(brut).replace(/[\s\u00a0]/g,"") === ""){
+      etats["1"] = "vide";
+      marquer(input, "");
+      afficher("1", "warn", "\u26a0\ufe0f Aucune r\u00e9ponse saisie. \u00c9cris le r\u00e9sultat, puis clique sur <strong>OK</strong>.");
+      return;
+    }
+    var val = normalise(brut);
+    if (val === null){
+      etats["1"] = "incorrect";
+      marquer(input, "incorrect");
+      afficher("1", "warn", "\u26a0\ufe0f Saisie non reconnue&nbsp;: &laquo;&nbsp;" + esc(brut) + "&nbsp;&raquo;. \u00c9cris un nombre seul.");
+      return;
+    }
+    if (comparer(val, attendu) === 0){
+      etats["1"] = "correct";
+      marquer(input, "correct");
+      afficher("1", "ok", "\u2705 Bravo&nbsp;! 1 456,789 : 1 000 = <strong><u>1,456789</u></strong>.");
+      return;
+    }
+    etats["1"] = "incorrect";
+    marquer(input, "incorrect");
+    afficher("1", "ko", "\u274c Ce n\u2019est pas le bon r\u00e9sultat.<br>R\u00e9ponse attendue&nbsp;: <strong><u>1,456789</u></strong>.");
+  }
+
+  // ---------- Item 2 : comparaisons (signes) ----------
+  var SIGNES = {
+    "2a": { attendu:">", a:"1.5", b:"0.15", texte:"15/10 et 15/100" },
+    "2b": { attendu:"=", a:"0.2", b:"0.2",  texte:"20/100 et 2/10" },
+    "2c": { attendu:">", a:"11.2", b:"11",  texte:"112/10 et 11" }
+  };
+  var AIDES_SIGNES = {
+    "2a": "Convertis chaque fraction en nombre d\u00e9cimal avant de comparer&nbsp;: 15/10 = 1,5 et 15/100 = 0,15.",
+    "2b": "Convertis chaque fraction en nombre d\u00e9cimal avant de comparer&nbsp;: les deux valent 0,2.",
+    "2c": "Convertis 112/10 en nombre d\u00e9cimal&nbsp;: 112/10 = 11,2."
+  };
+
+  function lireSigne(brut){
+    var t = String(brut).replace(/[\s\u00a0]/g,"");
+    if (t === "") return "";
+    if (t === "<" || t === ">" || t === "=") return t;
+    return null;
+  }
+
+  function verifierSigne(id){
+    var it = SIGNES[id];
+    var input = document.getElementById("in-" + id);
+    var brut = input.value;
+    var val = lireSigne(brut);
+
+    if (val === ""){
+      etats[id] = "vide";
+      marquer(input, "");
+      afficher(id, "warn", "\u26a0\ufe0f Aucune r\u00e9ponse saisie. \u00c9cris <strong>&lt;</strong>, <strong>=</strong> ou <strong>&gt;</strong>, puis clique sur <strong>OK</strong>.");
+      return;
+    }
+    if (val === null){
+      etats[id] = "incorrect";
+      marquer(input, "incorrect");
+      afficher(id, "warn", "\u26a0\ufe0f Saisie non reconnue&nbsp;: &laquo;&nbsp;" + esc(brut) + "&nbsp;&raquo;. \u00c9cris seulement un signe&nbsp;: &lt;, = ou &gt;.");
+      return;
+    }
+    if (val === it.attendu){
+      etats[id] = "correct";
+      marquer(input, "correct");
+      afficher(id, "ok", "\u2705 Bravo&nbsp;! " + it.texte + " &nbsp;\u2192&nbsp; <strong><u>" + it.attendu + "</u></strong>.");
+      return;
+    }
+    etats[id] = "incorrect";
+    marquer(input, "incorrect");
+    afficher(id, "ko", "\u274c Ce n\u2019est pas le bon signe.<br>R\u00e9ponse attendue&nbsp;: <strong><u>" + it.attendu + "</u></strong>.");
+  }
+
+  // ---------- Item 3 : nature + justification ----------
+  var NATURE_CLE = ["isocele"];
+  var JUSTIF_CLE1 = ["cote"];
+  var JUSTIF_CLE2 = ["egal","egaux","meme longueur","meme mesure","meme taille"];
+
+  function verifierTriangle(){
+    var inputNature = document.getElementById("in-3-nature");
+    var inputJustif = document.getElementById("in-3-just");
+    var brutNature = inputNature.value;
+    var brutJustif = inputJustif.value;
+
+    var natureVide = String(brutNature).replace(/[\s\u00a0]/g,"") === "";
+    var justifVide = String(brutJustif).replace(/[\s\u00a0]/g,"") === "";
+
+    if (natureVide && justifVide){
+      etats["3"] = "vide";
+      marquer(inputNature, ""); marquer(inputJustif, "");
+      afficher("3", "warn", "\u26a0\ufe0f Aucune r\u00e9ponse saisie. Indique la nature du triangle et justifie, puis clique sur <strong>OK</strong>.");
+      return;
+    }
+
+    var tNature = normTexte(brutNature);
+    var tJustif = normTexte(brutJustif);
+    var natureOk = contient(tNature, NATURE_CLE);
+    var justifOk = contient(tJustif, JUSTIF_CLE1) && contient(tJustif, JUSTIF_CLE2);
+
+    marquer(inputNature, natureOk ? "correct" : (natureVide ? "" : "incorrect"));
+    marquer(inputJustif, justifOk ? "correct" : (justifVide ? "" : "incorrect"));
+
+    var ref = "Le triangle TEG est <strong>isoc\u00e8le</strong>, car il a deux c\u00f4t\u00e9s de m\u00eame longueur (TE et TG).";
+
+    if (natureOk && justifOk){
+      etats["3"] = "correct";
+      afficher("3", "ok", "\u2705 Bravo&nbsp;! " + ref);
+      return;
+    }
+    if (natureOk || justifOk){
+      etats["3"] = "partiel";
+      var manque = natureOk ? "la justification (parle des c\u00f4t\u00e9s de m\u00eame longueur)" : "la nature du triangle";
+      afficher("3", "warn", "\u26a0\ufe0f Presque&nbsp;! V\u00e9rifie " + manque + ".<br>R\u00e9ponse attendue&nbsp;: " + ref);
+      return;
+    }
+    etats["3"] = "incorrect";
+    afficher("3", "ko", "\u274c Ce n\u2019est pas encore \u00e7a.<br>R\u00e9ponse attendue&nbsp;: " + ref);
+  }
+
+  var ORDRE_ITEMS = ["1","2a","2b","2c","3"];
+
+  function verifierTout(){
+    if (occupe) return;
+    occupe = true;
+    window.setTimeout(function(){ occupe = false; }, 350);
+
+    verifierDivision();
+    verifierSigne("2a"); verifierSigne("2b"); verifierSigne("2c");
+    verifierTriangle();
+
+    var total = ORDRE_ITEMS.length;
+    var score = 0;
+    var recap = "";
+    for (var j = 0; j < ORDRE_ITEMS.length; j++){
+      var id = ORDRE_ITEMS[j];
+      var e = etats[id];
+      if (e === "correct"){
+        score++;
+        recap += '<span class="r-ok">\u2714 ' + id + '</span>';
+      } else if (e === "partiel"){
+        recap += '<span class="r-mid">\u25d0 ' + id + '</span>';
+      } else {
+        recap += '<span class="r-ko">\u2718 ' + id + '</span>';
+      }
+    }
+    var pct = Math.round((score / total) * 100);
+    var bilan = document.getElementById("bilan");
+    bilan.innerHTML =
+      '<div class="score">Score&nbsp;: ' + score + '\u2009/\u2009' + total + ' (' + pct + '&nbsp;%)</div>' +
+      '<div class="palier">' + palier(pct) + '</div>' +
+      '<div class="recap">' + recap + '</div>' +
+      '<div class="legende">\u2714 correct &nbsp;\u2022&nbsp; \u25d0 partiel (nature ou justification correcte, pas les deux) &nbsp;\u2022&nbsp; \u2718 incorrect ou non r\u00e9pondu.</div>';
+    bilan.hidden = false;
+  }
+
+  function basculerCorrection(){
+    var box = document.getElementById("correction");
+    var btn = document.getElementById("btn-corr");
+    if (box.hidden){
+      box.innerHTML =
+        "<h2>Correction</h2>" +
+        "<ul>" +
+        "<li>1 456,789 : 1 000 = <strong>1,456789</strong></li>" +
+        "<li>15/10 <strong>&gt;</strong> 15/100 (1,5 &gt; 0,15)</li>" +
+        "<li>20/100 <strong>=</strong> 2/10 (0,2 = 0,2)</li>" +
+        "<li>112/10 <strong>&gt;</strong> 11 (11,2 &gt; 11)</li>" +
+        "<li>Le triangle TEG est <strong>isoc\u00e8le</strong>, car il a deux c\u00f4t\u00e9s de m\u00eame longueur (TE et TG).</li>" +
+        "</ul>";
+      box.hidden = false;
+      btn.textContent = "Masquer la correction";
+    } else {
+      box.hidden = true;
+      btn.textContent = "Voir la correction";
+    }
+  }
+
+  function reinitialiser(){
+    var champsSimples = ["in-1","in-2a","in-2b","in-2c","in-3-nature","in-3-just"];
+    for (var i = 0; i < champsSimples.length; i++){
+      var el = document.getElementById(champsSimples[i]);
+      if (el){
+        el.value = "";
+        el.classList.remove("correct","partiel","incorrect");
+      }
+    }
+    for (var j = 0; j < ORDRE_ITEMS.length; j++){
+      var id = ORDRE_ITEMS[j];
+      var fb = document.getElementById("fb-" + id);
+      if (fb){ fb.hidden = true; fb.innerHTML = ""; fb.className = "feedback"; }
+      var ai = document.getElementById("ai-" + id);
+      if (ai){ ai.hidden = true; ai.innerHTML = ""; }
+    }
+    etats = {};
+    var bilan = document.getElementById("bilan");
+    bilan.hidden = true; bilan.innerHTML = "";
+    var corr = document.getElementById("correction");
+    corr.hidden = true; corr.innerHTML = "";
+    document.getElementById("btn-corr").textContent = "Voir la correction";
+    occupe = false;
+  }
+
+  function init(){
+    document.querySelector('[data-ok="1"]').addEventListener("click", verifierDivision);
+    document.querySelector('[data-aide="1"]').addEventListener("click", function(){ basculerAide("1", "Diviser par 1 000 d\u00e9place la virgule de 3 rangs vers la gauche."); });
+
+    ["2a","2b","2c"].forEach(function(id){
+      document.querySelector('[data-ok="' + id + '"]').addEventListener("click", function(){ verifierSigne(id); });
+      document.querySelector('[data-aide="' + id + '"]').addEventListener("click", function(){ basculerAide(id, AIDES_SIGNES[id]); });
+    });
+
+    document.querySelector('[data-ok="3"]').addEventListener("click", verifierTriangle);
+    document.querySelector('[data-aide="3"]').addEventListener("click", function(){ basculerAide("3", "Regarde les petites marques sur les c\u00f4t\u00e9s [TE] et [TG]&nbsp;: que signifient-elles&nbsp;?"); });
+
+    var champs = document.querySelectorAll('input[type="text"]');
+    for (var i = 0; i < champs.length; i++){
+      champs[i].addEventListener("keydown", function(ev){
+        if (ev.key !== "Enter") return;
+        ev.preventDefault();
+        var id = this.id;
+        if (id === "in-1") verifierDivision();
+        else if (id === "in-2a") verifierSigne("2a");
+        else if (id === "in-2b") verifierSigne("2b");
+        else if (id === "in-2c") verifierSigne("2c");
+        else if (id === "in-3-nature") verifierTriangle();
+      });
+    }
+
+    document.getElementById("btn-tout").addEventListener("click", verifierTout);
+    document.getElementById("btn-corr").addEventListener("click", basculerCorrection);
+    document.getElementById("btn-reset").addEventListener("click", reinitialiser);
+  }
+
+  if (document.readyState === "loading"){
+    document.addEventListener("DOMContentLoaded", init);
+  } else {
+    init();
+  }
+})();
+</script>
+</body>
+</html>
