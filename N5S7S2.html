@@ -1,0 +1,353 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Rituel &mdash; Semaine 7 S&eacute;ance 2 &mdash; Comparer des nombres d&eacute;cimaux</title>
+<style>
+*{box-sizing:border-box}
+html,body{margin:0;padding:0}
+body{background:#fffdf7;font-family:Arial,Helvetica,sans-serif;color:#243238;line-height:1.6;padding:14px;overflow-x:hidden}
+.bulle{position:fixed;border-radius:50%;background:#3ba5b8;opacity:.12;pointer-events:none;z-index:0}
+.b1{width:190px;height:190px;top:-70px;left:-70px}
+.b2{width:130px;height:130px;top:-45px;right:-45px}
+.b3{width:160px;height:160px;bottom:-60px;left:-55px}
+.b4{width:110px;height:110px;bottom:-40px;right:-35px}
+.wrap{position:relative;z-index:1;max-width:880px;margin:0 auto}
+.tete{display:flex;flex-wrap:wrap;align-items:center;gap:10px;margin-bottom:14px}
+.etq{display:inline-block;padding:7px 16px;border-radius:8px;color:#fff;font-weight:700;font-size:.95rem}
+.etq-sem{background:#8fd3e8;color:#123f4a}
+.etq-sea{background:#3ba5b8}
+.etq-rit{background:#1f7a8c;font-family:Georgia,"Times New Roman",serif;margin-left:auto}
+h1{font-size:clamp(1.3rem,4.5vw,2rem);font-weight:900;color:#1f7a8c;margin:6px 0 18px;line-height:1.3}
+.bloc{position:relative;border:2px solid #3ba5b8;border-radius:12px;background:#fff;padding:28px 18px 20px;margin-bottom:18px}
+.onglet{position:absolute;top:-17px;left:18px;background:#8fd3e8;color:#123f4a;font-weight:700;font-size:.95rem;padding:5px 18px;border-radius:8px}
+.consigne{margin:4px 0 18px;font-weight:700;text-decoration:underline;color:#1f7a8c;font-size:clamp(.95rem,2.6vw,1.05rem);min-width:0;overflow-wrap:break-word}
+.item{padding:12px 0;border-bottom:1px dashed #dceff3}
+.item:last-of-type{border-bottom:0}
+.ligne{display:flex;flex-wrap:wrap;align-items:center;gap:10px;min-width:0}
+.calc{font-size:clamp(1rem,3vw,1.15rem);font-weight:700;color:#243238}
+.calc .lettre{color:#1f7a8c;margin-right:6px}
+input[type="text"]{width:64px;min-width:0;padding:9px 8px;font-family:Arial,Helvetica,sans-serif;font-size:1rem;font-weight:700;text-align:center;color:#1f7a8c;background:#f7fcfd;border:1px solid #b9dfe8;border-bottom:2px dotted #3ba5b8;border-radius:6px}
+input[type="text"]:focus{outline:2px solid #3ba5b8;outline-offset:1px}
+input.correct{border-color:#2e8b57;background:#effaf3;color:#2e8b57}
+input.incorrect{border-color:#c0392b;background:#fdefee;color:#c0392b}
+.actions{display:flex;flex-wrap:wrap;gap:8px;margin-left:auto}
+button{font-family:inherit;font-size:.92rem;font-weight:700;min-height:44px;padding:10px 16px;border:0;border-radius:8px;cursor:pointer;background:#3ba5b8;color:#fff;line-height:1.2}
+button:hover{background:#1f7a8c}
+button.sec{background:#fff;color:#1f7a8c;border:2px solid #3ba5b8}
+button.sec:hover{background:#eaf7fa}
+.feedback{margin:10px 0 0;padding:12px 14px;border-left:5px solid #3ba5b8;border-radius:6px;background:#f4fafb;font-size:clamp(.9rem,2.5vw,1rem);line-height:1.75;overflow-wrap:break-word}
+.feedback.ok{border-left-color:#2e8b57;background:#effaf3;color:#1e6b40}
+.feedback.ko{border-left-color:#c0392b;background:#fdefee;color:#96291d}
+.feedback.warn{border-left-color:#c9820a;background:#fff8ea;color:#8a5b04}
+.aide{margin:10px 0 0;padding:12px 14px;border-left:5px solid #8fd3e8;background:#f2fafd;border-radius:6px;font-size:clamp(.9rem,2.5vw,1rem);line-height:1.75}
+.barre{display:flex;flex-wrap:wrap;gap:10px;margin:18px 0}
+.barre button{flex:1 1 190px}
+.correction{border:2px dashed #3ba5b8;border-radius:12px;background:#fff;padding:16px 18px;margin-bottom:18px;font-size:clamp(.9rem,2.5vw,1rem);line-height:1.8}
+.correction h2{margin:0 0 10px;font-size:1.05rem;color:#1f7a8c}
+.correction ul{margin:6px 0 0;padding-left:20px}
+.correction li{margin-bottom:6px}
+.bilan{border:2px solid #1f7a8c;border-radius:12px;background:#fff;padding:16px 18px;margin-bottom:18px;font-size:.92rem;line-height:1.8}
+.bilan .score{font-size:clamp(1.05rem,3.2vw,1.25rem);font-weight:900;color:#1f7a8c}
+.bilan .palier{font-weight:700;margin-top:4px}
+.recap{display:flex;flex-wrap:wrap;gap:8px;margin-top:10px}
+.recap span{display:inline-flex;align-items:center;gap:6px;padding:6px 11px;border-radius:8px;background:#f4fafb;font-weight:700;font-size:.9rem;border:1px solid #dceff3}
+.recap .r-ok{color:#2e8b57}
+.recap .r-ko{color:#c0392b}
+.legende{margin-top:10px;font-size:.85rem;color:#4d6169}
+@media (max-width:768px){.actions{margin-left:0;width:100%}.actions button{flex:1 1 auto}}
+@media (max-width:480px){
+  body{padding:10px}
+  .bloc{padding:26px 12px 16px}
+  .etq{font-size:.85rem;padding:6px 12px}
+  .etq-rit{margin-left:0}
+  .recap span{font-size:.85rem}
+}
+</style>
+</head>
+<body>
+<div class="bulle b1"></div><div class="bulle b2"></div><div class="bulle b3"></div><div class="bulle b4"></div>
+
+<main class="wrap">
+
+  <div class="tete">
+    <span class="etq etq-sem">Semaine 7</span>
+    <span class="etq etq-sea">S&eacute;ance 2</span>
+    <span class="etq etq-rit">Rituel</span>
+  </div>
+
+  <h1>Comparer des nombres d&eacute;cimaux</h1>
+
+  <section class="bloc">
+    <span class="onglet">Alg&egrave;bre</span>
+
+    <p class="consigne">Compl&egrave;te avec Vrai (V) ou Faux (F).</p>
+
+    <div class="item">
+      <div class="ligne">
+        <span class="calc"><span class="lettre">a.</span>1,807&nbsp;&lt;&nbsp;2,601</span>
+        <input type="text" id="in-a" maxlength="4" autocomplete="off" aria-label="Vrai ou faux, 1,807 inferieur a 2,601">
+        <span class="actions"><button type="button" data-ok="a">OK</button><button type="button" class="sec" data-aide="a">Indice</button></span>
+      </div>
+      <div class="feedback" id="fb-a" hidden></div>
+      <div class="aide" id="ai-a" hidden></div>
+    </div>
+
+    <div class="item">
+      <div class="ligne">
+        <span class="calc"><span class="lettre">b.</span>8,1&nbsp;&gt;&nbsp;9,01</span>
+        <input type="text" id="in-b" maxlength="4" autocomplete="off" aria-label="Vrai ou faux, 8,1 superieur a 9,01">
+        <span class="actions"><button type="button" data-ok="b">OK</button><button type="button" class="sec" data-aide="b">Indice</button></span>
+      </div>
+      <div class="feedback" id="fb-b" hidden></div>
+      <div class="aide" id="ai-b" hidden></div>
+    </div>
+
+    <div class="item">
+      <div class="ligne">
+        <span class="calc"><span class="lettre">c.</span>21,15&nbsp;&lt;&nbsp;21,9</span>
+        <input type="text" id="in-c" maxlength="4" autocomplete="off" aria-label="Vrai ou faux, 21,15 inferieur a 21,9">
+        <span class="actions"><button type="button" data-ok="c">OK</button><button type="button" class="sec" data-aide="c">Indice</button></span>
+      </div>
+      <div class="feedback" id="fb-c" hidden></div>
+      <div class="aide" id="ai-c" hidden></div>
+    </div>
+
+    <div class="item">
+      <div class="ligne">
+        <span class="calc"><span class="lettre">d.</span>13,8&nbsp;&lt;&nbsp;13,15</span>
+        <input type="text" id="in-d" maxlength="4" autocomplete="off" aria-label="Vrai ou faux, 13,8 inferieur a 13,15">
+        <span class="actions"><button type="button" data-ok="d">OK</button><button type="button" class="sec" data-aide="d">Indice</button></span>
+      </div>
+      <div class="feedback" id="fb-d" hidden></div>
+      <div class="aide" id="ai-d" hidden></div>
+    </div>
+
+    <div class="item">
+      <div class="ligne">
+        <span class="calc"><span class="lettre">e.</span>5,05&nbsp;&gt;&nbsp;5,4</span>
+        <input type="text" id="in-e" maxlength="4" autocomplete="off" aria-label="Vrai ou faux, 5,05 superieur a 5,4">
+        <span class="actions"><button type="button" data-ok="e">OK</button><button type="button" class="sec" data-aide="e">Indice</button></span>
+      </div>
+      <div class="feedback" id="fb-e" hidden></div>
+      <div class="aide" id="ai-e" hidden></div>
+    </div>
+  </section>
+
+  <div class="barre">
+    <button type="button" id="btn-tout">V&eacute;rifier tout</button>
+    <button type="button" class="sec" id="btn-corr">Voir la correction</button>
+    <button type="button" class="sec" id="btn-reset">R&eacute;initialiser</button>
+  </div>
+
+  <div class="correction" id="correction" hidden></div>
+  <div class="bilan" id="bilan" hidden></div>
+
+</main>
+
+<script>
+(function(){
+  "use strict";
+
+  function esc(txt){
+    var d = document.createElement("div");
+    d.textContent = String(txt);
+    return d.innerHTML;
+  }
+  function sansAccents(s){
+    return s
+      .replace(/[\u00e0\u00e2\u00e4\u00e1\u00e3]/g,"a")
+      .replace(/[\u00e9\u00e8\u00ea\u00eb]/g,"e")
+      .replace(/[\u2019\u2018\u02bc\u0060]/g,"'");
+  }
+  function normTexte(s){
+    var t = sansAccents(String(s).toLowerCase());
+    t = t.replace(/[\u00a0\u202f\u2009]/g," ").replace(/\s+/g," ");
+    return t.trim();
+  }
+  function afficher(id, type, html){
+    var fb = document.getElementById("fb-" + id);
+    if (!fb) return;
+    fb.className = "feedback " + type;
+    fb.innerHTML = html;
+    fb.hidden = false;
+  }
+  function marquer(input, etat){
+    if (!input) return;
+    input.classList.remove("correct","incorrect");
+    if (etat) input.classList.add(etat);
+  }
+  function basculerAide(id, texte){
+    var box = document.getElementById("ai-" + id);
+    if (!box) return;
+    if (box.hidden){
+      box.innerHTML = "\ud83d\udca1 <strong>Indice&nbsp;:</strong> " + texte;
+      box.hidden = false;
+    } else {
+      box.hidden = true;
+    }
+  }
+  function palier(pct){
+    if (pct >= 90) return "\ud83d\udfe2 Excellent";
+    if (pct >= 75) return "\ud83d\udfe2 Tr\u00e8s bien";
+    if (pct >= 60) return "\ud83d\udfe1 Ma\u00eetrise satisfaisante";
+    if (pct >= 40) return "\ud83d\udfe0 Ma\u00eetrise fragile";
+    return "\ud83d\udd34 Ma\u00eetrise insuffisante";
+  }
+
+  var etats = {};
+  var occupe = false;
+
+  var ITEMS = {
+    a: { attendu:"v", enonce:"1,807 &lt; 2,601", ref:"Vrai",
+         aide:"Compare d\u2019abord les parties enti\u00e8res&nbsp;: 1 est plus petit que 2." },
+    b: { attendu:"f", enonce:"8,1 &gt; 9,01", ref:"Faux",
+         aide:"Compare d\u2019abord les parties enti\u00e8res&nbsp;: 8 est plus petit que 9." },
+    c: { attendu:"v", enonce:"21,15 &lt; 21,9", ref:"Vrai",
+         aide:"Les parties enti\u00e8res sont \u00e9gales (21)&nbsp;: compare les dixi\u00e8mes, 1 contre 9." },
+    d: { attendu:"f", enonce:"13,8 &lt; 13,15", ref:"Faux",
+         aide:"Les parties enti\u00e8res sont \u00e9gales (13)&nbsp;: compare les dixi\u00e8mes, 8 contre 1." },
+    e: { attendu:"f", enonce:"5,05 &gt; 5,4", ref:"Faux",
+         aide:"Les parties enti\u00e8res sont \u00e9gales (5)&nbsp;: compare les dixi\u00e8mes, 0 contre 4." }
+  };
+  var ORDRE_ITEMS = ["a","b","c","d","e"];
+
+  function lireVF(brut){
+    var t = normTexte(brut);
+    if (t === "") return "";
+    if (t === "v" || t === "vrai") return "v";
+    if (t === "f" || t === "faux") return "f";
+    return null;
+  }
+
+  function verifier(id){
+    var it = ITEMS[id];
+    var input = document.getElementById("in-" + id);
+    var brut = input.value;
+    var val = lireVF(brut);
+
+    if (val === ""){
+      etats[id] = "vide";
+      marquer(input, "");
+      afficher(id, "warn", "\u26a0\ufe0f Aucune r\u00e9ponse saisie. \u00c9cris <strong>V</strong> ou <strong>F</strong>, puis clique sur <strong>OK</strong>.");
+      return;
+    }
+    if (val === null){
+      etats[id] = "incorrect";
+      marquer(input, "incorrect");
+      afficher(id, "warn", "\u26a0\ufe0f Saisie non reconnue&nbsp;: &laquo;&nbsp;" + esc(brut) + "&nbsp;&raquo;. \u00c9cris seulement <strong>V</strong> (Vrai) ou <strong>F</strong> (Faux).");
+      return;
+    }
+    if (val === it.attendu){
+      etats[id] = "correct";
+      marquer(input, "correct");
+      afficher(id, "ok", "\u2705 Bravo&nbsp;! " + it.enonce + " est <strong><u>" + it.ref + "</u></strong>.");
+      return;
+    }
+    etats[id] = "incorrect";
+    marquer(input, "incorrect");
+    afficher(id, "ko", "\u274c Ce n\u2019est pas la bonne r\u00e9ponse.<br>" + it.enonce + " est en r\u00e9alit\u00e9 <strong><u>" + it.ref + "</u></strong>.");
+  }
+
+  function verifierTout(){
+    if (occupe) return;
+    occupe = true;
+    window.setTimeout(function(){ occupe = false; }, 350);
+
+    for (var i = 0; i < ORDRE_ITEMS.length; i++){ verifier(ORDRE_ITEMS[i]); }
+
+    var total = ORDRE_ITEMS.length;
+    var score = 0;
+    var recap = "";
+    for (var j = 0; j < ORDRE_ITEMS.length; j++){
+      var id = ORDRE_ITEMS[j];
+      if (etats[id] === "correct"){
+        score++;
+        recap += '<span class="r-ok">\u2714 ' + id + '</span>';
+      } else {
+        recap += '<span class="r-ko">\u2718 ' + id + '</span>';
+      }
+    }
+    var pct = Math.round((score / total) * 100);
+    var bilan = document.getElementById("bilan");
+    bilan.innerHTML =
+      '<div class="score">Score&nbsp;: ' + score + '\u2009/\u2009' + total + ' (' + pct + '&nbsp;%)</div>' +
+      '<div class="palier">' + palier(pct) + '</div>' +
+      '<div class="recap">' + recap + '</div>' +
+      '<div class="legende">\u2714 correct &nbsp;\u2022&nbsp; \u2718 incorrect ou non r\u00e9pondu.</div>';
+    bilan.hidden = false;
+  }
+
+  function basculerCorrection(){
+    var box = document.getElementById("correction");
+    var btn = document.getElementById("btn-corr");
+    if (box.hidden){
+      var lignes = "";
+      for (var i = 0; i < ORDRE_ITEMS.length; i++){
+        var id = ORDRE_ITEMS[i];
+        var it = ITEMS[id];
+        lignes += "<li>" + it.enonce + " &mdash; <strong>" + it.ref + "</strong></li>";
+      }
+      box.innerHTML = "<h2>Correction</h2><ul>" + lignes + "</ul>";
+      box.hidden = false;
+      btn.textContent = "Masquer la correction";
+    } else {
+      box.hidden = true;
+      btn.textContent = "Voir la correction";
+    }
+  }
+
+  function reinitialiser(){
+    for (var i = 0; i < ORDRE_ITEMS.length; i++){
+      var id = ORDRE_ITEMS[i];
+      var input = document.getElementById("in-" + id);
+      if (input){
+        input.value = "";
+        input.disabled = false;
+        input.readOnly = false;
+        input.classList.remove("correct","incorrect");
+      }
+      var fb = document.getElementById("fb-" + id);
+      if (fb){ fb.hidden = true; fb.innerHTML = ""; fb.className = "feedback"; }
+      var ai = document.getElementById("ai-" + id);
+      if (ai){ ai.hidden = true; ai.innerHTML = ""; }
+    }
+    etats = {};
+    var bilan = document.getElementById("bilan");
+    bilan.hidden = true; bilan.innerHTML = "";
+    var corr = document.getElementById("correction");
+    corr.hidden = true; corr.innerHTML = "";
+    document.getElementById("btn-corr").textContent = "Voir la correction";
+    occupe = false;
+  }
+
+  function init(){
+    for (var i = 0; i < ORDRE_ITEMS.length; i++){
+      (function(id){
+        document.querySelector('[data-ok="' + id + '"]').addEventListener("click", function(){ verifier(id); });
+        document.querySelector('[data-aide="' + id + '"]').addEventListener("click", function(){ basculerAide(id, ITEMS[id].aide); });
+      })(ORDRE_ITEMS[i]);
+    }
+    var champs = document.querySelectorAll('input[type="text"]');
+    for (var k = 0; k < champs.length; k++){
+      champs[k].addEventListener("keydown", function(ev){
+        if (ev.key !== "Enter") return;
+        ev.preventDefault();
+        verifier(this.id.replace("in-", ""));
+      });
+    }
+    document.getElementById("btn-tout").addEventListener("click", verifierTout);
+    document.getElementById("btn-corr").addEventListener("click", basculerCorrection);
+    document.getElementById("btn-reset").addEventListener("click", reinitialiser);
+  }
+
+  if (document.readyState === "loading"){
+    document.addEventListener("DOMContentLoaded", init);
+  } else {
+    init();
+  }
+})();
+</script>
+</body>
+</html>
