@@ -1,0 +1,580 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Rituel &mdash; Semaine 5 S&eacute;ance 4 &mdash; Bilan semaine 5</title>
+<style>
+*{box-sizing:border-box}
+html,body{margin:0;padding:0}
+body{background:#fffdf7;font-family:Arial,Helvetica,sans-serif;color:#243238;line-height:1.6;padding:14px;overflow-x:hidden}
+.bulle{position:fixed;border-radius:50%;background:#3ba5b8;opacity:.12;pointer-events:none;z-index:0}
+.b1{width:190px;height:190px;top:-70px;left:-70px}
+.b2{width:130px;height:130px;top:-45px;right:-45px}
+.b3{width:160px;height:160px;bottom:-60px;left:-55px}
+.b4{width:110px;height:110px;bottom:-40px;right:-35px}
+.wrap{position:relative;z-index:1;max-width:880px;margin:0 auto}
+.tete{display:flex;flex-wrap:wrap;align-items:center;gap:10px;margin-bottom:14px}
+.etq{display:inline-block;padding:7px 16px;border-radius:8px;color:#fff;font-weight:700;font-size:.95rem}
+.etq-sem{background:#8fd3e8;color:#123f4a}
+.etq-sea{background:#3ba5b8}
+.etq-rit{background:#1f7a8c;font-family:Georgia,"Times New Roman",serif;margin-left:auto}
+h1{font-size:clamp(1.3rem,4.5vw,2rem);font-weight:900;color:#1f7a8c;margin:6px 0 18px;line-height:1.3}
+.bloc{position:relative;border:2px solid #3ba5b8;border-radius:12px;background:#fff;padding:28px 18px 20px;margin-bottom:18px}
+.onglet{position:absolute;top:-17px;left:18px;background:#8fd3e8;color:#123f4a;font-weight:700;font-size:.95rem;padding:5px 18px;border-radius:8px}
+.tete-ex{display:flex;align-items:flex-start;gap:12px;margin:6px 0 16px;min-width:0}
+.pastille{flex:0 0 auto;width:34px;height:34px;border-radius:50%;background:#1f7a8c;color:#fff;font-weight:700;font-size:1rem;display:flex;align-items:center;justify-content:center}
+.consigne{margin:4px 0 0;font-weight:700;text-decoration:underline;color:#1f7a8c;font-size:clamp(.92rem,2.5vw,1.02rem);min-width:0;overflow-wrap:break-word;line-height:1.7}
+.liste-nombres{background:#fdf6f6;border-left:5px solid #7a3e3e;border-radius:6px;padding:14px 16px;margin:14px 0 20px;font-weight:700;color:#7a3e3e;font-size:clamp(.9rem,2.4vw,1.05rem);text-align:center}
+.sous-consigne{margin:16px 0 12px;font-weight:700;color:#1f7a8c;font-size:clamp(.9rem,2.4vw,1rem)}
+.item{padding:12px 0;border-bottom:1px dashed #dceff3}
+.item:last-of-type{border-bottom:0}
+.q{font-size:clamp(.95rem,2.6vw,1.05rem);font-weight:700;margin:0 0 10px;color:#243238;line-height:1.8}
+.ligne{display:flex;flex-wrap:wrap;align-items:center;gap:10px;min-width:0}
+.calc{font-size:clamp(.95rem,2.8vw,1.1rem);font-weight:700;color:#243238;white-space:nowrap}
+input[type="text"]{width:clamp(90px,26vw,120px);min-width:0;padding:9px 8px;font-family:Arial,Helvetica,sans-serif;font-size:1rem;font-weight:700;text-align:center;color:#1f7a8c;background:#f7fcfd;border:1px solid #b9dfe8;border-bottom:2px dotted #3ba5b8;border-radius:6px}
+input[type="text"]:focus{outline:2px solid #3ba5b8;outline-offset:1px}
+input.correct,textarea.correct{border-color:#2e8b57;background:#effaf3;color:#2e8b57}
+input.partiel,textarea.partiel{border-color:#c9820a;background:#fff8ea;color:#a86c06}
+input.incorrect,textarea.incorrect{border-color:#c0392b;background:#fdefee;color:#c0392b}
+.rang-label{font-weight:700;color:#1f7a8c;min-width:36px}
+textarea{width:100%;min-width:0;padding:10px;font-family:Arial,Helvetica,sans-serif;font-size:1rem;font-weight:700;color:#1f7a8c;background:#f7fcfd;border:1px solid #b9dfe8;border-bottom:2px dotted #3ba5b8;border-radius:6px;line-height:1.6;resize:vertical;min-height:56px;margin-top:4px}
+textarea:focus{outline:2px solid #3ba5b8;outline-offset:1px}
+.actions{display:flex;flex-wrap:wrap;gap:8px;margin-left:auto}
+button{font-family:inherit;font-size:.9rem;font-weight:700;min-height:44px;padding:9px 14px;border:0;border-radius:8px;cursor:pointer;background:#3ba5b8;color:#fff;line-height:1.2}
+button:hover{background:#1f7a8c}
+button.sec{background:#fff;color:#1f7a8c;border:2px solid #3ba5b8}
+button.sec:hover{background:#eaf7fa}
+.feedback{margin:10px 0 0;padding:12px 14px;border-left:5px solid #3ba5b8;border-radius:6px;background:#f4fafb;font-size:clamp(.87rem,2.4vw,.98rem);line-height:1.75;overflow-wrap:break-word}
+.feedback.ok{border-left-color:#2e8b57;background:#effaf3;color:#1e6b40}
+.feedback.ko{border-left-color:#c0392b;background:#fdefee;color:#96291d}
+.feedback.warn{border-left-color:#c9820a;background:#fff8ea;color:#8a5b04}
+.aide{margin:10px 0 0;padding:12px 14px;border-left:5px solid #8fd3e8;background:#f2fafd;border-radius:6px;font-size:clamp(.87rem,2.4vw,.98rem);line-height:1.75}
+.barre{display:flex;flex-wrap:wrap;gap:10px;margin:18px 0}
+.barre button{flex:1 1 190px}
+.correction{border:2px dashed #3ba5b8;border-radius:12px;background:#fff;padding:16px 18px;margin-bottom:18px;font-size:clamp(.9rem,2.5vw,1rem);line-height:1.8}
+.correction h2{margin:0 0 10px;font-size:1.05rem;color:#1f7a8c}
+.correction h3{margin:14px 0 4px;font-size:.98rem;color:#1f7a8c}
+.correction ul{margin:6px 0 0;padding-left:20px}
+.correction li{margin-bottom:6px}
+.correction p{margin:6px 0}
+.bilan{border:2px solid #1f7a8c;border-radius:12px;background:#fff;padding:16px 18px;margin-bottom:18px;font-size:.92rem;line-height:1.8}
+.bilan .score{font-size:clamp(1.05rem,3.2vw,1.25rem);font-weight:900;color:#1f7a8c}
+.bilan .palier{font-weight:700;margin-top:4px}
+.recap{display:flex;flex-wrap:wrap;gap:8px;margin-top:10px}
+.recap span{display:inline-flex;align-items:center;gap:6px;padding:6px 11px;border-radius:8px;background:#f4fafb;font-weight:700;font-size:.9rem;border:1px solid #dceff3}
+.recap .r-ok{color:#2e8b57}
+.recap .r-mid{color:#c9820a}
+.recap .r-ko{color:#c0392b}
+.legende{margin-top:10px;font-size:.85rem;color:#4d6169}
+@media (max-width:768px){.actions{margin-left:0;width:100%}.actions button{flex:1 1 auto}}
+@media (max-width:480px){
+  body{padding:10px}
+  .bloc{padding:26px 12px 16px}
+  .etq{font-size:.85rem;padding:6px 12px}
+  .etq-rit{margin-left:0}
+  .recap span{font-size:.85rem}
+}
+</style>
+</head>
+<body>
+<div class="bulle b1"></div><div class="bulle b2"></div><div class="bulle b3"></div><div class="bulle b4"></div>
+
+<main class="wrap">
+
+  <div class="tete">
+    <span class="etq etq-sem">Semaine 5</span>
+    <span class="etq etq-sea">S&eacute;ance 4</span>
+    <span class="etq etq-rit">Rituel</span>
+  </div>
+
+  <h1>Bilan semaine 5</h1>
+
+  <section class="bloc">
+    <span class="onglet">Calcul</span>
+
+    <div class="tete-ex">
+      <span class="pastille">1</span>
+      <p class="consigne">On consid&egrave;re les nombres rationnels suivants&nbsp;:</p>
+    </div>
+
+    <div class="liste-nombres">64/192&nbsp;&nbsp;;&nbsp;&nbsp;18/84&nbsp;&nbsp;;&nbsp;&nbsp;+84/28&nbsp;&nbsp;;&nbsp;&nbsp;7/21&nbsp;&nbsp;;&nbsp;&nbsp;&minus;120/160&nbsp;&nbsp;;&nbsp;&nbsp;&minus;16/&minus;48</div>
+
+    <p class="sous-consigne">a. Simplifie l&rsquo;&eacute;criture de chacune des fractions ci-dessus.</p>
+
+    <div class="item"><div class="ligne"><span class="calc">64/192&nbsp;=</span><input type="text" id="in-a1" autocomplete="off" placeholder="ex&nbsp;: 1/3" aria-label="Simplification de 64/192"><span class="actions"><button type="button" data-ok="a1">OK</button><button type="button" class="sec" data-aide="a1">Indice</button></span></div><div class="feedback" id="fb-a1" hidden></div><div class="aide" id="ai-a1" hidden></div></div>
+    <div class="item"><div class="ligne"><span class="calc">18/84&nbsp;=</span><input type="text" id="in-a2" autocomplete="off" placeholder="ex&nbsp;: 1/3" aria-label="Simplification de 18/84"><span class="actions"><button type="button" data-ok="a2">OK</button><button type="button" class="sec" data-aide="a2">Indice</button></span></div><div class="feedback" id="fb-a2" hidden></div><div class="aide" id="ai-a2" hidden></div></div>
+    <div class="item"><div class="ligne"><span class="calc">84/28&nbsp;=</span><input type="text" id="in-a3" autocomplete="off" placeholder="ex&nbsp;: 1/3" aria-label="Simplification de 84/28"><span class="actions"><button type="button" data-ok="a3">OK</button><button type="button" class="sec" data-aide="a3">Indice</button></span></div><div class="feedback" id="fb-a3" hidden></div><div class="aide" id="ai-a3" hidden></div></div>
+    <div class="item"><div class="ligne"><span class="calc">7/21&nbsp;=</span><input type="text" id="in-a4" autocomplete="off" placeholder="ex&nbsp;: 1/3" aria-label="Simplification de 7/21"><span class="actions"><button type="button" data-ok="a4">OK</button><button type="button" class="sec" data-aide="a4">Indice</button></span></div><div class="feedback" id="fb-a4" hidden></div><div class="aide" id="ai-a4" hidden></div></div>
+    <div class="item"><div class="ligne"><span class="calc">&minus;120/160&nbsp;=</span><input type="text" id="in-a5" autocomplete="off" placeholder="ex&nbsp;: 1/3" aria-label="Simplification de -120/160"><span class="actions"><button type="button" data-ok="a5">OK</button><button type="button" class="sec" data-aide="a5">Indice</button></span></div><div class="feedback" id="fb-a5" hidden></div><div class="aide" id="ai-a5" hidden></div></div>
+    <div class="item"><div class="ligne"><span class="calc">&minus;16/&minus;48&nbsp;=</span><input type="text" id="in-a6" autocomplete="off" placeholder="ex&nbsp;: 1/3" aria-label="Simplification de -16/-48"><span class="actions"><button type="button" data-ok="a6">OK</button><button type="button" class="sec" data-aide="a6">Indice</button></span></div><div class="feedback" id="fb-a6" hidden></div><div class="aide" id="ai-a6" hidden></div></div>
+
+    <p class="sous-consigne">b. Range ces nombres dans l&rsquo;ordre d&eacute;croissant (une valeur par case, du plus grand au plus petit).</p>
+
+    <div class="item"><div class="ligne"><span class="rang-label">1&egrave;re&nbsp;:</span><input type="text" id="in-b1" autocomplete="off" aria-label="Rang 1"></div></div>
+    <div class="item"><div class="ligne"><span class="rang-label">2&egrave;me&nbsp;:</span><input type="text" id="in-b2" autocomplete="off" aria-label="Rang 2"></div></div>
+    <div class="item"><div class="ligne"><span class="rang-label">3&egrave;me&nbsp;:</span><input type="text" id="in-b3" autocomplete="off" aria-label="Rang 3"></div></div>
+    <div class="item"><div class="ligne"><span class="rang-label">4&egrave;me&nbsp;:</span><input type="text" id="in-b4" autocomplete="off" aria-label="Rang 4"></div></div>
+    <div class="item"><div class="ligne"><span class="rang-label">5&egrave;me&nbsp;:</span><input type="text" id="in-b5" autocomplete="off" aria-label="Rang 5"></div></div>
+    <div class="item">
+      <div class="ligne">
+        <span class="rang-label">6&egrave;me&nbsp;:</span><input type="text" id="in-b6" autocomplete="off" aria-label="Rang 6">
+        <span class="actions"><button type="button" data-ok="b">V&eacute;rifier le classement</button><button type="button" class="sec" data-aide="b">Indice</button></span>
+      </div>
+      <div class="feedback" id="fb-b" hidden></div>
+      <div class="aide" id="ai-b" hidden></div>
+    </div>
+  </section>
+
+  <section class="bloc">
+    <span class="onglet">Calcul</span>
+
+    <div class="tete-ex">
+      <span class="pastille">2</span>
+      <p class="consigne">J&rsquo;ai mang&eacute; 1/20 d&rsquo;un sachet de bonbons. Ma s&oelig;ur a mang&eacute; 3/10.</p>
+    </div>
+
+    <div class="item">
+      <p class="q">a. Quelle fraction du sachet de bonbons a &eacute;t&eacute; mang&eacute;e&nbsp;?</p>
+      <div class="ligne">
+        <input type="text" id="in-c" autocomplete="off" placeholder="ex&nbsp;: 7/20" aria-label="Fraction du sachet mangee">
+        <span class="actions"><button type="button" data-ok="c">OK</button><button type="button" class="sec" data-aide="c">Indice</button></span>
+      </div>
+      <div class="feedback" id="fb-c" hidden></div>
+      <div class="aide" id="ai-c" hidden></div>
+    </div>
+
+    <div class="item">
+      <p class="q">b. Quelle fraction du sachet de bonbons reste-t-il&nbsp;?</p>
+      <div class="ligne">
+        <input type="text" id="in-d" autocomplete="off" placeholder="ex&nbsp;: 7/20" aria-label="Fraction du sachet restante">
+        <span class="actions"><button type="button" data-ok="d">OK</button><button type="button" class="sec" data-aide="d">Indice</button></span>
+      </div>
+      <div class="feedback" id="fb-d" hidden></div>
+      <div class="aide" id="ai-d" hidden></div>
+    </div>
+  </section>
+
+  <section class="bloc">
+    <span class="onglet">G&eacute;om&eacute;trie</span>
+
+    <div class="tete-ex">
+      <span class="pastille">3</span>
+      <p class="consigne">Cite une propri&eacute;t&eacute; sur les diagonales d&rsquo;un rectangle, qui n&rsquo;est pas vraie si le quadrilat&egrave;re est un simple parall&eacute;logramme.</p>
+    </div>
+
+    <div class="item">
+      <textarea id="in-e" aria-label="Propriete des diagonales du rectangle"></textarea>
+      <div class="actions" style="margin-top:8px"><button type="button" data-ok="e">OK</button><button type="button" class="sec" data-aide="e">Indice</button></div>
+      <div class="feedback" id="fb-e" hidden></div>
+      <div class="aide" id="ai-e" hidden></div>
+    </div>
+  </section>
+
+  <div class="barre">
+    <button type="button" id="btn-tout">V&eacute;rifier tout</button>
+    <button type="button" class="sec" id="btn-corr">Voir la correction</button>
+    <button type="button" class="sec" id="btn-reset">R&eacute;initialiser</button>
+  </div>
+
+  <div class="correction" id="correction" hidden></div>
+  <div class="bilan" id="bilan" hidden></div>
+
+</main>
+
+<script>
+(function(){
+  "use strict";
+
+  function esc(txt){
+    var d = document.createElement("div");
+    d.textContent = String(txt);
+    return d.innerHTML;
+  }
+  function sansAccents(s){
+    return s
+      .replace(/[\u00e0\u00e2\u00e4\u00e1\u00e3]/g,"a")
+      .replace(/[\u00e9\u00e8\u00ea\u00eb]/g,"e")
+      .replace(/[\u00ee\u00ef\u00ec\u00ed]/g,"i")
+      .replace(/[\u00f4\u00f6\u00f2\u00f3\u00f5]/g,"o")
+      .replace(/[\u00fb\u00fc\u00f9\u00fa]/g,"u")
+      .replace(/[\u00e7]/g,"c")
+      .replace(/[\u2019\u2018\u02bc\u0060]/g,"'");
+  }
+  function normTexte(s){
+    var t = sansAccents(String(s).toLowerCase());
+    t = t.replace(/[\u00a0\u202f\u2009]/g," ").replace(/\s+/g," ");
+    return t.trim();
+  }
+  function contient(texte, mots){
+    for (var i = 0; i < mots.length; i++){
+      if (texte.indexOf(mots[i]) !== -1) return true;
+    }
+    return false;
+  }
+  function afficher(id, type, html){
+    var fb = document.getElementById("fb-" + id);
+    if (!fb) return;
+    fb.className = "feedback " + type;
+    fb.innerHTML = html;
+    fb.hidden = false;
+  }
+  function marquer(el, etat){
+    if (!el) return;
+    el.classList.remove("correct","partiel","incorrect");
+    if (etat) el.classList.add(etat);
+  }
+  function basculerAide(id, texte){
+    var box = document.getElementById("ai-" + id);
+    if (!box) return;
+    if (box.hidden){
+      box.innerHTML = "\ud83d\udca1 <strong>Indice&nbsp;:</strong> " + texte;
+      box.hidden = false;
+    } else {
+      box.hidden = true;
+    }
+  }
+  function palier(pct){
+    if (pct >= 90) return "\ud83d\udfe2 Excellent";
+    if (pct >= 75) return "\ud83d\udfe2 Tr\u00e8s bien";
+    if (pct >= 60) return "\ud83d\udfe1 Ma\u00eetrise satisfaisante";
+    if (pct >= 40) return "\ud83d\udfe0 Ma\u00eetrise fragile";
+    return "\ud83d\udd34 Ma\u00eetrise insuffisante";
+  }
+
+  function pgcd(a, b){ a = Math.abs(a); b = Math.abs(b); while (b){ var t = b; b = a % b; a = t; } return a; }
+
+  function parseFraction(brut){
+    var s = String(brut).replace(/[\s\u00a0\u202f\u2009]/g,"");
+    s = s.replace(/[\u2212\u2013\u2014]/g,"-");
+    if (s === "") return null;
+    if (s.indexOf("/") !== -1){
+      var parts = s.split("/");
+      if (parts.length !== 2) return null;
+      if (!/^-?\d+$/.test(parts[0]) || !/^-?\d+$/.test(parts[1])) return null;
+      var num = Number(parts[0]), den = Number(parts[1]);
+      if (den === 0) return null;
+      if (den < 0){ num = -num; den = -den; }
+      return { num:num, den:den };
+    }
+    s = s.replace(",", ".");
+    if (!/^-?\d+(\.\d+)?$/.test(s)) return null;
+    if (s.indexOf(".") !== -1){
+      var dec = s.split(".")[1].length;
+      var den2 = Math.pow(10, dec);
+      var num2 = Math.round(Number(s) * den2);
+      return { num:num2, den:den2 };
+    }
+    return { num:Number(s), den:1 };
+  }
+  function fracEgale(a, b){ return a.num * b.den === b.num * a.den; }
+  function estReduite(f){ return pgcd(f.num, f.den) === 1; }
+  function fracValeur(f){ return f.num / f.den; }
+
+  var etats = {};
+  var occupe = false;
+
+  // ---------- Item 1a : simplification ----------
+  var SIMPLIFICATIONS = {
+    a1: { cible:{num:1,den:3},  ref:"1/3",  aide:"64 et 192 ont un facteur commun&nbsp;: 64." },
+    a2: { cible:{num:3,den:14}, ref:"3/14", aide:"18 et 84 ont un facteur commun&nbsp;: 6." },
+    a3: { cible:{num:3,den:1},  ref:"3",    aide:"84 &divide; 28 = 3." },
+    a4: { cible:{num:1,den:3},  ref:"1/3",  aide:"7 et 21 ont un facteur commun&nbsp;: 7." },
+    a5: { cible:{num:-3,den:4}, ref:"&minus;3/4", aide:"120 et 160 ont un facteur commun&nbsp;: 40." },
+    a6: { cible:{num:1,den:3},  ref:"1/3",  aide:"N\u00e9gatif divis\u00e9 par n\u00e9gatif donne un r\u00e9sultat positif." }
+  };
+
+  function verifierSimplification(id){
+    var it = SIMPLIFICATIONS[id];
+    var input = document.getElementById("in-" + id);
+    var brut = input.value;
+    if (String(brut).replace(/[\s\u00a0]/g,"") === ""){
+      etats[id] = "vide";
+      marquer(input, "");
+      afficher(id, "warn", "\u26a0\ufe0f Aucune r\u00e9ponse saisie. \u00c9cris la fraction simplifi\u00e9e, puis clique sur <strong>OK</strong>.");
+      return;
+    }
+    var f = parseFraction(brut);
+    if (f === null){
+      etats[id] = "incorrect";
+      marquer(input, "incorrect");
+      afficher(id, "warn", "\u26a0\ufe0f Saisie non reconnue. \u00c9cris une fraction (ex&nbsp;: 1/3) ou un entier.");
+      return;
+    }
+    var valeurOk = fracEgale(f, it.cible);
+    var reduiteOk = estReduite(f);
+
+    if (valeurOk && reduiteOk){
+      etats[id] = "correct";
+      marquer(input, "correct");
+      afficher(id, "ok", "\u2705 Bravo&nbsp;! La fraction simplifi\u00e9e est <strong><u>" + it.ref + "</u></strong>.");
+      return;
+    }
+    if (valeurOk && !reduiteOk){
+      etats[id] = "partiel";
+      marquer(input, "partiel");
+      afficher(id, "warn", "\u26a0\ufe0f La valeur est correcte, mais pas enti\u00e8rement simplifi\u00e9e.<br>Forme attendue&nbsp;: <strong><u>" + it.ref + "</u></strong>.");
+      return;
+    }
+    etats[id] = "incorrect";
+    marquer(input, "incorrect");
+    afficher(id, "ko", "\u274c Ce n\u2019est pas la bonne valeur.<br>R\u00e9ponse attendue&nbsp;: <strong><u>" + it.ref + "</u></strong>.");
+  }
+
+  // ---------- Item 1b : classement ----------
+  var CIBLES_CLASSEMENT = [
+    {num:3,den:1}, {num:1,den:3}, {num:1,den:3}, {num:1,den:3}, {num:3,den:14}, {num:-3,den:4}
+  ];
+  var REF_CLASSEMENT = "84/28 &gt; 64/192&nbsp;=&nbsp;7/21&nbsp;=&nbsp;&minus;16/&minus;48 &gt; 18/84 &gt; &minus;120/160";
+
+  function verifierClassement(){
+    var ids = ["b1","b2","b3","b4","b5","b6"];
+    var inputs = ids.map(function(id){ return document.getElementById("in-" + id); });
+    var bruts = inputs.map(function(inp){ return inp.value; });
+    var tousVides = bruts.every(function(b){ return String(b).replace(/[\s\u00a0]/g,"") === ""; });
+
+    if (tousVides){
+      etats["b"] = "vide";
+      inputs.forEach(function(inp){ marquer(inp, ""); });
+      afficher("b", "warn", "\u26a0\ufe0f Aucune r\u00e9ponse saisie. Compl\u00e8te les 6 rangs, puis clique sur <strong>V\u00e9rifier le classement</strong>.");
+      return;
+    }
+
+    var fractions = bruts.map(parseFraction);
+    var uneInvalide = fractions.some(function(f, i){ return f === null && String(bruts[i]).replace(/[\s\u00a0]/g,"") !== ""; });
+    if (uneInvalide){
+      etats["b"] = "incorrect";
+      inputs.forEach(function(inp, i){ marquer(inp, fractions[i] === null ? "incorrect" : ""); });
+      afficher("b", "warn", "\u26a0\ufe0f Chaque case doit contenir une fraction ou un nombre seul.");
+      return;
+    }
+
+    var cibleUtilisee = CIBLES_CLASSEMENT.map(function(){ return false; });
+    var correspondance = fractions.map(function(f){
+      if (f === null) return -1;
+      for (var i = 0; i < CIBLES_CLASSEMENT.length; i++){
+        if (!cibleUtilisee[i] && fracEgale(f, CIBLES_CLASSEMENT[i])){
+          cibleUtilisee[i] = true;
+          return i;
+        }
+      }
+      return -1;
+    });
+    var multiEnsembleOk = correspondance.every(function(c){ return c !== -1; });
+
+    var ordreOk = true;
+    for (var i = 0; i < fractions.length - 1; i++){
+      if (fractions[i] === null || fractions[i+1] === null) continue;
+      if (fracValeur(fractions[i]) < fracValeur(fractions[i+1]) - 1e-9){
+        ordreOk = false;
+        break;
+      }
+    }
+
+    inputs.forEach(function(inp, i){
+      var ok = multiEnsembleOk && ordreOk;
+      marquer(inp, ok ? "correct" : (fractions[i] === null ? "" : "incorrect"));
+    });
+
+    if (multiEnsembleOk && ordreOk){
+      etats["b"] = "correct";
+      afficher("b", "ok", "\u2705 Bravo&nbsp;! Le classement d\u00e9croissant est correct&nbsp;: " + REF_CLASSEMENT + ".");
+      return;
+    }
+    if (multiEnsembleOk && !ordreOk){
+      etats["b"] = "partiel";
+      afficher("b", "warn", "\u26a0\ufe0f Tu as les 6 bonnes valeurs, mais l\u2019ordre n\u2019est pas d\u00e9croissant.<br>Ordre attendu&nbsp;: " + REF_CLASSEMENT + ".");
+      return;
+    }
+    etats["b"] = "incorrect";
+    afficher("b", "ko", "\u274c Les valeurs saisies ne correspondent pas aux 6 nombres de l\u2019\u00e9nonc\u00e9.<br>Ordre attendu&nbsp;: " + REF_CLASSEMENT + ".");
+  }
+
+  // ---------- Item 2 : bonbons ----------
+  function verifierFractionSimple(id, cible, enonce){
+    var input = document.getElementById("in-" + id);
+    var brut = input.value;
+    if (String(brut).replace(/[\s\u00a0]/g,"") === ""){
+      etats[id] = "vide";
+      marquer(input, "");
+      afficher(id, "warn", "\u26a0\ufe0f Aucune r\u00e9ponse saisie. \u00c9cris la fraction, puis clique sur <strong>OK</strong>.");
+      return;
+    }
+    var f = parseFraction(brut);
+    if (f === null){
+      etats[id] = "incorrect";
+      marquer(input, "incorrect");
+      afficher(id, "warn", "\u26a0\ufe0f Saisie non reconnue. \u00c9cris une fraction (ex&nbsp;: 7/20).");
+      return;
+    }
+    if (fracEgale(f, cible)){
+      etats[id] = "correct";
+      marquer(input, "correct");
+      afficher(id, "ok", "\u2705 Bravo&nbsp;! " + enonce + " = <strong><u>" + cible.num + "/" + cible.den + "</u></strong>.");
+      return;
+    }
+    etats[id] = "incorrect";
+    marquer(input, "incorrect");
+    afficher(id, "ko", "\u274c Ce n\u2019est pas la bonne fraction.<br>R\u00e9ponse attendue&nbsp;: <strong><u>" + cible.num + "/" + cible.den + "</u></strong>.");
+  }
+
+  // ---------- Item 3 : propri\u00e9t\u00e9 rectangle ----------
+  var CLE_DIAGONALE = ["diagonale"];
+  var CLE_EGALITE = ["egal","meme longueur","meme mesure","meme taille"];
+
+  function verifierPropriete(){
+    var input = document.getElementById("in-e");
+    var brut = input.value;
+    if (String(brut).replace(/[\s\u00a0]/g,"") === ""){
+      etats["e"] = "vide";
+      marquer(input, "");
+      afficher("e", "warn", "\u26a0\ufe0f Aucune r\u00e9ponse saisie. Cite une propri\u00e9t\u00e9, puis clique sur <strong>OK</strong>.");
+      return;
+    }
+    var texte = normTexte(brut);
+    var diagOk = contient(texte, CLE_DIAGONALE);
+    var egalOk = contient(texte, CLE_EGALITE);
+
+    marquer(input, (diagOk && egalOk) ? "correct" : ((diagOk || egalOk) ? "partiel" : "incorrect"));
+
+    var ref = "Un rectangle poss\u00e8de deux diagonales de <strong>m\u00eame longueur</strong>. Ce n\u2019est pas le cas d\u2019un simple parall\u00e9logramme.";
+
+    if (diagOk && egalOk){
+      etats["e"] = "correct";
+      afficher("e", "ok", "\u2705 Bravo&nbsp;! " + ref);
+      return;
+    }
+    if (diagOk || egalOk){
+      etats["e"] = "partiel";
+      afficher("e", "warn", "\u26a0\ufe0f Presque&nbsp;! " + ref);
+      return;
+    }
+    etats["e"] = "incorrect";
+    afficher("e", "ko", "\u274c Ce n\u2019est pas encore \u00e7a.<br>" + ref);
+  }
+
+  var ORDRE_ITEMS = ["a1","a2","a3","a4","a5","a6","b","c","d","e"];
+
+  function verifierTout(){
+    if (occupe) return;
+    occupe = true;
+    window.setTimeout(function(){ occupe = false; }, 350);
+
+    ["a1","a2","a3","a4","a5","a6"].forEach(verifierSimplification);
+    verifierClassement();
+    verifierFractionSimple("c", {num:7,den:20}, "1/20 + 3/10");
+    verifierFractionSimple("d", {num:13,den:20}, "1 &minus; 7/20");
+    verifierPropriete();
+
+    var total = ORDRE_ITEMS.length;
+    var score = 0;
+    var recap = "";
+    for (var j = 0; j < ORDRE_ITEMS.length; j++){
+      var id = ORDRE_ITEMS[j];
+      var e = etats[id];
+      if (e === "correct"){
+        score++;
+        recap += '<span class="r-ok">\u2714 ' + id + '</span>';
+      } else if (e === "partiel"){
+        recap += '<span class="r-mid">\u25d0 ' + id + '</span>';
+      } else {
+        recap += '<span class="r-ko">\u2718 ' + id + '</span>';
+      }
+    }
+    var pct = Math.round((score / total) * 100);
+    var bilan = document.getElementById("bilan");
+    bilan.innerHTML =
+      '<div class="score">Score&nbsp;: ' + score + '\u2009/\u2009' + total + ' (' + pct + '&nbsp;%)</div>' +
+      '<div class="palier">' + palier(pct) + '</div>' +
+      '<div class="recap">' + recap + '</div>' +
+      '<div class="legende">\u2714 correct &nbsp;\u2022&nbsp; \u25d0 partiel &nbsp;\u2022&nbsp; \u2718 incorrect ou non r\u00e9pondu.</div>';
+    bilan.hidden = false;
+  }
+
+  function basculerCorrection(){
+    var box = document.getElementById("correction");
+    var btn = document.getElementById("btn-corr");
+    if (box.hidden){
+      box.innerHTML =
+        "<h2>Correction</h2>" +
+        "<h3>1a. Simplification</h3><ul>" +
+        "<li>64/192 = <strong>1/3</strong></li><li>18/84 = <strong>3/14</strong></li>" +
+        "<li>84/28 = <strong>3</strong></li><li>7/21 = <strong>1/3</strong></li>" +
+        "<li>&minus;120/160 = <strong>&minus;3/4</strong></li><li>&minus;16/&minus;48 = <strong>1/3</strong></li></ul>" +
+        "<h3>1b. Ordre d\u00e9croissant</h3><p>" + REF_CLASSEMENT + "</p>" +
+        "<h3>2. Bonbons</h3>" +
+        "<p>a. 1/20 + 3/10 = 1/20 + 6/20 = <strong>7/20</strong> du sachet a &eacute;t&eacute; mang&eacute;.</p>" +
+        "<p>b. 1 &minus; 7/20 = 20/20 &minus; 7/20 = <strong>13/20</strong> du sachet reste.</p>" +
+        "<h3>3. Propri&eacute;t&eacute; du rectangle</h3>" +
+        "<p>Un rectangle poss&egrave;de deux diagonales de <strong>m&ecirc;me longueur</strong>. Ce n&rsquo;est pas le cas d&rsquo;un simple parall&eacute;logramme.</p>";
+      box.hidden = false;
+      btn.textContent = "Masquer la correction";
+    } else {
+      box.hidden = true;
+      btn.textContent = "Voir la correction";
+    }
+  }
+
+  function reinitialiser(){
+    ["a1","a2","a3","a4","a5","a6","b1","b2","b3","b4","b5","b6","c","d","e"].forEach(function(id){
+      var el = document.getElementById("in-" + id);
+      if (el){ el.value = ""; el.classList.remove("correct","partiel","incorrect"); }
+    });
+    ORDRE_ITEMS.forEach(function(id){
+      var fb = document.getElementById("fb-" + id);
+      if (fb){ fb.hidden = true; fb.innerHTML = ""; fb.className = "feedback"; }
+      var ai = document.getElementById("ai-" + id);
+      if (ai){ ai.hidden = true; ai.innerHTML = ""; }
+    });
+    etats = {};
+    var bilan = document.getElementById("bilan");
+    bilan.hidden = true; bilan.innerHTML = "";
+    var corr = document.getElementById("correction");
+    corr.hidden = true; corr.innerHTML = "";
+    document.getElementById("btn-corr").textContent = "Voir la correction";
+    occupe = false;
+  }
+
+  function init(){
+    ["a1","a2","a3","a4","a5","a6"].forEach(function(id){
+      document.querySelector('[data-ok="' + id + '"]').addEventListener("click", function(){ verifierSimplification(id); });
+      document.querySelector('[data-aide="' + id + '"]').addEventListener("click", function(){ basculerAide(id, SIMPLIFICATIONS[id].aide); });
+    });
+    document.querySelector('[data-ok="b"]').addEventListener("click", verifierClassement);
+    document.querySelector('[data-aide="b"]').addEventListener("click", function(){ basculerAide("b", "Simplifie d\u2019abord chaque fraction, puis compare les valeurs. Trois d\u2019entre elles sont \u00e9gales."); });
+
+    document.querySelector('[data-ok="c"]').addEventListener("click", function(){ verifierFractionSimple("c", {num:7,den:20}, "1/20 + 3/10"); });
+    document.querySelector('[data-aide="c"]').addEventListener("click", function(){ basculerAide("c", "Mets les deux fractions au m\u00eame d\u00e9nominateur (20), puis additionne."); });
+    document.querySelector('[data-ok="d"]').addEventListener("click", function(){ verifierFractionSimple("d", {num:13,den:20}, "1 &minus; 7/20"); });
+    document.querySelector('[data-aide="d"]').addEventListener("click", function(){ basculerAide("d", "Le sachet entier repr\u00e9sente 20/20. Soustrais la fraction mang\u00e9e."); });
+
+    document.querySelector('[data-ok="e"]').addEventListener("click", verifierPropriete);
+    document.querySelector('[data-aide="e"]').addEventListener("click", function(){ basculerAide("e", "Compare la longueur des deux diagonales dans un rectangle et dans un parall\u00e9logramme quelconque."); });
+
+    var champs = document.querySelectorAll('input[type="text"]');
+    for (var i = 0; i < champs.length; i++){
+      champs[i].addEventListener("keydown", function(ev){
+        if (ev.key !== "Enter") return;
+        ev.preventDefault();
+        var id = this.id.replace("in-", "");
+        if (id.indexOf("a") === 0) verifierSimplification(id);
+        else if (id.indexOf("b") === 0) verifierClassement();
+        else if (id === "c") verifierFractionSimple("c", {num:7,den:20}, "1/20 + 3/10");
+        else if (id === "d") verifierFractionSimple("d", {num:13,den:20}, "1 &minus; 7/20");
+      });
+    }
+
+    document.getElementById("btn-tout").addEventListener("click", verifierTout);
+    document.getElementById("btn-corr").addEventListener("click", basculerCorrection);
+    document.getElementById("btn-reset").addEventListener("click", reinitialiser);
+  }
+
+  if (document.readyState === "loading"){
+    document.addEventListener("DOMContentLoaded", init);
+  } else {
+    init();
+  }
+})();
+</script>
+</body>
+</html>
