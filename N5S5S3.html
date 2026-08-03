@@ -1,0 +1,398 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Rituel &mdash; Semaine 5 S&eacute;ance 3 &mdash; Vocabulaire du triangle</title>
+<style>
+*{box-sizing:border-box}
+html,body{margin:0;padding:0}
+body{background:#fffdf7;font-family:Arial,Helvetica,sans-serif;color:#243238;line-height:1.6;padding:14px;overflow-x:hidden}
+.bulle{position:fixed;border-radius:50%;background:#3ba5b8;opacity:.12;pointer-events:none;z-index:0}
+.b1{width:190px;height:190px;top:-70px;left:-70px}
+.b2{width:130px;height:130px;top:-45px;right:-45px}
+.b3{width:160px;height:160px;bottom:-60px;left:-55px}
+.b4{width:110px;height:110px;bottom:-40px;right:-35px}
+.wrap{position:relative;z-index:1;max-width:880px;margin:0 auto}
+.tete{display:flex;flex-wrap:wrap;align-items:center;gap:10px;margin-bottom:14px}
+.etq{display:inline-block;padding:7px 16px;border-radius:8px;color:#fff;font-weight:700;font-size:.95rem}
+.etq-sem{background:#8fd3e8;color:#123f4a}
+.etq-sea{background:#3ba5b8}
+.etq-rit{background:#1f7a8c;font-family:Georgia,"Times New Roman",serif;margin-left:auto}
+h1{font-size:clamp(1.3rem,4.5vw,2rem);font-weight:900;color:#1f7a8c;margin:6px 0 18px;line-height:1.3}
+.bloc{position:relative;border:2px solid #3ba5b8;border-radius:12px;background:#fff;padding:28px 18px 20px;margin-bottom:18px}
+.onglet{position:absolute;top:-17px;left:18px;background:#8fd3e8;color:#123f4a;font-weight:700;font-size:.95rem;padding:5px 18px;border-radius:8px}
+.consigne{margin:4px 0 6px;font-weight:700;text-decoration:underline;color:#1f7a8c;font-size:clamp(.95rem,2.6vw,1.05rem);min-width:0;overflow-wrap:break-word}
+.banque{margin:0 0 18px;font-size:clamp(.9rem,2.4vw,1rem)}
+.banque .mot{display:inline-block;padding:4px 12px;margin:3px 4px 0 0;border-radius:16px;background:#eaf7fa;border:1px solid #8fd3e8;color:#17505c;font-weight:700}
+.figure-triangle{max-width:230px;margin:6px auto 20px}
+.figure-triangle img{width:100%;height:auto;border:1px solid #dceff3;border-radius:8px;background:#fff}
+.item{padding:12px 0;border-bottom:1px dashed #dceff3}
+.item:last-of-type{border-bottom:0}
+.q{font-size:clamp(1rem,3vw,1.1rem);font-weight:700;margin:0 0 10px;color:#243238;overflow-wrap:break-word;line-height:1.9}
+.q .lettre{color:#1f7a8c;font-weight:700;margin-right:4px}
+input.champ-inline{display:inline-block;width:auto;min-width:130px;max-width:220px;vertical-align:middle;margin:2px 3px;padding:7px 8px;font-family:Arial,Helvetica,sans-serif;font-size:1rem;font-weight:700;text-align:center;color:#1f7a8c;background:#f7fcfd;border:1px solid #b9dfe8;border-bottom:2px dotted #3ba5b8;border-radius:6px}
+input.champ-inline:focus{outline:2px solid #3ba5b8;outline-offset:1px}
+input.correct{border-color:#2e8b57;background:#effaf3;color:#2e8b57}
+input.incorrect{border-color:#c0392b;background:#fdefee;color:#c0392b}
+.ligne-actions{display:flex;flex-wrap:wrap;gap:8px;margin-top:4px}
+button{font-family:inherit;font-size:.92rem;font-weight:700;min-height:44px;padding:10px 16px;border:0;border-radius:8px;cursor:pointer;background:#3ba5b8;color:#fff;line-height:1.2}
+button:hover{background:#1f7a8c}
+button.sec{background:#fff;color:#1f7a8c;border:2px solid #3ba5b8}
+button.sec:hover{background:#eaf7fa}
+.feedback{margin:10px 0 0;padding:12px 14px;border-left:5px solid #3ba5b8;border-radius:6px;background:#f4fafb;font-size:clamp(.9rem,2.5vw,1rem);line-height:1.75;overflow-wrap:break-word}
+.feedback.ok{border-left-color:#2e8b57;background:#effaf3;color:#1e6b40}
+.feedback.ko{border-left-color:#c0392b;background:#fdefee;color:#96291d}
+.feedback.warn{border-left-color:#c9820a;background:#fff8ea;color:#8a5b04}
+.aide{margin:10px 0 0;padding:12px 14px;border-left:5px solid #8fd3e8;background:#f2fafd;border-radius:6px;font-size:clamp(.9rem,2.5vw,1rem);line-height:1.75}
+.barre{display:flex;flex-wrap:wrap;gap:10px;margin:18px 0}
+.barre button{flex:1 1 190px}
+.correction{border:2px dashed #3ba5b8;border-radius:12px;background:#fff;padding:16px 18px;margin-bottom:18px;font-size:clamp(.9rem,2.5vw,1rem);line-height:1.8}
+.correction h2{margin:0 0 10px;font-size:1.05rem;color:#1f7a8c}
+.correction ul{margin:6px 0 0;padding-left:20px}
+.correction li{margin-bottom:6px}
+.bilan{border:2px solid #1f7a8c;border-radius:12px;background:#fff;padding:16px 18px;margin-bottom:18px;font-size:.92rem;line-height:1.8}
+.bilan .score{font-size:clamp(1.05rem,3.2vw,1.25rem);font-weight:900;color:#1f7a8c}
+.bilan .palier{font-weight:700;margin-top:4px}
+.recap{display:flex;flex-wrap:wrap;gap:8px;margin-top:10px}
+.recap span{display:inline-flex;align-items:center;gap:6px;padding:6px 11px;border-radius:8px;background:#f4fafb;font-weight:700;font-size:.9rem;border:1px solid #dceff3}
+.recap .r-ok{color:#2e8b57}
+.recap .r-mid{color:#c9820a}
+.recap .r-ko{color:#c0392b}
+.legende{margin-top:10px;font-size:.85rem;color:#4d6169}
+@media (max-width:480px){
+  body{padding:10px}
+  .bloc{padding:26px 12px 16px}
+  .etq{font-size:.85rem;padding:6px 12px}
+  .etq-rit{margin-left:0}
+  input.champ-inline{min-width:110px}
+  .recap span{font-size:.85rem}
+}
+</style>
+</head>
+<body>
+<div class="bulle b1"></div><div class="bulle b2"></div><div class="bulle b3"></div><div class="bulle b4"></div>
+
+<main class="wrap">
+
+  <div class="tete">
+    <span class="etq etq-sem">Semaine 5</span>
+    <span class="etq etq-sea">S&eacute;ance 3</span>
+    <span class="etq etq-rit">Rituel</span>
+  </div>
+
+  <h1>Vocabulaire du triangle</h1>
+
+  <section class="bloc">
+    <span class="onglet">G&eacute;om&eacute;trie</span>
+
+    <p class="consigne">Compl&egrave;te les pointill&eacute;s avec les mots&nbsp;:</p>
+    <p class="banque"><span class="mot">c&ocirc;t&eacute;</span><span class="mot">sommet</span><span class="mot">oppos&eacute;</span></p>
+
+    <div class="figure-triangle">
+      <img src="data:image/png;base64,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" alt="Triangle OIJ avec le sommet O en haut, les sommets I et J en bas.">
+    </div>
+
+    <div class="item">
+      <p class="q"><span class="lettre">a.</span>I, O et J sont les trois <input type="text" class="champ-inline" id="in-a" autocomplete="off" aria-label="Nature de I, O et J"> du triangle OIJ.</p>
+      <div class="ligne-actions"><button type="button" data-ok="a">OK</button><button type="button" class="sec" data-aide="a">Indice</button></div>
+      <div class="feedback" id="fb-a" hidden></div>
+      <div class="aide" id="ai-a" hidden></div>
+    </div>
+
+    <div class="item">
+      <p class="q"><span class="lettre">b.</span>[IO], [OJ] et [IJ] sont les trois <input type="text" class="champ-inline" id="in-b" autocomplete="off" aria-label="Nature de IO, OJ et IJ"> du triangle OIJ.</p>
+      <div class="ligne-actions"><button type="button" data-ok="b">OK</button><button type="button" class="sec" data-aide="b">Indice</button></div>
+      <div class="feedback" id="fb-b" hidden></div>
+      <div class="aide" id="ai-b" hidden></div>
+    </div>
+
+    <div class="item">
+      <p class="q"><span class="lettre">c.</span>O est le <input type="text" class="champ-inline" id="in-c1" autocomplete="off" aria-label="Premier mot, point c"> <input type="text" class="champ-inline" id="in-c2" autocomplete="off" aria-label="Deuxi&egrave;me mot, point c"> au c&ocirc;t&eacute; [IJ].</p>
+      <div class="ligne-actions"><button type="button" data-ok="c">OK</button><button type="button" class="sec" data-aide="c">Indice</button></div>
+      <div class="feedback" id="fb-c" hidden></div>
+      <div class="aide" id="ai-c" hidden></div>
+    </div>
+
+    <div class="item">
+      <p class="q"><span class="lettre">d.</span>[OI] est le <input type="text" class="champ-inline" id="in-d1" autocomplete="off" aria-label="Premier mot, point d"> <input type="text" class="champ-inline" id="in-d2" autocomplete="off" aria-label="Deuxi&egrave;me mot, point d"> au sommet J.</p>
+      <div class="ligne-actions"><button type="button" data-ok="d">OK</button><button type="button" class="sec" data-aide="d">Indice</button></div>
+      <div class="feedback" id="fb-d" hidden></div>
+      <div class="aide" id="ai-d" hidden></div>
+    </div>
+  </section>
+
+  <div class="barre">
+    <button type="button" id="btn-tout">V&eacute;rifier tout</button>
+    <button type="button" class="sec" id="btn-corr">Voir la correction</button>
+    <button type="button" class="sec" id="btn-reset">R&eacute;initialiser</button>
+  </div>
+
+  <div class="correction" id="correction" hidden></div>
+  <div class="bilan" id="bilan" hidden></div>
+
+</main>
+
+<script>
+(function(){
+  "use strict";
+
+  function esc(txt){
+    var d = document.createElement("div");
+    d.textContent = String(txt);
+    return d.innerHTML;
+  }
+
+  function sansAccents(s){
+    return s
+      .replace(/[\u00e0\u00e2\u00e4\u00e1\u00e3]/g,"a")
+      .replace(/[\u00e9\u00e8\u00ea\u00eb]/g,"e")
+      .replace(/[\u00ee\u00ef\u00ec\u00ed]/g,"i")
+      .replace(/[\u00f4\u00f6\u00f2\u00f3\u00f5]/g,"o")
+      .replace(/[\u00fb\u00fc\u00f9\u00fa]/g,"u")
+      .replace(/[\u00e7]/g,"c")
+      .replace(/[\u2019\u2018\u02bc\u0060]/g,"'");
+  }
+
+  function normTexte(s){
+    var t = sansAccents(String(s).toLowerCase());
+    t = t.replace(/[\u00a0\u202f\u2009]/g," ").replace(/\s+/g," ");
+    return t.trim();
+  }
+
+  function contient(texte, mots){
+    for (var i = 0; i < mots.length; i++){
+      if (texte.indexOf(mots[i]) !== -1) return true;
+    }
+    return false;
+  }
+
+  function afficher(id, type, html){
+    var fb = document.getElementById("fb-" + id);
+    if (!fb) return;
+    fb.className = "feedback " + type;
+    fb.innerHTML = html;
+    fb.hidden = false;
+  }
+
+  function marquer(input, etat){
+    if (!input) return;
+    input.classList.remove("correct","incorrect");
+    if (etat) input.classList.add(etat);
+  }
+
+  function basculerAide(id, texte){
+    var box = document.getElementById("ai-" + id);
+    if (!box) return;
+    if (box.hidden){
+      box.innerHTML = "\ud83d\udca1 <strong>Indice&nbsp;:</strong> " + texte;
+      box.hidden = false;
+    } else {
+      box.hidden = true;
+    }
+  }
+
+  function palier(pct){
+    if (pct >= 90) return "\ud83d\udfe2 Excellent";
+    if (pct >= 75) return "\ud83d\udfe2 Tr\u00e8s bien";
+    if (pct >= 60) return "\ud83d\udfe1 Ma\u00eetrise satisfaisante";
+    if (pct >= 40) return "\ud83d\udfe0 Ma\u00eetrise fragile";
+    return "\ud83d\udd34 Ma\u00eetrise insuffisante";
+  }
+
+  var etats = {};
+  var occupe = false;
+
+  // ---------- Items a et b (un seul mot) ----------
+  var SIMPLE = {
+    a: { cle:["sommet"], ref:"sommets", aide:"Un sommet est un point o\u00f9 se rejoignent deux c\u00f4t\u00e9s du triangle." },
+    b: { cle:["cote"],   ref:"c\u00f4t\u00e9s",  aide:"Un c\u00f4t\u00e9 est un segment qui relie deux sommets du triangle." }
+  };
+
+  function verifierSimple(id){
+    var it = SIMPLE[id];
+    var input = document.getElementById("in-" + id);
+    var brut = input.value;
+    if (String(brut).replace(/[\s\u00a0]/g,"") === ""){
+      etats[id] = "vide";
+      marquer(input, "");
+      afficher(id, "warn", "\u26a0\ufe0f Aucune r\u00e9ponse saisie. Choisis un mot dans la banque, puis clique sur <strong>OK</strong>.");
+      return;
+    }
+    var texte = normTexte(brut);
+    if (contient(texte, it.cle)){
+      etats[id] = "correct";
+      marquer(input, "correct");
+      afficher(id, "ok", "\u2705 Bravo&nbsp;! Le mot attendu est bien <strong><u>" + esc(it.ref) + "</u></strong>.");
+      return;
+    }
+    etats[id] = "incorrect";
+    marquer(input, "incorrect");
+    afficher(id, "ko", "\u274c Ce n\u2019est pas le mot attendu.<br>R\u00e9ponse attendue&nbsp;: <strong><u>" + esc(it.ref) + "</u></strong>.");
+  }
+
+  // ---------- Items c et d (deux mots) ----------
+  var DOUBLE = {
+    c: { cle1:["sommet"], cle2:["oppose"], ref:"sommet oppos\u00e9",
+         aide:"O ne touche pas le c\u00f4t\u00e9 [IJ]&nbsp;: c\u2019est donc un sommet, et il lui est oppos\u00e9." },
+    d: { cle1:["cote"], cle2:["oppose"], ref:"c\u00f4t\u00e9 oppos\u00e9",
+         aide:"[OI] ne touche pas le sommet J&nbsp;: c\u2019est donc un c\u00f4t\u00e9, et il lui est oppos\u00e9." }
+  };
+
+  function verifierDouble(id){
+    var it = DOUBLE[id];
+    var input1 = document.getElementById("in-" + id + "1");
+    var input2 = document.getElementById("in-" + id + "2");
+    var brut1 = input1.value, brut2 = input2.value;
+
+    if (String(brut1).replace(/[\s\u00a0]/g,"") === "" && String(brut2).replace(/[\s\u00a0]/g,"") === ""){
+      etats[id] = "vide";
+      marquer(input1, ""); marquer(input2, "");
+      afficher(id, "warn", "\u26a0\ufe0f Aucune r\u00e9ponse saisie. Compl\u00e8te les deux mots, puis clique sur <strong>OK</strong>.");
+      return;
+    }
+
+    var t1 = normTexte(brut1), t2 = normTexte(brut2);
+    var ok1 = contient(t1, it.cle1) || contient(t2, it.cle1);
+    var ok2 = contient(t1, it.cle2) || contient(t2, it.cle2);
+    marquer(input1, ok1 ? "correct" : (t1 === "" ? "" : "incorrect"));
+    marquer(input2, ok2 ? "correct" : (t2 === "" ? "" : "incorrect"));
+
+    if (ok1 && ok2){
+      etats[id] = "correct";
+      afficher(id, "ok", "\u2705 Bravo&nbsp;! La r\u00e9ponse attendue est bien <strong><u>" + esc(it.ref) + "</u></strong>.");
+      return;
+    }
+    if (ok1 || ok2){
+      etats[id] = "partiel";
+      afficher(id, "warn", "\u26a0\ufe0f Un des deux mots est correct, mais pas l\u2019autre.<br>R\u00e9ponse attendue&nbsp;: <strong><u>" + esc(it.ref) + "</u></strong>.");
+      return;
+    }
+    etats[id] = "incorrect";
+    afficher(id, "ko", "\u274c Ce n\u2019est pas la r\u00e9ponse attendue.<br>R\u00e9ponse attendue&nbsp;: <strong><u>" + esc(it.ref) + "</u></strong>.");
+  }
+
+  var ORDRE_ITEMS = ["a","b","c","d"];
+
+  function verifierTout(){
+    if (occupe) return;
+    occupe = true;
+    window.setTimeout(function(){ occupe = false; }, 350);
+
+    verifierSimple("a");
+    verifierSimple("b");
+    verifierDouble("c");
+    verifierDouble("d");
+
+    var total = ORDRE_ITEMS.length;
+    var score = 0;
+    var recap = "";
+    for (var i = 0; i < ORDRE_ITEMS.length; i++){
+      var id = ORDRE_ITEMS[i];
+      var e = etats[id];
+      if (e === "correct"){
+        score++;
+        recap += '<span class="r-ok">\u2714 ' + id + '</span>';
+      } else if (e === "partiel"){
+        recap += '<span class="r-mid">\u25d0 ' + id + '</span>';
+      } else {
+        recap += '<span class="r-ko">\u2718 ' + id + '</span>';
+      }
+    }
+    if (score < 0) score = 0;
+    if (score > total) score = total;
+    var pct = Math.round((score / total) * 100);
+
+    var bilan = document.getElementById("bilan");
+    bilan.innerHTML =
+      '<div class="score">Score&nbsp;: ' + score + '\u2009/\u2009' + total + ' (' + pct + '&nbsp;%)</div>' +
+      '<div class="palier">' + palier(pct) + '</div>' +
+      '<div class="recap">' + recap + '</div>' +
+      '<div class="legende">\u2714 correct &nbsp;\u2022&nbsp; \u25d0 partiel (un seul des deux mots trouv\u00e9, questions c et d) &nbsp;\u2022&nbsp; \u2718 incorrect ou non r\u00e9pondu.</div>';
+    bilan.hidden = false;
+  }
+
+  function basculerCorrection(){
+    var box = document.getElementById("correction");
+    var btn = document.getElementById("btn-corr");
+    if (box.hidden){
+      box.innerHTML =
+        "<h2>Correction</h2>" +
+        "<ul>" +
+        "<li><strong>a.</strong> I, O et J sont les trois <strong>sommets</strong> du triangle OIJ.</li>" +
+        "<li><strong>b.</strong> [IO], [OJ] et [IJ] sont les trois <strong>c\u00f4t\u00e9s</strong> du triangle OIJ.</li>" +
+        "<li><strong>c.</strong> O est le <strong>sommet oppos\u00e9</strong> au c\u00f4t\u00e9 [IJ].</li>" +
+        "<li><strong>d.</strong> [OI] est le <strong>c\u00f4t\u00e9 oppos\u00e9</strong> au sommet J.</li>" +
+        "</ul>" +
+        "<p>Rappel&nbsp;: dans un triangle, chaque sommet est <strong>oppos\u00e9</strong> au c\u00f4t\u00e9 qu\u2019il ne touche pas, et chaque c\u00f4t\u00e9 est <strong>oppos\u00e9</strong> au sommet qu\u2019il ne touche pas.</p>";
+      box.hidden = false;
+      btn.textContent = "Masquer la correction";
+    } else {
+      box.hidden = true;
+      btn.textContent = "Voir la correction";
+    }
+  }
+
+  function reinitialiser(){
+    var champs = ["in-a","in-b","in-c1","in-c2","in-d1","in-d2"];
+    for (var i = 0; i < champs.length; i++){
+      var input = document.getElementById(champs[i]);
+      if (input){
+        input.value = "";
+        input.disabled = false;
+        input.readOnly = false;
+        input.classList.remove("correct","incorrect");
+      }
+    }
+    for (var j = 0; j < ORDRE_ITEMS.length; j++){
+      var fb = document.getElementById("fb-" + ORDRE_ITEMS[j]);
+      if (fb){ fb.hidden = true; fb.innerHTML = ""; fb.className = "feedback"; }
+      var ai = document.getElementById("ai-" + ORDRE_ITEMS[j]);
+      if (ai){ ai.hidden = true; ai.innerHTML = ""; }
+    }
+    etats = {};
+    var bilan = document.getElementById("bilan");
+    bilan.hidden = true; bilan.innerHTML = "";
+    var corr = document.getElementById("correction");
+    corr.hidden = true; corr.innerHTML = "";
+    document.getElementById("btn-corr").textContent = "Voir la correction";
+    occupe = false;
+  }
+
+  function init(){
+    document.querySelector('[data-ok="a"]').addEventListener("click", function(){ verifierSimple("a"); });
+    document.querySelector('[data-ok="b"]').addEventListener("click", function(){ verifierSimple("b"); });
+    document.querySelector('[data-ok="c"]').addEventListener("click", function(){ verifierDouble("c"); });
+    document.querySelector('[data-ok="d"]').addEventListener("click", function(){ verifierDouble("d"); });
+
+    document.querySelector('[data-aide="a"]').addEventListener("click", function(){ basculerAide("a", SIMPLE.a.aide); });
+    document.querySelector('[data-aide="b"]').addEventListener("click", function(){ basculerAide("b", SIMPLE.b.aide); });
+    document.querySelector('[data-aide="c"]').addEventListener("click", function(){ basculerAide("c", DOUBLE.c.aide); });
+    document.querySelector('[data-aide="d"]').addEventListener("click", function(){ basculerAide("d", DOUBLE.d.aide); });
+
+    var champsTexte = document.querySelectorAll('input[type="text"]');
+    for (var i = 0; i < champsTexte.length; i++){
+      champsTexte[i].addEventListener("keydown", function(ev){
+        if (ev.key !== "Enter") return;
+        ev.preventDefault();
+        var id = this.id.replace("in-", "");
+        if (id === "a" || id === "b") verifierSimple(id);
+        else if (id === "c1" || id === "c2") verifierDouble("c");
+        else if (id === "d1" || id === "d2") verifierDouble("d");
+      });
+    }
+
+    document.getElementById("btn-tout").addEventListener("click", verifierTout);
+    document.getElementById("btn-corr").addEventListener("click", basculerCorrection);
+    document.getElementById("btn-reset").addEventListener("click", reinitialiser);
+  }
+
+  if (document.readyState === "loading"){
+    document.addEventListener("DOMContentLoaded", init);
+  } else {
+    init();
+  }
+})();
+</script>
+</body>
+</html>
