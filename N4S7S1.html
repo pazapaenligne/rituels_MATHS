@@ -1,0 +1,415 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Rituel &mdash; Semaine 7 S&eacute;ance 1 &mdash; R&eacute;soudre une proportion</title>
+<style>
+*{box-sizing:border-box}
+html,body{margin:0;padding:0}
+body{background:#fffdf7;font-family:Arial,Helvetica,sans-serif;color:#243238;line-height:1.6;padding:14px;overflow-x:hidden}
+.bulle{position:fixed;border-radius:50%;background:#3ba5b8;opacity:.12;pointer-events:none;z-index:0}
+.b1{width:190px;height:190px;top:-70px;left:-70px}
+.b2{width:130px;height:130px;top:-45px;right:-45px}
+.b3{width:160px;height:160px;bottom:-60px;left:-55px}
+.b4{width:110px;height:110px;bottom:-40px;right:-35px}
+.wrap{position:relative;z-index:1;max-width:880px;margin:0 auto}
+.tete{display:flex;flex-wrap:wrap;align-items:center;gap:10px;margin-bottom:14px}
+.etq{display:inline-block;padding:7px 16px;border-radius:8px;color:#fff;font-weight:700;font-size:.95rem}
+.etq-sem{background:#8fd3e8;color:#123f4a}
+.etq-sea{background:#3ba5b8}
+.etq-rit{background:#1f7a8c;font-family:Georgia,"Times New Roman",serif;margin-left:auto}
+h1{font-size:clamp(1.3rem,4.5vw,2rem);font-weight:900;color:#1f7a8c;margin:6px 0 18px;line-height:1.3}
+.bloc{position:relative;border:2px solid #3ba5b8;border-radius:12px;background:#fff;padding:26px 18px 20px;margin-bottom:18px}
+.onglet{position:absolute;top:-17px;left:18px;background:#8fd3e8;color:#123f4a;font-weight:700;font-size:.95rem;padding:5px 18px;border-radius:8px}
+.consigne-intro{margin:4px 0 16px;font-weight:700;color:#1f7a8c;font-size:clamp(.95rem,2.6vw,1.05rem);line-height:1.75}
+.figure-exo{max-width:520px;margin:8px auto 20px}
+.figure-exo img{width:100%;height:auto;border:1px solid #dceff3;border-radius:8px;display:block}
+.frac{display:inline-flex;flex-direction:column;vertical-align:middle;text-align:center;margin:0 5px;line-height:1.2;font-weight:700}
+.frac .num{border-bottom:2px solid #243238;padding:0 5px 2px}
+.frac .den{padding:2px 5px 0}
+.equation{display:inline-flex;align-items:center;flex-wrap:wrap;gap:6px;font-size:clamp(1rem,3vw,1.15rem);color:#243238}
+.equation .signe{margin:0 2px}
+.grille-equations{display:grid;grid-template-columns:repeat(2,1fr);gap:16px 28px;margin:8px 0 20px;padding:14px 16px;background:#f7fcfd;border:1px solid #dceff3;border-radius:10px}
+.grille-equations .num-cas{font-weight:700;color:#1f7a8c;margin-right:6px}
+@media (max-width:600px){.grille-equations{grid-template-columns:1fr}}
+.item{padding:10px 0 12px;border-bottom:1px dashed #dceff3}
+.item:last-of-type{border-bottom:0}
+.q{font-size:clamp(1rem,3vw,1.1rem);font-weight:700;margin:0 0 8px;color:#243238}
+.ligne{display:flex;flex-wrap:wrap;align-items:center;gap:10px;min-width:0}
+.champ{flex:0 0 auto;min-width:0}
+input[type="text"]{
+  width:150px;padding:9px 8px;font-family:Arial,Helvetica,sans-serif;font-size:1rem;font-weight:700;
+  color:#1f7a8c;background:#f7fcfd;border:1px solid #b9dfe8;border-bottom:2px dotted #3ba5b8;
+  border-radius:6px;text-align:center;min-height:44px;
+}
+input[type="text"]:focus{outline:2px solid #3ba5b8;outline-offset:1px}
+.correct{border-color:#2e8b57;background:#effaf3;color:#1e6b40}
+.partiel{border-color:#c9820a;background:#fff8ea;color:#a86c06}
+.incorrect{border-color:#c0392b;background:#fdefee;color:#96291d}
+.actions{display:flex;flex-wrap:wrap;gap:8px}
+button{font-family:inherit;font-size:.92rem;font-weight:700;min-height:44px;padding:10px 16px;border:0;border-radius:8px;cursor:pointer;background:#3ba5b8;color:#fff;line-height:1.2}
+button:hover{background:#1f7a8c}
+button.sec{background:#fff;color:#1f7a8c;border:2px solid #3ba5b8}
+button.sec:hover{background:#eaf7fa}
+.feedback{margin:10px 0 0;padding:12px 14px;border-left:5px solid #3ba5b8;border-radius:6px;background:#f4fafb;font-size:clamp(.9rem,2.5vw,1rem);line-height:1.75;overflow-wrap:break-word}
+.feedback.ok{border-left-color:#2e8b57;background:#effaf3;color:#1e6b40}
+.feedback.ko{border-left-color:#c0392b;background:#fdefee;color:#96291d}
+.feedback.warn{border-left-color:#c9820a;background:#fff8ea;color:#8a5b04}
+.aide{margin:10px 0 0;padding:12px 14px;border-left:5px solid #8fd3e8;background:#f2fafd;border-radius:6px;font-size:clamp(.9rem,2.5vw,1rem);line-height:1.75}
+.barre{display:flex;flex-wrap:wrap;gap:10px;margin:18px 0}
+.barre button{flex:1 1 190px}
+.correction{border:2px dashed #3ba5b8;border-radius:12px;background:#fff;padding:16px 18px;margin-bottom:18px;font-size:clamp(.9rem,2.5vw,1rem);line-height:1.8}
+.correction h2{margin:0 0 8px;font-size:1.05rem;color:#1f7a8c}
+.correction ul{margin:6px 0 0;padding-left:20px}
+.correction li{margin-bottom:6px}
+.bilan{border:2px solid #1f7a8c;border-radius:12px;background:#fff;padding:16px 18px;margin-bottom:18px;font-size:.92rem;line-height:1.8}
+.bilan .score{font-size:clamp(1.05rem,3.2vw,1.25rem);font-weight:900;color:#1f7a8c}
+.bilan .palier{font-weight:700;margin-top:4px}
+.recap{display:flex;flex-wrap:wrap;gap:8px;margin-top:10px}
+.recap span{display:inline-flex;align-items:center;gap:6px;padding:6px 11px;border-radius:8px;background:#f4fafb;font-weight:700;font-size:.9rem;border:1px solid #dceff3}
+.recap .r-ok{color:#2e8b57}
+.recap .r-mid{color:#c9820a}
+.recap .r-ko{color:#c0392b}
+.legende{margin-top:10px;font-size:.85rem;color:#4d6169}
+@media (max-width:768px){.actions{width:100%}.actions button{flex:1 1 auto}}
+@media (max-width:480px){body{padding:10px}.bloc{padding:24px 12px 16px}.etq{font-size:.85rem;padding:6px 12px}.etq-rit{margin-left:0}input[type="text"]{width:100%}.recap span{font-size:.85rem}}
+</style>
+</head>
+<body>
+<div class="bulle b1"></div>
+<div class="bulle b2"></div>
+<div class="bulle b3"></div>
+<div class="bulle b4"></div>
+
+<main class="wrap">
+
+  <div class="tete">
+    <span class="etq etq-sem">Semaine 7</span>
+    <span class="etq etq-sea">S&eacute;ance 1</span>
+    <span class="etq etq-rit">Rituel</span>
+  </div>
+
+  <h1>R&eacute;soudre une proportion</h1>
+
+  <section class="bloc">
+    <span class="onglet">Calcul</span>
+
+    <p class="consigne-intro">Calcule x dans chacun des cas suivants (donne une valeur arrondie au milli&egrave;me si n&eacute;cessaire)&nbsp;:</p>
+
+    <div class="figure-exo">
+      <div class="grille-equations"><div><span class="num-cas">n&deg;1&nbsp;:</span><span class="equation"><span class="frac"><span class="num">x</span><span class="den">1,4</span></span><span class="signe">=</span><span class="frac"><span class="num">1,2</span><span class="den">9</span></span></span></div><div><span class="num-cas">n&deg;2&nbsp;:</span><span class="equation"><span class="frac"><span class="num">0,49</span><span class="den">0,14</span></span><span class="signe">=</span><span class="frac"><span class="num">2,5</span><span class="den">x</span></span></span></div><div><span class="num-cas">n&deg;3&nbsp;:</span><span class="equation"><span class="frac"><span class="num">2,7</span><span class="den">x</span></span><span class="signe">=</span><span class="frac"><span class="num">6,6</span><span class="den">14</span></span></span></div><div><span class="num-cas">n&deg;4&nbsp;:</span><span class="equation"><span class="frac"><span class="num">x</span><span class="den">10</span></span><span class="signe">=</span><span class="frac"><span class="num">10</span><span class="den">x</span></span></span></div><div><span class="num-cas">n&deg;5&nbsp;:</span><span class="equation"><span class="frac"><span class="num">x</span><span class="den">0,35</span></span><span class="signe">=</span><span>5,2</span></span></div><div><span class="num-cas">n&deg;6&nbsp;:</span><span class="equation"><span class="frac"><span class="num">0,26</span><span class="den">x</span></span><span class="signe">=</span><span>5,2</span></span></div></div>
+    </div>
+
+    <div class="item">
+      <p class="q">n&deg;1 &mdash; x&nbsp;=</p>
+      <div class="ligne">
+        <span class="champ"><input type="text" id="in-n1" inputmode="decimal" autocomplete="off" aria-label="Valeur de x, cas 1"></span>
+        <span class="actions">
+          <button type="button" data-ok="n1">OK</button>
+          <button type="button" class="sec" data-aide="n1">Indice</button>
+        </span>
+      </div>
+      <div class="feedback" id="fb-n1" hidden></div>
+      <div class="aide" id="ai-n1" hidden></div>
+    </div>
+
+    <div class="item">
+      <p class="q">n&deg;2 &mdash; x&nbsp;=</p>
+      <div class="ligne">
+        <span class="champ"><input type="text" id="in-n2" inputmode="decimal" autocomplete="off" aria-label="Valeur de x, cas 2"></span>
+        <span class="actions">
+          <button type="button" data-ok="n2">OK</button>
+          <button type="button" class="sec" data-aide="n2">Indice</button>
+        </span>
+      </div>
+      <div class="feedback" id="fb-n2" hidden></div>
+      <div class="aide" id="ai-n2" hidden></div>
+    </div>
+
+    <div class="item">
+      <p class="q">n&deg;3 &mdash; x&nbsp;=</p>
+      <div class="ligne">
+        <span class="champ"><input type="text" id="in-n3" inputmode="decimal" autocomplete="off" aria-label="Valeur de x, cas 3"></span>
+        <span class="actions">
+          <button type="button" data-ok="n3">OK</button>
+          <button type="button" class="sec" data-aide="n3">Indice</button>
+        </span>
+      </div>
+      <div class="feedback" id="fb-n3" hidden></div>
+      <div class="aide" id="ai-n3" hidden></div>
+    </div>
+
+    <div class="item">
+      <p class="q">n&deg;4 &mdash; x&nbsp;=</p>
+      <div class="ligne">
+        <span class="champ"><input type="text" id="in-n4" inputmode="decimal" autocomplete="off" aria-label="Valeur de x, cas 4"></span>
+        <span class="actions">
+          <button type="button" data-ok="n4">OK</button>
+          <button type="button" class="sec" data-aide="n4">Indice</button>
+        </span>
+      </div>
+      <div class="feedback" id="fb-n4" hidden></div>
+      <div class="aide" id="ai-n4" hidden></div>
+    </div>
+
+    <div class="item">
+      <p class="q">n&deg;5 &mdash; x&nbsp;=</p>
+      <div class="ligne">
+        <span class="champ"><input type="text" id="in-n5" inputmode="decimal" autocomplete="off" aria-label="Valeur de x, cas 5"></span>
+        <span class="actions">
+          <button type="button" data-ok="n5">OK</button>
+          <button type="button" class="sec" data-aide="n5">Indice</button>
+        </span>
+      </div>
+      <div class="feedback" id="fb-n5" hidden></div>
+      <div class="aide" id="ai-n5" hidden></div>
+    </div>
+
+    <div class="item">
+      <p class="q">n&deg;6 &mdash; x&nbsp;=</p>
+      <div class="ligne">
+        <span class="champ"><input type="text" id="in-n6" inputmode="decimal" autocomplete="off" aria-label="Valeur de x, cas 6"></span>
+        <span class="actions">
+          <button type="button" data-ok="n6">OK</button>
+          <button type="button" class="sec" data-aide="n6">Indice</button>
+        </span>
+      </div>
+      <div class="feedback" id="fb-n6" hidden></div>
+      <div class="aide" id="ai-n6" hidden></div>
+    </div>
+
+  </section>
+
+  <div class="barre">
+    <button type="button" id="btn-tout">V&eacute;rifier tout</button>
+    <button type="button" class="sec" id="btn-corr">Voir la correction</button>
+    <button type="button" class="sec" id="btn-reset">R&eacute;initialiser</button>
+  </div>
+
+  <div class="correction" id="correction" hidden></div>
+  <div class="bilan" id="bilan" hidden></div>
+
+</main>
+
+<script>
+(function(){
+  "use strict";
+
+  var TOLERANCE = 0.005;
+
+  var ITEMS = [
+    { id:"n1", valeur: 1.4*1.2/9,
+       enonce:"x/1,4 = 1,2/9",
+       aide:"Produits en croix&nbsp;: x&nbsp;&times;&nbsp;9&nbsp;=&nbsp;1,4&nbsp;&times;&nbsp;1,2, donc x&nbsp;=&nbsp;(1,4&nbsp;&times;&nbsp;1,2)&nbsp;/&nbsp;9.",
+       ref:"x&nbsp;=&nbsp;(1,4&nbsp;&times;&nbsp;1,2)&nbsp;/&nbsp;9&nbsp;&asymp;&nbsp;0,187." },
+    { id:"n2", valeur: 0.14*2.5/0.49,
+       enonce:"0,49/0,14 = 2,5/x",
+       aide:"Produits en croix&nbsp;: 0,49&nbsp;&times;&nbsp;x&nbsp;=&nbsp;0,14&nbsp;&times;&nbsp;2,5, donc x&nbsp;=&nbsp;(0,14&nbsp;&times;&nbsp;2,5)&nbsp;/&nbsp;0,49.",
+       ref:"x&nbsp;=&nbsp;(0,14&nbsp;&times;&nbsp;2,5)&nbsp;/&nbsp;0,49&nbsp;&asymp;&nbsp;0,714." },
+    { id:"n3", valeur: 2.7*14/6.6,
+       enonce:"2,7/x = 6,6/14",
+       aide:"Produits en croix&nbsp;: 2,7&nbsp;&times;&nbsp;14&nbsp;=&nbsp;6,6&nbsp;&times;&nbsp;x, donc x&nbsp;=&nbsp;(2,7&nbsp;&times;&nbsp;14)&nbsp;/&nbsp;6,6.",
+       ref:"x&nbsp;=&nbsp;(2,7&nbsp;&times;&nbsp;14)&nbsp;/&nbsp;6,6&nbsp;&asymp;&nbsp;5,727." },
+    { id:"n4", valeur: 10,
+       enonce:"x/10 = 10/x",
+       aide:"Produits en croix&nbsp;: x&nbsp;&times;&nbsp;x&nbsp;=&nbsp;10&nbsp;&times;&nbsp;10. Cherche un nombre positif dont le carr&eacute; vaut 100.",
+       ref:"x&sup2;&nbsp;=&nbsp;10&nbsp;&times;&nbsp;10&nbsp;=&nbsp;100, donc x&nbsp;=&nbsp;10." },
+    { id:"n5", valeur: 0.35*5.2,
+       enonce:"x/0,35 = 5,2",
+       aide:"Ici, il n&rsquo;y a qu&rsquo;\u00e0 multiplier&nbsp;: x&nbsp;=&nbsp;0,35&nbsp;&times;&nbsp;5,2.",
+       ref:"x&nbsp;=&nbsp;0,35&nbsp;&times;&nbsp;5,2&nbsp;=&nbsp;1,82." },
+    { id:"n6", valeur: 0.26/5.2,
+       enonce:"0,26/x = 5,2",
+       aide:"Produits en croix&nbsp;: 0,26&nbsp;=&nbsp;5,2&nbsp;&times;&nbsp;x, donc x&nbsp;=&nbsp;0,26&nbsp;/&nbsp;5,2.",
+       ref:"x&nbsp;=&nbsp;0,26&nbsp;/&nbsp;5,2&nbsp;=&nbsp;0,05." }
+  ];
+
+  var etats = {};
+  var occupe = false;
+
+  function trouver(id){
+    for (var i = 0; i < ITEMS.length; i++){ if (ITEMS[i].id === id) return ITEMS[i]; }
+    return null;
+  }
+  function esc(txt){
+    var d = document.createElement("div");
+    d.textContent = String(txt);
+    return d.innerHTML;
+  }
+  function normalise(brut){
+    var s = String(brut).replace(/[\s\u00a0\u202f\u2009]/g, "");
+    s = s.replace(/[\u2212\u2013\u2014]/g, "-").replace(/,/g, ".");
+    if (s === "") return null;
+    if (!/^-?(\d+(\.\d*)?|\.\d+)$/.test(s)) return null;
+    return s;
+  }
+  function afficher(id, type, html){
+    var fb = document.getElementById("fb-" + id);
+    fb.className = "feedback " + type;
+    fb.innerHTML = html;
+    fb.hidden = false;
+  }
+  function marquer(input, etat){
+    if (!input) return;
+    input.classList.remove("correct","partiel","incorrect");
+    if (etat === "correct" || etat === "partiel" || etat === "incorrect") input.classList.add(etat);
+  }
+
+  function verifier(id){
+    var it = trouver(id);
+    if (!it) return;
+    var input = document.getElementById("in-" + id);
+    var brut = input.value;
+
+    if (String(brut).replace(/[\s\u00a0]/g,"") === ""){
+      etats[id] = "vide";
+      marquer(input, "");
+      afficher(id, "warn", "\u26a0\ufe0f Aucune r\u00e9ponse saisie. R\u00e9sous <strong>" + it.enonce + "</strong> par produits en croix, puis clique sur <strong>OK</strong>.");
+      return;
+    }
+
+    var norm = normalise(brut);
+    if (norm === null){
+      etats[id] = "incorrect";
+      marquer(input, "incorrect");
+      afficher(id, "warn", "\u26a0\ufe0f Saisie non reconnue&nbsp;: &laquo;&nbsp;" + esc(brut) + "&nbsp;&raquo;. \u00c9cris un <strong>nombre d\u00e9cimal</strong> seul (virgule ou point).");
+      return;
+    }
+
+    var val = Number(norm);
+    var ecart = Math.abs(val - it.valeur);
+
+    if (ecart <= TOLERANCE){
+      etats[id] = "correct";
+      marquer(input, "correct");
+      afficher(id, "ok", "\u2705 Bravo&nbsp;! " + it.ref);
+      return;
+    }
+
+    etats[id] = "incorrect";
+    marquer(input, "incorrect");
+    afficher(id, "ko", "\u274c Ce n\u2019est pas la bonne valeur pour <strong>" + it.enonce + "</strong>.<br>R\u00e9ponse attendue&nbsp;: " + it.ref);
+  }
+
+  function basculerAide(id){
+    var it = trouver(id);
+    var box = document.getElementById("ai-" + id);
+    if (!it || !box) return;
+    if (box.hidden){
+      box.innerHTML = "\ud83d\udca1 <strong>Indice&nbsp;:</strong> " + it.aide;
+      box.hidden = false;
+    } else {
+      box.hidden = true;
+    }
+  }
+
+  function palier(pct){
+    if (pct >= 90) return "\ud83d\udfe2 Excellent";
+    if (pct >= 75) return "\ud83d\udfe2 Tr\u00e8s bien";
+    if (pct >= 60) return "\ud83d\udfe1 Ma\u00eetrise satisfaisante";
+    if (pct >= 40) return "\ud83d\udfe0 Ma\u00eetrise fragile";
+    return "\ud83d\udd34 Ma\u00eetrise insuffisante";
+  }
+
+  function verifierTout(){
+    if (occupe) return;
+    occupe = true;
+    window.setTimeout(function(){ occupe = false; }, 350);
+
+    var total = ITEMS.length;
+    var score = 0;
+    var recap = "";
+    for (var i = 0; i < ITEMS.length; i++){
+      var id = ITEMS[i].id;
+      verifier(id);
+      var e = etats[id];
+      if (e === "correct"){ score++; recap += '<span class="r-ok">\u2714 ' + id + '</span>'; }
+      else { recap += '<span class="r-ko">\u2718 ' + id + '</span>'; }
+    }
+
+    if (score < 0) score = 0;
+    if (score > total) score = total;
+    var pct = Math.round((score / total) * 100);
+
+    var bilan = document.getElementById("bilan");
+    bilan.innerHTML =
+      '<div class="score">Score&nbsp;: ' + score + '\u2009/\u2009' + total + ' (' + pct + '&nbsp;%)</div>' +
+      '<div class="palier">' + palier(pct) + '</div>' +
+      '<div class="recap">' + recap + '</div>' +
+      '<div class="legende">\u2714 correct (\u00e0 \u00b1\u00a00,005 pr\u00e8s) &nbsp;\u2022&nbsp; \u2718 incorrect ou non r\u00e9pondu.</div>';
+    bilan.hidden = false;
+  }
+
+  function basculerCorrection(){
+    var box = document.getElementById("correction");
+    var btn = document.getElementById("btn-corr");
+    if (box.hidden){
+      var html = "<h2>Correction</h2><ul>";
+      for (var i = 0; i < ITEMS.length; i++){
+        var it = ITEMS[i];
+        html += "<li><strong>" + it.id.replace("n","n\u00b0") + "</strong> (" + it.enonce + ")&nbsp;: " + it.ref + "</li>";
+      }
+      html += "</ul>";
+      box.innerHTML = html;
+      box.hidden = false;
+      btn.textContent = "Masquer la correction";
+    } else {
+      box.hidden = true;
+      btn.textContent = "Voir la correction";
+    }
+  }
+
+  function reinitialiser(){
+    for (var i = 0; i < ITEMS.length; i++){
+      var id = ITEMS[i].id;
+      var input = document.getElementById("in-" + id);
+      input.value = "";
+      input.disabled = false;
+      input.readOnly = false;
+      input.classList.remove("correct","partiel","incorrect");
+      var fb = document.getElementById("fb-" + id);
+      fb.hidden = true; fb.innerHTML = ""; fb.className = "feedback";
+      var ai = document.getElementById("ai-" + id);
+      ai.hidden = true; ai.innerHTML = "";
+      etats[id] = "vide";
+    }
+    var bilan = document.getElementById("bilan");
+    bilan.hidden = true; bilan.innerHTML = "";
+    var corr = document.getElementById("correction");
+    corr.hidden = true; corr.innerHTML = "";
+    document.getElementById("btn-corr").textContent = "Voir la correction";
+    occupe = false;
+  }
+
+  function init(){
+    for (var i = 0; i < ITEMS.length; i++){ etats[ITEMS[i].id] = "vide"; }
+
+    var bOk = document.querySelectorAll("[data-ok]");
+    for (var a = 0; a < bOk.length; a++){
+      bOk[a].addEventListener("click", function(){ verifier(this.getAttribute("data-ok")); });
+    }
+    var bAide = document.querySelectorAll("[data-aide]");
+    for (var b = 0; b < bAide.length; b++){
+      bAide[b].addEventListener("click", function(){ basculerAide(this.getAttribute("data-aide")); });
+    }
+    var champs = document.querySelectorAll('input[type="text"]');
+    for (var c = 0; c < champs.length; c++){
+      champs[c].addEventListener("keydown", function(ev){
+        if (ev.key === "Enter"){ ev.preventDefault(); verifier(this.id.replace("in-","")); }
+      });
+    }
+    document.getElementById("btn-tout").addEventListener("click", verifierTout);
+    document.getElementById("btn-corr").addEventListener("click", basculerCorrection);
+    document.getElementById("btn-reset").addEventListener("click", reinitialiser);
+  }
+
+  if (document.readyState === "loading"){
+    document.addEventListener("DOMContentLoaded", init);
+  } else {
+    init();
+  }
+})();
+</script>
+</body>
+</html>
