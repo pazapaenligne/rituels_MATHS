@@ -1,0 +1,515 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Rituel &mdash; Semaine 7 S&eacute;ance 1 &mdash; Automatismes de calcul</title>
+<style>
+*{box-sizing:border-box}
+html,body{margin:0;padding:0}
+body{background:#fffdf7;font-family:Arial,Helvetica,sans-serif;color:#243238;line-height:1.6;padding:14px;overflow-x:hidden}
+.bulle{position:fixed;border-radius:50%;background:#3ba5b8;opacity:.12;pointer-events:none;z-index:0}
+.b1{width:190px;height:190px;top:-70px;left:-70px}
+.b2{width:130px;height:130px;top:-45px;right:-45px}
+.b3{width:160px;height:160px;bottom:-60px;left:-55px}
+.b4{width:110px;height:110px;bottom:-40px;right:-35px}
+.wrap{position:relative;z-index:1;max-width:880px;margin:0 auto}
+.tete{display:flex;flex-wrap:wrap;align-items:center;gap:10px;margin-bottom:14px}
+.etq{display:inline-block;padding:7px 16px;border-radius:8px;color:#fff;font-weight:700;font-size:.95rem}
+.etq-sem{background:#8fd3e8;color:#123f4a}
+.etq-sea{background:#3ba5b8}
+.etq-rit{background:#1f7a8c;font-family:Georgia,"Times New Roman",serif;margin-left:auto}
+h1{font-size:clamp(1.3rem,4.5vw,2rem);font-weight:900;color:#1f7a8c;margin:6px 0 18px;line-height:1.3}
+.bloc{position:relative;border:2px solid #3ba5b8;border-radius:12px;background:#fff;padding:28px 18px 20px;margin-bottom:18px}
+.onglet{position:absolute;top:-17px;left:18px;background:#8fd3e8;color:#123f4a;font-weight:700;font-size:.95rem;padding:5px 18px;border-radius:8px}
+.tete-ex{display:flex;align-items:flex-start;gap:12px;margin:6px 0 16px;min-width:0}
+.pastille{flex:0 0 auto;width:34px;height:34px;border-radius:50%;background:#1f7a8c;color:#fff;font-weight:700;font-size:1rem;display:flex;align-items:center;justify-content:center}
+.consigne{margin:4px 0 0;font-weight:700;text-decoration:underline;color:#1f7a8c;font-size:clamp(.95rem,2.6vw,1.05rem);min-width:0;overflow-wrap:break-word}
+.sous-consigne{margin:4px 0 12px;font-weight:700;color:#1f7a8c;font-size:clamp(.9rem,2.4vw,1rem)}
+.item{padding:12px 0;border-bottom:1px dashed #dceff3}
+.item:last-of-type{border-bottom:0}
+.ligne{display:flex;flex-wrap:wrap;align-items:center;gap:10px;min-width:0}
+.calc{font-size:clamp(1rem,3vw,1.15rem);font-weight:700;color:#243238;white-space:nowrap}
+input[type="text"]{width:clamp(70px,22vw,110px);min-width:0;padding:9px 8px;font-family:Arial,Helvetica,sans-serif;font-size:1rem;font-weight:700;text-align:center;color:#1f7a8c;background:#f7fcfd;border:1px solid #b9dfe8;border-bottom:2px dotted #3ba5b8;border-radius:6px}
+input[type="text"]:focus{outline:2px solid #3ba5b8;outline-offset:1px}
+input.correct{border-color:#2e8b57;background:#effaf3;color:#2e8b57}
+input.partiel{border-color:#c9820a;background:#fff8ea;color:#a86c06}
+input.incorrect{border-color:#c0392b;background:#fdefee;color:#c0392b}
+.fraction{display:inline-flex;flex-direction:column;align-items:center;vertical-align:middle;font-weight:700;font-size:clamp(1rem,3vw,1.15rem);color:#243238}
+.fraction .fn{border-bottom:2px solid #243238;padding:0 8px 2px}
+.fraction .fd{padding:2px 8px 0}
+.fraction-rep{display:inline-flex;flex-direction:column;align-items:center;vertical-align:middle}
+.fraction-rep input{width:60px}
+.fraction-rep .fd-fixe{border-top:2px solid #1f7a8c;padding-top:2px;font-weight:700;color:#1f7a8c;margin-top:2px}
+.actions{display:flex;flex-wrap:wrap;gap:8px;margin-left:auto}
+button{font-family:inherit;font-size:.92rem;font-weight:700;min-height:44px;padding:10px 16px;border:0;border-radius:8px;cursor:pointer;background:#3ba5b8;color:#fff;line-height:1.2}
+button:hover{background:#1f7a8c}
+button.sec{background:#fff;color:#1f7a8c;border:2px solid #3ba5b8}
+button.sec:hover{background:#eaf7fa}
+.feedback{margin:10px 0 0;padding:12px 14px;border-left:5px solid #3ba5b8;border-radius:6px;background:#f4fafb;font-size:clamp(.9rem,2.5vw,1rem);line-height:1.75;overflow-wrap:break-word}
+.feedback.ok{border-left-color:#2e8b57;background:#effaf3;color:#1e6b40}
+.feedback.ko{border-left-color:#c0392b;background:#fdefee;color:#96291d}
+.feedback.warn{border-left-color:#c9820a;background:#fff8ea;color:#8a5b04}
+.aide{margin:10px 0 0;padding:12px 14px;border-left:5px solid #8fd3e8;background:#f2fafd;border-radius:6px;font-size:clamp(.9rem,2.5vw,1rem);line-height:1.75}
+.barre{display:flex;flex-wrap:wrap;gap:10px;margin:18px 0}
+.barre button{flex:1 1 190px}
+.correction{border:2px dashed #3ba5b8;border-radius:12px;background:#fff;padding:16px 18px;margin-bottom:18px;font-size:clamp(.9rem,2.5vw,1rem);line-height:1.8}
+.correction h2{margin:0 0 10px;font-size:1.05rem;color:#1f7a8c}
+.correction h3{margin:14px 0 4px;font-size:.98rem;color:#1f7a8c}
+.correction ul{margin:6px 0 0;padding-left:20px}
+.correction li{margin-bottom:6px}
+.bilan{border:2px solid #1f7a8c;border-radius:12px;background:#fff;padding:16px 18px;margin-bottom:18px;font-size:.92rem;line-height:1.8}
+.bilan .score{font-size:clamp(1.05rem,3.2vw,1.25rem);font-weight:900;color:#1f7a8c}
+.bilan .palier{font-weight:700;margin-top:4px}
+.recap{display:flex;flex-wrap:wrap;gap:8px;margin-top:10px}
+.recap span{display:inline-flex;align-items:center;gap:6px;padding:6px 11px;border-radius:8px;background:#f4fafb;font-weight:700;font-size:.9rem;border:1px solid #dceff3}
+.recap .r-ok{color:#2e8b57}
+.recap .r-mid{color:#c9820a}
+.recap .r-ko{color:#c0392b}
+.legende{margin-top:10px;font-size:.85rem;color:#4d6169}
+@media (max-width:768px){.actions{margin-left:0;width:100%}.actions button{flex:1 1 auto}}
+@media (max-width:480px){
+  body{padding:10px}
+  .bloc{padding:26px 12px 16px}
+  .etq{font-size:.85rem;padding:6px 12px}
+  .etq-rit{margin-left:0}
+  .recap span{font-size:.85rem}
+}
+</style>
+</head>
+<body>
+<div class="bulle b1"></div><div class="bulle b2"></div><div class="bulle b3"></div><div class="bulle b4"></div>
+
+<main class="wrap">
+
+  <div class="tete">
+    <span class="etq etq-sem">Semaine 7</span>
+    <span class="etq etq-sea">S&eacute;ance 1</span>
+    <span class="etq etq-rit">Rituel</span>
+  </div>
+
+  <h1>Automatismes de calcul</h1>
+
+  <section class="bloc">
+    <span class="onglet">Calcul</span>
+
+    <div class="tete-ex">
+      <span class="pastille">1</span>
+      <p class="consigne">Effectue les calculs suivants&nbsp;:</p>
+    </div>
+
+    <p class="sous-consigne">Trouver le produit</p>
+    <div class="item"><div class="ligne"><span class="calc">54&nbsp;=</span><input type="text" id="pr-a-1" inputmode="numeric" maxlength="2" aria-label="Premier facteur de 54"><span class="calc">&times;</span><input type="text" id="pr-a-2" inputmode="numeric" maxlength="2" aria-label="Second facteur de 54"><span class="actions"><button type="button" data-ok="pr-a">OK</button><button type="button" class="sec" data-aide="pr-a">Indice</button></span></div><div class="feedback" id="fb-pr-a" hidden></div><div class="aide" id="ai-pr-a" hidden></div></div>
+    <div class="item"><div class="ligne"><span class="calc">64&nbsp;=</span><input type="text" id="pr-b-1" inputmode="numeric" maxlength="2" aria-label="Premier facteur de 64"><span class="calc">&times;</span><input type="text" id="pr-b-2" inputmode="numeric" maxlength="2" aria-label="Second facteur de 64"><span class="actions"><button type="button" data-ok="pr-b">OK</button><button type="button" class="sec" data-aide="pr-b">Indice</button></span></div><div class="feedback" id="fb-pr-b" hidden></div><div class="aide" id="ai-pr-b" hidden></div></div>
+    <div class="item"><div class="ligne"><span class="calc">35&nbsp;=</span><input type="text" id="pr-c-1" inputmode="numeric" maxlength="2" aria-label="Premier facteur de 35"><span class="calc">&times;</span><input type="text" id="pr-c-2" inputmode="numeric" maxlength="2" aria-label="Second facteur de 35"><span class="actions"><button type="button" data-ok="pr-c">OK</button><button type="button" class="sec" data-aide="pr-c">Indice</button></span></div><div class="feedback" id="fb-pr-c" hidden></div><div class="aide" id="ai-pr-c" hidden></div></div>
+    <div class="item"><div class="ligne"><span class="calc">32&nbsp;=</span><input type="text" id="pr-d-1" inputmode="numeric" maxlength="2" aria-label="Premier facteur de 32"><span class="calc">&times;</span><input type="text" id="pr-d-2" inputmode="numeric" maxlength="2" aria-label="Second facteur de 32"><span class="actions"><button type="button" data-ok="pr-d">OK</button><button type="button" class="sec" data-aide="pr-d">Indice</button></span></div><div class="feedback" id="fb-pr-d" hidden></div><div class="aide" id="ai-pr-d" hidden></div></div>
+
+    <p class="sous-consigne">D&eacute;composition en entier + fraction</p>
+    <div class="item">
+      <div class="ligne">
+        <span class="fraction"><span class="fn">21</span><span class="fd">3</span></span>
+        <span class="calc">=</span>
+        <input type="text" id="dc-a-1" inputmode="numeric" maxlength="3" aria-label="Partie entiere de 21 tiers">
+        <span class="calc">+</span>
+        <span class="fraction-rep"><input type="text" id="dc-a-2" inputmode="numeric" maxlength="2" aria-label="Numerateur du reste, 21 tiers"><span class="fd-fixe">3</span></span>
+        <span class="actions"><button type="button" data-ok="dc-a">OK</button><button type="button" class="sec" data-aide="dc-a">Indice</button></span>
+      </div>
+      <div class="feedback" id="fb-dc-a" hidden></div>
+      <div class="aide" id="ai-dc-a" hidden></div>
+    </div>
+    <div class="item">
+      <div class="ligne">
+        <span class="fraction"><span class="fn">18</span><span class="fd">8</span></span>
+        <span class="calc">=</span>
+        <input type="text" id="dc-b-1" inputmode="numeric" maxlength="3" aria-label="Partie entiere de 18 huitiemes">
+        <span class="calc">+</span>
+        <span class="fraction-rep"><input type="text" id="dc-b-2" inputmode="numeric" maxlength="2" aria-label="Numerateur du reste, 18 huitiemes"><span class="fd-fixe">8</span></span>
+        <span class="actions"><button type="button" data-ok="dc-b">OK</button><button type="button" class="sec" data-aide="dc-b">Indice</button></span>
+      </div>
+      <div class="feedback" id="fb-dc-b" hidden></div>
+      <div class="aide" id="ai-dc-b" hidden></div>
+    </div>
+
+    <p class="sous-consigne">Calculer 50&nbsp;%</p>
+    <div class="item"><div class="ligne"><span class="calc">50&nbsp;%&nbsp;de&nbsp;6,7&nbsp;=</span><input type="text" id="pc-a" inputmode="decimal" aria-label="50 pourcent de 6,7"><span class="actions"><button type="button" data-ok="pc-a">OK</button><button type="button" class="sec" data-aide="pc-a">Indice</button></span></div><div class="feedback" id="fb-pc-a" hidden></div><div class="aide" id="ai-pc-a" hidden></div></div>
+    <div class="item"><div class="ligne"><span class="calc">50&nbsp;%&nbsp;de&nbsp;4,5&nbsp;=</span><input type="text" id="pc-b" inputmode="decimal" aria-label="50 pourcent de 4,5"><span class="actions"><button type="button" data-ok="pc-b">OK</button><button type="button" class="sec" data-aide="pc-b">Indice</button></span></div><div class="feedback" id="fb-pc-b" hidden></div><div class="aide" id="ai-pc-b" hidden></div></div>
+    <div class="item"><div class="ligne"><span class="calc">50&nbsp;%&nbsp;de&nbsp;9,3&nbsp;=</span><input type="text" id="pc-c" inputmode="decimal" aria-label="50 pourcent de 9,3"><span class="actions"><button type="button" data-ok="pc-c">OK</button><button type="button" class="sec" data-aide="pc-c">Indice</button></span></div><div class="feedback" id="fb-pc-c" hidden></div><div class="aide" id="ai-pc-c" hidden></div></div>
+    <div class="item"><div class="ligne"><span class="calc">50&nbsp;%&nbsp;de&nbsp;35&nbsp;=</span><input type="text" id="pc-d" inputmode="decimal" aria-label="50 pourcent de 35"><span class="actions"><button type="button" data-ok="pc-d">OK</button><button type="button" class="sec" data-aide="pc-d">Indice</button></span></div><div class="feedback" id="fb-pc-d" hidden></div><div class="aide" id="ai-pc-d" hidden></div></div>
+
+    <p class="sous-consigne">Diviser par 10, 100, 1&nbsp;000</p>
+    <div class="item"><div class="ligne"><span class="calc">265,49&nbsp;:&nbsp;1&nbsp;000&nbsp;=</span><input type="text" id="dv-a" inputmode="decimal" aria-label="265,49 divise par 1000"><span class="actions"><button type="button" data-ok="dv-a">OK</button><button type="button" class="sec" data-aide="dv-a">Indice</button></span></div><div class="feedback" id="fb-dv-a" hidden></div><div class="aide" id="ai-dv-a" hidden></div></div>
+    <div class="item"><div class="ligne"><span class="calc">73,83&nbsp;:&nbsp;10&nbsp;=</span><input type="text" id="dv-b" inputmode="decimal" aria-label="73,83 divise par 10"><span class="actions"><button type="button" data-ok="dv-b">OK</button><button type="button" class="sec" data-aide="dv-b">Indice</button></span></div><div class="feedback" id="fb-dv-b" hidden></div><div class="aide" id="ai-dv-b" hidden></div></div>
+    <div class="item"><div class="ligne"><span class="calc">47,479&nbsp;:&nbsp;1&nbsp;000&nbsp;=</span><input type="text" id="dv-c" inputmode="decimal" aria-label="47,479 divise par 1000"><span class="actions"><button type="button" data-ok="dv-c">OK</button><button type="button" class="sec" data-aide="dv-c">Indice</button></span></div><div class="feedback" id="fb-dv-c" hidden></div><div class="aide" id="ai-dv-c" hidden></div></div>
+    <div class="item"><div class="ligne"><span class="calc">633,5&nbsp;:&nbsp;10&nbsp;=</span><input type="text" id="dv-d" inputmode="decimal" aria-label="633,5 divise par 10"><span class="actions"><button type="button" data-ok="dv-d">OK</button><button type="button" class="sec" data-aide="dv-d">Indice</button></span></div><div class="feedback" id="fb-dv-d" hidden></div><div class="aide" id="ai-dv-d" hidden></div></div>
+  </section>
+
+  <div class="barre">
+    <button type="button" id="btn-tout">V&eacute;rifier tout</button>
+    <button type="button" class="sec" id="btn-corr">Voir la correction</button>
+    <button type="button" class="sec" id="btn-reset">R&eacute;initialiser</button>
+  </div>
+
+  <div class="correction" id="correction" hidden></div>
+  <div class="bilan" id="bilan" hidden></div>
+
+</main>
+
+<script>
+(function(){
+  "use strict";
+
+  function esc(txt){
+    var d = document.createElement("div");
+    d.textContent = String(txt);
+    return d.innerHTML;
+  }
+  function afficher(id, type, html){
+    var fb = document.getElementById("fb-" + id);
+    if (!fb) return;
+    fb.className = "feedback " + type;
+    fb.innerHTML = html;
+    fb.hidden = false;
+  }
+  function marquer(input, etat){
+    if (!input) return;
+    input.classList.remove("correct","partiel","incorrect");
+    if (etat) input.classList.add(etat);
+  }
+  function basculerAide(id, texte){
+    var box = document.getElementById("ai-" + id);
+    if (!box) return;
+    if (box.hidden){
+      box.innerHTML = "\ud83d\udca1 <strong>Indice&nbsp;:</strong> " + texte;
+      box.hidden = false;
+    } else {
+      box.hidden = true;
+    }
+  }
+  function palier(pct){
+    if (pct >= 90) return "\ud83d\udfe2 Excellent";
+    if (pct >= 75) return "\ud83d\udfe2 Tr\u00e8s bien";
+    if (pct >= 60) return "\ud83d\udfe1 Ma\u00eetrise satisfaisante";
+    if (pct >= 40) return "\ud83d\udfe0 Ma\u00eetrise fragile";
+    return "\ud83d\udd34 Ma\u00eetrise insuffisante";
+  }
+
+  // ---------- Comparaison d\u00e9cimale exacte ----------
+  function decompose(s){
+    var neg = false;
+    if (s.charAt(0) === "-"){ neg = true; s = s.slice(1); }
+    var p = s.split(".");
+    var ent = p[0] === "" ? "0" : p[0];
+    var dec = p.length > 1 ? p[1] : "";
+    ent = ent.replace(/^0+(?=\d)/, "");
+    dec = dec.replace(/0+$/, "");
+    if (ent === "0" && dec === "") neg = false;
+    return { neg:neg, ent:ent, dec:dec };
+  }
+  function cmpAbs(a, b){
+    if (a.ent.length !== b.ent.length) return a.ent.length > b.ent.length ? 1 : -1;
+    if (a.ent !== b.ent) return a.ent > b.ent ? 1 : -1;
+    var n = Math.max(a.dec.length, b.dec.length);
+    var da = a.dec + new Array(n - a.dec.length + 1).join("0");
+    var db = b.dec + new Array(n - b.dec.length + 1).join("0");
+    if (da === db) return 0;
+    return da > db ? 1 : -1;
+  }
+  function comparer(x, y){
+    var A = decompose(x), B = decompose(y);
+    if (A.neg !== B.neg) return A.neg ? -1 : 1;
+    var r = cmpAbs(A, B);
+    return A.neg ? -r : r;
+  }
+  function normalise(brut){
+    var s = String(brut).replace(/[\s\u00a0\u202f\u2009]/g, "");
+    s = s.replace(/[\u2212\u2013\u2014]/g, "-").replace(/,/g, ".");
+    if (s === "") return null;
+    if (!/^-?(\d+(\.\d*)?|\.\d+)$/.test(s)) return null;
+    return s;
+  }
+  function lireEntier(brut){
+    var v = String(brut).replace(/[\s\u00a0]/g,"");
+    if (v === "") return "";
+    if (!/^\d+$/.test(v)) return null;
+    return Number(v);
+  }
+
+  var etats = {};
+  var occupe = false;
+
+  // ---------- Trouver le produit ----------
+  var PRODUITS = {
+    "pr-a": { produit:54, f1:9, f2:6, aide:"Cherche deux nombres de la table de multiplication dont le produit fait 54." },
+    "pr-b": { produit:64, f1:8, f2:8, aide:"64 est un carr\u00e9&nbsp;: les deux facteurs sont identiques." },
+    "pr-c": { produit:35, f1:7, f2:5, aide:"Cherche deux nombres de la table de multiplication dont le produit fait 35." },
+    "pr-d": { produit:32, f1:8, f2:4, aide:"Cherche deux nombres de la table de multiplication dont le produit fait 32." }
+  };
+
+  function verifierProduit(id){
+    var it = PRODUITS[id];
+    var in1 = document.getElementById(id + "-1");
+    var in2 = document.getElementById(id + "-2");
+    var v1 = lireEntier(in1.value), v2 = lireEntier(in2.value);
+    var ref = it.produit + " = " + it.f1 + " \u00d7 " + it.f2;
+
+    if (v1 === "" && v2 === ""){
+      etats[id] = "vide";
+      marquer(in1, ""); marquer(in2, "");
+      afficher(id, "warn", "\u26a0\ufe0f Aucune r\u00e9ponse saisie. Compl\u00e8te les deux facteurs, puis clique sur <strong>OK</strong>.");
+      return;
+    }
+    if (v1 === null || v2 === null){
+      etats[id] = "incorrect";
+      marquer(in1, v1===null?"incorrect":""); marquer(in2, v2===null?"incorrect":"");
+      afficher(id, "warn", "\u26a0\ufe0f Chaque facteur doit \u00eatre un nombre entier seul.");
+      return;
+    }
+    var attendus = [it.f1, it.f2].sort();
+    var saisis = [v1, v2].sort();
+    var ok = attendus[0]===saisis[0] && attendus[1]===saisis[1] && v1*v2===it.produit;
+
+    if (ok){
+      etats[id] = "correct";
+      marquer(in1,"correct"); marquer(in2,"correct");
+      afficher(id, "ok", "\u2705 Bravo&nbsp;! <strong><u>" + ref + "</u></strong>.");
+      return;
+    }
+    var produitOk = v1*v2 === it.produit;
+    if (produitOk){
+      etats[id] = "partiel";
+      marquer(in1,"partiel"); marquer(in2,"partiel");
+      afficher(id, "warn", "\u26a0\ufe0f Le produit est correct mais ce ne sont pas les facteurs attendus.<br>R\u00e9ponse attendue&nbsp;: <strong><u>" + ref + "</u></strong>.");
+      return;
+    }
+    etats[id] = "incorrect";
+    marquer(in1,"incorrect"); marquer(in2,"incorrect");
+    afficher(id, "ko", "\u274c " + v1 + " \u00d7 " + v2 + " ne fait pas " + it.produit + ".<br>R\u00e9ponse attendue&nbsp;: <strong><u>" + ref + "</u></strong>.");
+  }
+
+  // ---------- D\u00e9composition entier + fraction ----------
+  var DECOMPOSITIONS = {
+    "dc-a": { num:21, den:3, entier:7, reste:0, aide:"Combien de fois 3 tient-il dans 21&nbsp;? Que reste-t-il ensuite&nbsp;?" },
+    "dc-b": { num:18, den:8, entier:2, reste:2, aide:"Combien de fois 8 tient-il dans 18&nbsp;? Que reste-t-il ensuite&nbsp;?" }
+  };
+
+  function verifierDecomposition(id){
+    var it = DECOMPOSITIONS[id];
+    var in1 = document.getElementById(id + "-1");
+    var in2 = document.getElementById(id + "-2");
+    var v1 = lireEntier(in1.value), v2 = lireEntier(in2.value);
+    var ref = it.num + "/" + it.den + " = " + it.entier + " + " + it.reste + "/" + it.den;
+
+    if (v1 === "" && v2 === ""){
+      etats[id] = "vide";
+      marquer(in1, ""); marquer(in2, "");
+      afficher(id, "warn", "\u26a0\ufe0f Aucune r\u00e9ponse saisie. Compl\u00e8te la partie enti\u00e8re et le num\u00e9rateur du reste, puis clique sur <strong>OK</strong>.");
+      return;
+    }
+    if (v1 === null || v2 === null){
+      etats[id] = "incorrect";
+      marquer(in1, v1===null?"incorrect":""); marquer(in2, v2===null?"incorrect":"");
+      afficher(id, "warn", "\u26a0\ufe0f Chaque case doit contenir un nombre entier seul.");
+      return;
+    }
+    var okE = v1 === it.entier;
+    var okR = v2 === it.reste;
+    marquer(in1, okE?"correct":"incorrect");
+    marquer(in2, okR?"correct":"incorrect");
+
+    if (okE && okR){
+      etats[id] = "correct";
+      afficher(id, "ok", "\u2705 Bravo&nbsp;! <strong><u>" + ref + "</u></strong>.");
+      return;
+    }
+    if (okE || okR){
+      etats[id] = "partiel";
+      afficher(id, "warn", "\u26a0\ufe0f " + (okE ? "La partie enti\u00e8re est correcte, mais pas le num\u00e9rateur du reste." : "Le num\u00e9rateur du reste est correct, mais pas la partie enti\u00e8re.") + "<br>R\u00e9ponse attendue&nbsp;: <strong><u>" + ref + "</u></strong>.");
+      return;
+    }
+    etats[id] = "incorrect";
+    afficher(id, "ko", "\u274c Ce n\u2019est pas la bonne d\u00e9composition.<br>R\u00e9ponse attendue&nbsp;: <strong><u>" + ref + "</u></strong>.");
+  }
+
+  // ---------- 50% et Diviser (calcul simple decimal) ----------
+  var SIMPLES = {
+    "pc-a": { attendu:"3.35",  enonce:"50 % de 6,7" },
+    "pc-b": { attendu:"2.25",  enonce:"50 % de 4,5" },
+    "pc-c": { attendu:"4.65",  enonce:"50 % de 9,3" },
+    "pc-d": { attendu:"17.5",  enonce:"50 % de 35" },
+    "dv-a": { attendu:"0.26549", enonce:"265,49 : 1 000" },
+    "dv-b": { attendu:"7.383",   enonce:"73,83 : 10" },
+    "dv-c": { attendu:"0.047479", enonce:"47,479 : 1 000" },
+    "dv-d": { attendu:"63.35",  enonce:"633,5 : 10" }
+  };
+  var AIDES_SIMPLES = {
+    "pc-a": "Calculer 50&nbsp;%, c\u2019est diviser par 2.",
+    "pc-b": "Calculer 50&nbsp;%, c\u2019est diviser par 2.",
+    "pc-c": "Calculer 50&nbsp;%, c\u2019est diviser par 2.",
+    "pc-d": "Calculer 50&nbsp;%, c\u2019est diviser par 2.",
+    "dv-a": "Diviser par 1 000 d\u00e9place la virgule de 3 rangs vers la gauche.",
+    "dv-b": "Diviser par 10 d\u00e9place la virgule d\u2019un rang vers la gauche.",
+    "dv-c": "Diviser par 1 000 d\u00e9place la virgule de 3 rangs vers la gauche.",
+    "dv-d": "Diviser par 10 d\u00e9place la virgule d\u2019un rang vers la gauche."
+  };
+
+  function formaterAffiche(s){
+    return s.replace(".", ",");
+  }
+
+  function verifierSimple(id){
+    var it = SIMPLES[id];
+    var input = document.getElementById(id);
+    var brut = input.value;
+    if (String(brut).replace(/[\s\u00a0]/g,"") === ""){
+      etats[id] = "vide";
+      marquer(input, "");
+      afficher(id, "warn", "\u26a0\ufe0f Aucune r\u00e9ponse saisie. \u00c9cris le r\u00e9sultat, puis clique sur <strong>OK</strong>.");
+      return;
+    }
+    var val = normalise(brut);
+    var refAffiche = formaterAffiche(it.attendu);
+    if (val === null){
+      etats[id] = "incorrect";
+      marquer(input, "incorrect");
+      afficher(id, "warn", "\u26a0\ufe0f Saisie non reconnue&nbsp;: &laquo;&nbsp;" + esc(brut) + "&nbsp;&raquo;. \u00c9cris un nombre seul.");
+      return;
+    }
+    if (comparer(val, it.attendu) === 0){
+      etats[id] = "correct";
+      marquer(input, "correct");
+      afficher(id, "ok", "\u2705 Bravo&nbsp;! " + it.enonce + " = <strong><u>" + refAffiche + "</u></strong>.");
+      return;
+    }
+    etats[id] = "incorrect";
+    marquer(input, "incorrect");
+    afficher(id, "ko", "\u274c Ce n\u2019est pas le bon r\u00e9sultat.<br>R\u00e9ponse attendue&nbsp;: <strong><u>" + refAffiche + "</u></strong>.");
+  }
+
+  var ORDRE_ITEMS = ["pr-a","pr-b","pr-c","pr-d","dc-a","dc-b","pc-a","pc-b","pc-c","pc-d","dv-a","dv-b","dv-c","dv-d"];
+
+  function verifierTout(){
+    if (occupe) return;
+    occupe = true;
+    window.setTimeout(function(){ occupe = false; }, 350);
+
+    ["pr-a","pr-b","pr-c","pr-d"].forEach(verifierProduit);
+    ["dc-a","dc-b"].forEach(verifierDecomposition);
+    ["pc-a","pc-b","pc-c","pc-d","dv-a","dv-b","dv-c","dv-d"].forEach(verifierSimple);
+
+    var total = ORDRE_ITEMS.length;
+    var score = 0;
+    var recap = "";
+    for (var j = 0; j < ORDRE_ITEMS.length; j++){
+      var id = ORDRE_ITEMS[j];
+      var e = etats[id];
+      if (e === "correct"){
+        score++;
+        recap += '<span class="r-ok">\u2714 ' + id + '</span>';
+      } else if (e === "partiel"){
+        recap += '<span class="r-mid">\u25d0 ' + id + '</span>';
+      } else {
+        recap += '<span class="r-ko">\u2718 ' + id + '</span>';
+      }
+    }
+    var pct = Math.round((score / total) * 100);
+    var bilan = document.getElementById("bilan");
+    bilan.innerHTML =
+      '<div class="score">Score&nbsp;: ' + score + '\u2009/\u2009' + total + ' (' + pct + '&nbsp;%)</div>' +
+      '<div class="palier">' + palier(pct) + '</div>' +
+      '<div class="recap">' + recap + '</div>' +
+      '<div class="legende">\u2714 correct &nbsp;\u2022&nbsp; \u25d0 partiel (produit ou d\u00e9composition &agrave; moiti\u00e9 juste) &nbsp;\u2022&nbsp; \u2718 incorrect ou non r\u00e9pondu.</div>';
+    bilan.hidden = false;
+  }
+
+  function basculerCorrection(){
+    var box = document.getElementById("correction");
+    var btn = document.getElementById("btn-corr");
+    if (box.hidden){
+      box.innerHTML =
+        "<h2>Correction</h2>" +
+        "<h3>Trouver le produit</h3><ul>" +
+        "<li>54 = 9 &times; 6</li><li>64 = 8 &times; 8</li><li>35 = 7 &times; 5</li><li>32 = 8 &times; 4</li></ul>" +
+        "<h3>D\u00e9composition en entier + fraction</h3><ul>" +
+        "<li>21/3 = 7 + 0/3</li><li>18/8 = 2 + 2/8</li></ul>" +
+        "<h3>Calculer 50&nbsp;%</h3><ul>" +
+        "<li>50 % de 6,7 = 3,35</li><li>50 % de 4,5 = 2,25</li><li>50 % de 9,3 = 4,65</li><li>50 % de 35 = 17,5</li></ul>" +
+        "<h3>Diviser par 10, 100, 1 000</h3><ul>" +
+        "<li>265,49 : 1 000 = 0,26549</li><li>73,83 : 10 = 7,383</li><li>47,479 : 1 000 = 0,047479</li><li>633,5 : 10 = 63,35</li></ul>";
+      box.hidden = false;
+      btn.textContent = "Masquer la correction";
+    } else {
+      box.hidden = true;
+      btn.textContent = "Voir la correction";
+    }
+  }
+
+  function reinitialiser(){
+    var champsDoubles = ["pr-a","pr-b","pr-c","pr-d","dc-a","dc-b"];
+    for (var i = 0; i < champsDoubles.length; i++){
+      var id = champsDoubles[i];
+      var in1 = document.getElementById(id + "-1");
+      var in2 = document.getElementById(id + "-2");
+      if (in1){ in1.value=""; in1.classList.remove("correct","partiel","incorrect"); }
+      if (in2){ in2.value=""; in2.classList.remove("correct","partiel","incorrect"); }
+    }
+    var champsSimples = ["pc-a","pc-b","pc-c","pc-d","dv-a","dv-b","dv-c","dv-d"];
+    for (var j = 0; j < champsSimples.length; j++){
+      var input = document.getElementById(champsSimples[j]);
+      if (input){ input.value=""; input.classList.remove("correct","partiel","incorrect"); }
+    }
+    for (var k = 0; k < ORDRE_ITEMS.length; k++){
+      var idk = ORDRE_ITEMS[k];
+      var fb = document.getElementById("fb-" + idk);
+      if (fb){ fb.hidden = true; fb.innerHTML = ""; fb.className = "feedback"; }
+      var ai = document.getElementById("ai-" + idk);
+      if (ai){ ai.hidden = true; ai.innerHTML = ""; }
+    }
+    etats = {};
+    var bilan = document.getElementById("bilan");
+    bilan.hidden = true; bilan.innerHTML = "";
+    var corr = document.getElementById("correction");
+    corr.hidden = true; corr.innerHTML = "";
+    document.getElementById("btn-corr").textContent = "Voir la correction";
+    occupe = false;
+  }
+
+  function init(){
+    ["pr-a","pr-b","pr-c","pr-d"].forEach(function(id){
+      document.querySelector('[data-ok="' + id + '"]').addEventListener("click", function(){ verifierProduit(id); });
+      document.querySelector('[data-aide="' + id + '"]').addEventListener("click", function(){ basculerAide(id, PRODUITS[id].aide); });
+    });
+    ["dc-a","dc-b"].forEach(function(id){
+      document.querySelector('[data-ok="' + id + '"]').addEventListener("click", function(){ verifierDecomposition(id); });
+      document.querySelector('[data-aide="' + id + '"]').addEventListener("click", function(){ basculerAide(id, DECOMPOSITIONS[id].aide); });
+    });
+    ["pc-a","pc-b","pc-c","pc-d","dv-a","dv-b","dv-c","dv-d"].forEach(function(id){
+      document.querySelector('[data-ok="' + id + '"]').addEventListener("click", function(){ verifierSimple(id); });
+      document.querySelector('[data-aide="' + id + '"]').addEventListener("click", function(){ basculerAide(id, AIDES_SIMPLES[id]); });
+    });
+
+    var champs = document.querySelectorAll('input[type="text"]');
+    for (var i = 0; i < champs.length; i++){
+      champs[i].addEventListener("keydown", function(ev){
+        if (ev.key !== "Enter") return;
+        ev.preventDefault();
+        var id = this.id;
+        if (id.indexOf("pr-") === 0) verifierProduit(id.replace(/-\d$/, ""));
+        else if (id.indexOf("dc-") === 0) verifierDecomposition(id.replace(/-\d$/, ""));
+        else verifierSimple(id);
+      });
+    }
+
+    document.getElementById("btn-tout").addEventListener("click", verifierTout);
+    document.getElementById("btn-corr").addEventListener("click", basculerCorrection);
+    document.getElementById("btn-reset").addEventListener("click", reinitialiser);
+  }
+
+  if (document.readyState === "loading"){
+    document.addEventListener("DOMContentLoaded", init);
+  } else {
+    init();
+  }
+})();
+</script>
+</body>
+</html>
