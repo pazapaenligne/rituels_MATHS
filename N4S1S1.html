@@ -1,0 +1,383 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Rituel &mdash; Semaine 1 S&eacute;ance 1 &mdash; Multiplications et vocabulaire</title>
+<style>
+*{box-sizing:border-box}
+html,body{margin:0;padding:0}
+body{background:#fffdf7;font-family:Arial,Helvetica,sans-serif;color:#243238;line-height:1.6;padding:14px;overflow-x:hidden}
+.bulle{position:fixed;border-radius:50%;background:#3ba5b8;opacity:.12;pointer-events:none;z-index:0}
+.b1{width:190px;height:190px;top:-70px;left:-70px}
+.b2{width:130px;height:130px;top:-45px;right:-45px}
+.b3{width:160px;height:160px;bottom:-60px;left:-55px}
+.b4{width:110px;height:110px;bottom:-40px;right:-35px}
+.wrap{position:relative;z-index:1;max-width:880px;margin:0 auto}
+.tete{display:flex;flex-wrap:wrap;align-items:center;gap:10px;margin-bottom:14px}
+.etq{display:inline-block;padding:7px 16px;border-radius:8px;color:#fff;font-weight:700;font-size:.95rem}
+.etq-sem{background:#8fd3e8;color:#123f4a}
+.etq-sea{background:#3ba5b8}
+.etq-rit{background:#1f7a8c;font-family:Georgia,"Times New Roman",serif;margin-left:auto}
+h1{font-size:clamp(1.3rem,4.5vw,2rem);font-weight:900;color:#1f7a8c;margin:6px 0 18px;line-height:1.3}
+.bloc{position:relative;border:2px solid #3ba5b8;border-radius:12px;background:#fff;padding:28px 18px 20px;margin-bottom:18px}
+.onglet{position:absolute;top:-17px;left:18px;background:#8fd3e8;color:#123f4a;font-weight:700;font-size:.95rem;padding:5px 18px;border-radius:8px}
+.tete-ex{display:flex;align-items:flex-start;gap:12px;margin:6px 0 16px;min-width:0}
+.pastille{flex:0 0 auto;width:34px;height:34px;border-radius:50%;background:#1f7a8c;color:#fff;font-weight:700;font-size:1rem;display:flex;align-items:center;justify-content:center}
+.consigne{margin:4px 0 0;font-weight:700;text-decoration:underline;color:#1f7a8c;font-size:clamp(.95rem,2.6vw,1.05rem);min-width:0;overflow-wrap:break-word}
+.sous-consigne{margin:4px 0 12px;font-weight:700;color:#1f7a8c;font-size:clamp(.9rem,2.4vw,1rem)}
+.item{padding:12px 0;border-bottom:1px dashed #dceff3}
+.item:last-of-type{border-bottom:0}
+.ligne{display:flex;flex-wrap:wrap;align-items:center;gap:10px;min-width:0}
+.calc{font-size:clamp(1rem,3vw,1.15rem);font-weight:700;color:#243238;white-space:nowrap}
+input[type="text"]{width:clamp(90px,26vw,130px);min-width:0;padding:9px 8px;font-family:Arial,Helvetica,sans-serif;font-size:1rem;font-weight:700;text-align:center;color:#1f7a8c;background:#f7fcfd;border:1px solid #b9dfe8;border-bottom:2px dotted #3ba5b8;border-radius:6px}
+input[type="text"]:focus{outline:2px solid #3ba5b8;outline-offset:1px}
+input.correct{border-color:#2e8b57;background:#effaf3;color:#2e8b57}
+input.incorrect{border-color:#c0392b;background:#fdefee;color:#c0392b}
+.actions{display:flex;flex-wrap:wrap;gap:8px;margin-left:auto}
+button{font-family:inherit;font-size:.92rem;font-weight:700;min-height:44px;padding:10px 16px;border:0;border-radius:8px;cursor:pointer;background:#3ba5b8;color:#fff;line-height:1.2}
+button:hover{background:#1f7a8c}
+button.sec{background:#fff;color:#1f7a8c;border:2px solid #3ba5b8}
+button.sec:hover{background:#eaf7fa}
+.feedback{margin:10px 0 0;padding:12px 14px;border-left:5px solid #3ba5b8;border-radius:6px;background:#f4fafb;font-size:clamp(.9rem,2.5vw,1rem);line-height:1.75;overflow-wrap:break-word}
+.feedback.ok{border-left-color:#2e8b57;background:#effaf3;color:#1e6b40}
+.feedback.ko{border-left-color:#c0392b;background:#fdefee;color:#96291d}
+.feedback.warn{border-left-color:#c9820a;background:#fff8ea;color:#8a5b04}
+.aide{margin:10px 0 0;padding:12px 14px;border-left:5px solid #8fd3e8;background:#f2fafd;border-radius:6px;font-size:clamp(.9rem,2.5vw,1rem);line-height:1.75}
+.barre{display:flex;flex-wrap:wrap;gap:10px;margin:18px 0}
+.barre button{flex:1 1 190px}
+.correction{border:2px dashed #3ba5b8;border-radius:12px;background:#fff;padding:16px 18px;margin-bottom:18px;font-size:clamp(.9rem,2.5vw,1rem);line-height:1.8}
+.correction h2{margin:0 0 10px;font-size:1.05rem;color:#1f7a8c}
+.correction h3{margin:14px 0 4px;font-size:.98rem;color:#1f7a8c}
+.correction ul{margin:6px 0 0;padding-left:20px}
+.correction li{margin-bottom:6px}
+.bilan{border:2px solid #1f7a8c;border-radius:12px;background:#fff;padding:16px 18px;margin-bottom:18px;font-size:.92rem;line-height:1.8}
+.bilan .score{font-size:clamp(1.05rem,3.2vw,1.25rem);font-weight:900;color:#1f7a8c}
+.bilan .palier{font-weight:700;margin-top:4px}
+.recap{display:flex;flex-wrap:wrap;gap:8px;margin-top:10px}
+.recap span{display:inline-flex;align-items:center;gap:6px;padding:6px 11px;border-radius:8px;background:#f4fafb;font-weight:700;font-size:.9rem;border:1px solid #dceff3}
+.recap .r-ok{color:#2e8b57}
+.recap .r-ko{color:#c0392b}
+.legende{margin-top:10px;font-size:.85rem;color:#4d6169}
+@media (max-width:768px){.actions{margin-left:0;width:100%}.actions button{flex:1 1 auto}}
+@media (max-width:480px){
+  body{padding:10px}
+  .bloc{padding:26px 12px 16px}
+  .etq{font-size:.85rem;padding:6px 12px}
+  .etq-rit{margin-left:0}
+  .recap span{font-size:.85rem}
+}
+</style>
+</head>
+<body>
+<div class="bulle b1"></div><div class="bulle b2"></div><div class="bulle b3"></div><div class="bulle b4"></div>
+
+<main class="wrap">
+
+  <div class="tete">
+    <span class="etq etq-sem">Semaine 1</span>
+    <span class="etq etq-sea">S&eacute;ance 1</span>
+    <span class="etq etq-rit">Rituel</span>
+  </div>
+
+  <h1>Multiplications et vocabulaire</h1>
+
+  <section class="bloc">
+    <span class="onglet">Calcul</span>
+
+    <div class="tete-ex">
+      <span class="pastille">1</span>
+      <p class="consigne">Effectue les calculs suivants&nbsp;:</p>
+    </div>
+
+    <p class="sous-consigne">Multiplications</p>
+    <div class="item"><div class="ligne"><span class="calc">10&nbsp;&times;&nbsp;11&nbsp;=</span><input type="text" id="ml-a" inputmode="numeric" aria-label="10 fois 11"><span class="actions"><button type="button" data-ok="ml-a">OK</button><button type="button" class="sec" data-aide="ml-a">Indice</button></span></div><div class="feedback" id="fb-ml-a" hidden></div><div class="aide" id="ai-ml-a" hidden></div></div>
+    <div class="item"><div class="ligne"><span class="calc">3&nbsp;&times;&nbsp;5&nbsp;=</span><input type="text" id="ml-b" inputmode="numeric" aria-label="3 fois 5"><span class="actions"><button type="button" data-ok="ml-b">OK</button><button type="button" class="sec" data-aide="ml-b">Indice</button></span></div><div class="feedback" id="fb-ml-b" hidden></div><div class="aide" id="ai-ml-b" hidden></div></div>
+    <div class="item"><div class="ligne"><span class="calc">12&nbsp;&times;&nbsp;10&nbsp;=</span><input type="text" id="ml-c" inputmode="numeric" aria-label="12 fois 10"><span class="actions"><button type="button" data-ok="ml-c">OK</button><button type="button" class="sec" data-aide="ml-c">Indice</button></span></div><div class="feedback" id="fb-ml-c" hidden></div><div class="aide" id="ai-ml-c" hidden></div></div>
+    <div class="item"><div class="ligne"><span class="calc">6&nbsp;&times;&nbsp;12&nbsp;=</span><input type="text" id="ml-d" inputmode="numeric" aria-label="6 fois 12"><span class="actions"><button type="button" data-ok="ml-d">OK</button><button type="button" class="sec" data-aide="ml-d">Indice</button></span></div><div class="feedback" id="fb-ml-d" hidden></div><div class="aide" id="ai-ml-d" hidden></div></div>
+    <div class="item"><div class="ligne"><span class="calc">8&nbsp;&times;&nbsp;3&nbsp;=</span><input type="text" id="ml-e" inputmode="numeric" aria-label="8 fois 3"><span class="actions"><button type="button" data-ok="ml-e">OK</button><button type="button" class="sec" data-aide="ml-e">Indice</button></span></div><div class="feedback" id="fb-ml-e" hidden></div><div class="aide" id="ai-ml-e" hidden></div></div>
+
+    <p class="sous-consigne">Vocabulaire&nbsp;: multiple ou diviseur</p>
+    <div class="item"><div class="ligne"><span class="calc">30 est un</span><input type="text" id="vc-a" aria-label="30 est un multiple ou diviseur de 10"><span class="calc">de 10</span><span class="actions"><button type="button" data-ok="vc-a">OK</button><button type="button" class="sec" data-aide="vc-a">Indice</button></span></div><div class="feedback" id="fb-vc-a" hidden></div><div class="aide" id="ai-vc-a" hidden></div></div>
+    <div class="item"><div class="ligne"><span class="calc">7 est un</span><input type="text" id="vc-b" aria-label="7 est un multiple ou diviseur de 35"><span class="calc">de 35</span><span class="actions"><button type="button" data-ok="vc-b">OK</button><button type="button" class="sec" data-aide="vc-b">Indice</button></span></div><div class="feedback" id="fb-vc-b" hidden></div><div class="aide" id="ai-vc-b" hidden></div></div>
+    <div class="item"><div class="ligne"><span class="calc">4 est un</span><input type="text" id="vc-c" aria-label="4 est un multiple ou diviseur de 40"><span class="calc">de 40</span><span class="actions"><button type="button" data-ok="vc-c">OK</button><button type="button" class="sec" data-aide="vc-c">Indice</button></span></div><div class="feedback" id="fb-vc-c" hidden></div><div class="aide" id="ai-vc-c" hidden></div></div>
+    <div class="item"><div class="ligne"><span class="calc">72 est un</span><input type="text" id="vc-d" aria-label="72 est un multiple ou diviseur de 24"><span class="calc">de 24</span><span class="actions"><button type="button" data-ok="vc-d">OK</button><button type="button" class="sec" data-aide="vc-d">Indice</button></span></div><div class="feedback" id="fb-vc-d" hidden></div><div class="aide" id="ai-vc-d" hidden></div></div>
+    <div class="item"><div class="ligne"><span class="calc">32 est un</span><input type="text" id="vc-e" aria-label="32 est un multiple ou diviseur de 16"><span class="calc">de 16</span><span class="actions"><button type="button" data-ok="vc-e">OK</button><button type="button" class="sec" data-aide="vc-e">Indice</button></span></div><div class="feedback" id="fb-vc-e" hidden></div><div class="aide" id="ai-vc-e" hidden></div></div>
+  </section>
+
+  <div class="barre">
+    <button type="button" id="btn-tout">V&eacute;rifier tout</button>
+    <button type="button" class="sec" id="btn-corr">Voir la correction</button>
+    <button type="button" class="sec" id="btn-reset">R&eacute;initialiser</button>
+  </div>
+
+  <div class="correction" id="correction" hidden></div>
+  <div class="bilan" id="bilan" hidden></div>
+
+</main>
+
+<script>
+(function(){
+  "use strict";
+
+  function esc(txt){
+    var d = document.createElement("div");
+    d.textContent = String(txt);
+    return d.innerHTML;
+  }
+  function sansAccents(s){
+    return s
+      .replace(/[\u00e0\u00e2\u00e4\u00e1\u00e3]/g,"a")
+      .replace(/[\u00e9\u00e8\u00ea\u00eb]/g,"e")
+      .replace(/[\u00ee\u00ef\u00ec\u00ed]/g,"i")
+      .replace(/[\u00f4\u00f6\u00f2\u00f3\u00f5]/g,"o")
+      .replace(/[\u00fb\u00fc\u00f9\u00fa]/g,"u")
+      .replace(/[\u2019\u2018\u02bc\u0060]/g,"'");
+  }
+  function normTexte(s){
+    var t = sansAccents(String(s).toLowerCase());
+    t = t.replace(/[\u00a0\u202f\u2009]/g," ").replace(/\s+/g," ");
+    return t.trim();
+  }
+  function afficher(id, type, html){
+    var fb = document.getElementById("fb-" + id);
+    if (!fb) return;
+    fb.className = "feedback " + type;
+    fb.innerHTML = html;
+    fb.hidden = false;
+  }
+  function marquer(input, etat){
+    if (!input) return;
+    input.classList.remove("correct","incorrect");
+    if (etat) input.classList.add(etat);
+  }
+  function basculerAide(id, texte){
+    var box = document.getElementById("ai-" + id);
+    if (!box) return;
+    if (box.hidden){
+      box.innerHTML = "\ud83d\udca1 <strong>Indice&nbsp;:</strong> " + texte;
+      box.hidden = false;
+    } else {
+      box.hidden = true;
+    }
+  }
+  function palier(pct){
+    if (pct >= 90) return "\ud83d\udfe2 Excellent";
+    if (pct >= 75) return "\ud83d\udfe2 Tr\u00e8s bien";
+    if (pct >= 60) return "\ud83d\udfe1 Ma\u00eetrise satisfaisante";
+    if (pct >= 40) return "\ud83d\udfe0 Ma\u00eetrise fragile";
+    return "\ud83d\udd34 Ma\u00eetrise insuffisante";
+  }
+  function lireEntier(brut){
+    var v = String(brut).replace(/[\s\u00a0]/g,"");
+    if (v === "") return "";
+    if (!/^\d+$/.test(v)) return null;
+    return Number(v);
+  }
+
+  var etats = {};
+  var occupe = false;
+
+  // ---------- Multiplications ----------
+  var MULTIPLICATIONS = {
+    "ml-a": { attendu:110, enonce:"10 \u00d7 11" },
+    "ml-b": { attendu:15,  enonce:"3 \u00d7 5" },
+    "ml-c": { attendu:120, enonce:"12 \u00d7 10" },
+    "ml-d": { attendu:72,  enonce:"6 \u00d7 12" },
+    "ml-e": { attendu:24,  enonce:"8 \u00d7 3" }
+  };
+  var AIDES_MULT = {
+    "ml-a": "10 \u00d7 11, c\u2019est 10 \u00d7 10 + 10.",
+    "ml-b": "Table de 5&nbsp;: 3 \u00d7 5.",
+    "ml-c": "12 \u00d7 10, c\u2019est 12 suivi d\u2019un z\u00e9ro.",
+    "ml-d": "6 \u00d7 12 = 6 \u00d7 10 + 6 \u00d7 2.",
+    "ml-e": "Table de 3&nbsp;: 8 \u00d7 3."
+  };
+
+  function verifierMultiplication(id){
+    var it = MULTIPLICATIONS[id];
+    var input = document.getElementById(id);
+    var v = lireEntier(input.value);
+    if (v === ""){
+      etats[id] = "vide";
+      marquer(input, "");
+      afficher(id, "warn", "\u26a0\ufe0f Aucune r\u00e9ponse saisie. \u00c9cris le r\u00e9sultat, puis clique sur <strong>OK</strong>.");
+      return;
+    }
+    if (v === null){
+      etats[id] = "incorrect";
+      marquer(input, "incorrect");
+      afficher(id, "warn", "\u26a0\ufe0f \u00c9cris un nombre entier seul.");
+      return;
+    }
+    if (v === it.attendu){
+      etats[id] = "correct";
+      marquer(input, "correct");
+      afficher(id, "ok", "\u2705 Bravo&nbsp;! " + it.enonce + " = <strong><u>" + it.attendu + "</u></strong>.");
+      return;
+    }
+    etats[id] = "incorrect";
+    marquer(input, "incorrect");
+    afficher(id, "ko", "\u274c Ce n\u2019est pas le bon r\u00e9sultat.<br>R\u00e9ponse attendue&nbsp;: <strong><u>" + it.attendu + "</u></strong>.");
+  }
+
+  // ---------- Vocabulaire multiple/diviseur ----------
+  var VOCAB = {
+    "vc-a": { attendu:"multiple", a:30, b:10, aide:"30 = 10 \u00d7 3&nbsp;: 30 est un multiple de 10." },
+    "vc-b": { attendu:"diviseur", a:7,  b:35, aide:"35 \u00f7 7 tombe juste&nbsp;: 7 divise 35." },
+    "vc-c": { attendu:"diviseur", a:4,  b:40, aide:"40 \u00f7 4 tombe juste&nbsp;: 4 divise 40." },
+    "vc-d": { attendu:"multiple", a:72, b:24, aide:"72 = 24 \u00d7 3&nbsp;: 72 est un multiple de 24." },
+    "vc-e": { attendu:"multiple", a:32, b:16, aide:"32 = 16 \u00d7 2&nbsp;: 32 est un multiple de 16." }
+  };
+
+  function lireMD(brut){
+    var t = normTexte(brut);
+    if (t === "") return "";
+    if (t === "m" || t === "multiple") return "multiple";
+    if (t === "d" || t === "diviseur") return "diviseur";
+    return null;
+  }
+
+  function verifierVocab(id){
+    var it = VOCAB[id];
+    var input = document.getElementById(id);
+    var v = lireMD(input.value);
+
+    if (v === ""){
+      etats[id] = "vide";
+      marquer(input, "");
+      afficher(id, "warn", "\u26a0\ufe0f Aucune r\u00e9ponse saisie. \u00c9cris <strong>multiple</strong> ou <strong>diviseur</strong>, puis clique sur <strong>OK</strong>.");
+      return;
+    }
+    if (v === null){
+      etats[id] = "incorrect";
+      marquer(input, "incorrect");
+      afficher(id, "warn", "\u26a0\ufe0f \u00c9cris seulement <strong>multiple</strong> ou <strong>diviseur</strong>.");
+      return;
+    }
+    if (v === it.attendu){
+      etats[id] = "correct";
+      marquer(input, "correct");
+      afficher(id, "ok", "\u2705 Bravo&nbsp;! " + it.a + " est un <strong><u>" + it.attendu + "</u></strong> de " + it.b + ".");
+      return;
+    }
+    etats[id] = "incorrect";
+    marquer(input, "incorrect");
+    afficher(id, "ko", "\u274c Ce n\u2019est pas le bon mot.<br>R\u00e9ponse attendue&nbsp;: <strong><u>" + it.attendu + "</u></strong>.");
+  }
+
+  var ORDRE_ITEMS = ["ml-a","ml-b","ml-c","ml-d","ml-e","vc-a","vc-b","vc-c","vc-d","vc-e"];
+
+  function verifierTout(){
+    if (occupe) return;
+    occupe = true;
+    window.setTimeout(function(){ occupe = false; }, 350);
+
+    ["ml-a","ml-b","ml-c","ml-d","ml-e"].forEach(verifierMultiplication);
+    ["vc-a","vc-b","vc-c","vc-d","vc-e"].forEach(verifierVocab);
+
+    var total = ORDRE_ITEMS.length;
+    var score = 0;
+    var recap = "";
+    for (var j = 0; j < ORDRE_ITEMS.length; j++){
+      var id = ORDRE_ITEMS[j];
+      if (etats[id] === "correct"){
+        score++;
+        recap += '<span class="r-ok">\u2714 ' + id + '</span>';
+      } else {
+        recap += '<span class="r-ko">\u2718 ' + id + '</span>';
+      }
+    }
+    var pct = Math.round((score / total) * 100);
+    var bilan = document.getElementById("bilan");
+    bilan.innerHTML =
+      '<div class="score">Score&nbsp;: ' + score + '\u2009/\u2009' + total + ' (' + pct + '&nbsp;%)</div>' +
+      '<div class="palier">' + palier(pct) + '</div>' +
+      '<div class="recap">' + recap + '</div>' +
+      '<div class="legende">\u2714 correct &nbsp;\u2022&nbsp; \u2718 incorrect ou non r\u00e9pondu.</div>';
+    bilan.hidden = false;
+  }
+
+  function basculerCorrection(){
+    var box = document.getElementById("correction");
+    var btn = document.getElementById("btn-corr");
+    if (box.hidden){
+      box.innerHTML =
+        "<h2>Correction</h2>" +
+        "<h3>Multiplications</h3><ul>" +
+        "<li>10 &times; 11 = <strong>110</strong></li><li>3 &times; 5 = <strong>15</strong></li>" +
+        "<li>12 &times; 10 = <strong>120</strong></li><li>6 &times; 12 = <strong>72</strong></li>" +
+        "<li>8 &times; 3 = <strong>24</strong></li></ul>" +
+        "<h3>Vocabulaire multiple/diviseur</h3><ul>" +
+        "<li>30 est un <strong>multiple</strong> de 10</li>" +
+        "<li>7 est un <strong>diviseur</strong> de 35</li>" +
+        "<li>4 est un <strong>diviseur</strong> de 40</li>" +
+        "<li>72 est un <strong>multiple</strong> de 24</li>" +
+        "<li>32 est un <strong>multiple</strong> de 16</li></ul>";
+      box.hidden = false;
+      btn.textContent = "Masquer la correction";
+    } else {
+      box.hidden = true;
+      btn.textContent = "Voir la correction";
+    }
+  }
+
+  function reinitialiser(){
+    for (var i = 0; i < ORDRE_ITEMS.length; i++){
+      var id = ORDRE_ITEMS[i];
+      var input = document.getElementById(id);
+      if (input){
+        input.value = "";
+        input.disabled = false;
+        input.readOnly = false;
+        input.classList.remove("correct","incorrect");
+      }
+      var fb = document.getElementById("fb-" + id);
+      if (fb){ fb.hidden = true; fb.innerHTML = ""; fb.className = "feedback"; }
+      var ai = document.getElementById("ai-" + id);
+      if (ai){ ai.hidden = true; ai.innerHTML = ""; }
+    }
+    etats = {};
+    var bilan = document.getElementById("bilan");
+    bilan.hidden = true; bilan.innerHTML = "";
+    var corr = document.getElementById("correction");
+    corr.hidden = true; corr.innerHTML = "";
+    document.getElementById("btn-corr").textContent = "Voir la correction";
+    occupe = false;
+  }
+
+  function init(){
+    ["ml-a","ml-b","ml-c","ml-d","ml-e"].forEach(function(id){
+      document.querySelector('[data-ok="' + id + '"]').addEventListener("click", function(){ verifierMultiplication(id); });
+      document.querySelector('[data-aide="' + id + '"]').addEventListener("click", function(){ basculerAide(id, AIDES_MULT[id]); });
+    });
+    ["vc-a","vc-b","vc-c","vc-d","vc-e"].forEach(function(id){
+      document.querySelector('[data-ok="' + id + '"]').addEventListener("click", function(){ verifierVocab(id); });
+      document.querySelector('[data-aide="' + id + '"]').addEventListener("click", function(){ basculerAide(id, VOCAB[id].aide); });
+    });
+
+    var champs = document.querySelectorAll('input[type="text"]');
+    for (var i = 0; i < champs.length; i++){
+      champs[i].addEventListener("keydown", function(ev){
+        if (ev.key !== "Enter") return;
+        ev.preventDefault();
+        var id = this.id;
+        if (id.indexOf("ml-") === 0) verifierMultiplication(id);
+        else verifierVocab(id);
+      });
+    }
+
+    document.getElementById("btn-tout").addEventListener("click", verifierTout);
+    document.getElementById("btn-corr").addEventListener("click", basculerCorrection);
+    document.getElementById("btn-reset").addEventListener("click", reinitialiser);
+  }
+
+  if (document.readyState === "loading"){
+    document.addEventListener("DOMContentLoaded", init);
+  } else {
+    init();
+  }
+})();
+</script>
+</body>
+</html>
