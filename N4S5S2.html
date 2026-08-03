@@ -1,0 +1,316 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Rituel &mdash; Semaine 5 S&eacute;ance 2 &mdash; Pyramide de produits</title>
+<style>
+*{box-sizing:border-box}
+html,body{margin:0;padding:0}
+body{background:#fffdf7;font-family:Arial,Helvetica,sans-serif;color:#243238;line-height:1.6;padding:14px;overflow-x:hidden}
+.bulle{position:fixed;border-radius:50%;background:#3ba5b8;opacity:.12;pointer-events:none;z-index:0}
+.b1{width:190px;height:190px;top:-70px;left:-70px}
+.b2{width:130px;height:130px;top:-45px;right:-45px}
+.b3{width:160px;height:160px;bottom:-60px;left:-55px}
+.b4{width:110px;height:110px;bottom:-40px;right:-35px}
+.wrap{position:relative;z-index:1;max-width:880px;margin:0 auto}
+.tete{display:flex;flex-wrap:wrap;align-items:center;gap:10px;margin-bottom:14px}
+.etq{display:inline-block;padding:7px 16px;border-radius:8px;color:#fff;font-weight:700;font-size:.95rem}
+.etq-sem{background:#8fd3e8;color:#123f4a}
+.etq-sea{background:#3ba5b8}
+.etq-rit{background:#1f7a8c;font-family:Georgia,"Times New Roman",serif;margin-left:auto}
+h1{font-size:clamp(1.2rem,4.2vw,1.9rem);font-weight:900;color:#1f7a8c;margin:6px 0 18px;line-height:1.3}
+.bloc{position:relative;border:2px solid #3ba5b8;border-radius:12px;background:#fff;padding:28px 18px 20px;margin-bottom:18px}
+.onglet{position:absolute;top:-17px;left:18px;background:#8fd3e8;color:#123f4a;font-weight:700;font-size:.95rem;padding:5px 18px;border-radius:8px}
+.consigne{margin:4px 0 18px;font-weight:700;text-decoration:underline;color:#1f7a8c;font-size:clamp(.92rem,2.5vw,1.02rem);min-width:0;overflow-wrap:break-word;line-height:1.7}
+
+.pyramide{display:flex;flex-direction:column;align-items:center;gap:4px;margin:10px 0 18px}
+.rangee-pyr{display:flex;gap:4px}
+.case-pyr{
+  width:78px;height:54px;border-radius:6px;
+  display:flex;align-items:center;justify-content:center;
+  font-weight:900;font-size:1rem;color:#0b3a44;
+  background:#bfe3ee;border:1px solid #8fd3e8;
+}
+.case-pyr.fixe{background:#8fd3e8;color:#123f4a}
+.case-pyr input[type="text"]{width:62px;height:40px;padding:2px;font-size:.95rem;margin:0;text-align:center;font-weight:700;color:#1f7a8c;background:#f7fcfd;border:1px solid #b9dfe8;border-bottom:2px dotted #3ba5b8;border-radius:6px}
+.case-pyr input.correct{border-color:#2e8b57;background:#effaf3;color:#2e8b57}
+.case-pyr input.incorrect{border-color:#c0392b;background:#fdefee;color:#c0392b}
+@media (max-width:480px){
+  .case-pyr{width:60px;height:46px;font-size:.85rem}
+  .case-pyr input[type="text"]{width:48px;height:34px}
+}
+
+.actions{display:flex;flex-wrap:wrap;gap:8px}
+button{font-family:inherit;font-size:.92rem;font-weight:700;min-height:44px;padding:10px 16px;border:0;border-radius:8px;cursor:pointer;background:#3ba5b8;color:#fff;line-height:1.2}
+button:hover{background:#1f7a8c}
+button.sec{background:#fff;color:#1f7a8c;border:2px solid #3ba5b8}
+button.sec:hover{background:#eaf7fa}
+.feedback{margin:14px 0 0;padding:12px 14px;border-left:5px solid #3ba5b8;border-radius:6px;background:#f4fafb;font-size:clamp(.9rem,2.5vw,1rem);line-height:1.75;overflow-wrap:break-word}
+.feedback.ok{border-left-color:#2e8b57;background:#effaf3;color:#1e6b40}
+.feedback.ko{border-left-color:#c0392b;background:#fdefee;color:#96291d}
+.feedback.warn{border-left-color:#c9820a;background:#fff8ea;color:#8a5b04}
+.aide{margin:10px 0 0;padding:12px 14px;border-left:5px solid #8fd3e8;background:#f2fafd;border-radius:6px;font-size:clamp(.9rem,2.5vw,1rem);line-height:1.75}
+
+.barre{display:flex;flex-wrap:wrap;gap:10px;margin:18px 0}
+.barre button{flex:1 1 190px}
+.correction{border:2px dashed #3ba5b8;border-radius:12px;background:#fff;padding:16px 18px;margin-bottom:18px;font-size:clamp(.9rem,2.5vw,1rem);line-height:1.8}
+.correction h2{margin:0 0 10px;font-size:1.05rem;color:#1f7a8c}
+.correction p{margin:6px 0}
+.bilan{border:2px solid #1f7a8c;border-radius:12px;background:#fff;padding:16px 18px;margin-bottom:18px;font-size:.92rem;line-height:1.8}
+.bilan .score{font-size:clamp(1.05rem,3.2vw,1.25rem);font-weight:900;color:#1f7a8c}
+.bilan .palier{font-weight:700;margin-top:4px}
+.legende{margin-top:10px;font-size:.85rem;color:#4d6169}
+@media (max-width:480px){
+  body{padding:10px}
+  .bloc{padding:26px 12px 16px}
+  .etq{font-size:.85rem;padding:6px 12px}
+  .etq-rit{margin-left:0}
+}
+</style>
+</head>
+<body>
+<div class="bulle b1"></div><div class="bulle b2"></div><div class="bulle b3"></div><div class="bulle b4"></div>
+
+<main class="wrap">
+
+  <div class="tete">
+    <span class="etq etq-sem">Semaine 5</span>
+    <span class="etq etq-sea">S&eacute;ance 2</span>
+    <span class="etq etq-rit">Rituel</span>
+  </div>
+
+  <h1>Pyramide de produits</h1>
+
+  <section class="bloc">
+    <span class="onglet">Alg&egrave;bre</span>
+
+    <p class="consigne">Compl&egrave;te la pyramide suivante sachant que le nombre contenu dans une case est le produit des nombres contenus dans les deux cases situ&eacute;es en dessous de lui.</p>
+
+    <div class="pyramide">
+      <div class="rangee-pyr">
+        <div class="case-pyr sommet"><input type="text" id="in-p4" inputmode="numeric" aria-label="Sommet de la pyramide"></div>
+      </div>
+      <div class="rangee-pyr">
+        <div class="case-pyr"><input type="text" id="in-p3a" inputmode="numeric" aria-label="Rangee 3, case 1"></div>
+        <div class="case-pyr"><input type="text" id="in-p3b" inputmode="numeric" aria-label="Rangee 3, case 2"></div>
+      </div>
+      <div class="rangee-pyr">
+        <div class="case-pyr"><input type="text" id="in-p2a" inputmode="numeric" aria-label="Rangee 2, case 1"></div>
+        <div class="case-pyr"><input type="text" id="in-p2b" inputmode="numeric" aria-label="Rangee 2, case 2"></div>
+        <div class="case-pyr"><input type="text" id="in-p2c" inputmode="numeric" aria-label="Rangee 2, case 3"></div>
+      </div>
+      <div class="rangee-pyr">
+        <div class="case-pyr fixe">&minus;2</div>
+        <div class="case-pyr fixe">+2</div>
+        <div class="case-pyr fixe">&minus;2</div>
+        <div class="case-pyr fixe">&minus;2</div>
+      </div>
+    </div>
+
+    <div class="actions" style="margin-bottom:8px"><button type="button" data-ok="pyr">OK</button><button type="button" class="sec" data-aide="pyr">Indice</button></div>
+    <div class="feedback" id="fb-pyr" hidden></div>
+    <div class="aide" id="ai-pyr" hidden></div>
+  </section>
+
+  <div class="barre">
+    <button type="button" id="btn-tout">V&eacute;rifier tout</button>
+    <button type="button" class="sec" id="btn-corr">Voir la correction</button>
+    <button type="button" class="sec" id="btn-reset">R&eacute;initialiser</button>
+  </div>
+
+  <div class="correction" id="correction" hidden></div>
+  <div class="bilan" id="bilan" hidden></div>
+
+</main>
+
+<script>
+(function(){
+  "use strict";
+
+  function afficher(type, html){
+    var fb = document.getElementById("fb-pyr");
+    fb.className = "feedback " + type;
+    fb.innerHTML = html;
+    fb.hidden = false;
+  }
+  function marquer(el, etat){
+    if (!el) return;
+    el.classList.remove("correct","incorrect");
+    if (etat) el.classList.add(etat);
+  }
+  function basculerAide(){
+    var box = document.getElementById("ai-pyr");
+    if (box.hidden){
+      box.innerHTML = "\ud83d\udca1 <strong>Indice&nbsp;:</strong> Chaque case (sauf la rang\u00e9e du bas) est le produit des deux cases juste en dessous d\u2019elle.";
+      box.hidden = false;
+    } else {
+      box.hidden = true;
+    }
+  }
+  function palier(pct){
+    if (pct >= 90) return "\ud83d\udfe2 Excellent";
+    if (pct >= 75) return "\ud83d\udfe2 Tr\u00e8s bien";
+    if (pct >= 60) return "\ud83d\udfe1 Ma\u00eetrise satisfaisante";
+    if (pct >= 40) return "\ud83d\udfe0 Ma\u00eetrise fragile";
+    return "\ud83d\udd34 Ma\u00eetrise insuffisante";
+  }
+  function lireEntier(brut){
+    var v = String(brut).replace(/[\s\u00a0]/g,"");
+    v = v.replace(/[\u2212\u2013\u2014]/g, "-");
+    if (v === "") return "";
+    if (!/^-?\d+$/.test(v)) return null;
+    return Number(v);
+  }
+
+  var etats = {};
+  var occupe = false;
+
+  var PYRAMIDE_ATTENDU = {
+    p2a:16, p2b:-16,
+    p3a:-4, p3b:-4,
+    p4:-256
+  };
+  var PYRAMIDE_IDS = ["p2a","p2b","p3a","p3b","p4"];
+
+  function verifierPyramide(){
+    var valeurs = {};
+    var tousVides = true;
+    var uneInvalide = false;
+
+    PYRAMIDE_IDS.forEach(function(id){
+      var input = document.getElementById("in-" + id);
+      var v = lireEntier(input.value);
+      valeurs[id] = v;
+      if (v !== "") tousVides = false;
+      if (v === null) uneInvalide = true;
+    });
+
+    if (tousVides){
+      etats["pyr"] = "vide";
+      PYRAMIDE_IDS.forEach(function(id){ marquer(document.getElementById("in-" + id), ""); });
+      afficher("warn", "\u26a0\ufe0f Aucune r\u00e9ponse saisie. Compl\u00e8te les 5 cases, puis clique sur <strong>OK</strong>.");
+      return;
+    }
+    if (uneInvalide){
+      etats["pyr"] = "incorrect";
+      PYRAMIDE_IDS.forEach(function(id){
+        var input = document.getElementById("in-" + id);
+        marquer(input, valeurs[id] === null ? "incorrect" : "");
+      });
+      afficher("warn", "\u26a0\ufe0f Chaque case doit contenir un nombre entier seul (le signe &minus; est accept\u00e9).");
+      return;
+    }
+
+    var nbCorrects = 0;
+    var nbRemplies = 0;
+    PYRAMIDE_IDS.forEach(function(id){
+      var input = document.getElementById("in-" + id);
+      if (valeurs[id] === ""){
+        marquer(input, "");
+        return;
+      }
+      nbRemplies++;
+      var ok = valeurs[id] === PYRAMIDE_ATTENDU[id];
+      if (ok) nbCorrects++;
+      marquer(input, ok ? "correct" : "incorrect");
+    });
+
+    if (nbCorrects === PYRAMIDE_IDS.length){
+      etats["pyr"] = "correct";
+      afficher("ok", "\u2705 Bravo&nbsp;! Toute la pyramide est correcte.");
+      return;
+    }
+    if (nbRemplies < PYRAMIDE_IDS.length){
+      etats["pyr"] = "partiel";
+      afficher("warn", "\u26a0\ufe0f " + nbCorrects + " case(s) sur " + nbRemplies + " remplie(s) sont correctes&nbsp;; il reste " + (PYRAMIDE_IDS.length - nbRemplies) + " case(s) vide(s) &agrave; compl\u00e9ter.");
+      return;
+    }
+    if (nbCorrects > 0){
+      etats["pyr"] = "partiel";
+      afficher("warn", "\u26a0\ufe0f " + nbCorrects + " case(s) sur " + PYRAMIDE_IDS.length + " sont correctes. V\u00e9rifie le produit des deux cases juste en dessous pour chaque case fausse.");
+      return;
+    }
+    etats["pyr"] = "incorrect";
+    afficher("ko", "\u274c Aucune case n\u2019est correcte pour l\u2019instant. Chaque case = produit des deux cases situ\u00e9es juste en dessous.");
+  }
+
+  function verifierTout(){
+    if (occupe) return;
+    occupe = true;
+    window.setTimeout(function(){ occupe = false; }, 350);
+
+    verifierPyramide();
+
+    var score = etats["pyr"] === "correct" ? 1 : 0;
+    var pct = score * 100;
+    var bilan = document.getElementById("bilan");
+    bilan.innerHTML =
+      '<div class="score">Score&nbsp;: ' + score + '\u2009/\u20091 (' + pct + '&nbsp;%)</div>' +
+      '<div class="palier">' + palier(pct) + '</div>';
+    bilan.hidden = false;
+  }
+
+  function basculerCorrection(){
+    var box = document.getElementById("correction");
+    var btn = document.getElementById("btn-corr");
+    if (box.hidden){
+      box.innerHTML =
+        "<h2>Correction</h2>" +
+        "<p>Rang\u00e9e du bas (donn\u00e9e)&nbsp;: &minus;2&nbsp;; +2&nbsp;; &minus;2&nbsp;; &minus;2</p>" +
+        "<p>Rang\u00e9e suivante&nbsp;: <strong>&minus;4</strong>&nbsp;; <strong>&minus;4</strong>&nbsp;; <strong>4</strong></p>" +
+        "<p>Rang\u00e9e suivante&nbsp;: <strong>16</strong>&nbsp;; <strong>&minus;16</strong></p>" +
+        "<p>Sommet&nbsp;: 16&nbsp;&times;&nbsp;(&minus;16)&nbsp;=&nbsp;<strong>&minus;256</strong></p>";
+      box.hidden = false;
+      btn.textContent = "Masquer la correction";
+    } else {
+      box.hidden = true;
+      btn.textContent = "Voir la correction";
+    }
+  }
+
+  function reinitialiser(){
+    PYRAMIDE_IDS.forEach(function(id){
+      var el = document.getElementById("in-" + id);
+      if (el){ el.value = ""; el.classList.remove("correct","incorrect"); }
+    });
+    var fb = document.getElementById("fb-pyr");
+    fb.hidden = true; fb.innerHTML = ""; fb.className = "feedback";
+    var ai = document.getElementById("ai-pyr");
+    ai.hidden = true; ai.innerHTML = "";
+    etats = {};
+    var bilan = document.getElementById("bilan");
+    bilan.hidden = true; bilan.innerHTML = "";
+    var corr = document.getElementById("correction");
+    corr.hidden = true; corr.innerHTML = "";
+    document.getElementById("btn-corr").textContent = "Voir la correction";
+    occupe = false;
+  }
+
+  function init(){
+    document.querySelector('[data-ok="pyr"]').addEventListener("click", verifierPyramide);
+    document.querySelector('[data-aide="pyr"]').addEventListener("click", basculerAide);
+
+    var champs = document.querySelectorAll('input[type="text"]');
+    for (var i = 0; i < champs.length; i++){
+      champs[i].addEventListener("keydown", function(ev){
+        if (ev.key !== "Enter") return;
+        ev.preventDefault();
+        verifierPyramide();
+      });
+    }
+
+    document.getElementById("btn-tout").addEventListener("click", verifierTout);
+    document.getElementById("btn-corr").addEventListener("click", basculerCorrection);
+    document.getElementById("btn-reset").addEventListener("click", reinitialiser);
+  }
+
+  if (document.readyState === "loading"){
+    document.addEventListener("DOMContentLoaded", init);
+  } else {
+    init();
+  }
+})();
+</script>
+</body>
+</html>
