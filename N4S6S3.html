@@ -395,11 +395,11 @@ button.sec:hover{background:#eaf7fa}
       etats[id] = "correct";
       marquer(input, "correct");
       if (manquants.length === 0){
-        afficher(id, "ok", "\u2705 Bravo&nbsp;! Propri\u00e9t\u00e9(s) correcte(s) pour cette construction.<br>R\u00e9ponse de r\u00e9f\u00e9rence&nbsp;: <strong>" + esc(it.ref) + "</strong>");
+        afficher(id, "ok", "\u2705 Bravo&nbsp;! Propri\u00e9t\u00e9(s) correcte(s) pour cette construction.<br>R\u00e9ponse de r\u00e9f\u00e9rence&nbsp;: <strong>" + it.ref + "</strong>");
       } else {
         var liste = "";
         for (var j = 0; j < manquants.length; j++){ liste += "<li>" + manquants[j] + "</li>"; }
-        afficher(id, "ok", "\u2705 Bravo&nbsp;! Tu as identifi\u00e9 une propri\u00e9t\u00e9 essentielle.<br><strong><u>Plus complet</u></strong>, tu pouvais aussi citer&nbsp;:<ul>" + liste + "</ul>R\u00e9ponse de r\u00e9f\u00e9rence&nbsp;: <strong>" + esc(it.ref) + "</strong>");
+        afficher(id, "ok", "\u2705 Bravo&nbsp;! Tu as identifi\u00e9 une propri\u00e9t\u00e9 essentielle.<br><strong><u>Plus complet</u></strong>, tu pouvais aussi citer&nbsp;:<ul>" + liste + "</ul>R\u00e9ponse de r\u00e9f\u00e9rence&nbsp;: <strong>" + it.ref + "</strong>");
       }
       return;
     }
@@ -407,13 +407,13 @@ button.sec:hover{background:#eaf7fa}
     if (manquants.length < it.precisions.length){
       etats[id] = "partiel";
       marquer(input, "partiel");
-      afficher(id, "warn", "\u26a0\ufe0f Tu es sur la bonne piste, mais la propri\u00e9t\u00e9 principale de cette construction n\u2019est pas encore cit\u00e9e.<br>R\u00e9ponse attendue&nbsp;: <strong><u>" + esc(it.ref) + "</u></strong>");
+      afficher(id, "warn", "\u26a0\ufe0f Tu es sur la bonne piste, mais la propri\u00e9t\u00e9 principale de cette construction n\u2019est pas encore cit\u00e9e.<br>R\u00e9ponse attendue&nbsp;: <strong><u>" + it.ref + "</u></strong>");
       return;
     }
 
     etats[id] = "incorrect";
     marquer(input, "incorrect");
-    afficher(id, "ko", "\u274c Ce n\u2019est pas la propri\u00e9t\u00e9 utilis\u00e9e ici. Regarde la figure et le symbole d\u2019angle ou de longueur qui y est marqu\u00e9.<br>R\u00e9ponse attendue&nbsp;: <strong><u>" + esc(it.ref) + "</u></strong>");
+    afficher(id, "ko", "\u274c Ce n\u2019est pas la propri\u00e9t\u00e9 utilis\u00e9e ici. Regarde la figure et le symbole d\u2019angle ou de longueur qui y est marqu\u00e9.<br>R\u00e9ponse attendue&nbsp;: <strong><u>" + it.ref + "</u></strong>");
   }
 
   function basculerAide(id){
@@ -421,7 +421,7 @@ button.sec:hover{background:#eaf7fa}
     var box = document.getElementById("ai-" + id);
     if (!it || !box) return;
     if (box.hidden){
-      box.innerHTML = "\ud83d\udca1 <strong>Indice&nbsp;:</strong> " + esc(it.aide);
+      box.innerHTML = "\ud83d\udca1 <strong>Indice&nbsp;:</strong> " + it.aide;
       box.hidden = false;
     } else {
       box.hidden = true;
@@ -481,8 +481,8 @@ button.sec:hover{background:#eaf7fa}
       for (var i = 0; i < ITEMS.length; i++){
         var it = ITEMS[i];
         html += "<h3>" + it.id + ".</h3>" +
-          "<p>" + esc(it.ref) + "</p>" +
-          '<div class="figure-correction"><img src="' + it.corrImg + '" alt="' + esc(it.corrAlt) + '"></div>';
+          "<p>" + it.ref + "</p>" +
+          '<div class="figure-correction"><img src="' + it.corrImg + '" alt="' + it.corrAlt + '"></div>';
       }
       box.innerHTML = html;
       box.hidden = false;
