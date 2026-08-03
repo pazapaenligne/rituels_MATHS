@@ -1,0 +1,286 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Rituel &mdash; Semaine 4 S&eacute;ance 2 &mdash; Ann&eacute;e de mort de Phidias</title>
+<style>
+*{box-sizing:border-box}
+html,body{margin:0;padding:0}
+body{background:#fffdf7;font-family:Arial,Helvetica,sans-serif;color:#243238;line-height:1.6;padding:14px;overflow-x:hidden}
+.bulle{position:fixed;border-radius:50%;background:#3ba5b8;opacity:.12;pointer-events:none;z-index:0}
+.b1{width:190px;height:190px;top:-70px;left:-70px}
+.b2{width:130px;height:130px;top:-45px;right:-45px}
+.b3{width:160px;height:160px;bottom:-60px;left:-55px}
+.b4{width:110px;height:110px;bottom:-40px;right:-35px}
+.wrap{position:relative;z-index:1;max-width:880px;margin:0 auto}
+.tete{display:flex;flex-wrap:wrap;align-items:center;gap:10px;margin-bottom:14px}
+.etq{display:inline-block;padding:7px 16px;border-radius:8px;color:#fff;font-weight:700;font-size:.95rem}
+.etq-sem{background:#8fd3e8;color:#123f4a}
+.etq-sea{background:#3ba5b8}
+.etq-rit{background:#1f7a8c;font-family:Georgia,"Times New Roman",serif;margin-left:auto}
+h1{font-size:clamp(1.1rem,3.8vw,1.7rem);font-weight:900;color:#1f7a8c;margin:6px 0 18px;line-height:1.3}
+.bloc{position:relative;border:2px solid #3ba5b8;border-radius:12px;background:#fff;padding:28px 18px 20px;margin-bottom:18px}
+.onglet{position:absolute;top:-17px;left:18px;background:#8fd3e8;color:#123f4a;font-weight:700;font-size:.95rem;padding:5px 18px;border-radius:8px}
+.consigne{margin:4px 0 16px;font-weight:700;text-decoration:underline;color:#1f7a8c;font-size:clamp(.9rem,2.4vw,1rem);min-width:0;overflow-wrap:break-word;line-height:1.7}
+.item{padding:14px 0;border-bottom:1px dashed #dceff3}
+.item:last-of-type{border-bottom:0}
+.q{font-size:clamp(1rem,3vw,1.1rem);font-weight:700;margin:0 0 10px;color:#243238;overflow-wrap:break-word;line-height:1.8}
+.sous-label{font-weight:700;color:#1f7a8c;font-size:.9rem;margin:8px 0 4px}
+.ligne{display:flex;flex-wrap:wrap;align-items:center;gap:10px;min-width:0}
+input[type="text"]{width:110px;min-width:0;padding:9px 8px;font-family:Arial,Helvetica,sans-serif;font-size:1rem;font-weight:700;text-align:center;color:#1f7a8c;background:#f7fcfd;border:1px solid #b9dfe8;border-bottom:2px dotted #3ba5b8;border-radius:6px}
+input[type="text"]:focus{outline:2px solid #3ba5b8;outline-offset:1px}
+input.correct,textarea.correct{border-color:#2e8b57;background:#effaf3;color:#2e8b57}
+input.partiel,textarea.partiel{border-color:#c9820a;background:#fff8ea;color:#a86c06}
+input.incorrect,textarea.incorrect{border-color:#c0392b;background:#fdefee;color:#c0392b}
+textarea{width:100%;min-width:0;padding:10px;font-family:Arial,Helvetica,sans-serif;font-size:1rem;font-weight:700;color:#1f7a8c;background:#f7fcfd;border:1px solid #b9dfe8;border-bottom:2px dotted #3ba5b8;border-radius:6px;line-height:1.6;resize:vertical;min-height:60px;margin-top:4px}
+textarea:focus{outline:2px solid #3ba5b8;outline-offset:1px}
+.actions{display:flex;flex-wrap:wrap;gap:8px;margin-top:8px}
+button{font-family:inherit;font-size:.92rem;font-weight:700;min-height:44px;padding:10px 16px;border:0;border-radius:8px;cursor:pointer;background:#3ba5b8;color:#fff;line-height:1.2}
+button:hover{background:#1f7a8c}
+button.sec{background:#fff;color:#1f7a8c;border:2px solid #3ba5b8}
+button.sec:hover{background:#eaf7fa}
+.feedback{margin:10px 0 0;padding:12px 14px;border-left:5px solid #3ba5b8;border-radius:6px;background:#f4fafb;font-size:clamp(.9rem,2.5vw,1rem);line-height:1.75;overflow-wrap:break-word}
+.feedback.ok{border-left-color:#2e8b57;background:#effaf3;color:#1e6b40}
+.feedback.ko{border-left-color:#c0392b;background:#fdefee;color:#96291d}
+.feedback.warn{border-left-color:#c9820a;background:#fff8ea;color:#8a5b04}
+.aide{margin:10px 0 0;padding:12px 14px;border-left:5px solid #8fd3e8;background:#f2fafd;border-radius:6px;font-size:clamp(.9rem,2.5vw,1rem);line-height:1.75}
+.barre{display:flex;flex-wrap:wrap;gap:10px;margin:18px 0}
+.barre button{flex:1 1 190px}
+.correction{border:2px dashed #3ba5b8;border-radius:12px;background:#fff;padding:16px 18px;margin-bottom:18px;font-size:clamp(.9rem,2.5vw,1rem);line-height:1.8}
+.correction h2{margin:0 0 10px;font-size:1.05rem;color:#1f7a8c}
+.correction p{margin:6px 0}
+.bilan{border:2px solid #1f7a8c;border-radius:12px;background:#fff;padding:16px 18px;margin-bottom:18px;font-size:.92rem;line-height:1.8}
+.bilan .score{font-size:clamp(1.05rem,3.2vw,1.25rem);font-weight:900;color:#1f7a8c}
+.bilan .palier{font-weight:700;margin-top:4px}
+@media (max-width:480px){
+  body{padding:10px}
+  .bloc{padding:26px 12px 16px}
+  .etq{font-size:.85rem;padding:6px 12px}
+  .etq-rit{margin-left:0}
+}
+</style>
+</head>
+<body>
+<div class="bulle b1"></div><div class="bulle b2"></div><div class="bulle b3"></div><div class="bulle b4"></div>
+
+<main class="wrap">
+
+  <div class="tete">
+    <span class="etq etq-sem">Semaine 4</span>
+    <span class="etq etq-sea">S&eacute;ance 2</span>
+    <span class="etq etq-rit">Rituel</span>
+  </div>
+
+  <h1>Ann&eacute;e de mort de Phidias</h1>
+
+  <section class="bloc">
+    <span class="onglet">Alg&egrave;bre</span>
+
+    <p class="consigne">La r&eacute;ponse propos&eacute;e sera justifi&eacute;e par une op&eacute;ration faisant intervenir des nombres relatifs.<br>Phidias, un grand sculpteur grec charg&eacute; par P&eacute;ricl&egrave;s de la d&eacute;coration du Parth&eacute;non, est mort &agrave; 41 ans.</p>
+
+    <div class="item">
+      <p class="q">Sachant qu&rsquo;il est n&eacute; en &minus;490, en quelle ann&eacute;e est-il mort&nbsp;?</p>
+      <div class="ligne">
+        <input type="text" id="in-a" inputmode="numeric" autocomplete="off" aria-label="Annee de mort de Phidias">
+        <span class="actions"><button type="button" data-ok="a">OK</button><button type="button" class="sec" data-aide="a">Indice</button></span>
+      </div>
+      <p class="sous-label">Justification (op&eacute;ration avec des nombres relatifs)&nbsp;:</p>
+      <textarea id="in-a-just" aria-label="Justification pour l'annee de mort de Phidias"></textarea>
+      <div class="feedback" id="fb-a" hidden></div>
+      <div class="aide" id="ai-a" hidden></div>
+    </div>
+  </section>
+
+  <div class="barre">
+    <button type="button" id="btn-tout">V&eacute;rifier tout</button>
+    <button type="button" class="sec" id="btn-corr">Voir la correction</button>
+    <button type="button" class="sec" id="btn-reset">R&eacute;initialiser</button>
+  </div>
+
+  <div class="correction" id="correction" hidden></div>
+  <div class="bilan" id="bilan" hidden></div>
+
+</main>
+
+<script>
+(function(){
+  "use strict";
+
+  function esc(txt){
+    var d = document.createElement("div");
+    d.textContent = String(txt);
+    return d.innerHTML;
+  }
+  function sansAccents(s){
+    return s
+      .replace(/[\u00e0\u00e2\u00e4\u00e1\u00e3]/g,"a")
+      .replace(/[\u00e9\u00e8\u00ea\u00eb]/g,"e")
+      .replace(/[\u2019\u2018\u02bc\u0060]/g,"'");
+  }
+  function normTexte(s){
+    var t = sansAccents(String(s).toLowerCase());
+    t = t.replace(/[\u00a0\u202f\u2009]/g," ").replace(/\s+/g," ");
+    return t.trim();
+  }
+  function contientNombre(texte, n){
+    var re = new RegExp("(^|[^0-9])" + n + "([^0-9]|$)");
+    return re.test(texte);
+  }
+  function afficher(id, type, html){
+    var fb = document.getElementById("fb-" + id);
+    if (!fb) return;
+    fb.className = "feedback " + type;
+    fb.innerHTML = html;
+    fb.hidden = false;
+  }
+  function marquer(el, etat){
+    if (!el) return;
+    el.classList.remove("correct","partiel","incorrect");
+    if (etat) el.classList.add(etat);
+  }
+  function basculerAide(id, texte){
+    var box = document.getElementById("ai-" + id);
+    if (!box) return;
+    if (box.hidden){
+      box.innerHTML = "\ud83d\udca1 <strong>Indice&nbsp;:</strong> " + texte;
+      box.hidden = false;
+    } else {
+      box.hidden = true;
+    }
+  }
+  function palier(pct){
+    if (pct >= 90) return "\ud83d\udfe2 Excellent";
+    if (pct >= 75) return "\ud83d\udfe2 Tr\u00e8s bien";
+    if (pct >= 60) return "\ud83d\udfe1 Ma\u00eetrise satisfaisante";
+    if (pct >= 40) return "\ud83d\udfe0 Ma\u00eetrise fragile";
+    return "\ud83d\udd34 Ma\u00eetrise insuffisante";
+  }
+  function lireEntier(brut){
+    var v = String(brut).replace(/[\s\u00a0]/g,"");
+    v = v.replace(/[\u2212\u2013\u2014]/g, "-");
+    if (v === "") return "";
+    if (!/^-?\d+$/.test(v)) return null;
+    return Number(v);
+  }
+
+  var etats = {};
+  var occupe = false;
+
+  function verifier(){
+    var input = document.getElementById("in-a");
+    var inputJust = document.getElementById("in-a-just");
+    var v = lireEntier(input.value);
+    var brutJust = inputJust.value;
+    var justVide = String(brutJust).replace(/[\s\u00a0]/g,"") === "";
+
+    if (v === "" && justVide){
+      etats["a"] = "vide";
+      marquer(input, ""); marquer(inputJust, "");
+      afficher("a", "warn", "\u26a0\ufe0f Aucune r\u00e9ponse saisie. Indique l\u2019ann\u00e9e et justifie avec une op\u00e9ration, puis clique sur <strong>OK</strong>.");
+      return;
+    }
+    if (v === null){
+      etats["a"] = "incorrect";
+      marquer(input, "incorrect");
+      afficher("a", "warn", "\u26a0\ufe0f L\u2019ann\u00e9e doit \u00eatre un nombre entier seul (le signe &minus; est accept\u00e9).");
+      return;
+    }
+
+    var anneeOk = v === -449;
+    var texteJust = normTexte(brutJust);
+    var justOk = !justVide && contientNombre(texteJust, 490) && contientNombre(texteJust, 41);
+
+    marquer(input, anneeOk ? "correct" : "incorrect");
+    marquer(inputJust, justOk ? "correct" : (justVide ? "" : "incorrect"));
+
+    var ref = "&minus;490&nbsp;+&nbsp;41&nbsp;=&nbsp;<strong>&minus;449</strong>";
+
+    if (anneeOk && justOk){
+      etats["a"] = "correct";
+      afficher("a", "ok", "\u2705 Bravo&nbsp;! Phidias est mort en <strong><u>&minus;449</u></strong>&nbsp;: " + ref + ".");
+      return;
+    }
+    if (anneeOk || justOk){
+      etats["a"] = "partiel";
+      var piste = !anneeOk ? "l\u2019ann\u00e9e (&minus;449)" : "la justification (utilise l\u2019op\u00e9ration &minus;490&nbsp;+&nbsp;41)";
+      afficher("a", "warn", "\u26a0\ufe0f Presque&nbsp;! V\u00e9rifie " + piste + ".<br>R\u00e9ponse attendue&nbsp;: &minus;449, car " + ref + ".");
+      return;
+    }
+    etats["a"] = "incorrect";
+    afficher("a", "ko", "\u274c Ce n\u2019est pas encore \u00e7a.<br>R\u00e9ponse attendue&nbsp;: &minus;449, car " + ref + ".");
+  }
+
+  function verifierTout(){
+    if (occupe) return;
+    occupe = true;
+    window.setTimeout(function(){ occupe = false; }, 350);
+
+    verifier();
+
+    var score = etats["a"] === "correct" ? 1 : 0;
+    var pct = score * 100;
+    var bilan = document.getElementById("bilan");
+    bilan.innerHTML =
+      '<div class="score">Score&nbsp;: ' + score + '\u2009/\u20091 (' + pct + '&nbsp;%)</div>' +
+      '<div class="palier">' + palier(pct) + '</div>';
+    bilan.hidden = false;
+  }
+
+  function basculerCorrection(){
+    var box = document.getElementById("correction");
+    var btn = document.getElementById("btn-corr");
+    if (box.hidden){
+      box.innerHTML =
+        "<h2>Correction</h2>" +
+        "<p>Ann\u00e9e de sa mort = ann\u00e9e de naissance + \u00e2ge</p>" +
+        "<p>= &minus;490&nbsp;+&nbsp;41</p>" +
+        "<p>= <strong>&minus;449</strong></p>";
+      box.hidden = false;
+      btn.textContent = "Masquer la correction";
+    } else {
+      box.hidden = true;
+      btn.textContent = "Voir la correction";
+    }
+  }
+
+  function reinitialiser(){
+    var input = document.getElementById("in-a");
+    if (input){ input.value = ""; input.classList.remove("correct","incorrect"); }
+    var inputJust = document.getElementById("in-a-just");
+    if (inputJust){ inputJust.value = ""; inputJust.classList.remove("correct","partiel","incorrect"); }
+    var fb = document.getElementById("fb-a");
+    if (fb){ fb.hidden = true; fb.innerHTML = ""; fb.className = "feedback"; }
+    var ai = document.getElementById("ai-a");
+    if (ai){ ai.hidden = true; ai.innerHTML = ""; }
+    etats = {};
+    var bilan = document.getElementById("bilan");
+    bilan.hidden = true; bilan.innerHTML = "";
+    var corr = document.getElementById("correction");
+    corr.hidden = true; corr.innerHTML = "";
+    document.getElementById("btn-corr").textContent = "Voir la correction";
+    occupe = false;
+  }
+
+  function init(){
+    document.querySelector('[data-ok="a"]').addEventListener("click", verifier);
+    document.querySelector('[data-aide="a"]').addEventListener("click", function(){ basculerAide("a", "Ann\u00e9e de mort = ann\u00e9e de naissance + \u00e2ge&nbsp;: additionne &minus;490 et 41."); });
+
+    document.getElementById("in-a").addEventListener("keydown", function(ev){
+      if (ev.key === "Enter"){ ev.preventDefault(); verifier(); }
+    });
+
+    document.getElementById("btn-tout").addEventListener("click", verifierTout);
+    document.getElementById("btn-corr").addEventListener("click", basculerCorrection);
+    document.getElementById("btn-reset").addEventListener("click", reinitialiser);
+  }
+
+  if (document.readyState === "loading"){
+    document.addEventListener("DOMContentLoaded", init);
+  } else {
+    init();
+  }
+})();
+</script>
+</body>
+</html>
