@@ -1,0 +1,246 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Rituel &mdash; Semaine 4 S&eacute;ance 2 &mdash; Compl&eacute;ter un tableau de proportionnalit&eacute;</title>
+<style>
+*{box-sizing:border-box}
+html,body{margin:0;padding:0}
+body{background:#fffdf7;font-family:Arial,Helvetica,sans-serif;color:#243238;line-height:1.6;padding:14px;overflow-x:hidden}
+.bulle{position:fixed;border-radius:50%;background:#3ba5b8;opacity:.12;pointer-events:none;z-index:0}
+.b1{width:190px;height:190px;top:-70px;left:-70px}
+.b2{width:130px;height:130px;top:-45px;right:-45px}
+.b3{width:160px;height:160px;bottom:-60px;left:-55px}
+.b4{width:110px;height:110px;bottom:-40px;right:-35px}
+.wrap{position:relative;z-index:1;max-width:880px;margin:0 auto}
+.tete{display:flex;flex-wrap:wrap;align-items:center;gap:10px;margin-bottom:14px}
+.etq{display:inline-block;padding:7px 16px;border-radius:8px;color:#fff;font-weight:700;font-size:.95rem}
+.etq-sem{background:#8fd3e8;color:#123f4a}
+.etq-sea{background:#3ba5b8}
+.etq-rit{background:#1f7a8c;font-family:Georgia,"Times New Roman",serif;margin-left:auto}
+h1{font-size:clamp(1.3rem,4.5vw,2rem);font-weight:900;color:#1f7a8c;margin:6px 0 18px;line-height:1.3}
+.bloc{position:relative;border:2px solid #3ba5b8;border-radius:12px;background:#fff;padding:26px 18px 20px;margin-bottom:18px}
+.onglet{position:absolute;top:-17px;left:18px;background:#8fd3e8;color:#123f4a;font-weight:700;font-size:.95rem;padding:5px 18px;border-radius:8px}
+.consigne-intro{margin:4px 0 18px;font-weight:700;text-decoration:underline;color:#1f7a8c;font-size:clamp(.95rem,2.6vw,1.05rem);line-height:1.75}
+.tableau-prop{width:100%;border-collapse:collapse;margin:8px 0 18px;overflow-x:auto;display:block}
+.tableau-prop tr{display:table-row}
+.tableau-prop td{border:1px solid #b9dfe8;padding:4px;text-align:center;min-width:52px}
+.tableau-prop input[type="text"]{
+  width:100%;min-width:44px;padding:8px 4px;font-family:Arial,Helvetica,sans-serif;font-size:.95rem;font-weight:700;
+  color:#1f7a8c;background:#f7fcfd;border:0;text-align:center;min-height:38px;
+}
+.tableau-prop input[type="text"]:focus{outline:2px solid #3ba5b8}
+.tableau-prop td.fixe{font-weight:700;color:#243238;background:#f4fafb}
+.correct-cell input{background:#effaf3!important;color:#1e6b40!important}
+.incorrect-cell input{background:#fdefee!important;color:#96291d!important}
+.actions{display:flex;flex-wrap:wrap;gap:8px;margin-top:10px}
+button{font-family:inherit;font-size:.92rem;font-weight:700;min-height:44px;padding:10px 16px;border:0;border-radius:8px;cursor:pointer;background:#3ba5b8;color:#fff;line-height:1.2}
+button:hover{background:#1f7a8c}
+button.sec{background:#fff;color:#1f7a8c;border:2px solid #3ba5b8}
+button.sec:hover{background:#eaf7fa}
+.feedback{margin:10px 0 0;padding:12px 14px;border-left:5px solid #3ba5b8;border-radius:6px;background:#f4fafb;font-size:clamp(.9rem,2.5vw,1rem);line-height:1.75;overflow-wrap:break-word}
+.feedback.ok{border-left-color:#2e8b57;background:#effaf3;color:#1e6b40}
+.feedback.ko{border-left-color:#c0392b;background:#fdefee;color:#96291d}
+.feedback.warn{border-left-color:#c9820a;background:#fff8ea;color:#8a5b04}
+.barre{display:flex;flex-wrap:wrap;gap:10px;margin:18px 0}
+.barre button{flex:1 1 190px}
+.correction{border:2px dashed #3ba5b8;border-radius:12px;background:#fff;padding:16px 18px;margin-bottom:18px;font-size:clamp(.9rem,2.5vw,1rem);line-height:1.8}
+.correction h2{margin:0 0 8px;font-size:1.05rem;color:#1f7a8c}
+.correction table{border-collapse:collapse;margin:8px 0}
+.correction td{border:1px solid #b9dfe8;padding:6px 12px;text-align:center;font-weight:700}
+.bilan{border:2px solid #1f7a8c;border-radius:12px;background:#fff;padding:16px 18px;margin-bottom:18px;font-size:.92rem;line-height:1.8}
+.bilan .score{font-size:clamp(1.05rem,3.2vw,1.25rem);font-weight:900;color:#1f7a8c}
+.bilan .palier{font-weight:700;margin-top:4px}
+@media (max-width:600px){.tableau-prop{font-size:.85rem}}
+@media (max-width:480px){body{padding:10px}.bloc{padding:24px 12px 16px}.etq{font-size:.85rem;padding:6px 12px}.etq-rit{margin-left:0}}
+</style>
+</head>
+<body>
+<div class="bulle b1"></div>
+<div class="bulle b2"></div>
+<div class="bulle b3"></div>
+<div class="bulle b4"></div>
+
+<main class="wrap">
+
+  <div class="tete">
+    <span class="etq etq-sem">Semaine 4</span>
+    <span class="etq etq-sea">S&eacute;ance 2</span>
+    <span class="etq etq-rit">Rituel</span>
+  </div>
+
+  <h1>Compl&eacute;ter un tableau de proportionnalit&eacute;</h1>
+
+  <section class="bloc">
+    <span class="onglet">Organisation et gestion de donn&eacute;es</span>
+
+    <p class="consigne-intro">Compl&egrave;te le tableau de proportionnalit&eacute;&nbsp;:</p>
+
+    <table class="tableau-prop">
+      <tr>
+        <td class="fixe">3</td>
+        <td class="fixe">9</td>
+        <td><input type="text" id="in-r1c3" inputmode="decimal" autocomplete="off" aria-label="Case manquante ligne 1 colonne 3"></td>
+        <td><input type="text" id="in-r1c4" inputmode="decimal" autocomplete="off" aria-label="Case manquante ligne 1 colonne 4"></td>
+        <td class="fixe">12</td>
+      </tr>
+      <tr>
+        <td class="fixe">7,5</td>
+        <td><input type="text" id="in-r2c2" inputmode="decimal" autocomplete="off" aria-label="Case manquante ligne 2 colonne 2"></td>
+        <td class="fixe">15</td>
+        <td class="fixe">22,5</td>
+        <td><input type="text" id="in-r2c5" inputmode="decimal" autocomplete="off" aria-label="Case manquante ligne 2 colonne 5"></td>
+      </tr>
+    </table>
+
+    <div class="actions">
+      <button type="button" id="btn-verif">V&eacute;rifier le tableau</button>
+      <button type="button" class="sec" id="btn-aide">Indice</button>
+    </div>
+    <div class="feedback" id="fb-tableau" hidden></div>
+    <div class="aide" id="ai-tableau" hidden></div>
+
+  </section>
+
+  <div class="barre">
+    <button type="button" id="btn-tout">V&eacute;rifier tout</button>
+    <button type="button" class="sec" id="btn-corr">Voir la correction</button>
+    <button type="button" class="sec" id="btn-reset">R&eacute;initialiser</button>
+  </div>
+
+  <div class="correction" id="correction" hidden></div>
+  <div class="bilan" id="bilan" hidden></div>
+
+</main>
+
+<script>
+(function(){
+  "use strict";
+
+  function normalise(brut){
+    var s = String(brut).replace(/[\s\u00a0\u202f\u2009]/g, "");
+    s = s.replace(/[\u2212\u2013\u2014]/g, "-").replace(/,/g, ".");
+    if (s === "") return null;
+    if (!/^-?(\d+(\.\d*)?|\.\d+)$/.test(s)) return null;
+    return s;
+  }
+
+  var REPONSES = { r1c3:6, r1c4:9, r2c2:22.5, r2c5:30 };
+  var TOLERANCE = 0.01;
+  var etatTableau = "vide";
+
+  function verifierTableau(){
+    var total = 0, bons = 0;
+    for (var id in REPONSES){
+      total++;
+      var input = document.getElementById("in-" + id);
+      var td = input.parentElement;
+      td.classList.remove("correct-cell","incorrect-cell");
+      var norm = normalise(input.value);
+      if (norm !== null && Math.abs(Number(norm) - REPONSES[id]) <= TOLERANCE){
+        bons++;
+        td.classList.add("correct-cell");
+      } else {
+        td.classList.add("incorrect-cell");
+      }
+    }
+    var fb = document.getElementById("fb-tableau");
+    if (bons === total){
+      etatTableau = "correct";
+      fb.className = "feedback ok";
+      fb.innerHTML = "\u2705 Bravo&nbsp;! Les " + total + " cases sont correctes. Coefficient de proportionnalit\u00e9&nbsp;: 7,5&nbsp;/&nbsp;3&nbsp;=&nbsp;<strong>2,5</strong>.";
+    } else if (bons > 0){
+      etatTableau = "partiel";
+      fb.className = "feedback warn";
+      fb.innerHTML = "\u26a0\ufe0f " + bons + "&nbsp;/&nbsp;" + total + " cases correctes (en vert). Le coefficient est <strong>2,5</strong> (7,5/3) dans le sens ligne&nbsp;1&nbsp;&rarr;&nbsp;ligne&nbsp;2.";
+    } else {
+      etatTableau = "incorrect";
+      fb.className = "feedback ko";
+      fb.innerHTML = "\u274c Aucune case correcte (ou aucune r\u00e9ponse). Le coefficient est <strong>2,5</strong> (7,5/3) dans le sens ligne&nbsp;1&nbsp;&rarr;&nbsp;ligne&nbsp;2.";
+    }
+    fb.hidden = false;
+  }
+
+  function basculerAide(){
+    var box = document.getElementById("ai-tableau");
+    var texte = "Calcule d\u2019abord le coefficient avec la colonne compl\u00e8te (3 et 7,5). Utilise-le ensuite pour les autres colonnes&nbsp;: multiplie la ligne du haut par le coefficient pour trouver la ligne du bas, ou divise la ligne du bas par le coefficient pour trouver la ligne du haut.";
+    if (box.hidden){
+      box.innerHTML = "\ud83d\udca1 <strong>Indice&nbsp;:</strong> " + texte;
+      box.hidden = false;
+    } else {
+      box.hidden = true;
+    }
+  }
+
+  function palier(pct){
+    if (pct >= 90) return "\ud83d\udfe2 Excellent";
+    if (pct >= 75) return "\ud83d\udfe2 Tr\u00e8s bien";
+    if (pct >= 60) return "\ud83d\udfe1 Ma\u00eetrise satisfaisante";
+    if (pct >= 40) return "\ud83d\udfe0 Ma\u00eetrise fragile";
+    return "\ud83d\udd34 Ma\u00eetrise insuffisante";
+  }
+
+  function verifierTout(){
+    verifierTableau();
+    var score = (etatTableau === "correct") ? 1 : 0;
+    var pct = score * 100;
+    var bilan = document.getElementById("bilan");
+    bilan.innerHTML =
+      '<div class="score">Score&nbsp;: ' + score + '\u2009/\u20091 (' + pct + '&nbsp;%)</div>' +
+      '<div class="palier">' + palier(pct) + '</div>' +
+      '<div class="legende" style="margin-top:10px;font-size:.85rem;color:#4d6169">Le tableau compte pour un seul item&nbsp;: les 4 cases doivent \u00eatre correctes pour obtenir le point.</div>';
+    bilan.hidden = false;
+  }
+
+  function basculerCorrection(){
+    var box = document.getElementById("correction");
+    var btn = document.getElementById("btn-corr");
+    if (box.hidden){
+      box.innerHTML = "<h2>Correction</h2>" +
+        "<p>Coefficient&nbsp;: 7,5&nbsp;/&nbsp;3&nbsp;=&nbsp;<strong>2,5</strong>.</p>" +
+        "<table><tr><td>3</td><td>9</td><td><strong>6</strong></td><td><strong>9</strong></td><td>12</td></tr>" +
+        "<tr><td>7,5</td><td><strong>22,5</strong></td><td>15</td><td>22,5</td><td><strong>30</strong></td></tr></table>";
+      box.hidden = false;
+      btn.textContent = "Masquer la correction";
+    } else {
+      box.hidden = true;
+      btn.textContent = "Voir la correction";
+    }
+  }
+
+  function reinitialiser(){
+    for (var id in REPONSES){
+      var input = document.getElementById("in-" + id);
+      input.value = "";
+      input.parentElement.classList.remove("correct-cell","incorrect-cell");
+    }
+    var fb = document.getElementById("fb-tableau");
+    fb.hidden = true; fb.innerHTML = ""; fb.className = "feedback";
+    var ai = document.getElementById("ai-tableau");
+    ai.hidden = true; ai.innerHTML = "";
+    etatTableau = "vide";
+    var corr = document.getElementById("correction");
+    corr.hidden = true; corr.innerHTML = "";
+    document.getElementById("btn-corr").textContent = "Voir la correction";
+    var bilan = document.getElementById("bilan");
+    bilan.hidden = true; bilan.innerHTML = "";
+  }
+
+  function init(){
+    document.getElementById("btn-verif").addEventListener("click", verifierTableau);
+    document.getElementById("btn-aide").addEventListener("click", basculerAide);
+    document.getElementById("btn-tout").addEventListener("click", verifierTout);
+    document.getElementById("btn-corr").addEventListener("click", basculerCorrection);
+    document.getElementById("btn-reset").addEventListener("click", reinitialiser);
+  }
+
+  if (document.readyState === "loading"){
+    document.addEventListener("DOMContentLoaded", init);
+  } else {
+    init();
+  }
+})();
+</script>
+</body>
+</html>
