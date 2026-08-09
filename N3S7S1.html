@@ -1,0 +1,584 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Rituel &mdash; Semaine 7 S&eacute;ance 1 &mdash; Programme de calcul</title>
+<style>
+*{box-sizing:border-box}
+html,body{margin:0;padding:0}
+body{background:#fffdf7;font-family:Arial,Helvetica,sans-serif;color:#243238;line-height:1.6;padding:14px;overflow-x:hidden}
+.bulle{position:fixed;border-radius:50%;background:#3ba5b8;opacity:.12;pointer-events:none;z-index:0}
+.b1{width:190px;height:190px;top:-70px;left:-70px}
+.b2{width:130px;height:130px;top:-45px;right:-45px}
+.b3{width:160px;height:160px;bottom:-60px;left:-55px}
+.b4{width:110px;height:110px;bottom:-40px;right:-35px}
+.wrap{position:relative;z-index:1;max-width:880px;margin:0 auto}
+.tete{display:flex;flex-wrap:wrap;align-items:center;gap:10px;margin-bottom:14px}
+.etq{display:inline-block;padding:7px 16px;border-radius:8px;color:#fff;font-weight:700;font-size:.95rem}
+.etq-sem{background:#8fd3e8;color:#123f4a}
+.etq-sea{background:#3ba5b8}
+.etq-rit{background:#1f7a8c;font-family:Georgia,"Times New Roman",serif;margin-left:auto}
+h1{font-size:clamp(1.3rem,4.5vw,2rem);font-weight:900;color:#1f7a8c;margin:6px 0 18px;line-height:1.3}
+.bloc{position:relative;border:2px solid #3ba5b8;border-radius:12px;background:#fff;padding:28px 18px 20px;margin-bottom:18px}
+.onglet{position:absolute;top:-17px;left:18px;background:#8fd3e8;color:#123f4a;font-weight:700;font-size:.95rem;padding:5px 18px;border-radius:8px}
+.enonce{background:#fdf6f6;border-left:5px solid #7a3e3e;border-radius:6px;padding:14px 16px;margin-bottom:20px;color:#7a3e3e;font-weight:700;font-size:clamp(.92rem,2.5vw,1rem);line-height:1.85;overflow-wrap:break-word}
+.enonce .titre{display:block;margin-bottom:6px;text-decoration:underline}
+.tete-ex{display:flex;align-items:flex-start;gap:12px;margin:22px 0 14px;min-width:0}
+.pastille{flex:0 0 auto;width:34px;height:34px;border-radius:50%;background:#1f7a8c;color:#fff;font-weight:700;font-size:1rem;display:flex;align-items:center;justify-content:center}
+.consigne{margin:4px 0 0;font-weight:700;text-decoration:underline;color:#1f7a8c;font-size:clamp(.95rem,2.6vw,1.05rem);min-width:0;overflow-wrap:break-word}
+.note{margin:6px 0 0;font-size:.85rem;color:#4d6169;font-weight:400;text-decoration:none}
+.item{padding:12px 0;border-bottom:1px dashed #dceff3}
+.item:last-of-type{border-bottom:0}
+.q{font-size:clamp(1rem,3vw,1.15rem);font-weight:700;margin:0 0 8px;color:#243238;overflow-wrap:break-word}
+.ligne{display:flex;flex-wrap:wrap;align-items:center;gap:10px;min-width:0}
+.champ{flex:1 1 260px;min-width:0}
+textarea,input[type="text"]{width:100%;min-width:0;padding:10px;font-family:Arial,Helvetica,sans-serif;font-size:1rem;font-weight:700;color:#1f7a8c;background:#f7fcfd;border:1px solid #b9dfe8;border-bottom:2px dotted #3ba5b8;border-radius:6px;line-height:1.6;resize:vertical}
+input[type="text"]{min-height:44px;text-align:left;max-width:320px}
+textarea{min-height:56px}
+input[type="text"]:focus,textarea:focus{outline:2px solid #3ba5b8;outline-offset:1px}
+.correct{border-color:#2e8b57;background:#effaf3;color:#2e8b57}
+.partiel{border-color:#c9820a;background:#fff8ea;color:#a86c06}
+.incorrect{border-color:#c0392b;background:#fdefee;color:#c0392b}
+.actions{display:flex;flex-wrap:wrap;gap:8px}
+button{font-family:inherit;font-size:.92rem;font-weight:700;min-height:44px;padding:10px 16px;border:0;border-radius:8px;cursor:pointer;background:#3ba5b8;color:#fff;line-height:1.2}
+button:hover{background:#1f7a8c}
+button.sec{background:#fff;color:#1f7a8c;border:2px solid #3ba5b8}
+button.sec:hover{background:#eaf7fa}
+.feedback{margin:10px 0 0;padding:12px 14px;border-left:5px solid #3ba5b8;border-radius:6px;background:#f4fafb;font-size:clamp(.9rem,2.5vw,1rem);line-height:1.75;font-style:normal;overflow-wrap:break-word}
+.feedback.ok{border-left-color:#2e8b57;background:#effaf3;color:#1e6b40}
+.feedback.ko{border-left-color:#c0392b;background:#fdefee;color:#96291d}
+.feedback.warn{border-left-color:#c9820a;background:#fff8ea;color:#8a5b04}
+.aide{margin:10px 0 0;padding:12px 14px;border-left:5px solid #8fd3e8;background:#f2fafd;border-radius:6px;font-size:clamp(.9rem,2.5vw,1rem);line-height:1.75}
+.barre{display:flex;flex-wrap:wrap;gap:10px;margin:18px 0}
+.barre button{flex:1 1 190px}
+.correction{border:2px dashed #3ba5b8;border-radius:12px;background:#fff;padding:16px 18px;margin-bottom:18px;font-size:clamp(.9rem,2.5vw,1rem);line-height:1.8}
+.correction h2{margin:0 0 10px;font-size:1.05rem;color:#1f7a8c}
+.correction p{margin:6px 0}
+.bilan{border:2px solid #1f7a8c;border-radius:12px;background:#fff;padding:16px 18px;margin-bottom:18px;font-size:.92rem;line-height:1.8}
+.bilan .score{font-size:clamp(1.05rem,3.2vw,1.25rem);font-weight:900;color:#1f7a8c}
+.bilan .palier{font-weight:700;margin-top:4px}
+.recap{display:flex;flex-wrap:wrap;gap:8px;margin-top:10px}
+.recap span{display:inline-flex;align-items:center;gap:6px;padding:6px 11px;border-radius:8px;background:#f4fafb;font-weight:700;font-size:.9rem;border:1px solid #dceff3}
+.recap .r-ok{color:#2e8b57}
+.recap .r-mid{color:#c9820a}
+.recap .r-ko{color:#c0392b}
+.legende{margin-top:10px;font-size:.85rem;color:#4d6169}
+@media (max-width:768px){.champ{flex:1 1 100%}.actions{width:100%}.actions button{flex:1 1 auto}}
+@media (max-width:480px){body{padding:10px}.bloc{padding:26px 12px 16px}.etq{font-size:.85rem;padding:6px 12px}.etq-rit{margin-left:0}input[type="text"]{max-width:100%}.recap span{font-size:.85rem}}
+</style>
+</head>
+<body>
+<div class="bulle b1"></div><div class="bulle b2"></div><div class="bulle b3"></div><div class="bulle b4"></div>
+
+<main class="wrap">
+
+  <div class="tete">
+    <span class="etq etq-sem">Semaine 7</span>
+    <span class="etq etq-sea">S&eacute;ance 1</span>
+    <span class="etq etq-rit">Rituel</span>
+  </div>
+
+  <h1>Programme de calcul&nbsp;: conjecture et preuve</h1>
+
+  <section class="bloc">
+    <span class="onglet">Calcul</span>
+
+    <p class="enonce">
+      <span class="titre">Programme de calcul</span>
+      Tu choisis un nombre. Tu le multiplies par le nombre suivant. Tu soustrais le nombre de d&eacute;part au carr&eacute;.
+    </p>
+
+    <div class="tete-ex">
+      <span class="pastille">1</span>
+      <p class="consigne">En testant plusieurs nombres de d&eacute;part si besoin, quelle conjecture peux-tu faire sur le r&eacute;sultat obtenu&nbsp;?</p>
+    </div>
+
+    <div class="item">
+      <div class="ligne">
+        <span class="champ"><textarea id="in-a" aria-label="Ta conjecture"></textarea></span>
+      </div>
+      <div class="actions"><button type="button" data-ok="a">OK</button><button type="button" class="sec" data-aide="a">Indice</button></div>
+      <div class="feedback" id="fb-a" hidden></div>
+      <div class="aide" id="ai-a" hidden></div>
+    </div>
+
+    <div class="tete-ex">
+      <span class="pastille">2</span>
+      <p class="consigne">Prouve cette conjecture, en appelant x le nombre de d&eacute;part.
+        <span class="note">(Tu peux &eacute;crire les puissances avec <strong>^</strong> ou avec un exposant&nbsp;: <strong>x^2</strong> ou <strong>x&sup2;</strong> ; la multiplication avec <strong>*</strong> ou <strong>&times;</strong>.)</span>
+      </p>
+    </div>
+
+    <div class="item">
+      <p class="q">a. &Eacute;cris l&rsquo;expression obtenue lorsque tu multiplies x par le nombre suivant.</p>
+      <div class="ligne">
+        <span class="champ"><input type="text" id="in-b1" inputmode="text" autocomplete="off" placeholder="ex&nbsp;: x*(x+1)" aria-label="Expression apr&egrave;s multiplication par le nombre suivant"></span>
+        <span class="actions"><button type="button" data-ok="b1">OK</button><button type="button" class="sec" data-aide="b1">Indice</button></span>
+      </div>
+      <div class="feedback" id="fb-b1" hidden></div>
+      <div class="aide" id="ai-b1" hidden></div>
+    </div>
+
+    <div class="item">
+      <p class="q">b. &Eacute;cris l&rsquo;expression compl&egrave;te, une fois que tu as soustrait le carr&eacute; du nombre de d&eacute;part.</p>
+      <div class="ligne">
+        <span class="champ"><input type="text" id="in-b2" inputmode="text" autocomplete="off" placeholder="ex&nbsp;: x*(x+1)-x^2" aria-label="Expression compl&egrave;te apr&egrave;s soustraction du carr&eacute;"></span>
+        <span class="actions"><button type="button" data-ok="b2">OK</button><button type="button" class="sec" data-aide="b2">Indice</button></span>
+      </div>
+      <div class="feedback" id="fb-b2" hidden></div>
+      <div class="aide" id="ai-b2" hidden></div>
+    </div>
+
+    <div class="item">
+      <p class="q">c. D&eacute;veloppe et r&eacute;duis cette expression le plus possible.</p>
+      <div class="ligne">
+        <span class="champ"><input type="text" id="in-b3" inputmode="text" autocomplete="off" placeholder="ex&nbsp;: x" aria-label="Expression d&eacute;velopp&eacute;e et r&eacute;duite"></span>
+        <span class="actions"><button type="button" data-ok="b3">OK</button><button type="button" class="sec" data-aide="b3">Indice</button></span>
+      </div>
+      <div class="feedback" id="fb-b3" hidden></div>
+      <div class="aide" id="ai-b3" hidden></div>
+    </div>
+
+  </section>
+
+  <div class="barre">
+    <button type="button" id="btn-tout">V&eacute;rifier tout</button>
+    <button type="button" class="sec" id="btn-corr">Voir la correction</button>
+    <button type="button" class="sec" id="btn-reset">R&eacute;initialiser</button>
+  </div>
+
+  <div class="correction" id="correction" hidden></div>
+  <div class="bilan" id="bilan" hidden></div>
+
+</main>
+
+<script>
+(function(){
+  "use strict";
+
+  // ===================== Briques texte (mots-cles) =====================
+  function esc(txt){
+    var d = document.createElement("div");
+    d.textContent = String(txt);
+    return d.innerHTML;
+  }
+
+  function sansAccents(s){
+    return s
+      .replace(/[\u00e0\u00e2\u00e4\u00e1\u00e3]/g,"a")
+      .replace(/[\u00e9\u00e8\u00ea\u00eb]/g,"e")
+      .replace(/[\u00ee\u00ef\u00ec\u00ed]/g,"i")
+      .replace(/[\u00f4\u00f6\u00f2\u00f3\u00f5]/g,"o")
+      .replace(/[\u00fb\u00fc\u00f9\u00fa]/g,"u")
+      .replace(/[\u00e7]/g,"c")
+      .replace(/[\u2019\u2018\u02bc\u0060]/g,"'");
+  }
+
+  function normTexte(s){
+    var t = String(s).toLowerCase();
+    t = sansAccents(t);
+    t = t.replace(/[\u00a0\u202f\u2009]/g," ");
+    t = t.replace(/\s+/g," ");
+    return t.trim();
+  }
+
+  function contient(texte, mots){
+    for (var i = 0; i < mots.length; i++){
+      if (texte.indexOf(mots[i]) !== -1) return true;
+    }
+    return false;
+  }
+
+  var CONJECTURE = {
+    cle: { mots:["depart"] },
+    precisions: [
+      { nom:"pr\u00e9ciser que c\u2019est <strong>toujours</strong> vrai, quel que soit le nombre choisi", mots:["toujours","quel que soit","peu importe","tout nombre","n'importe quel"] }
+    ],
+    ref:"On obtient toujours le nombre de d\u00e9part comme r\u00e9sultat, quel que soit le nombre choisi au d\u00e9part."
+  };
+
+  // ===================== Brique algebre (parseur d'expressions, sans eval) =====================
+  function normaliserExpr(brut){
+    var s = String(brut).toLowerCase();
+    s = s.replace(/[\s\u00a0\u202f\u2009]/g, "");
+    s = s.replace(/[\u2212\u2013\u2014]/g, "-");
+    s = s.replace(/[\u00d7]/g, "*");
+    s = s.replace(/\u00b2/g, "^2");
+    s = s.replace(/\u00b3/g, "^3");
+    s = s.replace(/,/g, ".");
+    return s;
+  }
+
+  function tokeniser(brut){
+    var s = normaliserExpr(brut);
+    if (s === "") return null;
+    var toks = [];
+    var i = 0;
+    while (i < s.length){
+      var c = s.charAt(i);
+      if (/[0-9.]/.test(c)){
+        var j = i;
+        while (j < s.length && /[0-9.]/.test(s.charAt(j))) j++;
+        var numStr = s.slice(i, j);
+        if (!/^\d+(\.\d+)?$/.test(numStr)) return null;
+        toks.push({ t:"num", v:Number(numStr) });
+        i = j;
+      } else if (c === "x"){
+        toks.push({ t:"var" });
+        i++;
+      } else if ("+-*/^()".indexOf(c) !== -1){
+        toks.push({ t:c });
+        i++;
+      } else {
+        return null;
+      }
+    }
+    var out = [];
+    for (var k = 0; k < toks.length; k++){
+      out.push(toks[k]);
+      var cur = toks[k];
+      var nxt = toks[k+1];
+      if (!nxt) continue;
+      var curEndsValue = (cur.t === "num" || cur.t === "var" || cur.t === ")");
+      var nxtStartsValue = (nxt.t === "num" || nxt.t === "var" || nxt.t === "(");
+      if (curEndsValue && nxtStartsValue) out.push({ t:"*" });
+    }
+    return out;
+  }
+
+  function analyser(toks){
+    var pos = 0;
+    function peek(){ return toks[pos]; }
+    function consume(){ return toks[pos++]; }
+
+    function parseExpression(){
+      var terms = [];
+      var sign = 1;
+      if (peek() && (peek().t === "+" || peek().t === "-")) sign = consume().t === "-" ? -1 : 1;
+      var t = parseTerm();
+      if (t === null) return null;
+      terms.push({ sign:sign, node:t });
+      while (peek() && (peek().t === "+" || peek().t === "-")){
+        var op = consume().t;
+        var s2 = op === "-" ? -1 : 1;
+        var t2 = parseTerm();
+        if (t2 === null) return null;
+        terms.push({ sign:s2, node:t2 });
+      }
+      return { type:"add", terms:terms };
+    }
+
+    function parseTerm(){
+      var node = parseUnary();
+      if (node === null) return null;
+      while (peek() && (peek().t === "*" || peek().t === "/")){
+        var op = consume().t;
+        var rhs = parseUnary();
+        if (rhs === null) return null;
+        node = { type: op === "*" ? "mul" : "div", a:node, b:rhs };
+      }
+      return node;
+    }
+
+    function parseUnary(){
+      if (peek() && peek().t === "-"){ consume(); var n = parseUnary(); return n === null ? null : { type:"neg", node:n }; }
+      if (peek() && peek().t === "+"){ consume(); return parseUnary(); }
+      return parsePow();
+    }
+
+    function parsePow(){
+      var node = parsePrimary();
+      if (node === null) return null;
+      if (peek() && peek().t === "^"){
+        consume();
+        var exp = parseUnary();
+        if (exp === null) return null;
+        node = { type:"pow", base:node, exp:exp };
+      }
+      return node;
+    }
+
+    function parsePrimary(){
+      var tk = peek();
+      if (!tk) return null;
+      if (tk.t === "num"){ consume(); return { type:"num", value:tk.v }; }
+      if (tk.t === "var"){ consume(); return { type:"var" }; }
+      if (tk.t === "("){
+        consume();
+        var e = parseExpression();
+        if (e === null) return null;
+        if (!peek() || peek().t !== ")") return null;
+        consume();
+        return e;
+      }
+      return null;
+    }
+
+    var result = parseExpression();
+    if (result === null) return null;
+    if (pos !== toks.length) return null;
+    return result;
+  }
+
+  function parseExpr(brut){
+    var toks = tokeniser(brut);
+    if (toks === null || toks.length === 0) return null;
+    return analyser(toks);
+  }
+
+  function evaluer(node, xval){
+    switch (node.type){
+      case "num": return node.value;
+      case "var": return xval;
+      case "neg": return -evaluer(node.node, xval);
+      case "add":
+        var s = 0;
+        for (var i = 0; i < node.terms.length; i++) s += node.terms[i].sign * evaluer(node.terms[i].node, xval);
+        return s;
+      case "mul": return evaluer(node.a, xval) * evaluer(node.b, xval);
+      case "div":
+        var d = evaluer(node.b, xval);
+        if (d === 0) return NaN;
+        return evaluer(node.a, xval) / d;
+      case "pow": return Math.pow(evaluer(node.base, xval), evaluer(node.exp, xval));
+    }
+    return NaN;
+  }
+
+  var ECHANTILLONS = [2, -3, 5, 0.5, -1.5, 10];
+
+  function equivalent(astA, astB){
+    for (var i = 0; i < ECHANTILLONS.length; i++){
+      var x = ECHANTILLONS[i];
+      var va = evaluer(astA, x), vb = evaluer(astB, x);
+      if (!isFinite(va) || !isFinite(vb)) return false;
+      if (Math.abs(va - vb) > 1e-6) return false;
+    }
+    return true;
+  }
+
+  function nbTermesSommet(ast){
+    return ast.type === "add" ? ast.terms.length : 1;
+  }
+
+  // ===================== Items =====================
+  var CIBLE_B1_STR = "x*(x+1)";
+  var CIBLE_B1_AFF = "x&nbsp;&times;&nbsp;(x&nbsp;+&nbsp;1)";
+  var CIBLE_B2_STR = "x*(x+1)-x^2";
+  var CIBLE_B2_AFF = "x&nbsp;&times;&nbsp;(x&nbsp;+&nbsp;1)&nbsp;&minus;&nbsp;x&sup2;";
+  var CIBLE_B3_STR = "x";
+  var CIBLE_B3_AFF = "x";
+
+  var CIBLE_B1 = parseExpr(CIBLE_B1_STR);
+  var CIBLE_B2 = parseExpr(CIBLE_B2_STR);
+  var CIBLE_B3 = parseExpr(CIBLE_B3_STR);
+
+  var etats = { a:"vide", b1:"vide", b2:"vide", b3:"vide" };
+  var occupe = false;
+
+  function afficher(id, type, html){
+    var fb = document.getElementById("fb-" + id);
+    fb.className = "feedback " + type;
+    fb.innerHTML = html;
+    fb.hidden = false;
+  }
+
+  function marquer(el, etat){
+    el.classList.remove("correct","partiel","incorrect");
+    if (etat) el.classList.add(etat);
+  }
+
+  function verifierConjecture(){
+    var input = document.getElementById("in-a");
+    var texte = normTexte(input.value);
+    if (texte === ""){
+      etats.a = "vide"; marquer(input,"");
+      afficher("a","warn","\u26a0\ufe0f Aucune r\u00e9ponse saisie. \u00c9cris ta conjecture, puis clique sur <strong>OK</strong>.");
+      return;
+    }
+    var essentiel = contient(texte, CONJECTURE.cle.mots);
+    var manquants = [];
+    for (var g = 0; g < CONJECTURE.precisions.length; g++){
+      if (!contient(texte, CONJECTURE.precisions[g].mots)) manquants.push(CONJECTURE.precisions[g].nom);
+    }
+    if (essentiel){
+      etats.a = "correct"; marquer(input,"correct");
+      if (manquants.length === 0){
+        afficher("a","ok","\u2705 Bravo&nbsp;! Conjecture compl\u00e8te.<br>R\u00e9ponse de r\u00e9f\u00e9rence&nbsp;: <strong>" + esc(CONJECTURE.ref) + "</strong>");
+      } else {
+        var liste = ""; for (var j = 0; j < manquants.length; j++) liste += "<li>" + manquants[j] + "</li>";
+        afficher("a","ok","\u2705 Bravo&nbsp;! Tu as bien identifi\u00e9 le r\u00e9sultat.<br><strong><u>Plus pr\u00e9cis</u></strong>, il manque encore&nbsp;:<ul>" + liste + "</ul>R\u00e9ponse de r\u00e9f\u00e9rence&nbsp;: <strong>" + esc(CONJECTURE.ref) + "</strong>");
+      }
+      return;
+    }
+    etats.a = "incorrect"; marquer(input,"incorrect");
+    afficher("a","ko","\u274c Ce n\u2019est pas ce que l\u2019on cherche ici. Essaie avec plusieurs nombres de d\u00e9part et compare avec le r\u00e9sultat obtenu.<br>R\u00e9ponse attendue&nbsp;: <strong><u>" + esc(CONJECTURE.ref) + "</u></strong>");
+  }
+
+  function verifierExpr(id, cibleAst, cibleAff, exigerReduit){
+    var input = document.getElementById("in-" + id);
+    var brut = input.value;
+    marquer(input, "");
+
+    if (brut.replace(/[\s\u00a0]/g,"") === ""){
+      etats[id] = "vide";
+      afficher(id,"warn","\u26a0\ufe0f Aucune r\u00e9ponse saisie. \u00c9cris une expression en x, puis clique sur <strong>OK</strong>.");
+      return;
+    }
+
+    var ast = parseExpr(brut);
+    if (ast === null){
+      etats[id] = "incorrect"; marquer(input,"incorrect");
+      afficher(id,"warn","\u26a0\ufe0f Saisie non reconnue&nbsp;: &laquo;&nbsp;" + esc(brut) + "&nbsp;&raquo;. Utilise uniquement <strong>x</strong>, des nombres, <strong>+ - * / ^</strong> et des parenth\u00e8ses.");
+      return;
+    }
+
+    var estEgal = equivalent(ast, cibleAst);
+    if (!estEgal){
+      etats[id] = "incorrect"; marquer(input,"incorrect");
+      afficher(id,"ko","\u274c Ton expression n\u2019est pas \u00e9quivalente \u00e0 celle attendue. R\u00e9ponse attendue&nbsp;: <strong><u>" + cibleAff + "</u></strong>.");
+      return;
+    }
+
+    if (exigerReduit && nbTermesSommet(ast) > 1){
+      etats[id] = "partiel"; marquer(input,"partiel");
+      afficher(id,"warn","\u26a0\ufe0f La valeur de ton expression est exacte, mais elle n\u2019est <strong>pas encore r\u00e9duite</strong> (il reste plusieurs termes \u00e0 regrouper). R\u00e9ponse attendue, sous sa forme la plus simple&nbsp;: <strong><u>" + cibleAff + "</u></strong>.");
+      return;
+    }
+
+    etats[id] = "correct"; marquer(input,"correct");
+    afficher(id,"ok","\u2705 Bravo&nbsp;! Ton expression correspond \u00e0&nbsp;: <strong><u>" + cibleAff + "</u></strong>.");
+  }
+
+  var AIDES = {
+    a:"Choisis deux ou trois nombres de d\u00e9part diff\u00e9rents, applique le programme \u00e0 chaque fois, et compare le r\u00e9sultat obtenu au nombre de d\u00e9part.",
+    b1:"Le nombre suivant s\u2019\u00e9crit x&nbsp;+&nbsp;1.",
+    b2:"Le carr\u00e9 du nombre de d\u00e9part s\u2019\u00e9crit x&sup2; (ou x^2).",
+    b3:"D\u00e9veloppe le produit x&nbsp;&times;&nbsp;(x&nbsp;+&nbsp;1), puis regroupe les termes en x&sup2;."
+  };
+
+  function basculerAide(id){
+    var box = document.getElementById("ai-" + id);
+    if (!box || !AIDES[id]) return;
+    if (box.hidden){
+      box.innerHTML = "\ud83d\udca1 <strong>Indice&nbsp;:</strong> " + AIDES[id];
+      box.hidden = false;
+    } else {
+      box.hidden = true;
+    }
+  }
+
+  function verifier(id){
+    if (id === "a") verifierConjecture();
+    else if (id === "b1") verifierExpr("b1", CIBLE_B1, CIBLE_B1_AFF, false);
+    else if (id === "b2") verifierExpr("b2", CIBLE_B2, CIBLE_B2_AFF, false);
+    else if (id === "b3") verifierExpr("b3", CIBLE_B3, CIBLE_B3_AFF, true);
+  }
+
+  function palier(pct){
+    if (pct >= 90) return "\ud83d\udfe2 Excellent";
+    if (pct >= 75) return "\ud83d\udfe2 Tr\u00e8s bien";
+    if (pct >= 60) return "\ud83d\udfe1 Ma\u00eetrise satisfaisante";
+    if (pct >= 40) return "\ud83d\udfe0 Ma\u00eetrise fragile";
+    return "\ud83d\udd34 Ma\u00eetrise insuffisante";
+  }
+
+  function verifierTout(){
+    if (occupe) return;
+    occupe = true;
+    window.setTimeout(function(){ occupe = false; }, 350);
+
+    var ids = ["a","b1","b2","b3"];
+    var total = ids.length, score = 0, recap = "";
+    for (var i = 0; i < ids.length; i++){
+      verifier(ids[i]);
+      var e = etats[ids[i]];
+      if (e === "correct"){ score++; recap += '<span class="r-ok">\u2714 ' + ids[i] + '</span>'; }
+      else if (e === "partiel"){ recap += '<span class="r-mid">\u25d0 ' + ids[i] + '</span>'; }
+      else { recap += '<span class="r-ko">\u2718 ' + ids[i] + '</span>'; }
+    }
+    if (score < 0) score = 0;
+    if (score > total) score = total;
+    var pct = Math.round((score/total)*100);
+
+    var bilan = document.getElementById("bilan");
+    bilan.innerHTML =
+      '<div class="score">Score&nbsp;: ' + score + '\u2009/\u2009' + total + ' (' + pct + '&nbsp;%)</div>' +
+      '<div class="palier">' + palier(pct) + '</div>' +
+      '<div class="recap">' + recap + '</div>' +
+      '<div class="legende">\u2714 correct &nbsp;\u2022&nbsp; \u25d0 partiel (expression exacte, non r\u00e9duite) &nbsp;\u2022&nbsp; \u2718 incorrect ou non r\u00e9pondu.</div>';
+    bilan.hidden = false;
+  }
+
+  function basculerCorrection(){
+    var box = document.getElementById("correction");
+    var btn = document.getElementById("btn-corr");
+    if (box.hidden){
+      box.innerHTML =
+        "<h2>Correction</h2>" +
+        "<p><strong>1) Conjecture&nbsp;:</strong> " + esc(CONJECTURE.ref) + "</p>" +
+        "<p><strong>2) Preuve, avec x le nombre de d\u00e9part&nbsp;:</strong></p>" +
+        "<p>Je multiplie par le nombre suivant&nbsp;: <strong>x&nbsp;&times;&nbsp;(x&nbsp;+&nbsp;1)</strong>.<br>" +
+        "Je soustrais le nombre de d\u00e9part au carr\u00e9&nbsp;: <strong>x&nbsp;&times;&nbsp;(x&nbsp;+&nbsp;1)&nbsp;&minus;&nbsp;x&sup2;</strong>.<br>" +
+        "Je d\u00e9veloppe et je r\u00e9duis cette expression&nbsp;:<br>" +
+        "x&nbsp;&times;&nbsp;(x&nbsp;+&nbsp;1)&nbsp;&minus;&nbsp;x&sup2; = x&nbsp;&times;&nbsp;x&nbsp;+&nbsp;x&nbsp;&times;&nbsp;1&nbsp;&minus;&nbsp;x&sup2; = x&sup2;&nbsp;+&nbsp;x&nbsp;&minus;&nbsp;x&sup2; = <strong><u>x</u></strong>.</p>" +
+        "<p>J\u2019ai prouv\u00e9 ma conjecture&nbsp;: j\u2019obtiens bien toujours le nombre de d\u00e9part comme r\u00e9sultat.</p>";
+      box.hidden = false;
+      btn.textContent = "Masquer la correction";
+    } else {
+      box.hidden = true;
+      btn.textContent = "Voir la correction";
+    }
+  }
+
+  function reinitialiser(){
+    var ids = ["a","b1","b2","b3"];
+    for (var i = 0; i < ids.length; i++){
+      var id = ids[i];
+      var input = document.getElementById("in-" + id);
+      input.value = ""; input.disabled = false; input.readOnly = false;
+      input.classList.remove("correct","partiel","incorrect");
+      var fb = document.getElementById("fb-" + id);
+      fb.hidden = true; fb.innerHTML = ""; fb.className = "feedback";
+      var ai = document.getElementById("ai-" + id);
+      if (ai){ ai.hidden = true; ai.innerHTML = ""; }
+      etats[id] = "vide";
+    }
+    var bilan = document.getElementById("bilan");
+    bilan.hidden = true; bilan.innerHTML = "";
+    var corr = document.getElementById("correction");
+    corr.hidden = true; corr.innerHTML = "";
+    document.getElementById("btn-corr").textContent = "Voir la correction";
+    occupe = false;
+  }
+
+  function init(){
+    var bOk = document.querySelectorAll("[data-ok]");
+    for (var a = 0; a < bOk.length; a++){
+      bOk[a].addEventListener("click", function(){ verifier(this.getAttribute("data-ok")); });
+    }
+    var bAide = document.querySelectorAll("[data-aide]");
+    for (var b = 0; b < bAide.length; b++){
+      bAide[b].addEventListener("click", function(){ basculerAide(this.getAttribute("data-aide")); });
+    }
+    var champs = document.querySelectorAll('input[type="text"]');
+    for (var c = 0; c < champs.length; c++){
+      champs[c].addEventListener("keydown", function(ev){
+        if (ev.key === "Enter"){ ev.preventDefault(); verifier(this.id.replace("in-","")); }
+      });
+    }
+    document.getElementById("btn-tout").addEventListener("click", verifierTout);
+    document.getElementById("btn-corr").addEventListener("click", basculerCorrection);
+    document.getElementById("btn-reset").addEventListener("click", reinitialiser);
+  }
+
+  if (document.readyState === "loading"){
+    document.addEventListener("DOMContentLoaded", init);
+  } else {
+    init();
+  }
+})();
+</script>
+</body>
+</html>
