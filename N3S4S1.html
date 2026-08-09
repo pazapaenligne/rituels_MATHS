@@ -1,0 +1,271 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Rituel &mdash; Semaine 4 S&eacute;ance 1 &mdash; Division de fractions</title>
+<style>
+*{box-sizing:border-box}
+html,body{margin:0;padding:0}
+body{background:#fffdf7;font-family:Arial,Helvetica,sans-serif;color:#243238;line-height:1.6;padding:14px;overflow-x:hidden}
+.bulle{position:fixed;border-radius:50%;background:#3ba5b8;opacity:.12;pointer-events:none;z-index:0}
+.b1{width:190px;height:190px;top:-70px;left:-70px}
+.b2{width:130px;height:130px;top:-45px;right:-45px}
+.b3{width:160px;height:160px;bottom:-60px;left:-55px}
+.b4{width:110px;height:110px;bottom:-40px;right:-35px}
+.wrap{position:relative;z-index:1;max-width:880px;margin:0 auto}
+.tete{display:flex;flex-wrap:wrap;align-items:center;gap:10px;margin-bottom:14px}
+.etq{display:inline-block;padding:7px 16px;border-radius:8px;color:#fff;font-weight:700;font-size:.95rem}
+.etq-sem{background:#8fd3e8;color:#123f4a}
+.etq-sea{background:#3ba5b8}
+.etq-rit{background:#1f7a8c;font-family:Georgia,"Times New Roman",serif;margin-left:auto}
+h1{font-size:clamp(1.3rem,4.5vw,2rem);font-weight:900;color:#1f7a8c;margin:6px 0 18px;line-height:1.3}
+.bloc{position:relative;border:2px solid #3ba5b8;border-radius:12px;background:#fff;padding:26px 18px 20px;margin-bottom:18px}
+.onglet{position:absolute;top:-17px;left:18px;background:#8fd3e8;color:#123f4a;font-weight:700;font-size:.95rem;padding:5px 18px;border-radius:8px}
+.consigne-intro{margin:4px 0 18px;font-weight:700;text-decoration:underline;color:#1f7a8c;font-size:clamp(.95rem,2.6vw,1.05rem);line-height:1.75}
+.frac{display:inline-flex;flex-direction:column;vertical-align:middle;text-align:center;margin:0 5px;line-height:1.2;font-weight:700}
+.frac .num{border-bottom:2px solid #243238;padding:0 5px 2px}
+.frac .den{padding:2px 5px 0}
+.equation{display:inline-flex;align-items:center;flex-wrap:wrap;gap:6px;font-size:clamp(1.1rem,3.2vw,1.3rem);color:#243238}
+.item{padding:12px 0 14px}
+.q{font-size:clamp(1rem,3vw,1.1rem);font-weight:700;margin:0 0 8px;color:#243238}
+.ligne{display:flex;flex-wrap:wrap;align-items:center;gap:10px;min-width:0}
+.champ{flex:0 0 auto}
+input[type="text"]{
+  width:150px;padding:9px 8px;font-family:Arial,Helvetica,sans-serif;font-size:1rem;font-weight:700;
+  color:#1f7a8c;background:#f7fcfd;border:1px solid #b9dfe8;border-bottom:2px dotted #3ba5b8;
+  border-radius:6px;text-align:center;min-height:44px;
+}
+input[type="text"]:focus{outline:2px solid #3ba5b8;outline-offset:1px}
+.correct{border-color:#2e8b57;background:#effaf3;color:#1e6b40}
+.incorrect{border-color:#c0392b;background:#fdefee;color:#96291d}
+.actions{display:flex;flex-wrap:wrap;gap:8px}
+button{font-family:inherit;font-size:.92rem;font-weight:700;min-height:44px;padding:10px 16px;border:0;border-radius:8px;cursor:pointer;background:#3ba5b8;color:#fff;line-height:1.2}
+button:hover{background:#1f7a8c}
+button.sec{background:#fff;color:#1f7a8c;border:2px solid #3ba5b8}
+button.sec:hover{background:#eaf7fa}
+.feedback{margin:10px 0 0;padding:12px 14px;border-left:5px solid #3ba5b8;border-radius:6px;background:#f4fafb;font-size:clamp(.9rem,2.5vw,1rem);line-height:1.75;overflow-wrap:break-word}
+.feedback.ok{border-left-color:#2e8b57;background:#effaf3;color:#1e6b40}
+.feedback.ko{border-left-color:#c0392b;background:#fdefee;color:#96291d}
+.feedback.warn{border-left-color:#c9820a;background:#fff8ea;color:#8a5b04}
+.aide{margin:10px 0 0;padding:12px 14px;border-left:5px solid #8fd3e8;background:#f2fafd;border-radius:6px;font-size:clamp(.9rem,2.5vw,1rem);line-height:1.75}
+.barre{display:flex;flex-wrap:wrap;gap:10px;margin:18px 0}
+.barre button{flex:1 1 190px}
+.correction{border:2px dashed #3ba5b8;border-radius:12px;background:#fff;padding:16px 18px;margin-bottom:18px;font-size:clamp(.9rem,2.5vw,1rem);line-height:1.8}
+.correction h2{margin:0 0 8px;font-size:1.05rem;color:#1f7a8c}
+.correction p{margin:4px 0}
+.bilan{border:2px solid #1f7a8c;border-radius:12px;background:#fff;padding:16px 18px;margin-bottom:18px;font-size:.92rem;line-height:1.8}
+.bilan .score{font-size:clamp(1.05rem,3.2vw,1.25rem);font-weight:900;color:#1f7a8c}
+.bilan .palier{font-weight:700;margin-top:4px}
+@media (max-width:480px){body{padding:10px}.bloc{padding:24px 12px 16px}.etq{font-size:.85rem;padding:6px 12px}.etq-rit{margin-left:0}input[type="text"]{width:100%}}
+</style>
+</head>
+<body>
+<div class="bulle b1"></div>
+<div class="bulle b2"></div>
+<div class="bulle b3"></div>
+<div class="bulle b4"></div>
+
+<main class="wrap">
+
+  <div class="tete">
+    <span class="etq etq-sem">Semaine 4</span>
+    <span class="etq etq-sea">S&eacute;ance 1</span>
+    <span class="etq etq-rit">Rituel</span>
+  </div>
+
+  <h1>Division de fractions</h1>
+
+  <section class="bloc">
+    <span class="onglet">Calcul</span>
+
+    <p class="consigne-intro">Effectue le calcul suivant (sans calculatrice)&nbsp;:</p>
+
+    <div class="item">
+      <p class="q">C&nbsp;=&nbsp;<span class="equation"><span class="frac"><span class="num">3</span><span class="den">7</span></span><span>&divide;</span><span class="frac"><span class="num">8</span><span class="den">5</span></span></span></p>
+      <div class="ligne">
+        <span class="champ"><input type="text" id="in-C" autocomplete="off" aria-label="Valeur de C" placeholder="ex&nbsp;: a/b"></span>
+        <span class="actions">
+          <button type="button" data-ok="C">OK</button>
+          <button type="button" class="sec" data-aide="C">Indice</button>
+        </span>
+      </div>
+      <div class="feedback" id="fb-C" hidden></div>
+      <div class="aide" id="ai-C" hidden></div>
+    </div>
+
+  </section>
+
+  <div class="barre">
+    <button type="button" id="btn-tout">V&eacute;rifier tout</button>
+    <button type="button" class="sec" id="btn-corr">Voir la correction</button>
+    <button type="button" class="sec" id="btn-reset">R&eacute;initialiser</button>
+  </div>
+
+  <div class="correction" id="correction" hidden></div>
+  <div class="bilan" id="bilan" hidden></div>
+
+</main>
+
+<script>
+(function(){
+  "use strict";
+
+  function esc(txt){
+    var d = document.createElement("div");
+    d.textContent = String(txt);
+    return d.innerHTML;
+  }
+  function pgcd(a, b){
+    a = Math.abs(a); b = Math.abs(b);
+    while (b !== 0){ var t = b; b = a % b; a = t; }
+    return a;
+  }
+  function parseFraction(brut){
+    var s = String(brut).replace(/[\s\u00a0\u202f\u2009]/g, "");
+    s = s.replace(/[\u2212\u2013\u2014]/g, "-");
+    if (s === "") return null;
+    var m = s.match(/^(-?\d+)\/(-?\d+)$/);
+    if (m){
+      var num = parseInt(m[1], 10);
+      var den = parseInt(m[2], 10);
+      if (den === 0) return null;
+      if (den < 0){ den = -den; num = -num; }
+      return { num: num, den: den };
+    }
+    var m2 = s.match(/^(-?\d+)$/);
+    if (m2){ return { num: parseInt(m2[1], 10), den: 1 }; }
+    return null;
+  }
+  function fracEgales(a, b){ return a.num * b.den === b.num * a.den; }
+  function fracSimplifiee(f){ return pgcd(f.num, f.den) === 1; }
+  function fracTexte(f){ return f.num + "/" + f.den; }
+
+  var ATTENDU = { num:15, den:56 };
+  var REF = "C&nbsp;=&nbsp;3/7&nbsp;&divide;&nbsp;8/5&nbsp;=&nbsp;3/7&nbsp;&times;&nbsp;5/8&nbsp;=&nbsp;<strong>15/56</strong> (diviser par une fraction revient \u00e0 multiplier par son inverse).";
+  var AIDE = "Diviser par une fraction revient \u00e0 multiplier par son <strong>inverse</strong>&nbsp;: 3/7&nbsp;&divide;&nbsp;8/5&nbsp;=&nbsp;3/7&nbsp;&times;&nbsp;?";
+
+  var etat = "vide";
+  var occupe = false;
+
+  function afficher(type, html){
+    var fb = document.getElementById("fb-C");
+    fb.className = "feedback " + type;
+    fb.innerHTML = html;
+    fb.hidden = false;
+  }
+  function marquer(etatCss){
+    var input = document.getElementById("in-C");
+    input.classList.remove("correct","incorrect");
+    if (etatCss) input.classList.add(etatCss);
+  }
+
+  function verifier(){
+    var input = document.getElementById("in-C");
+    var brut = input.value;
+    if (String(brut).replace(/[\s\u00a0]/g,"") === ""){
+      etat = "vide"; marquer("");
+      afficher("warn", "\u26a0\ufe0f Aucune r\u00e9ponse saisie. \u00c9cris une fraction sous la forme <strong>a/b</strong>, puis clique sur <strong>OK</strong>.");
+      return;
+    }
+    var f = parseFraction(brut);
+    if (f === null){
+      etat = "incorrect"; marquer("incorrect");
+      afficher("warn", "\u26a0\ufe0f Saisie non reconnue&nbsp;: &laquo;&nbsp;" + esc(brut) + "&nbsp;&raquo;. \u00c9cris ta r\u00e9ponse sous la forme <strong>a/b</strong>.");
+      return;
+    }
+    if (fracEgales(f, ATTENDU)){
+      etat = "correct"; marquer("correct");
+      if (fracSimplifiee(f)){
+        afficher("ok", "\u2705 Bravo&nbsp;! " + REF);
+      } else {
+        afficher("ok", "\u2705 Bravo&nbsp;! Ta fraction est bien \u00e9gale \u00e0 <strong><u>" + esc(fracTexte(ATTENDU)) + "</u></strong>. <strong><u>Plus pr\u00e9cis</u></strong>&nbsp;: v\u00e9rifie si elle est d\u00e9j\u00e0 sous forme irr\u00e9ductible.<br>" + REF);
+      }
+      return;
+    }
+    etat = "incorrect"; marquer("incorrect");
+    afficher("ko", "\u274c Ce n\u2019est pas la bonne valeur.<br>R\u00e9ponse attendue&nbsp;: " + REF);
+  }
+
+  function basculerAide(){
+    var box = document.getElementById("ai-C");
+    if (box.hidden){
+      box.innerHTML = "\ud83d\udca1 <strong>Indice&nbsp;:</strong> " + AIDE;
+      box.hidden = false;
+    } else {
+      box.hidden = true;
+    }
+  }
+
+  function palier(pct){
+    if (pct >= 90) return "\ud83d\udfe2 Excellent";
+    if (pct >= 75) return "\ud83d\udfe2 Tr\u00e8s bien";
+    if (pct >= 60) return "\ud83d\udfe1 Ma\u00eetrise satisfaisante";
+    if (pct >= 40) return "\ud83d\udfe0 Ma\u00eetrise fragile";
+    return "\ud83d\udd34 Ma\u00eetrise insuffisante";
+  }
+
+  function verifierTout(){
+    if (occupe) return;
+    occupe = true;
+    window.setTimeout(function(){ occupe = false; }, 350);
+    verifier();
+    var score = (etat === "correct") ? 1 : 0;
+    var pct = score * 100;
+    var bilan = document.getElementById("bilan");
+    bilan.innerHTML =
+      '<div class="score">Score&nbsp;: ' + score + '\u2009/\u20091 (' + pct + '&nbsp;%)</div>' +
+      '<div class="palier">' + palier(pct) + '</div>';
+    bilan.hidden = false;
+  }
+
+  function basculerCorrection(){
+    var box = document.getElementById("correction");
+    var btn = document.getElementById("btn-corr");
+    if (box.hidden){
+      box.innerHTML = "<h2>Correction</h2><p>" + REF + "</p>";
+      box.hidden = false;
+      btn.textContent = "Masquer la correction";
+    } else {
+      box.hidden = true;
+      btn.textContent = "Voir la correction";
+    }
+  }
+
+  function reinitialiser(){
+    var input = document.getElementById("in-C");
+    input.value = ""; input.disabled=false; input.readOnly=false;
+    input.classList.remove("correct","incorrect");
+    var fb = document.getElementById("fb-C");
+    fb.hidden = true; fb.innerHTML = ""; fb.className = "feedback";
+    var ai = document.getElementById("ai-C");
+    ai.hidden = true; ai.innerHTML = "";
+    etat = "vide";
+    var bilan = document.getElementById("bilan");
+    bilan.hidden = true; bilan.innerHTML = "";
+    var corr = document.getElementById("correction");
+    corr.hidden = true; corr.innerHTML = "";
+    document.getElementById("btn-corr").textContent = "Voir la correction";
+    occupe = false;
+  }
+
+  function init(){
+    document.querySelector('[data-ok="C"]').addEventListener("click", verifier);
+    document.querySelector('[data-aide="C"]').addEventListener("click", basculerAide);
+    document.getElementById("in-C").addEventListener("keydown", function(ev){
+      if (ev.key === "Enter"){ ev.preventDefault(); verifier(); }
+    });
+    document.getElementById("btn-tout").addEventListener("click", verifierTout);
+    document.getElementById("btn-corr").addEventListener("click", basculerCorrection);
+    document.getElementById("btn-reset").addEventListener("click", reinitialiser);
+  }
+
+  if (document.readyState === "loading"){
+    document.addEventListener("DOMContentLoaded", init);
+  } else {
+    init();
+  }
+})();
+</script>
+</body>
+</html>
