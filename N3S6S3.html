@@ -1,0 +1,478 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Rituel &mdash; Semaine 6 S&eacute;ance 3 &mdash; Th&eacute;or&egrave;me de Pythagore</title>
+<style>
+*{box-sizing:border-box}
+html,body{margin:0;padding:0}
+body{background:#fffdf7;font-family:Arial,Helvetica,sans-serif;color:#243238;line-height:1.6;padding:14px;overflow-x:hidden}
+.bulle{position:fixed;border-radius:50%;background:#3ba5b8;opacity:.12;pointer-events:none;z-index:0}
+.b1{width:190px;height:190px;top:-70px;left:-70px}
+.b2{width:130px;height:130px;top:-45px;right:-45px}
+.b3{width:160px;height:160px;bottom:-60px;left:-55px}
+.b4{width:110px;height:110px;bottom:-40px;right:-35px}
+.wrap{position:relative;z-index:1;max-width:880px;margin:0 auto}
+.tete{display:flex;flex-wrap:wrap;align-items:center;gap:10px;margin-bottom:14px}
+.etq{display:inline-block;padding:7px 16px;border-radius:8px;color:#fff;font-weight:700;font-size:.95rem}
+.etq-sem{background:#8fd3e8;color:#123f4a}
+.etq-sea{background:#3ba5b8}
+.etq-rit{background:#1f7a8c;font-family:Georgia,"Times New Roman",serif;margin-left:auto}
+h1{font-size:clamp(1.3rem,4.5vw,2rem);font-weight:900;color:#1f7a8c;margin:6px 0 18px;line-height:1.3}
+.bloc{position:relative;border:2px solid #3ba5b8;border-radius:12px;background:#fff;padding:28px 18px 20px;margin-bottom:18px}
+.onglet{position:absolute;top:-17px;left:18px;background:#8fd3e8;color:#123f4a;font-weight:700;font-size:.95rem;padding:5px 18px;border-radius:8px}
+.figure{max-width:420px;width:100%;margin:0 auto 18px;display:block}
+.figure img{width:100%;height:auto;display:block}
+.enonce{background:#fdf6f6;border-left:5px solid #7a3e3e;border-radius:6px;padding:14px 16px;margin-bottom:20px;color:#7a3e3e;font-weight:700;font-size:clamp(.92rem,2.5vw,1rem);line-height:1.85;overflow-wrap:break-word}
+.enonce .titre{display:block;margin-bottom:6px;text-decoration:underline}
+.tete-ex{display:flex;align-items:flex-start;gap:12px;margin:22px 0 14px;min-width:0}
+.pastille{flex:0 0 auto;width:34px;height:34px;border-radius:50%;background:#1f7a8c;color:#fff;font-weight:700;font-size:1rem;display:flex;align-items:center;justify-content:center}
+.consigne{margin:4px 0 0;font-weight:700;text-decoration:underline;color:#1f7a8c;font-size:clamp(.95rem,2.6vw,1.05rem);min-width:0;overflow-wrap:break-word}
+.item{padding:12px 0;border-bottom:1px dashed #dceff3}
+.item:last-of-type{border-bottom:0}
+.q{font-size:clamp(1rem,3vw,1.15rem);font-weight:700;margin:0 0 8px;color:#243238;overflow-wrap:break-word}
+.ligne{display:flex;flex-wrap:wrap;align-items:center;gap:10px;min-width:0}
+.lettre{flex:0 0 auto;font-weight:700;color:#1f7a8c;width:22px}
+.champ{flex:0 1 auto;min-width:0}
+input[type="text"]{width:clamp(110px,30vw,170px);min-width:0;padding:9px 8px;font-family:Arial,Helvetica,sans-serif;font-size:1rem;font-weight:700;text-align:center;color:#1f7a8c;background:#f7fcfd;border:1px solid #b9dfe8;border-bottom:2px dotted #3ba5b8;border-radius:6px}
+input[type="text"]:focus{outline:2px solid #3ba5b8;outline-offset:1px}
+input.correct{border-color:#2e8b57;background:#effaf3;color:#2e8b57}
+input.partiel{border-color:#c9820a;background:#fff8ea;color:#a86c06}
+input.incorrect{border-color:#c0392b;background:#fdefee;color:#c0392b}
+.actions{display:flex;flex-wrap:wrap;gap:8px;margin-left:auto}
+button{font-family:inherit;font-size:.92rem;font-weight:700;min-height:44px;padding:10px 16px;border:0;border-radius:8px;cursor:pointer;background:#3ba5b8;color:#fff;line-height:1.2}
+button:hover{background:#1f7a8c}
+button.sec{background:#fff;color:#1f7a8c;border:2px solid #3ba5b8}
+button.sec:hover{background:#eaf7fa;color:#1f7a8c}
+.feedback{margin:10px 0 0;padding:12px 14px;border-left:5px solid #3ba5b8;border-radius:6px;background:#f4fafb;font-size:clamp(.9rem,2.5vw,1rem);line-height:1.75;font-style:normal;overflow-wrap:break-word}
+.feedback.ok{border-left-color:#2e8b57;background:#effaf3;color:#1e6b40}
+.feedback.ko{border-left-color:#c0392b;background:#fdefee;color:#96291d}
+.feedback.warn{border-left-color:#c9820a;background:#fff8ea;color:#8a5b04}
+.aide{margin:10px 0 0;padding:12px 14px;border-left:5px solid #8fd3e8;background:#f2fafd;border-radius:6px;font-size:clamp(.9rem,2.5vw,1rem);line-height:1.75}
+.barre{display:flex;flex-wrap:wrap;gap:10px;margin:18px 0}
+.barre button{flex:1 1 190px}
+.correction{border:2px dashed #3ba5b8;border-radius:12px;background:#fff;padding:16px 18px;margin-bottom:18px;font-size:clamp(.9rem,2.5vw,1rem);line-height:1.8}
+.correction h2{margin:0 0 10px;font-size:1.05rem;color:#1f7a8c}
+.correction h3{margin:14px 0 4px;font-size:.98rem;color:#1f7a8c}
+.correction p{margin:6px 0}
+.bilan{border:2px solid #1f7a8c;border-radius:12px;background:#fff;padding:16px 18px;margin-bottom:18px;font-size:.92rem;line-height:1.8}
+.bilan .score{font-size:clamp(1.05rem,3.2vw,1.25rem);font-weight:900;color:#1f7a8c}
+.bilan .palier{font-weight:700;margin-top:4px}
+.recap{display:flex;flex-wrap:wrap;gap:8px;margin-top:10px}
+.recap span{display:inline-flex;align-items:center;gap:6px;padding:6px 11px;border-radius:8px;background:#f4fafb;font-weight:700;font-size:.9rem;border:1px solid #dceff3}
+.recap .r-ok{color:#2e8b57}
+.recap .r-mid{color:#c9820a}
+.recap .r-ko{color:#c0392b}
+.legende{margin-top:10px;font-size:.85rem;color:#4d6169}
+@media (max-width:768px){.actions{margin-left:0;width:100%}.actions button{flex:1 1 auto}}
+@media (max-width:480px){body{padding:10px}.bloc{padding:26px 12px 16px}.etq{font-size:.85rem;padding:6px 12px}.etq-rit{margin-left:0}input[type="text"]{width:100%;max-width:180px}.recap span{font-size:.85rem}}
+</style>
+</head>
+<body>
+<div class="bulle b1"></div><div class="bulle b2"></div><div class="bulle b3"></div><div class="bulle b4"></div>
+
+<main class="wrap">
+
+  <div class="tete">
+    <span class="etq etq-sem">Semaine 6</span>
+    <span class="etq etq-sea">S&eacute;ance 3</span>
+    <span class="etq etq-rit">Rituel</span>
+  </div>
+
+  <h1>Calculer avec le th&eacute;or&egrave;me de Pythagore</h1>
+
+  <section class="bloc">
+    <span class="onglet">G&eacute;om&eacute;trie</span>
+
+    <p class="figure"><img src="data:image/png;base64,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" alt="Triangle ABD. Le point C est placé sur le segment AB, entre A et B. Le segment DC est perpendiculaire à AB, ce qui est indiqué par un angle droit marqué en C." width="492" height="264"></p>
+
+    <p class="enonce">
+      <span class="titre">Données de la figure</span>
+      AB = 10 cm&nbsp;; BD = 9 cm&nbsp;; AC = 2 cm. Le point C appartient au segment [AB] et (DC) est perpendiculaire à (AB).
+    </p>
+
+    <div class="tete-ex">
+      <span class="pastille">1</span>
+      <p class="consigne">Détermine la longueur DC, en deux étapes. (Arrondis la longueur finale au millimètre près.)</p>
+    </div>
+
+    <div class="item">
+      <p class="q">a. Calcule d&rsquo;abord la longueur BC.</p>
+      <div class="ligne">
+        <span class="champ"><input type="text" id="in-bc" inputmode="decimal" autocomplete="off" placeholder="en cm" aria-label="Longueur BC"></span>
+        <span class="actions"><button type="button" data-ok="bc">OK</button><button type="button" class="sec" data-aide="bc">Indice</button></span>
+      </div>
+      <div class="feedback" id="fb-bc" hidden></div>
+      <div class="aide" id="ai-bc" hidden></div>
+    </div>
+
+    <div class="item">
+      <p class="q">b. Déduis-en la longueur DC, en appliquant le théorème de Pythagore dans le triangle BCD.</p>
+      <div class="ligne">
+        <span class="champ"><input type="text" id="in-dc" inputmode="decimal" autocomplete="off" placeholder="en cm" aria-label="Longueur DC, arrondie au millimètre près"></span>
+        <span class="actions"><button type="button" data-ok="dc">OK</button><button type="button" class="sec" data-aide="dc">Indice</button></span>
+      </div>
+      <div class="feedback" id="fb-dc" hidden></div>
+      <div class="aide" id="ai-dc" hidden></div>
+    </div>
+
+    <div class="tete-ex">
+      <span class="pastille">2</span>
+      <p class="consigne">Calcule l&rsquo;aire du triangle ABD. (Arrondis au dixième de cm&sup2; si nécessaire.)</p>
+    </div>
+
+    <div class="item">
+      <p class="q">c. Aire du triangle ABD.</p>
+      <div class="ligne">
+        <span class="champ"><input type="text" id="in-aire" inputmode="decimal" autocomplete="off" placeholder="en cm&sup2;" aria-label="Aire du triangle ABD"></span>
+        <span class="actions"><button type="button" data-ok="aire">OK</button><button type="button" class="sec" data-aide="aire">Indice</button></span>
+      </div>
+      <div class="feedback" id="fb-aire" hidden></div>
+      <div class="aide" id="ai-aire" hidden></div>
+    </div>
+
+  </section>
+
+  <div class="barre">
+    <button type="button" id="btn-tout">V&eacute;rifier tout</button>
+    <button type="button" class="sec" id="btn-corr">Voir la correction</button>
+    <button type="button" class="sec" id="btn-reset">R&eacute;initialiser</button>
+  </div>
+
+  <div class="correction" id="correction" hidden></div>
+  <div class="bilan" id="bilan" hidden></div>
+
+</main>
+
+<script>
+(function(){
+  "use strict";
+
+  // --- Cle de reponse isolee (section 12 / decision #8 du cadre) ---
+  // AB = 10, BD = 9, AC = 2 (donnees de l'enonce).
+  // BC = AB - AC = 10 - 2 = 8.
+  // (Le corrige source indiquait BC = 7, resultat d'une erreur de soustraction 10-2 ; ecart signale a Umm Idriss.)
+  var AB = 10, BD = 9, AC = 2;
+  var BC = AB - AC;                     // 8
+  var DC_EXACT = Math.sqrt(BD*BD - BC*BC);   // sqrt(17) = 4.1231...
+  var AIRE_EXACT = (AB * DC_EXACT) / 2;      // 5 * sqrt(17) = 20.6155...
+
+  function esc(txt){
+    var d = document.createElement("div");
+    d.textContent = String(txt);
+    return d.innerHTML;
+  }
+
+  function decompose(s){
+    var neg = false;
+    if (s.charAt(0) === "-"){ neg = true; s = s.slice(1); }
+    var p = s.split(".");
+    var ent = p[0] === "" ? "0" : p[0];
+    var dec = p.length > 1 ? p[1] : "";
+    ent = ent.replace(/^0+(?=\d)/, "");
+    dec = dec.replace(/0+$/, "");
+    if (ent === "0" && dec === "") neg = false;
+    return { neg:neg, ent:ent, dec:dec };
+  }
+
+  function cmpAbs(a, b){
+    if (a.ent.length !== b.ent.length) return a.ent.length > b.ent.length ? 1 : -1;
+    if (a.ent !== b.ent) return a.ent > b.ent ? 1 : -1;
+    var n = Math.max(a.dec.length, b.dec.length);
+    var da = a.dec + new Array(n - a.dec.length + 1).join("0");
+    var db = b.dec + new Array(n - b.dec.length + 1).join("0");
+    if (da === db) return 0;
+    return da > db ? 1 : -1;
+  }
+
+  function comparer(x, y){
+    var A = decompose(x), B = decompose(y);
+    if (A.neg !== B.neg) return A.neg ? -1 : 1;
+    var r = cmpAbs(A, B);
+    return A.neg ? -r : r;
+  }
+
+  function normalise(brut){
+    var s = String(brut).replace(/[\s\u00a0\u202f\u2009]/g, "");
+    s = s.replace(/[\u2212\u2013\u2014]/g, "-").replace(/,/g, ".");
+    if (s === "") return null;
+    if (!/^-?(\d+(\.\d*)?|\.\d+)$/.test(s)) return null;
+    return s;
+  }
+
+  // Extrait un nombre + une unite optionnelle parmi celles fournies (ex: ["cm","mm"]).
+  function lireValeur(brut, unites){
+    var s = String(brut).toLowerCase();
+    s = s.replace(/[\u00a0\u202f\u2009]/g, " ").replace(/\s+/g, " ").trim();
+    s = s.replace(/[\u2212\u2013\u2014]/g, "-").replace(/,/g, ".");
+    var motif = "(-?\\d+(?:\\.\\d+)?)\\s*(" + unites.join("|") + ")?";
+    var re = new RegExp(motif);
+    var m = re.exec(s);
+    if (!m) return null;
+    var num = normalise(m[1]);
+    if (num === null) return null;
+    return { val:num, unite: m[2] || "" };
+  }
+
+  function afficher(id, type, html){
+    var fb = document.getElementById("fb-" + id);
+    fb.className = "feedback " + type;
+    fb.innerHTML = html;
+    fb.hidden = false;
+  }
+
+  function marquer(input, etat){
+    input.classList.remove("correct","partiel","incorrect");
+    if (etat) input.classList.add(etat);
+  }
+
+  var etats = {};
+  var occupe = false;
+
+  // --- Item a : BC (valeur exacte, entiere) ---
+  function verifierBC(){
+    var input = document.getElementById("in-bc");
+    var brut = input.value;
+    if (String(brut).replace(/[\s\u00a0]/g,"") === ""){
+      etats.bc = "vide"; marquer(input,"");
+      afficher("bc","warn","\u26a0\ufe0f Aucune r\u00e9ponse saisie. \u00c9cris la longueur BC en cm, puis clique sur <strong>OK</strong>.");
+      return;
+    }
+    var lu = lireValeur(brut, ["cm","mm"]);
+    if (lu === null){
+      etats.bc = "incorrect"; marquer(input,"incorrect");
+      afficher("bc","warn","\u26a0\ufe0f Saisie non reconnue&nbsp;: &laquo;&nbsp;" + esc(brut) + "&nbsp;&raquo;. \u00c9cris un nombre, par exemple <strong>8 cm</strong>.");
+      return;
+    }
+    var cibleCm = String(BC);
+    if (lu.unite === "mm"){
+      // convertit la saisie en cm pour comparaison (division exacte par 10 sur la representation decimale)
+      var d = decompose(lu.val);
+      var chiffres = d.ent + d.dec;
+      var decimales = d.dec.length + 1;
+      var cm = chiffres === "" ? "0" : chiffres;
+      while (cm.length <= decimales) cm = "0" + cm;
+      var posPoint = cm.length - decimales;
+      var valCm = (d.neg ? "-" : "") + cm.slice(0,posPoint) + "." + cm.slice(posPoint);
+      if (comparer(valCm, cibleCm) === 0){
+        etats.bc = "partiel"; marquer(input,"partiel");
+        afficher("bc","warn","\u26a0\ufe0f Le nombre est bon, mais l\u2019<strong><u>unit\u00e9 attendue est le cm</u></strong> (comme les autres longueurs de l\u2019\u00e9nonc\u00e9). R\u00e9ponse attendue&nbsp;: <strong><u>" + cibleCm + " cm</u></strong>.");
+        return;
+      }
+    } else if (comparer(lu.val, cibleCm) === 0){
+      etats.bc = "correct"; marquer(input,"correct");
+      afficher("bc","ok","\u2705 Bravo&nbsp;! BC = AB &minus; AC = <strong><u>" + cibleCm + " cm</u></strong>, puisque C appartient au segment [AB].");
+      return;
+    }
+    etats.bc = "incorrect"; marquer(input,"incorrect");
+    afficher("bc","ko","\u274c Ce n\u2019est pas la bonne longueur. Les points A, C et B sont align\u00e9s&nbsp;: AC + CB = AB. R\u00e9ponse attendue&nbsp;: <strong><u>" + cibleCm + " cm</u></strong>.");
+  }
+
+  // --- Item b : DC (valeur irrationnelle, tolerance) ---
+  function precisionOk(valNorm){
+    var d = decompose(valNorm);
+    return d.dec.length <= 1;
+  }
+
+  function verifierDC(){
+    var input = document.getElementById("in-dc");
+    var brut = input.value;
+    if (String(brut).replace(/[\s\u00a0]/g,"") === ""){
+      etats.dc = "vide"; marquer(input,"");
+      afficher("dc","warn","\u26a0\ufe0f Aucune r\u00e9ponse saisie. \u00c9cris la longueur DC en cm, arrondie au millim\u00e8tre pr\u00e8s, puis clique sur <strong>OK</strong>.");
+      return;
+    }
+    var lu = lireValeur(brut, ["cm","mm"]);
+    if (lu === null){
+      etats.dc = "incorrect"; marquer(input,"incorrect");
+      afficher("dc","warn","\u26a0\ufe0f Saisie non reconnue&nbsp;: &laquo;&nbsp;" + esc(brut) + "&nbsp;&raquo;. \u00c9cris un nombre d\u00e9cimal, par exemple <strong>4,1 cm</strong>.");
+      return;
+    }
+    var valCm = lu.unite === "mm" ? Number(lu.val)/10 : Number(lu.val);
+    var ecart = Math.abs(valCm - DC_EXACT);
+    var cible = "4,1 cm";
+
+    if (ecart > 0.05){
+      etats.dc = "incorrect"; marquer(input,"incorrect");
+      afficher("dc","ko","\u274c Ce r\u00e9sultat n\u2019est pas correct. Dans le triangle <strong>BCD</strong>, rectangle en C, l\u2019hypot\u00e9nuse est <strong>[BD]</strong>&nbsp;: BD&sup2; = BC&sup2; + DC&sup2;. R\u00e9ponse attendue&nbsp;: <strong><u>" + cible + "</u></strong>.");
+      return;
+    }
+    if (precisionOk(lu.val) && lu.unite !== "mm"){
+      etats.dc = "correct"; marquer(input,"correct");
+      var rappelUnite = lu.unite === "" ? " <strong><u>Plus pr\u00e9cis</u></strong>&nbsp;: pense \u00e0 pr\u00e9ciser l\u2019unit\u00e9, <strong>cm</strong>." : "";
+      afficher("dc","ok","\u2705 Bravo&nbsp;! DC \u2248 <strong><u>" + cible + "</u></strong>, correctement arrondie au millim\u00e8tre pr\u00e8s." + rappelUnite);
+      return;
+    }
+    etats.dc = "correct"; marquer(input,"correct");
+    afficher("dc","ok","\u2705 Bravo&nbsp;! La valeur trouv\u00e9e est exacte. <strong><u>Plus pr\u00e9cis</u></strong>&nbsp;: la consigne demande un arrondi au millim\u00e8tre pr\u00e8s, soit <strong>" + cible + "</strong>.");
+  }
+
+  // --- Item c : Aire (valeur irrationnelle, tolerance) ---
+  function verifierAire(){
+    var input = document.getElementById("in-aire");
+    var brut = input.value;
+    if (String(brut).replace(/[\s\u00a0]/g,"") === ""){
+      etats.aire = "vide"; marquer(input,"");
+      afficher("aire","warn","\u26a0\ufe0f Aucune r\u00e9ponse saisie. \u00c9cris l\u2019aire en cm&sup2;, puis clique sur <strong>OK</strong>.");
+      return;
+    }
+    var lu = lireValeur(brut, ["cm2","cm\u00b2"]);
+    if (lu === null){
+      etats.aire = "incorrect"; marquer(input,"incorrect");
+      afficher("aire","warn","\u26a0\ufe0f Saisie non reconnue&nbsp;: &laquo;&nbsp;" + esc(brut) + "&nbsp;&raquo;. \u00c9cris un nombre d\u00e9cimal, par exemple <strong>20,6 cm&sup2;</strong>.");
+      return;
+    }
+    var val = Number(lu.val);
+    var ecart = Math.abs(val - AIRE_EXACT);
+    var cible = "20,6 cm&sup2;";
+
+    if (ecart > 0.2){
+      etats.aire = "incorrect"; marquer(input,"incorrect");
+      afficher("aire","ko","\u274c Ce r\u00e9sultat n\u2019est pas correct. L\u2019aire d\u2019un triangle est (base &times; hauteur) / 2&nbsp;; ici la base est <strong>[AB]</strong> et la hauteur associ\u00e9e est <strong>[DC]</strong>. R\u00e9ponse attendue&nbsp;: <strong><u>" + cible + "</u></strong>.");
+      return;
+    }
+    if (precisionOk(lu.val)){
+      etats.aire = "correct"; marquer(input,"correct");
+      var rappelUnite = lu.unite === "" ? " <strong><u>Plus pr\u00e9cis</u></strong>&nbsp;: pense \u00e0 pr\u00e9ciser l\u2019unit\u00e9, <strong>cm&sup2;</strong>." : "";
+      afficher("aire","ok","\u2705 Bravo&nbsp;! L\u2019aire du triangle ABD vaut <strong><u>" + cible + "</u></strong>." + rappelUnite);
+      return;
+    }
+    etats.aire = "correct"; marquer(input,"correct");
+    afficher("aire","ok","\u2705 Bravo&nbsp;! La valeur trouv\u00e9e est exacte. <strong><u>Plus pr\u00e9cis</u></strong>&nbsp;: arrondis au dixi\u00e8me de cm&sup2;, soit <strong>" + cible + "</strong>.");
+  }
+
+  var AIDES = {
+    bc:"Sur la figure, les points A, C et B sont align\u00e9s&nbsp;: la longueur AB est \u00e9gale \u00e0 la somme AC + CB.",
+    dc:"Le triangle BCD est rectangle en C&nbsp;: applique le th\u00e9or\u00e8me de Pythagore, avec BD comme hypot\u00e9nuse.",
+    aire:"L\u2019aire d\u2019un triangle se calcule avec (base &times; hauteur) / 2. Ici, la base est AB et la hauteur correspondante est DC."
+  };
+
+  function basculerAide(id){
+    var box = document.getElementById("ai-" + id);
+    if (!box || !AIDES[id]) return;
+    if (box.hidden){
+      box.innerHTML = "\ud83d\udca1 <strong>Indice&nbsp;:</strong> " + AIDES[id];
+      box.hidden = false;
+    } else {
+      box.hidden = true;
+    }
+  }
+
+  function verifier(id){
+    if (id === "bc") verifierBC();
+    else if (id === "dc") verifierDC();
+    else if (id === "aire") verifierAire();
+  }
+
+  function palier(pct){
+    if (pct >= 90) return "\ud83d\udfe2 Excellent";
+    if (pct >= 75) return "\ud83d\udfe2 Tr\u00e8s bien";
+    if (pct >= 60) return "\ud83d\udfe1 Ma\u00eetrise satisfaisante";
+    if (pct >= 40) return "\ud83d\udfe0 Ma\u00eetrise fragile";
+    return "\ud83d\udd34 Ma\u00eetrise insuffisante";
+  }
+
+  function verifierTout(){
+    if (occupe) return;
+    occupe = true;
+    window.setTimeout(function(){ occupe = false; }, 350);
+
+    var ids = ["bc","dc","aire"];
+    var total = ids.length, score = 0, recap = "";
+    for (var i = 0; i < ids.length; i++){
+      verifier(ids[i]);
+      var e = etats[ids[i]];
+      if (e === "correct"){ score++; recap += '<span class="r-ok">\u2714 ' + ids[i] + '</span>'; }
+      else if (e === "partiel"){ recap += '<span class="r-mid">\u25d0 ' + ids[i] + '</span>'; }
+      else { recap += '<span class="r-ko">\u2718 ' + ids[i] + '</span>'; }
+    }
+    if (score < 0) score = 0;
+    if (score > total) score = total;
+    var pct = Math.round((score/total)*100);
+
+    var bilan = document.getElementById("bilan");
+    bilan.innerHTML =
+      '<div class="score">Score&nbsp;: ' + score + '\u2009/\u2009' + total + ' (' + pct + '&nbsp;%)</div>' +
+      '<div class="palier">' + palier(pct) + '</div>' +
+      '<div class="recap">' + recap + '</div>' +
+      '<div class="legende">\u2714 correct &nbsp;\u2022&nbsp; \u25d0 partiel (bonne valeur, mauvaise unit\u00e9) &nbsp;\u2022&nbsp; \u2718 incorrect ou non r\u00e9pondu.</div>';
+    bilan.hidden = false;
+  }
+
+  function basculerCorrection(){
+    var box = document.getElementById("correction");
+    var btn = document.getElementById("btn-corr");
+    if (box.hidden){
+      box.innerHTML =
+        "<h2>Correction</h2>" +
+        "<h3>1. Longueur DC</h3>" +
+        "<p>Les points A, C, B sont align\u00e9s, donc BC = AB &minus; AC = 10 &minus; 2 = <strong>8 cm</strong>.</p>" +
+        "<p>Le triangle BCD est rectangle en C&nbsp;: d\u2019apr\u00e8s le th\u00e9or\u00e8me de Pythagore,<br>" +
+        "BD&sup2; = BC&sup2; + DC&sup2;<br>" +
+        "9&sup2; = 8&sup2; + DC&sup2;<br>" +
+        "81 = 64 + DC&sup2;<br>" +
+        "DC&sup2; = 81 &minus; 64 = 17<br>" +
+        "DC = &radic;17 &asymp; <strong><u>4,1 cm</u></strong> (arrondi au millim\u00e8tre pr\u00e8s).</p>" +
+        "<h3>2. Aire du triangle ABD</h3>" +
+        "<p>Aire = (base &times; hauteur) / 2 = (AB &times; DC) / 2 = (10 &times; &radic;17) / 2 &asymp; <strong><u>20,6 cm&sup2;</u></strong> (arrondi au dixi\u00e8me).</p>";
+      box.hidden = false;
+      btn.textContent = "Masquer la correction";
+    } else {
+      box.hidden = true;
+      btn.textContent = "Voir la correction";
+    }
+  }
+
+  function reinitialiser(){
+    var ids = ["bc","dc","aire"];
+    for (var i = 0; i < ids.length; i++){
+      var id = ids[i];
+      var input = document.getElementById("in-" + id);
+      input.value = ""; input.disabled = false; input.readOnly = false;
+      input.classList.remove("correct","partiel","incorrect");
+      var fb = document.getElementById("fb-" + id);
+      fb.hidden = true; fb.innerHTML = ""; fb.className = "feedback";
+      var ai = document.getElementById("ai-" + id);
+      ai.hidden = true; ai.innerHTML = "";
+      etats[id] = "vide";
+    }
+    var bilan = document.getElementById("bilan");
+    bilan.hidden = true; bilan.innerHTML = "";
+    var corr = document.getElementById("correction");
+    corr.hidden = true; corr.innerHTML = "";
+    document.getElementById("btn-corr").textContent = "Voir la correction";
+    occupe = false;
+  }
+
+  function init(){
+    etats = { bc:"vide", dc:"vide", aire:"vide" };
+
+    var bOk = document.querySelectorAll("[data-ok]");
+    for (var a = 0; a < bOk.length; a++){
+      bOk[a].addEventListener("click", function(){ verifier(this.getAttribute("data-ok")); });
+    }
+    var bAide = document.querySelectorAll("[data-aide]");
+    for (var b = 0; b < bAide.length; b++){
+      bAide[b].addEventListener("click", function(){ basculerAide(this.getAttribute("data-aide")); });
+    }
+    var champs = document.querySelectorAll('input[type="text"]');
+    for (var c = 0; c < champs.length; c++){
+      champs[c].addEventListener("keydown", function(ev){
+        if (ev.key === "Enter"){ ev.preventDefault(); verifier(this.id.replace("in-","")); }
+      });
+    }
+    document.getElementById("btn-tout").addEventListener("click", verifierTout);
+    document.getElementById("btn-corr").addEventListener("click", basculerCorrection);
+    document.getElementById("btn-reset").addEventListener("click", reinitialiser);
+  }
+
+  if (document.readyState === "loading"){
+    document.addEventListener("DOMContentLoaded", init);
+  } else {
+    init();
+  }
+})();
+</script>
+</body>
+</html>
