@@ -1,0 +1,274 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Rituel &mdash; Semaine 8 S&eacute;ance 3 &mdash; Th&eacute;or&egrave;me de Thal&egrave;s</title>
+<style>
+*{box-sizing:border-box}
+html,body{margin:0;padding:0}
+body{background:#fffdf7;font-family:Arial,Helvetica,sans-serif;color:#243238;line-height:1.6;padding:14px;overflow-x:hidden}
+.bulle{position:fixed;border-radius:50%;background:#3ba5b8;opacity:.12;pointer-events:none;z-index:0}
+.b1{width:190px;height:190px;top:-70px;left:-70px}
+.b2{width:130px;height:130px;top:-45px;right:-45px}
+.b3{width:160px;height:160px;bottom:-60px;left:-55px}
+.b4{width:110px;height:110px;bottom:-40px;right:-35px}
+.wrap{position:relative;z-index:1;max-width:880px;margin:0 auto}
+.tete{display:flex;flex-wrap:wrap;align-items:center;gap:10px;margin-bottom:14px}
+.etq{display:inline-block;padding:7px 16px;border-radius:8px;color:#fff;font-weight:700;font-size:.95rem}
+.etq-sem{background:#8fd3e8;color:#123f4a}
+.etq-sea{background:#3ba5b8}
+.etq-rit{background:#1f7a8c;font-family:Georgia,"Times New Roman",serif;margin-left:auto}
+h1{font-size:clamp(1.3rem,4.5vw,2rem);font-weight:900;color:#1f7a8c;margin:6px 0 18px;line-height:1.3}
+.bloc{position:relative;border:2px solid #3ba5b8;border-radius:12px;background:#fff;padding:28px 18px 20px;margin-bottom:18px}
+.onglet{position:absolute;top:-17px;left:18px;background:#8fd3e8;color:#123f4a;font-weight:700;font-size:.95rem;padding:5px 18px;border-radius:8px}
+.enonce{background:#fdf6f6;border-left:5px solid #7a3e3e;border-radius:6px;padding:14px 16px;margin-bottom:18px;color:#7a3e3e;font-weight:700;font-size:clamp(.92rem,2.5vw,1rem);line-height:1.85;overflow-wrap:break-word}
+.figure{max-width:300px;width:100%;margin:0 auto 20px;display:block}
+.figure img{width:100%;height:auto;display:block}
+.tete-ex{display:flex;align-items:flex-start;gap:12px;margin:0 0 14px;min-width:0}
+.pastille{flex:0 0 auto;width:34px;height:34px;border-radius:50%;background:#1f7a8c;color:#fff;font-weight:700;font-size:1rem;display:flex;align-items:center;justify-content:center}
+.consigne{margin:4px 0 0;font-weight:700;text-decoration:underline;color:#1f7a8c;font-size:clamp(.95rem,2.6vw,1.05rem);min-width:0;overflow-wrap:break-word}
+.qcm{display:flex;flex-direction:column;gap:10px;margin:8px 0}
+.opt{text-align:left;background:#f7fcfd;color:#243238;border:2px solid #dceff3;font-weight:400;font-size:clamp(.92rem,2.5vw,1.05rem);line-height:1.6;padding:14px 16px;display:flex;align-items:center;flex-wrap:wrap;gap:6px}
+.opt:hover{background:#eaf7fa;color:#243238}
+.opt .lettre{font-weight:700;color:#1f7a8c;margin-right:4px}
+.opt.sel{border-color:#3ba5b8;background:#eaf7fa}
+.opt.bonne{border-color:#2e8b57;background:#effaf3;color:#1e6b40;font-weight:700}
+.frac{display:inline-flex;flex-direction:column;align-items:center;vertical-align:middle;line-height:1.15;font-weight:700}
+.frac .num,.frac .den{display:block;padding:0 4px}
+.frac .num{border-bottom:2px solid currentColor;padding-bottom:1px}
+.frac .den{padding-top:1px}
+.eg{font-weight:700;margin:0 2px}
+.actions{display:flex;flex-wrap:wrap;gap:8px}
+button{font-family:inherit;font-size:.92rem;font-weight:700;min-height:44px;padding:10px 16px;border:0;border-radius:8px;cursor:pointer;background:#3ba5b8;color:#fff;line-height:1.2}
+button:hover{background:#1f7a8c}
+button.sec{background:#fff;color:#1f7a8c;border:2px solid #3ba5b8}
+button.sec:hover{background:#eaf7fa;color:#1f7a8c}
+.feedback{margin:10px 0 0;padding:12px 14px;border-left:5px solid #3ba5b8;border-radius:6px;background:#f4fafb;font-size:clamp(.9rem,2.5vw,1rem);line-height:1.75;overflow-wrap:break-word}
+.feedback.info{border-left-color:#3ba5b8;background:#f4fafb;color:#17505c}
+.feedback.warn{border-left-color:#c9820a;background:#fff8ea;color:#8a5b04}
+.aide{margin:10px 0 0;padding:12px 14px;border-left:5px solid #8fd3e8;background:#f2fafd;border-radius:6px;font-size:clamp(.9rem,2.5vw,1rem);line-height:1.75}
+.barre{display:flex;flex-wrap:wrap;gap:10px;margin:18px 0}
+.barre button{flex:1 1 190px}
+.correction{border:2px dashed #3ba5b8;border-radius:12px;background:#fff;padding:16px 18px;margin-bottom:18px;font-size:clamp(.9rem,2.5vw,1rem);line-height:1.8}
+.correction h2{margin:0 0 10px;font-size:1.05rem;color:#1f7a8c}
+.correction p{margin:6px 0}
+.bilan{border:2px solid #1f7a8c;border-radius:12px;background:#fff;padding:16px 18px;margin-bottom:18px;font-size:.92rem;line-height:1.8}
+.bilan .score{font-size:clamp(1.05rem,3.2vw,1.25rem);font-weight:900;color:#1f7a8c}
+.bilan .palier{font-weight:700;margin-top:4px}
+.recap{display:flex;flex-wrap:wrap;gap:8px;margin-top:10px}
+.recap span{display:inline-flex;align-items:center;gap:6px;padding:6px 11px;border-radius:8px;background:#f4fafb;font-weight:700;font-size:.9rem;border:1px solid #dceff3}
+.recap .r-ok{color:#2e8b57}
+.recap .r-ko{color:#c0392b}
+.legende{margin-top:10px;font-size:.85rem;color:#4d6169}
+@media (max-width:768px){.actions{width:100%}.actions button{flex:1 1 auto}}
+@media (max-width:480px){body{padding:10px}.bloc{padding:26px 12px 16px}.etq{font-size:.85rem;padding:6px 12px}.etq-rit{margin-left:0}.recap span{font-size:.85rem}}
+</style>
+</head>
+<body>
+<div class="bulle b1"></div><div class="bulle b2"></div><div class="bulle b3"></div><div class="bulle b4"></div>
+
+<main class="wrap">
+
+  <div class="tete">
+    <span class="etq etq-sem">Semaine 8</span>
+    <span class="etq etq-sea">S&eacute;ance 3</span>
+    <span class="etq etq-rit">Rituel</span>
+  </div>
+
+  <h1>Th&eacute;or&egrave;me de Thal&egrave;s</h1>
+
+  <section class="bloc">
+    <span class="onglet">G&eacute;om&eacute;trie</span>
+
+    <p class="enonce">ABC est un triangle avec M&nbsp;&isin;&nbsp;(AB) et N&nbsp;&isin;&nbsp;(AC). Les droites (MN) et (BC) sont parall&egrave;les.</p>
+
+    <p class="figure"><img src="data:image/png;base64,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" alt="Triangle ABC. Le point M appartient au segment AB, le point N appartient au segment AC. Le segment MN est tracé parallèlement au segment BC." width="294" height="146"></p>
+
+    <div class="tete-ex">
+      <span class="pastille">1</span>
+      <p class="consigne">Quelle double égalité a-t-on&nbsp;? Coche la bonne réponse.</p>
+    </div>
+
+    <div class="qcm" id="qcm-a">
+      <button type="button" class="opt" data-qcm="a" data-i="0">
+        <span class="lettre">A.</span>
+        <span class="frac"><span class="num">AM</span><span class="den">AB</span></span>
+        <span class="eg">=</span>
+        <span class="frac"><span class="num">AC</span><span class="den">AN</span></span>
+        <span class="eg">=</span>
+        <span class="frac"><span class="num">MN</span><span class="den">BC</span></span>
+      </button>
+      <button type="button" class="opt" data-qcm="a" data-i="1">
+        <span class="lettre">B.</span>
+        <span class="frac"><span class="num">AM</span><span class="den">AB</span></span>
+        <span class="eg">=</span>
+        <span class="frac"><span class="num">AN</span><span class="den">AC</span></span>
+        <span class="eg">=</span>
+        <span class="frac"><span class="num">BC</span><span class="den">MN</span></span>
+      </button>
+      <button type="button" class="opt" data-qcm="a" data-i="2">
+        <span class="lettre">C.</span>
+        <span class="frac"><span class="num">AM</span><span class="den">AB</span></span>
+        <span class="eg">=</span>
+        <span class="frac"><span class="num">AN</span><span class="den">AC</span></span>
+        <span class="eg">=</span>
+        <span class="frac"><span class="num">MN</span><span class="den">BC</span></span>
+      </button>
+    </div>
+    <div class="actions">
+      <button type="button" data-qcmok="a">Vérifier le choix</button>
+      <button type="button" class="sec" data-aide="a">Indice</button>
+    </div>
+    <div class="feedback" id="fb-qa" hidden></div>
+    <div class="aide" id="ai-a" hidden></div>
+
+  </section>
+
+  <div class="barre">
+    <button type="button" id="btn-tout">Vérifier tout</button>
+    <button type="button" class="sec" id="btn-corr">Voir la correction</button>
+    <button type="button" class="sec" id="btn-reset">Réinitialiser</button>
+  </div>
+
+  <div class="correction" id="correction" hidden></div>
+  <div class="bilan" id="bilan" hidden></div>
+
+</main>
+
+<script>
+(function(){
+  "use strict";
+
+  var BONNE = 2; // option C (index 0-based), position conforme au corrigé fourni
+  var EXPL = "D’après le théorème de Thalès, puisque (MN) et (BC) sont parallèles, les côtés du petit triangle AMN et du grand triangle ABC sont proportionnels, dans le même ordre&nbsp;: AM/AB = AN/AC = MN/BC.";
+  var AIDE = "Associe, dans le même ordre, chaque côté du petit triangle (formé par le sommet commun A) au côté correspondant du grand triangle.";
+
+  var choix = null;
+  var etat = "vide";
+  var occupe = false;
+
+  function afficher(id, type, html){
+    var fb = document.getElementById("fb-" + id);
+    fb.className = "feedback " + type;
+    fb.innerHTML = html;
+    fb.hidden = false;
+  }
+
+  function choisir(idx){
+    choix = idx;
+    var opts = document.querySelectorAll('[data-qcm="a"]');
+    for (var i = 0; i < opts.length; i++){
+      opts[i].classList.remove("sel");
+      if (Number(opts[i].getAttribute("data-i")) === idx) opts[i].classList.add("sel");
+    }
+  }
+
+  function verifier(){
+    var opts = document.querySelectorAll('[data-qcm="a"]');
+    for (var i = 0; i < opts.length; i++){
+      opts[i].classList.remove("bonne");
+      if (Number(opts[i].getAttribute("data-i")) === BONNE) opts[i].classList.add("bonne");
+    }
+    if (choix === null){
+      etat = "incorrect";
+      afficher("qa", "warn", "\u26a0\ufe0f Aucune proposition n\u2019a \u00e9t\u00e9 choisie. " + EXPL);
+      return;
+    }
+    etat = (choix === BONNE) ? "correct" : "incorrect";
+    afficher("qa", "info", "\ud83d\udc40 " + EXPL);
+  }
+
+  function basculerAide(){
+    var box = document.getElementById("ai-a");
+    if (box.hidden){
+      box.innerHTML = "\ud83d\udca1 <strong>Indice&nbsp;:</strong> " + AIDE;
+      box.hidden = false;
+    } else {
+      box.hidden = true;
+    }
+  }
+
+  function palier(pct){
+    if (pct >= 90) return "\ud83d\udfe2 Excellent";
+    if (pct >= 75) return "\ud83d\udfe2 Tr\u00e8s bien";
+    if (pct >= 60) return "\ud83d\udfe1 Ma\u00eetrise satisfaisante";
+    if (pct >= 40) return "\ud83d\udfe0 Ma\u00eetrise fragile";
+    return "\ud83d\udd34 Ma\u00eetrise insuffisante";
+  }
+
+  function verifierTout(){
+    if (occupe) return;
+    occupe = true;
+    window.setTimeout(function(){ occupe = false; }, 350);
+
+    verifier();
+    var total = 1, score = etat === "correct" ? 1 : 0;
+    var recap = etat === "correct" ? '<span class="r-ok">\u2714 a</span>' : '<span class="r-ko">\u2718 a</span>';
+    var pct = Math.round((score/total)*100);
+
+    var bilan = document.getElementById("bilan");
+    bilan.innerHTML =
+      '<div class="score">Score&nbsp;: ' + score + '\u2009/\u2009' + total + ' (' + pct + '&nbsp;%)</div>' +
+      '<div class="palier">' + palier(pct) + '</div>' +
+      '<div class="recap">' + recap + '</div>' +
+      '<div class="legende">\u2714 correct &nbsp;\u2022&nbsp; \u2718 incorrect ou non r\u00e9pondu. Le choix n\u2019est jamais signal\u00e9 en rouge&nbsp;: seule la bonne r\u00e9ponse est indiqu\u00e9e en vert.</div>';
+    bilan.hidden = false;
+  }
+
+  function basculerCorrection(){
+    var box = document.getElementById("correction");
+    var btn = document.getElementById("btn-corr");
+    if (box.hidden){
+      box.innerHTML =
+        "<h2>Correction</h2>" +
+        "<p>La bonne r\u00e9ponse est la proposition <strong>C</strong>&nbsp;:</p>" +
+        "<p><strong>AM/AB = AN/AC = MN/BC</strong>.</p>" +
+        "<p>" + EXPL + "</p>" +
+        "<p>Les propositions A et B inversent l\u2019ordre de l\u2019un des rapports (num\u00e9rateur et d\u00e9nominateur \u00e9chang\u00e9s), ce qui rompt la correspondance entre les deux triangles.</p>";
+      box.hidden = false;
+      btn.textContent = "Masquer la correction";
+    } else {
+      box.hidden = true;
+      btn.textContent = "Voir la correction";
+    }
+  }
+
+  function reinitialiser(){
+    choix = null;
+    etat = "vide";
+    var opts = document.querySelectorAll('[data-qcm="a"]');
+    for (var i = 0; i < opts.length; i++){ opts[i].classList.remove("sel","bonne"); }
+    var fb = document.getElementById("fb-qa");
+    fb.hidden = true; fb.innerHTML = ""; fb.className = "feedback";
+    var ai = document.getElementById("ai-a");
+    ai.hidden = true; ai.innerHTML = "";
+    var bilan = document.getElementById("bilan");
+    bilan.hidden = true; bilan.innerHTML = "";
+    var corr = document.getElementById("correction");
+    corr.hidden = true; corr.innerHTML = "";
+    document.getElementById("btn-corr").textContent = "Voir la correction";
+    occupe = false;
+  }
+
+  function init(){
+    var opts = document.querySelectorAll('[data-qcm="a"]');
+    for (var i = 0; i < opts.length; i++){
+      opts[i].addEventListener("click", function(){ choisir(Number(this.getAttribute("data-i"))); });
+    }
+    document.querySelector('[data-qcmok="a"]').addEventListener("click", verifier);
+    document.querySelector('[data-aide="a"]').addEventListener("click", basculerAide);
+    document.getElementById("btn-tout").addEventListener("click", verifierTout);
+    document.getElementById("btn-corr").addEventListener("click", basculerCorrection);
+    document.getElementById("btn-reset").addEventListener("click", reinitialiser);
+  }
+
+  if (document.readyState === "loading"){
+    document.addEventListener("DOMContentLoaded", init);
+  } else {
+    init();
+  }
+})();
+</script>
+</body>
+</html>
