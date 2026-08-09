@@ -1,0 +1,388 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Rituel &mdash; Semaine 1 S&eacute;ance 2 &mdash; Tableaux de proportionnalit&eacute;</title>
+<style>
+*{box-sizing:border-box}
+html,body{margin:0;padding:0}
+body{background:#fffdf7;font-family:Arial,Helvetica,sans-serif;color:#243238;line-height:1.6;padding:14px;overflow-x:hidden}
+.bulle{position:fixed;border-radius:50%;background:#3ba5b8;opacity:.12;pointer-events:none;z-index:0}
+.b1{width:190px;height:190px;top:-70px;left:-70px}
+.b2{width:130px;height:130px;top:-45px;right:-45px}
+.b3{width:160px;height:160px;bottom:-60px;left:-55px}
+.b4{width:110px;height:110px;bottom:-40px;right:-35px}
+.wrap{position:relative;z-index:1;max-width:880px;margin:0 auto}
+.tete{display:flex;flex-wrap:wrap;align-items:center;gap:10px;margin-bottom:14px}
+.etq{display:inline-block;padding:7px 16px;border-radius:8px;color:#fff;font-weight:700;font-size:.95rem}
+.etq-sem{background:#8fd3e8;color:#123f4a}
+.etq-sea{background:#3ba5b8}
+.etq-rit{background:#1f7a8c;font-family:Georgia,"Times New Roman",serif;margin-left:auto}
+h1{font-size:clamp(1.3rem,4.5vw,2rem);font-weight:900;color:#1f7a8c;margin:6px 0 18px;line-height:1.3}
+.bloc{position:relative;border:2px solid #3ba5b8;border-radius:12px;background:#fff;padding:26px 18px 20px;margin-bottom:18px}
+.onglet{position:absolute;top:-17px;left:18px;background:#8fd3e8;color:#123f4a;font-weight:700;font-size:.95rem;padding:5px 18px;border-radius:8px}
+.consigne-intro{margin:4px 0 18px;font-weight:700;text-decoration:underline;color:#1f7a8c;font-size:clamp(.95rem,2.6vw,1.05rem);line-height:1.75}
+.grille-tableaux{display:grid;grid-template-columns:1fr 1fr;gap:20px;margin:8px 0 20px}
+@media (max-width:640px){.grille-tableaux{grid-template-columns:1fr}}
+.mini-tableau{border-collapse:collapse;margin:0 auto}
+.mini-tableau td{border:1px solid #b9dfe8;padding:8px 14px;text-align:center;font-weight:700;color:#243238;min-width:34px}
+.tete-ex{display:flex;align-items:flex-start;gap:12px;margin:20px 0 12px}
+.pastille{flex:0 0 auto;width:34px;height:34px;border-radius:50%;background:#1f7a8c;color:#fff;font-weight:700;font-size:1rem;display:flex;align-items:center;justify-content:center}
+.consigne{margin:4px 0 0;font-weight:700;text-decoration:underline;color:#1f7a8c;font-size:clamp(.95rem,2.6vw,1.05rem);overflow-wrap:break-word}
+.item{padding:12px 0 14px;border-bottom:1px dashed #dceff3}
+.item:last-of-type{border-bottom:0}
+.q{font-size:clamp(1rem,3vw,1.1rem);font-weight:700;margin:0 0 8px;color:#243238}
+.ligne{display:flex;flex-wrap:wrap;align-items:flex-start;gap:10px;min-width:0}
+.champ{flex:0 0 auto}
+input[type="text"]{
+  width:150px;padding:9px 8px;font-family:Arial,Helvetica,sans-serif;font-size:1rem;font-weight:700;
+  color:#1f7a8c;background:#f7fcfd;border:1px solid #b9dfe8;border-bottom:2px dotted #3ba5b8;
+  border-radius:6px;text-align:center;min-height:44px;
+}
+input[type="text"]:focus{outline:2px solid #3ba5b8;outline-offset:1px}
+.correct{border-color:#2e8b57;background:#effaf3;color:#1e6b40}
+.partiel{border-color:#c9820a;background:#fff8ea;color:#a86c06}
+.incorrect{border-color:#c0392b;background:#fdefee;color:#96291d}
+.actions{display:flex;flex-wrap:wrap;gap:8px}
+button{font-family:inherit;font-size:.92rem;font-weight:700;min-height:44px;padding:10px 16px;border:0;border-radius:8px;cursor:pointer;background:#3ba5b8;color:#fff;line-height:1.2}
+button:hover{background:#1f7a8c}
+button.sec{background:#fff;color:#1f7a8c;border:2px solid #3ba5b8}
+button.sec:hover{background:#eaf7fa}
+.qcm{display:flex;flex-direction:column;gap:8px;margin:8px 0}
+.opt{text-align:left;background:#f7fcfd;color:#243238;border:2px solid #dceff3;font-weight:400;font-size:clamp(.9rem,2.5vw,1rem);line-height:1.6;padding:12px 14px}
+.opt:hover{background:#eaf7fa}
+.opt .lettre{font-weight:700;color:#1f7a8c;margin-right:8px}
+.opt.sel{border-color:#3ba5b8;background:#eaf7fa}
+.opt.bonne{border-color:#2e8b57;background:#effaf3;color:#1e6b40;font-weight:700}
+.opt.incorrect{border-color:#c0392b;background:#fdefee;color:#96291d;font-weight:700}
+.feedback{margin:10px 0 0;padding:12px 14px;border-left:5px solid #3ba5b8;border-radius:6px;background:#f4fafb;font-size:clamp(.9rem,2.5vw,1rem);line-height:1.75;overflow-wrap:break-word}
+.feedback.ok{border-left-color:#2e8b57;background:#effaf3;color:#1e6b40}
+.feedback.ko{border-left-color:#c0392b;background:#fdefee;color:#96291d}
+.feedback.warn{border-left-color:#c9820a;background:#fff8ea;color:#8a5b04}
+.aide{margin:10px 0 0;padding:12px 14px;border-left:5px solid #8fd3e8;background:#f2fafd;border-radius:6px;font-size:clamp(.9rem,2.5vw,1rem);line-height:1.75}
+.barre{display:flex;flex-wrap:wrap;gap:10px;margin:18px 0}
+.barre button{flex:1 1 190px}
+.correction{border:2px dashed #3ba5b8;border-radius:12px;background:#fff;padding:16px 18px;margin-bottom:18px;font-size:clamp(.9rem,2.5vw,1rem);line-height:1.8}
+.correction h2{margin:0 0 8px;font-size:1.05rem;color:#1f7a8c}
+.correction h3{margin:14px 0 4px;font-size:.98rem;color:#1f7a8c}
+.correction p{margin:4px 0}
+.bilan{border:2px solid #1f7a8c;border-radius:12px;background:#fff;padding:16px 18px;margin-bottom:18px;font-size:.92rem;line-height:1.8}
+.bilan .score{font-size:clamp(1.05rem,3.2vw,1.25rem);font-weight:900;color:#1f7a8c}
+.bilan .palier{font-weight:700;margin-top:4px}
+.recap{display:flex;flex-wrap:wrap;gap:8px;margin-top:10px}
+.recap span{display:inline-flex;align-items:center;gap:6px;padding:6px 11px;border-radius:8px;background:#f4fafb;font-weight:700;font-size:.9rem;border:1px solid #dceff3}
+.recap .r-ok{color:#2e8b57}
+.recap .r-mid{color:#c9820a}
+.recap .r-ko{color:#c0392b}
+.legende{margin-top:10px;font-size:.85rem;color:#4d6169}
+@media (max-width:480px){body{padding:10px}.bloc{padding:24px 12px 16px}.etq{font-size:.85rem;padding:6px 12px}.etq-rit{margin-left:0}input[type="text"]{width:100%}.recap span{font-size:.85rem}}
+</style>
+</head>
+<body>
+<div class="bulle b1"></div>
+<div class="bulle b2"></div>
+<div class="bulle b3"></div>
+<div class="bulle b4"></div>
+
+<main class="wrap">
+
+  <div class="tete">
+    <span class="etq etq-sem">Semaine 1</span>
+    <span class="etq etq-sea">S&eacute;ance 2</span>
+    <span class="etq etq-rit">Rituel</span>
+  </div>
+
+  <h1>Tableaux de proportionnalit&eacute;</h1>
+
+  <section class="bloc">
+    <span class="onglet">Organisation et gestion de donn&eacute;es</span>
+
+    <p class="consigne-intro">Les 2 tableaux suivants sont-ils des tableaux de proportionnalit&eacute;&nbsp;?</p>
+
+    <div class="grille-tableaux">
+      <div><table class="mini-tableau"><tr><td>12</td><td>15</td><td>20</td></tr><tr><td>42</td><td>52,5</td><td>70</td></tr></table></div>
+      <div><table class="mini-tableau"><tr><td>37,5</td><td>15</td><td>48</td></tr><tr><td>15</td><td>6</td><td>20</td></tr></table></div>
+    </div>
+
+    <div class="tete-ex">
+      <span class="pastille">1</span>
+      <p class="consigne">Premier tableau (12, 15, 20 / 42, 52,5, 70)</p>
+    </div>
+    <div class="item">
+      <p class="q">Clique sur la r&eacute;ponse correcte&nbsp;:</p>
+      <div class="qcm" id="qcm-t1">
+        <button type="button" class="opt" data-qcm="t1" data-i="0"><span class="lettre">A.</span>Oui, ce tableau est bien proportionnel.</button>
+        <button type="button" class="opt" data-qcm="t1" data-i="1"><span class="lettre">B.</span>Non, ce tableau n&rsquo;est pas proportionnel.</button>
+      </div>
+      <div class="actions"><button type="button" data-qcmok="t1">V&eacute;rifier le choix</button></div>
+      <div class="feedback" id="fb-qt1" hidden></div>
+    </div>
+    <div class="item">
+      <p class="q">Si oui, donne le coefficient de proportionnalit&eacute; (sinon laisse vide)&nbsp;:</p>
+      <div class="ligne">
+        <span class="champ"><input type="text" id="in-coef1" inputmode="decimal" autocomplete="off" aria-label="Coefficient du tableau 1"></span>
+        <span class="actions">
+          <button type="button" data-ok="coef1">OK</button>
+          <button type="button" class="sec" data-aide="coef1">Indice</button>
+        </span>
+      </div>
+      <div class="feedback" id="fb-coef1" hidden></div>
+      <div class="aide" id="ai-coef1" hidden></div>
+    </div>
+
+    <div class="tete-ex">
+      <span class="pastille">2</span>
+      <p class="consigne">Second tableau (37,5, 15, 48 / 15, 6, 20)</p>
+    </div>
+    <div class="item">
+      <p class="q">Clique sur la r&eacute;ponse correcte&nbsp;:</p>
+      <div class="qcm" id="qcm-t2">
+        <button type="button" class="opt" data-qcm="t2" data-i="0"><span class="lettre">A.</span>Non, ce tableau n&rsquo;est pas proportionnel.</button>
+        <button type="button" class="opt" data-qcm="t2" data-i="1"><span class="lettre">B.</span>Oui, ce tableau est bien proportionnel.</button>
+      </div>
+      <div class="actions"><button type="button" data-qcmok="t2">V&eacute;rifier le choix</button></div>
+      <div class="feedback" id="fb-qt2" hidden></div>
+    </div>
+
+  </section>
+
+  <div class="barre">
+    <button type="button" id="btn-tout">V&eacute;rifier tout</button>
+    <button type="button" class="sec" id="btn-corr">Voir la correction</button>
+    <button type="button" class="sec" id="btn-reset">R&eacute;initialiser</button>
+  </div>
+
+  <div class="correction" id="correction" hidden></div>
+  <div class="bilan" id="bilan" hidden></div>
+
+</main>
+
+<script>
+(function(){
+  "use strict";
+
+  function esc(txt){
+    var d = document.createElement("div");
+    d.textContent = String(txt);
+    return d.innerHTML;
+  }
+  function normalise(brut){
+    var s = String(brut).replace(/[\s\u00a0\u202f\u2009]/g, "");
+    s = s.replace(/[\u2212\u2013\u2014]/g, "-").replace(/,/g, ".");
+    if (s === "") return null;
+    if (!/^-?(\d+(\.\d*)?|\.\d+)$/.test(s)) return null;
+    return s;
+  }
+
+  var etats = {};
+  var choix = { t1:null, t2:null };
+  var occupe = false;
+
+  function afficher(id, type, html){
+    var fb = document.getElementById("fb-" + id);
+    fb.className = "feedback " + type;
+    fb.innerHTML = html;
+    fb.hidden = false;
+  }
+  function marquer(input, etat){
+    if (!input) return;
+    input.classList.remove("correct","partiel","incorrect");
+    if (etat === "correct" || etat === "partiel" || etat === "incorrect") input.classList.add(etat);
+  }
+
+  // ---------- QCM tableaux 1 et 2 ----------
+  var QCM = {
+    t1:{ bonne:0, lettreBonne:"A", expl:"Les trois quotients (42/12, 52,5/15, 70/20) valent tous <strong>3,5</strong>&nbsp;: le tableau est proportionnel." },
+    t2:{ bonne:0, lettreBonne:"A", expl:"37,5&nbsp;&rarr;&nbsp;15 et 15&nbsp;&rarr;&nbsp;6 donnent un coefficient de <strong>0,4</strong>, mais 48&nbsp;&rarr;&nbsp;20 donne un coefficient diff\u00e9rent (environ 0,417)&nbsp;: le tableau n\u2019est <strong>pas</strong> proportionnel." }
+  };
+
+  function choisirQcm(cle, idx){
+    choix[cle] = idx;
+    var opts = document.querySelectorAll('[data-qcm="' + cle + '"]');
+    for (var i=0;i<opts.length;i++){
+      opts[i].classList.remove("sel");
+      if (Number(opts[i].getAttribute("data-i")) === idx) opts[i].classList.add("sel");
+    }
+  }
+
+  function verifierQcm(cle){
+    var opts = document.querySelectorAll('[data-qcm="' + cle + '"]');
+    var bonne = QCM[cle].bonne;
+    for (var i=0;i<opts.length;i++){
+      opts[i].classList.remove("bonne","incorrect");
+      var idx = Number(opts[i].getAttribute("data-i"));
+      if (idx === bonne) opts[i].classList.add("bonne");
+      else if (idx === choix[cle]) opts[i].classList.add("incorrect");
+    }
+    if (choix[cle] === null){
+      etats["q"+cle] = "incorrect";
+      afficher("q"+cle, "warn", "\u26a0\ufe0f Aucune proposition n\u2019a \u00e9t\u00e9 choisie.<br>R\u00e9ponse attendue&nbsp;: <strong><u>" + QCM[cle].lettreBonne + "</u></strong>. " + QCM[cle].expl);
+      return;
+    }
+    if (choix[cle] === bonne){
+      etats["q"+cle] = "correct";
+      afficher("q"+cle, "ok", "\u2705 Bravo&nbsp;! " + QCM[cle].expl);
+    } else {
+      etats["q"+cle] = "incorrect";
+      afficher("q"+cle, "ko", "\u274c Ce n\u2019est pas la bonne r\u00e9ponse.<br>R\u00e9ponse attendue&nbsp;: <strong><u>" + QCM[cle].lettreBonne + "</u></strong>. " + QCM[cle].expl);
+    }
+  }
+
+  // ---------- coefficient (tableau 1) ----------
+  var COEF1_ATTENDU = 3.5;
+  var TOLERANCE = 0.01;
+
+  function verifierCoef1(){
+    var input = document.getElementById("in-coef1");
+    var brut = input.value;
+    if (String(brut).replace(/[\s\u00a0]/g,"") === ""){
+      etats.coef1 = "vide"; marquer(input, "");
+      afficher("coef1", "warn", "\u26a0\ufe0f Aucune r\u00e9ponse saisie. Si tu penses que le tableau est proportionnel, donne son coefficient.");
+      return;
+    }
+    var norm = normalise(brut);
+    if (norm === null){
+      etats.coef1 = "incorrect"; marquer(input, "incorrect");
+      afficher("coef1", "warn", "\u26a0\ufe0f Saisie non reconnue&nbsp;: &laquo;&nbsp;" + esc(brut) + "&nbsp;&raquo;.");
+      return;
+    }
+    var val = Number(norm);
+    if (Math.abs(val - COEF1_ATTENDU) <= TOLERANCE){
+      etats.coef1 = "correct"; marquer(input, "correct");
+      afficher("coef1", "ok", "\u2705 Bravo&nbsp;! Le coefficient est bien 42/12&nbsp;=&nbsp;52,5/15&nbsp;=&nbsp;70/20&nbsp;=&nbsp;<strong>3,5</strong>.");
+      return;
+    }
+    etats.coef1 = "incorrect"; marquer(input, "incorrect");
+    afficher("coef1", "ko", "\u274c Ce n\u2019est pas le bon coefficient.<br>R\u00e9ponse attendue&nbsp;: <strong><u>3,5</u></strong> (42/12&nbsp;=&nbsp;52,5/15&nbsp;=&nbsp;70/20).");
+  }
+
+  function basculerAide(id){
+    var box = document.getElementById("ai-" + id);
+    if (!box) return;
+    var texte = "Divise chaque valeur de la 2e ligne par la valeur correspondante de la 1re ligne, et compare les trois r\u00e9sultats.";
+    if (box.hidden){
+      box.innerHTML = "\ud83d\udca1 <strong>Indice&nbsp;:</strong> " + texte;
+      box.hidden = false;
+    } else {
+      box.hidden = true;
+    }
+  }
+
+  function palier(pct){
+    if (pct >= 90) return "\ud83d\udfe2 Excellent";
+    if (pct >= 75) return "\ud83d\udfe2 Tr\u00e8s bien";
+    if (pct >= 60) return "\ud83d\udfe1 Ma\u00eetrise satisfaisante";
+    if (pct >= 40) return "\ud83d\udfe0 Ma\u00eetrise fragile";
+    return "\ud83d\udd34 Ma\u00eetrise insuffisante";
+  }
+
+  var ORDRE_SCORE = ["qt1","coef1","qt2"];
+
+  function verifierTout(){
+    if (occupe) return;
+    occupe = true;
+    window.setTimeout(function(){ occupe = false; }, 350);
+
+    verifierQcm("t1");
+    verifierCoef1();
+    verifierQcm("t2");
+
+    var total = ORDRE_SCORE.length;
+    var score = 0;
+    var recap = "";
+    for (var i=0;i<ORDRE_SCORE.length;i++){
+      var id = ORDRE_SCORE[i];
+      var e = etats[id];
+      if (e === "correct"){ score++; recap += '<span class="r-ok">\u2714 ' + id + '</span>'; }
+      else { recap += '<span class="r-ko">\u2718 ' + id + '</span>'; }
+    }
+
+    var pct = Math.round((score / total) * 100);
+    var bilan = document.getElementById("bilan");
+    bilan.innerHTML =
+      '<div class="score">Score&nbsp;: ' + score + '\u2009/\u2009' + total + ' (' + pct + '&nbsp;%)</div>' +
+      '<div class="palier">' + palier(pct) + '</div>' +
+      '<div class="recap">' + recap + '</div>' +
+      '<div class="legende">\u2714 correct &nbsp;\u2022&nbsp; \u2718 incorrect ou non r\u00e9pondu.</div>';
+    bilan.hidden = false;
+  }
+
+  function basculerCorrection(){
+    var box = document.getElementById("correction");
+    var btn = document.getElementById("btn-corr");
+    if (box.hidden){
+      var html = "<h2>Correction</h2>" +
+        "<h3>Tableau 1</h3><p>Oui, il est proportionnel&nbsp;: 42/12&nbsp;=&nbsp;52,5/15&nbsp;=&nbsp;70/20&nbsp;=&nbsp;<strong>3,5</strong>.</p>" +
+        "<h3>Tableau 2</h3><p>Non&nbsp;: 15/37,5&nbsp;=&nbsp;0,4 et 6/15&nbsp;=&nbsp;0,4, mais 20/48&nbsp;&asymp;&nbsp;0,417&nbsp;: le coefficient n\u2019est pas le m\u00eame partout.</p>";
+      box.innerHTML = html;
+      box.hidden = false;
+      btn.textContent = "Masquer la correction";
+    } else {
+      box.hidden = true;
+      btn.textContent = "Voir la correction";
+    }
+  }
+
+  function reinitialiser(){
+    var input = document.getElementById("in-coef1");
+    input.value = ""; input.disabled=false; input.readOnly=false;
+    input.classList.remove("correct","partiel","incorrect");
+    var fb = document.getElementById("fb-coef1");
+    fb.hidden = true; fb.innerHTML = ""; fb.className = "feedback";
+    var ai = document.getElementById("ai-coef1");
+    ai.hidden = true; ai.innerHTML = "";
+    etats.coef1 = "vide";
+
+    var cles = ["t1","t2"];
+    for (var k=0;k<cles.length;k++){
+      choix[cles[k]] = null;
+      etats["q"+cles[k]] = "vide";
+      var opts = document.querySelectorAll('[data-qcm="' + cles[k] + '"]');
+      for (var j=0;j<opts.length;j++){ opts[j].classList.remove("sel","bonne","incorrect"); }
+      var fq = document.getElementById("fb-q" + cles[k]);
+      fq.hidden = true; fq.innerHTML = ""; fq.className = "feedback";
+    }
+
+    var bilan = document.getElementById("bilan");
+    bilan.hidden = true; bilan.innerHTML = "";
+    var corr = document.getElementById("correction");
+    corr.hidden = true; corr.innerHTML = "";
+    document.getElementById("btn-corr").textContent = "Voir la correction";
+    occupe = false;
+  }
+
+  function init(){
+    etats.qt1 = "vide"; etats.qt2 = "vide"; etats.coef1 = "vide";
+
+    var bOpt = document.querySelectorAll("[data-qcm]");
+    for (var c=0;c<bOpt.length;c++){
+      bOpt[c].addEventListener("click", function(){
+        choisirQcm(this.getAttribute("data-qcm"), Number(this.getAttribute("data-i")));
+      });
+    }
+    var bQ = document.querySelectorAll("[data-qcmok]");
+    for (var d=0;d<bQ.length;d++){
+      bQ[d].addEventListener("click", function(){ verifierQcm(this.getAttribute("data-qcmok")); });
+    }
+
+    document.querySelector('[data-ok="coef1"]').addEventListener("click", verifierCoef1);
+    document.querySelector('[data-aide="coef1"]').addEventListener("click", function(){ basculerAide("coef1"); });
+    document.getElementById("in-coef1").addEventListener("keydown", function(ev){
+      if (ev.key === "Enter"){ ev.preventDefault(); verifierCoef1(); }
+    });
+
+    document.getElementById("btn-tout").addEventListener("click", verifierTout);
+    document.getElementById("btn-corr").addEventListener("click", basculerCorrection);
+    document.getElementById("btn-reset").addEventListener("click", reinitialiser);
+  }
+
+  if (document.readyState === "loading"){
+    document.addEventListener("DOMContentLoaded", init);
+  } else {
+    init();
+  }
+})();
+</script>
+</body>
+</html>
